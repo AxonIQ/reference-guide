@@ -5,7 +5,11 @@
       "token": "UA-180286-13"
     },
     "autocover" : {
-      "title" : "Axon Framework - Reference Guide",
+      "title" : {
+        "main" : "Axon Framework",
+        "subtitle" : "Reference Guide",
+        "length" : 2
+      },
       "font": {
         "size": null,
         "family": "Impact",
@@ -14,7 +18,7 @@
       "size": {
         "w": 1800,
         "h": 2360,
-        "title": 35
+        "title": 100
       },
       "background": {
         "color": "#FFF"
