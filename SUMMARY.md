@@ -1,21 +1,23 @@
 # Summary
 
+* [About this guide](README.md)
+
 ### Part I - Getting started
 * [Introduction](part1/introduction.md)
 * [Architecture overview](part1/architecture-overview.md)
-* Messaging concepts (TODO)
-* Configuration API (TODO)
+* [Messaging concepts](part1/messaging-concepts.md)
+* [Configuration API](part1/configuration-api.md)
 
 ### Part II - Domain Logic
-* [Command Model](part2/domain-modeling.md)
+* [Command Model](part2/command-model.md)
 * [Event Handling](part2/event-listeners.md)
 * [Sagas](part2/sagas.md)
 * [Testing](part2/testing.md)
 
 ### Part III - Infrastructure components
-* [Command Handling](part3/command-handling.md)
+* [Command Dispatching](part3/command-dispatching.md)
+* [Event Processing](part3/event-processing.md)
 * [Repository and Event Store](part3/repositories-and-event-stores.md)
-* Event Processors (TODO)
 * [Using Spring](part3/using-spring.md)
 
 ### Part IV - Advanced tuning
