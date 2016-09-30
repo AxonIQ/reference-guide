@@ -18,8 +18,7 @@
       },
       "background": {
         "color": "#FFF"
-      },
-      "watermark" : "images/logo.png"
+      }
     }
 
   }
