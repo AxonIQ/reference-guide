@@ -1,12 +1,11 @@
 {
   "plugins": ["ga", "autocover"],
-  "title" : "Axon Framework - Reference Guide",
   "pluginsConfig": {
     "ga": {
       "token": "UA-180286-13"
     },
     "autocover" : {
-      "title" : "Axon Framework - Reference Guide",
+      "title" : ["Axon Framework","Reference Guide"],
       "font": {
         "size": null,
         "family": "Impact",
@@ -14,11 +13,13 @@
       },
       "size": {
         "w": 1800,
-        "h": 2360
+        "h": 2360,
+        "title": 35
       },
       "background": {
         "color": "#FFF"
-      }
+      },
+      "watermark" : "images/logo.png"
     }
 
   }
