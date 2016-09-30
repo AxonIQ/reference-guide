@@ -1,8 +1,24 @@
 {
-  "plugins": ["ga"],
+  "plugins": ["ga", "autocover"],
+  "title" : "Axon Framework - Reference Guide",
   "pluginsConfig": {
     "ga": {
       "token": "UA-180286-13"
+    },
+    "autocover" : {
+      "font": {
+        "size": null,
+        "family": "Impact",
+        "color": "#FFF"
+      },
+      "size": {
+        "w": 1800,
+        "h": 2360
+      },
+      "background": {
+        "color": "#09F"
+      }
     }
+
   }
 }

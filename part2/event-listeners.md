@@ -12,50 +12,6 @@ The `SimpleEventBus` is, as the name suggests, a very basic implementation of th
 
 The `SimpleEventBus` is suitable for most cases where dispatching is done synchronously and locally, \(i.e. in a single JVM\). Once your application requires `Events` to be published across multiple JVMs, you could consider using the `ClusteringEventBus` instead.
 
-## Clustering Event Bus
-
-The `ClusteringEventsBus` allows application developers to bundle `EventListener`s into `EventProcessor`s based on their properties and non-functional requirements. The `ClusteringEventBus` is also more capable to deal with Events being dispatched among different machines.
-
-![](/images/clustering-eventbus.png)
-
-The `ClusteringEventsBus` contains two mechanisms: the `EventProcessorSelector`, which selects an `EventProcessor` instance for each of the registered `EventListener`s, and the `EventBusTerminal`, which is responsible for dispatching Events to each of the relevant eventProcessors.
-
-> **Note**
-> 
-> In the nervous system, an Axon \(one of the components of a Neuron\) transports electrical signals. These Neurons are interconnected in very complex arrangements. The Axon Terminal is responsible for transmitting these signals from one Neuron to another.
-> 
-> More information: [www.wikipedia.org\/wiki\/Axon\_terminal](www.wikipedia.org/wiki/Axon_terminal).
-
-The primary responsibility of the `EventProcessorSelector` is, as the name suggests, to select an event processor for each Event Listener that subscribes to the Event Bus. By default, all Event Listeners are placed in a single EventProcessor instance, which dispatches events to its members sequentially and in the calling thread \(similar to how the `SimpleEventBus` works\). By providing a custom implementation, you can arrange the Event Listeners into different EventProcessor instances to suit the requirements of your architecture.
-
-A number of `EventProcessorSelector` implementations are available. The `ClassNamePrefixEventProcessorSelector`, for example, uses a mapping of package prefixes to decide which event processor is \(most\) suitable for an Event Listener. Similarly, the `ClassNamePatternEventProcessorSelector` uses pattern matching to decide whether a given event processor is suitable. You can use the `CompositeEventProcessorSelector` to combine several event processor selectors into a single one.
-
-The `EventProcessor` interface describes the behavior of an EventProcessor. By adding information in the Meta Data of an EventProcessor, the selector can provide hints to the Terminal about the expected behavior.
-
-> **Note**
-> 
-> Spring users can define event processors using the `<axon:event-processor>` element. This element allows you to define the selection criteria for Event Handlers in that event processor. These criteria are transformed into event processor selectors and used to assign each Listener to one of the event processors. By default, this creates an event processor that handles events in the publishing thread. To use an event processor with other semantics, you can define a bean inside the `<axon:event-processor>` element that specifies the `EventProcessor` implementation to use.
-> 
-> The `EventProcessor`s are automatically detected and connected to the Event Bus in the application context.
-
-The `EventBusTerminal` forms the bridge between the EventProcessors inside the Event Bus. While some terminals will dispatch within the same JVM, others are aware of messaging technologies, such as AMQP to dispatch Event Messages to event processors on remote machines. The default implementation dispatches published events to each of the \(local\) event processors using the publishing thread. This means that with the default terminal, and the default `EventProcessorSelector`, the behavior of the `ClusteringEventBus` is exactly the same as that of the `SimpleEventBus`.
-
-In a typical AMQP based configuration, the `EventBusTerminal` would send published events to an Exchange. For each event processor, a Queue would be connected to that exchange. The `EventBusTerminal` will create a consumer for each event processor, which reads from its related Queue and forwards each message to that event processor. Event Listeners in a distributed environment where at most one instance should receive an Event should be placed in a separate event processor, which competes with the other instances on a single Queue. See [title\_title](#distributed-event-bus) for more information.
-
-By default, all Event Listeners are combined into a single event processor. The order in which the listeners are invoked is undefined. However, when an application defines several event processors, sensible choices need to be made about which Event Processor instance to assign to each Event Listener.
-
-As a rule of thumb, Event Listeners that require information managed by another Listener should be in the same event processor. Putting them in the same event processor allows you to influence the way they are invoked. Once they are assigned to different event processors, this is much harder to do. Furthermore, listeners that may not be replayed, such as ones sending emails, as well as Saga Manager should be placed in a separate event processor. Care should be taken to never replay events on a event processor containing this type of Listener.
-
-In some circumstances, it is desirable to ensure that a specific handler is invoked before another. To achieve this, some event processors allow an `OrderResolver` to be configured. The `OrderResolver` provides an integer value for each given handler, which defines the relative order in which handlers need to be invoked. Listeners for which the resolver provides a lower value are invoked before those with a higher value. The order in which Listeners with the same value are invoked is undefined.
-
-Event processors that have been defined in a Spring context using the `<axon:event-processor />` element automatically check for Spring's `@Order` annotation on handler classes. Alternatively, an "order-resolver-ref" attribute can be used to refer to another Order resolver to use.
-
-In some cases, you want to know when a event processor has handled a specific event. For example, when a event processor handles an Event asynchronously and you need to send an acknowledgement to the sender. Generally, you are unlikely to require this feature directly. It is mainly used by infrastructure components.
-
-The `EventProcessingMonitorSupport` interface, which was introduced in Axon 2.1, defines class capable of notifying subscribed monitors. `EventProcessor` extends this interface, meaning each `EventProcessor` implementation must be able to deal with the Event Processing Monitors. Event Listeners that handle Events asynchronously, such as the `AsyncAnnotatedSagaManager` also implement this interface.
-
-To register a Monitor with a Event Processor \(or Event Listener\), call the `subscribeEventProcessingMonitor(...)` method. It will be invoked each time an Event has been successfully handled by that listener \(by invoking the `onEventProcessingCompleted` method\) or when event handling has failed \(by invoking `onEventProcessingFailed`\). A single notification may contain any number of Events.
-
 ## Publishing Events
 
 In the vast majority of cases, the Aggregates will publish events by registering events and storing the aggregates in their respective repository. However, occasionally, it is necessary to publish an event from another component, directly to the Event Bus. To publish an event, simply wrap the payload describing the event in an `EventMessage`. The `GenericEventMessage.asEventMessage(Object)` method allows you to wrap any object into an `EventMessage`. If the passed object is already an `EventMessage`, it is simply returned.
