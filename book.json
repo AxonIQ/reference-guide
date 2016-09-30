@@ -5,7 +5,7 @@
       "token": "UA-180286-13"
     },
     "autocover" : {
-      "title" : ["Axon Framework","Reference Guide"],
+      "title" : "Axon Framework - Reference Guide",
       "font": {
         "size": null,
         "family": "Impact",
