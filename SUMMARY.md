@@ -1,13 +1,13 @@
 # Summary
 
 * [Introduction](README.md)
-* [Architecture overview](2-architecture-overview.md)
-* [Command Handling](3-command-handling.md)
-* [Domain Modeling](4-domain-modeling.md)
-* [Repository and Event Store](5-repositories-and-event-stores.md)
-* [Event Listeners](6-event-listeners.md)
-* [Sagas](7-sagas.md)
-* [Testing](8-testing.md)
-* [Using Spring](9-using-spring.md)
-* [Performance Tuning](10-performance-tuning.md)
+* [Architecture overview](chapters/architecture-overview.md)
+* [Domain Modeling](chapters/domain-modeling.md)
+* [Command Handling](chapters/command-handling.md)
+* [Repository and Event Store](chapters/repositories-and-event-stores.md)
+* [Event Listeners](chapters/event-listeners.md)
+* [Sagas](chapters/sagas.md)
+* [Testing](chapters/testing.md)
+* [Using Spring](chapters/using-spring.md)
+* [Performance Tuning](chapters/performance-tuning.md)
 
