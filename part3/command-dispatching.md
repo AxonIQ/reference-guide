@@ -49,7 +49,7 @@ The declared return value of a method will also affect its behavior:
 
 -   A `void` return type will cause the method to return immediately, unless there are other indications on the method that one would want to wait, such as a timeout or declared exceptions.
 
--   A Future return type will cause the method to return immediately. You can access the result of the Command Handler using the Future instance returned from the method. Exceptions and timeouts declared on the method are ignored.
+-   Return types of `Future`, `CompletionStage` and `CompletableFuture` will cause the method to return immediately. You can access the result of the Command Handler using the `CompletableFuture` instance returned from the method. Exceptions and timeouts declared on the method are ignored.
 
 -   Any other return type will cause the method to block until a result is available. The result is cast to the return type (causing a ClassCastException if the types don't match).
 
