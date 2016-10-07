@@ -15,7 +15,7 @@ The Command Gateway is a convenient interface towards the Command dispatching me
 
 There are two ways to use a Command Gateway. The first is to use the `CommandGateway` interface and `DefaultCommandGateway` implementation provided by Axon. The command gateway provides a number of methods that allow you to send a command and wait for a result either synchronously, with a timeout or asynchronously.
 
-The other option is perhaps the most flexible of all. You can turn almost any interface into a Command Gateway using the `GatewayProxyFactory`. This allows you to define your application's interface using strong typing and declaring your own (checked) business exceptions. Axon will automatically generate an implementation for that interface at runtime.
+The other option is perhaps the most flexible of all. You can turn almost any interface into a Command Gateway using the `CommandGatewayFactory`. This allows you to define your application's interface using strong typing and declaring your own (checked) business exceptions. Axon will automatically generate an implementation for that interface at runtime.
 
 Configuring the Command Gateway
 -------------------------------
@@ -93,7 +93,7 @@ public interface MyGateway {
 }
 
 // To configure a gateway:
-GatewayProxyFactory factory = new GatewayProxyFactory(commandBus);
+CommandGatewayFactory factory = new CommandGatewayFactory(commandBus);
 // note that the commandBus can be obtained from the `Configuration` object returned on `configurer.initialize()`.
 MyGateway myGateway = factory.createGateway(MyGateway.class);
 ```
