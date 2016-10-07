@@ -1,6 +1,8 @@
 Event Listeners
 ===============
 
+TODO: Update to Axon 3
+
 Event listeners are the components that act on incoming events. Events may be of any type. In the Axon Framework, all event listeners must implement the `EventListener` interface.
 
 ## Annotated Event Handler

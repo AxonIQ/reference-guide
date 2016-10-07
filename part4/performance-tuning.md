@@ -1,6 +1,8 @@
 Performance Tuning
 ==================
 
+TODO: Update to Axon 3
+
 This chapter contains a checklist and some guidelines to take into consideration when getting ready for production-level performance. By now, you have probably used the test fixtures to test your command handling logic and sagas. The production environment isn't as forgiving as a test environment, though. Aggregates tend to live longer, be used more frequently and concurrently. For the extra performance and stability, you're better off tweaking the configuration to suit your specific needs.
 
 Database Indexes and Column Types
