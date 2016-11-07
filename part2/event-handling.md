@@ -80,5 +80,43 @@ Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
 
 Event Processors
 ----------------
-TODO: Describe how Event Handlers are organized into Processors.
+Event Handlers define the business logic to be performed when an Event is received. Event Processors are the components that take care of the technical aspects of that processing. They start a Unit of Work and possibly a transaction, but also ensure that correlation data can be correctly attached to all messages created during Event processing.
 
+Event Processors come in roughly two forms: Subscribing and Tracking. he Subscribing processors subscribe themselves to a source of Events and are invoked by the thread managed by the publishing mechanism. Tracking Processors, on the other hand, pull their messages from a source using a thread that it manages itself.
+
+### Assigning handlers to processors
+
+All processors have a name, which identifies a processor instance across JVM instances. Two processors with the same name, can be considered as two instances of the same processor.
+
+All Event Handlers are attached to a Processor which name is the package name of the Event Handler's class.
+
+For example, the following classes:
+
+- `org.axonframework.example.eventhandling.MyHandler`,
+- `org.axonframework.example.eventhandling.MyOtherHandler`, and
+- `org.axonframework.example.eventhandling.module.MyHandler`
+
+will trigger the creation of two Processors:
+
+- `org.axonframework.example.eventhandling` with 2 handlers, and 
+- `org.axonframework.example.eventhandling.module` with a single handler
+
+The Configuration API allows you to configure other strategies for assigning classes to processors, or even assign specific instances to specific processors.
+
+### Configuring processors
+
+By default, Axon will use Subscribing Event Processors. It is possible to change how Handlers are assigned and how processors are configured using the `EventHandlingConfiguration` class of the Configuration API.
+
+The `EventHandlingConfiguration` class defines a number of methods that can be used to define how processors need to be configured.
+
+- `registerEventProcessorFactory` allows you to define a default factory method that creates Event Processors for which no explicit factories have been defined.
+
+- `registerEventProcessor(String name, EventProcessorBuilder builder)` defines the factory method to use to create a Processor with given `name`. Note that such Processor is only created if `name` is chosen as the processor for any of the available Event Handler beans.
+
+- `registerTrackingProcessor(String name)` defines that a processor with given name should be configured as a Tracking Event Processor, using default settings. It is configured with a TransactionManager, TokenStore
+
+- `usingTrackingProcessors()` sets the default to Tracking Processors instead of Subscribing ones.
+
+Tracking Processors, unlike Subscribing ones, need a Token Store to store their progress in. Each message a Tracking Processor receives through its Event Stream is accompanies with a Token. This Token allows the processor to reopen the Stream at any later point, picking up where it left off with the last Event.
+
+The Configuration API takes the Token Store, as well as most other components Processors need from the Global Configuration instance. If no TokenStore is explicitly defined, an `InMemoryTokenStore` is used, which is *not recommended in production*.

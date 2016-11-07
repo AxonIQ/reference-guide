@@ -52,6 +52,6 @@ This component must be registered with the Configurer, using `configurer.registe
 Setting up a configuration using Spring
 ---------------------------------------
 
-When using Spring, there is no need to expicitly use the `Configurer`. Instead, you can simply put the `@EnableAxonAutoConfiguration` on one of your Spring `@Configuration` classes.
+When using Spring, there is no need to explicitly use the `Configurer`. Instead, you can simply put the `@EnableAxon` on one of your Spring `@Configuration` classes.
 
 Axon will use the Spring Application Context to locate specific implementations of building blocks and provide default for those that are not there. So, instead of registering the building blocks with the `Configurer`, in Spring you just have to make them available in the Application Context as `@Bean`s.
