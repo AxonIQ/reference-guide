@@ -1,13 +1,13 @@
 Command Model
 ===============
 
-In a CQRS-based application, a Domain Model (as defined by Eric Evans and Martin Fowler) can be a very powerful mechanism to harness the complexity involved in the validation and execution of state changes. Although a typical Domain Model has a great number of building blocks, one of them play a major role when applied to Command processing in CQRS: the Aggregate.
+In a CQRS-based application, a Domain Model (as defined by Eric Evans and Martin Fowler) can be a very powerful mechanism to harness the complexity involved in the validation and execution of state changes. Although a typical Domain Model has a great number of building blocks, one of them plays a dominant role when applied to Command processing in CQRS: the Aggregate.
 
 A state change within an application starts with a Command. A Command is a combination of expressed intent (which describes what you want done) as well as the information required to undertake action based on that intent. The Command Model is used to process the incoming command, to validate it and define the outcome. Within this model, a Command Handler is responsible for handling commands of a certain type and taking action based on the information contained inside it.
 
 Aggregate
 ---------
-An Aggregate is an entity or group of entities that is always kept in a consistent state. The aggregate root is the object on top of the aggregate tree that is responsible for maintaining this consistent state. This makes the Aggregate the prime building block for implementing a Command Model in any CQRS based application.
+An Aggregate is an entity or group of entities that is always kept in a consistent state. The Aggregate Root is the object on top of the aggregate tree that is responsible for maintaining this consistent state. This makes the Aggregate the prime building block for implementing a Command Model in any CQRS based application.
 
 > **Note**
 >
@@ -19,13 +19,13 @@ For example, a "Contact" aggregate could contain two entities: Contact and Addre
 
 In Axon, aggregates are identified by an Aggregate Identifier. This may be any object, but there are a few guidelines for good implementations of identifiers. Identifiers must:
 
--   implement equals and hashCode to ensure good equality comparison with other instances,
+-   implement `equals` and `hashCode` to ensure good equality comparison with other instances,
 
--   implement a toString() method that provides a consistent result (equal identifiers should provide an equal toString() result), and
+-   implement a `toString()` method that provides a consistent result (equal identifiers should provide an equal toString() result), and
 
--   preferably be serializable.
+-   preferably be `Serializable`.
 
-The test fixtures (see [Testing](testing.md)) will verify these conditions and fail a test when an Aggregate uses an incompatible identifier. Identifiers of type `String`, `UUID` and the numeric types are always suitable. Do **not** use primitive types as identifiers, as they don't allow for lazy initialization. Axon may, in some circumstances, false assume the default value of a primitive to be the value of the identifier.
+The test fixtures (see [Testing](testing.md)) will verify these conditions and fail a test when an Aggregate uses an incompatible identifier. Identifiers of type `String`, `UUID` and the numeric types are always suitable. Do **not** use primitive types as identifiers, as they don't allow for lazy initialization. Axon may, in some circumstances, falsely assume the default value of a primitive to be the value of the identifier.
 
 > **Note**
 >
@@ -53,6 +53,7 @@ public class MyAggregate {
     
     // fields containing state...
     
+    @CommandHandler
     public MyAggregate(CreateMyAggregateCommand command) {
         // ... update state
         apply(new MyAggregateCreatedEvent(...));
@@ -64,11 +65,13 @@ public class MyAggregate {
 }
 ```
 
+Entities within an Aggregate can listener to the events the Aggregate publishes, by defining an `@EventHandler` annotated method. These methods will be invoked when an EventMessage is published (before any external handlers are published).
+
 Event sourced aggregates
 ------------------------
 Besides storing the current state of an Aggregate, it is also possible to rebuild the state of an Aggregate based on the Events that it has published in the past. For this to work, all state changes must be represented by an Event.
 
-For the major part, Event Sourced Aggregates are similar to 'regular' aggregates: they must declare an identifier and can use the `apply` method to publish Events. However, state changes in Event Sourced Aggregates (i.e. any change of a Field value) must be performed in an `@EventSourcedHandler` annotated method. This includes setting the Aggregate Identifier.
+For the major part, Event Sourced Aggregates are similar to 'regular' aggregates: they must declare an identifier and can use the `apply` method to publish Events. However, state changes in Event Sourced Aggregates (i.e. any change of a Field value) must be *exclusively* performed in an `@EventSourcingHandler` annotated method. This includes setting the Aggregate Identifier.
 
 Note that the Aggregate Identifier must be set in the `@EventSourcingHandler` of the very first Event published by the Aggregate. This is usually the creation Event.
 
@@ -82,6 +85,7 @@ public class MyAggregateRoot {
     
     // fields containing state...
 
+    @CommandHandler
     public MyAggregateRoot(CreateMyAggregate cmd) {
         apply(new MyAggregateCreatedEvent(cmd.getId()));
     }
@@ -141,7 +145,7 @@ To define a Command Handler in an Aggregate, simply annotated the Command Handli
 
 By default, `@CommandHandler` annotated methods allow the following parameter types:
 
--   The first parameter is always the payload of the Command Message. It may also be of type `Message` or `CommandMessage`, if the `@CommandHandler` annotation explicitly defined the name of the Command the handler can process. By default, a Command name is the fully qualified class name of the Command's payload.
+-   The first parameter is the payload of the Command Message. It may also be of type `Message` or `CommandMessage`, if the `@CommandHandler` annotation explicitly defined the name of the Command the handler can process. By default, a Command name is the fully qualified class name of the Command's payload.
 
 -   Parameters annotated with `@MetaData` will resolve to the Meta Data value with the key as indicated on the annotation. If `required` is `false` (default), `null` is passed when the meta data value is not present. If `required` is `true`, the resolver will not match and prevent the method from being invoked when the meta data value is not present.
 
@@ -153,7 +157,7 @@ By default, `@CommandHandler` annotated methods allow the following parameter ty
 
 In order for Axon to know which instance of an Aggregate type should handle the Command Message, the property carrying the Aggregate Identifier in the Command object must be annotated with `@TargetAggregateIdentifier`. The annotation may be placed on either the field or an accessor method (e.g. a getter).
 
-Commands that create an Aggregate instance do not need to identify the target aggregate identifier. 
+Commands that create an Aggregate instance do not need to identify the target aggregate identifier, although it is recommended to annotate the Aggregate identifier on them as well. 
 
 If you prefer to use another mechanism for routing Commands, the behavior can be overridden by supplying a custom `CommandTargetResolver`. This class should return the Aggregate Identifier and expected version (if any) based on a given command.
 
@@ -255,7 +259,7 @@ configurer.configureAggregate(
 
 It is also possible to annotate Collections and Maps containing entities with `@AggregateMember`. In the latter case, the values of the map are expected to contain the entities, while the key contains a value that is used as their reference.
 
-As a command needs to be routed to the correct instance, these instances must be properly identifier. Their "id" field must be annotated with `@EntityId`. The property on the command that will be used to find the Entity that the message should be routed to, defaults to the name of the field that was annotated. For example, when annotating the field "myEntityId", the command must define a property with that same name. This means either a `getMyEntityId` or a `myEntityId()` method must be present. If the name of the field and the routing property differ, you may provide a value explicity using `@EntityId(routingKey = "customRoutingProperty")`.
+As a command needs to be routed to the correct instance, these instances must be properly identifier. Their "id" field must be annotated with `@EntityId`. The property on the command that will be used to find the Entity that the message should be routed to, defaults to the name of the field that was annotated. For example, when annotating the field "myEntityId", the command must define a property with that same name. This means either a `getMyEntityId` or a `myEntityId()` method must be present. If the name of the field and the routing property differ, you may provide a value explicitly using `@EntityId(routingKey = "customRoutingProperty")`.
 
 If no Entity can be found in the annotated Collection or Map, Axon throws an IllegalStateException; apparently, the aggregate is not capable of processing that command at that point in time.
 

@@ -10,7 +10,7 @@
 
 ### Part II - Domain Logic
 * [Command Model](part2/command-model.md)
-* [Event Handling](part2/event-listeners.md)
+* [Event Handling](part2/event-handling.md)
 * [Sagas](part2/sagas.md)
 * [Testing](part2/testing.md)
 

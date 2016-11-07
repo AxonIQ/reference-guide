@@ -72,7 +72,7 @@ If you use maven as your build tool, you need to configure the correct dependenc
 <dependency>
     <groupId>org.axonframework</groupId>
     <artifactId>axon-core</artifactId>
-    <version></version>
+    <version>${axon.version}</version>
 </dependency>
 ```
 

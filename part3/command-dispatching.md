@@ -1,6 +1,7 @@
 Command Dispatching
 ===================
 
+TODO: Update to Axon 3
 
 The use of an explicit command dispatching mechanism has a number of advantages. First of all, there is a single object that clearly describes the intent of the client. By logging the command, you store both the intent and related data for future reference. Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. Testing also becomes a lot easier, you could define test scripts by just defining the starting situation (given), command to execute (when) and expected results (then) by listing a number of events and commands (see [Testing](../part2/testing.md)). The last major advantage is that it is very easy to switch between synchronous and asynchronous command processing.
 
