@@ -1,27 +1,23 @@
 Testing
 =======
-TODO: Update to Axon 3
-
 One of the biggest benefits of CQRS, and especially that of event sourcing is that it is possible to express tests purely in terms of Events and Commands. Both being functional components, Events and Commands have clear meaning to the domain expert or business owner. Not only does this mean that tests expressed in terms of Events and Commands have a clear functional meaning, it also means that they hardly depend on any implementation choices.
 
-The features described in this chapter require the `axon-test` module, which can be obtained by configuring a maven dependency (use `<artifactId>axon-test</artifactId>`) or from the full package download.
+The features described in this chapter require the `axon-test` module, which can be obtained by configuring a maven dependency (use `<artifactId>axon-test</artifactId>` and `<scope>test</scope>`) or from the full package download.
 
 The fixtures described in this chapter work with any testing framework, such as JUnit and TestNG.
 
 Command Component Testing
-=========================
+-------------------------
 
-The command handling component is typically the component in any CQRS based architecture that contains the most complexity. Being more complex than the others, this also means that there are extra test related requirements for this component. Simply put: the more complex a component, the better it must be tested.
+The command handling component is typically the component in any CQRS based architecture that contains the most complexity. Being more complex than the others, this also means that there are extra test related requirements for this component.
 
 Although being more complex, the API of a command handling component is fairly easy. It has a command coming in, and events going out. In some cases, there might be a query as part of command execution. Other than that, commands and events are the only part of the API. This means that it is possible to completely define a test scenario in terms of events and commands. Typically, in the shape of:
 
 -   given certain events in the past,
-
 -   when executing this command,
-
 -   expect these events to be published and/or stored.
 
-Axon Framework provides a test fixture that allows you to do exactly that. This GivenWhenThenTestFixture allows you to configure a certain infrastructure, composed of the necessary command handler and repository, and express your scenario in terms of given-when-then events and commands.
+Axon Framework provides a test fixture that allows you to do exactly that. The `AggregateTestFixture` allows you to configure a certain infrastructure, composed of the necessary command handler and repository, and express your scenario in terms of given-when-then events and commands.
 
 The following example shows the usage of the given-when-then test fixture with JUnit 4:
 
@@ -31,16 +27,14 @@ public class MyCommandComponentTest {
 
     @Before
     public void setUp() {
-        fixture = Fixtures.newGivenWhenThenFixture(MyAggregate.class);
-        MyCommandHandler myCommandHandler = new MyCommandHandler( fixture.getRepository());
-        fixture.registerAnnotatedCommandHandler(myCommandHandler);
+        fixture = new AggregateTestFixture(MyAggregate.class);
     }
 
     @Test
     public void testFirstFixture() {
         fixture.given(new MyEvent(1))
                .when(new TestCommand())
-               .expectVoidReturnType()
+               .expectSuccessfulHandlerExecution()
                .expectEvents(new MyEvent(2));
         /*
         These four lines define the actual scenario and its expected
@@ -58,26 +52,19 @@ public class MyCommandComponentTest {
 }
 ```
 
- 1. This line creates a fixture instance that can deal with given-when-then style tests. It is created in configuration stage, which allows us to configure the components that we need to process the command, such as the command handler and repository. An event bus and command bus are automatically created as part of the fixture.
- 1. The `getRepository()` method returns an `EventSourcingRepository` instance capable of storing `MyAggregate` instances. This requires some conventions on the MyAggregate class, as described in [Event Sourcing Repositories](5-repositories-and-event-stores.md#event-sourcing-repositories). If there is need for a custom `AggregateFactory`, use the `registerRepository(...)` method to register another repository with the correct `AggregateFactory`.
- 1. The `registerAnnotatedCommandHandler` method will register any bean as being an `@CommandHandler` with the command bus. All supported command types are automatically registered with the command bus.
-
-
-
-
 The given-when-then test fixture defines three stages: configuration, execution and validation. Each of these stages is represented by a different interface: `FixtureConfiguration`, `TestExecutor` and `ResultValidator`, respectively. The static `newGivenWhenThenFixture()` method on the `Fixtures` class provides a reference to the first of these, which in turn may provide the validator, and so forth.
 
 > **Note**
 >
 > To make optimal use of the migration between these stages, it is best to use the fluent interface provided by these methods, as shown in the example above.
 
-During the configuration phase (i.e. before the first "given" is provided), you provide the building blocks required to execute the test. Specialized versions of the event bus, command bus and event store are provided as part of the fixture. There are getters in place to obtain references to them. The repository and command handlers need to be provided. This can be done using the `registerRepository` and `registerCommandHandler` (or `registerAnnotatedCommandHandler`) methods. If your aggregate allows the use of a generic repository, you can use the `createGenericRepository` method to create a generic repository and register it with the fixture in a single call. The example above uses this feature.
+During the configuration phase (i.e. before the first "given" is provided), you provide the building blocks required to execute the test. Specialized versions of the event bus, command bus and event store are provided as part of the fixture. There are accessor methods in place to obtain references to them. Any Command Handlers not registered directly on the Aggregate need to be explicitly configured using the `registerAnnotatedCommandHandler` method. Besides the Annotated Command Handler, you can configure a wide variety of components and setting that define how the infrastructure around the test should be set up.
 
-If the command handler and repository are configured, you can define the "given" events. The test fixture will wrap these events as DomainEventMessage. If the "given" event implements Message, the payload and meta data of that message will be included in the DomainEventMessage, otherwise the given event is used as payload. The sequence numbers of the DomainEventMessage are sequential, starting at 0.
+Once the fixture is configured, you can define the "given" events. The test fixture will wrap these events as `DomainEventMessage`. If the "given" event implements Message, the payload and meta data of that message will be included in the DomainEventMessage, otherwise the given event is used as payload. The sequence numbers of the DomainEventMessage are sequential, starting at 0.
 
 Alternatively, you may also provide commands as "given" scenario. In that case, the events generated by those commands will be used to event source the Aggregate when executing the actual command under test. Use the "`givenCommands(...)`" method to provide Command objects.
 
-The execution phase allows you to provide a command to be executed against the command handling component. That's all. Note that successful execution of this command requires that a command handler that can handle this type of command has been configured with the test fixture.
+The execution phase allows you to provide a Command to be executed against the command handling component. The behavior of the invoked handler (either on the Aggregate or as an external handler) is monitored and compared to the expectations registered in the validation phase.
 
 > **Note**
 >
@@ -85,13 +72,11 @@ The execution phase allows you to provide a command to be executed against the c
 >
 > You can switch detection in the configuration of the fixture with the `setReportIllegalStateChange` method.
 
-The last phase is the validation phase, and allows you to check on the activities of the command handling component. This is done purely in terms of return values and events (both stored and dispatched).
+The last phase is the validation phase, and allows you to check on the activities of the command handling component. This is done purely in terms of return values and events.
 
-The test fixture allows you to validate return values of your command handlers. You can explicitly define the expected return value, which might be void or any arbitrary value. You may also express any exceptions you expect the CommandHandler to throw.
+The test fixture allows you to validate return values of your command handlers. You can explicitly define the expected return value, or simply require that the method successfully returned. You may also express any exceptions you expect the CommandHandler to throw.
 
-The other component is validation of stored and dispatched events. In most cases, the stored and dispatched events are equal. In some cases however, you may dispatch events (e.g. `ApplicationEvent`) that are not stored in the event store. In the first case, you can use the `expectEvents` method to validate events. In the latter case, you may use the `expectPublishedEvents` and `expectStoredEvents` methods to validate published and stored events, respectively.
-
-There are two ways of matching expected events.
+The other component is validation of published events. There are two ways of matching expected events.
 
 The first is to pass in Event instances that need to be literally compared with the actual events. All properties of the expected Events are compared (using `equals()`) with their counterparts in the actual Events. If one of the properties is not equal, the test fails and an extensive error report is generated.
 
@@ -139,7 +124,7 @@ Since the matchers are passed a list of Event Messages, you sometimes only want 
 
     Verifies that the payloads of the Messages matches the given matcher. The given matcher must match against a list containing each of the Messages payload. The Payloads Matching matcher is typically used as the outer matcher to prevent repetition of payload matchers.
 
-Below is a small code sample displaying the usage of these matchers. In this example, we expect two events to be stored and published. The first event must be a "ThirdEvent", and the second "aFourthEventWithSomeSpecialThings". There may be no third event, as that will fail against the "andNoMore" matcher.
+Below is a small code sample displaying the usage of these matchers. In this example, we expect two events to be published. The first event must be a "ThirdEvent", and the second "aFourthEventWithSomeSpecialThings". There may be no third event, as that will fail against the "andNoMore" matcher.
 
 ``` java
 fixture.given(new FirstEvent(), new SecondEvent())
@@ -169,25 +154,32 @@ fixture.given(new FirstEvent(), new SecondEvent())
 Testing Annotated Sagas
 =======================
 
-Similar to Command Handling components, Sagas have a clearly defined interface: they only respond to Events. On the other hand, Saga's have a notion of time and may interact with other components as part of their event handling process. Axon Framework's test support module contains fixtures that help you writing tests for sagas.
+Similar to Command Handling components, Sagas have a clearly defined interface: they only respond to Events. On the other hand, Saga's often have a notion of time and may interact with other components as part of their event handling process. Axon Framework's test support module contains fixtures that help you writing tests for sagas.
 
 Each test fixture contains three phases, similar to those of the Command Handling component fixture described in the previous section.
 
 -   given certain events (from certain aggregates),
-
 -   when an event arrives or time elapses,
-
 -   expect certain behavior or state.
 
 Both the "given" and the "when" phases accept events as part of their interaction. During the "given" phase, all side effects, such as generated commands are ignored, when possible. During the "when" phase, on the other hand, events and commands generated from the Saga are recorded and can be verified.
 
-The following code sample shows an example of how the fixtures can be used to test a saga that sends a notification if an invoice isn't paid within 30 days:AnnotatedSagaTestFixture fixture = new AnnotatedSagaTestFixture(InvoicingSaga.class); fixture.givenAggregate(invoiceId).published(new InvoiceCreatedEvent()) .whenTimeElapses(Duration.ofDays(31)) .expectDispatchedCommandsMatching(Matchers.listWithAllOf(aMarkAsOverdueCommand())); // or, to match against the payload of a Command Message only .expectDispatchedCommandsMatching(Matchers.payloadsMatching( Matchers.listWithAllOf(aMarkAsOverdueCommand()))); Creates a fixture to test the InvoiceSaga class Notifies the saga that a specific aggregate (with id "invoiceId") has generated an event Tells the saga that time elapses, triggering events scheduled in that time frame Verifies that the saga has sent a command matching the return value of `aMarkAsOverdueCommand()` (a Hamcrest matcher)
+The following code sample shows an example of how the fixtures can be used to test a saga that sends a notification if an invoice isn't paid within 30 days:
+
+```java 
+AnnotatedSagaTestFixture fixture = new SagaTestFixture(InvoicingSaga.class);
+fixture.givenAggregate(invoiceId).published(new InvoiceCreatedEvent()) 
+       .whenTimeElapses(Duration.ofDays(31)) 
+       .expectDispatchedCommandsMatching(Matchers.listWithAllOf(aMarkAsOverdueCommand())); 
+       // or, to match against the payload of a Command Message only 
+       .expectDispatchedCommandsMatching(Matchers.payloadsMatching(Matchers.listWithAllOf(aMarkAsOverdueCommand()))); 
+```
 
 Sagas can dispatch commands using a callback to be notified of Command processing results. Since there is no actual Command Handling done in tests, the behavior is defined using a `CallbackBehavior` object. This object is registered using `setCallbackBehavior()` on the fixture and defines if and how the callback must be invoked when a command is dispatched.
 
 Instead of using a `CommandBus` directly, you can also use Command Gateways. See below on how to specify their behavior.
 
-Often, Sagas will interact with external resources. These resources aren't part of the Saga's state, but are injected after a Saga is loaded or created. The test fixtures allow you to register resources that need to be injected in the Saga. To register a resource, simply invoke the `fixture.registerResource(Object)` method with the resource as parameter. The fixture will detect appropriate setter methods on the Saga and invoke it with an available resource.
+Often, Sagas will interact with resources. These resources aren't part of the Saga's state, but are injected after a Saga is loaded or created. The test fixtures allow you to register resources that need to be injected in the Saga. To register a resource, simply invoke the `fixture.registerResource(Object)` method with the resource as parameter. The fixture will detect appropriate setter methods or fields (annotated with `@Inject`) on the Saga and invoke it with an available resource.
 
 > **Tip**
 >
@@ -207,6 +199,6 @@ Having the time stopped during the test makes it easier to predict at what time 
 
 > **Note**
 >
-> Time is stopped using Joda Time's `JodaTimeUtils` class. This means that the concept of stopped time is only visible when using Joda time's classes. The `System.currentTimeMillis()` will keep returning the actual date and time. Axon only uses Joda Time classes for Date and Time operations.
+> The Fixture uses a `StubScheduler` for time based activity, such as scheduling events and advancing time. Fixtures will set the timestamp of any events sent to the Saga instance to the time of this scheduler. This means time is 'stopped' as soon as the fixture starts, and may be advanced deterministically using the `whenTimeAdvanceTo` and `whenTimeElapses` methods.
 
-You can also use the `StubEventScheduler` independently of the test fixtures if you need to test scheduling of events. This `EventScheduler` implementation allows you to verify which events are scheduled for which time and gives you options to manipulate the progress of time. You can either advance time with a specific `Duration`, move the clock to a specific `DateTime` or advance time to the next scheduled event. All these operations will return the events scheduled within the progressed interval.
+You can also use the `StubEventScheduler` independently of the test fixtures if you need to test scheduling of events. This `EventScheduler` implementation allows you to verify which events are scheduled for which time and gives you options to manipulate the progress of time. You can either advance time with a specific `Duration`, move the clock to a specific date and time or advance time to the next scheduled event. All these operations will return the events scheduled within the progressed interval.
