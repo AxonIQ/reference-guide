@@ -38,7 +38,7 @@ This is how parameter affect the behavior of the CommandGateway:
 
 -   The first parameter is expected to be the actual command object to dispatch.
 
--   Parameters annotated with `@MetaData` will have their value assigned to the meta data field with the identifier passed as annotation parameter
+-   Parameters annotated with `@MetaDataValue` will have their value assigned to the meta data field with the identifier passed as annotation parameter
 
 -   Parameters of type `MetaData` will be merged with the `MetaData` on the CommandMessage. Meta data defined by latter parameters will overwrite the meta data of earlier parameters, if their key is equal.
 
@@ -66,7 +66,7 @@ Exceptions have the following effect:
 
 Finally, there is the possibility to use annotations:
 
--   As specified in the parameter section, the `@MetaData` annotation on a parameter will have the value of that parameter added as meta data value. The key of the meta data entry is provided as parameter to the annotation.
+-   As specified in the parameter section, the `@MetaDataValue` annotation on a parameter will have the value of that parameter added as meta data value. The key of the meta data entry is provided as parameter to the annotation.
 
 -   Methods annotated with `@Timeout` will block at most the indicated amount of time. This annotation is ignored if the method declares timeout parameters.
 
@@ -81,7 +81,7 @@ public interface MyGateway {
     // method that attaches meta data and will wait for a result for 10 seconds
     @Timeout(value = 10, unit = TimeUnit.SECONDS)
     ReturnValue sendCommandAndWaitForAResult(MyPayloadType command,
-                                             @MetaData("userId") String userId);
+                                             @MetaDataValue("userId") String userId);
 
     // alternative that throws exceptions on timeout
     @Timeout(value = 20, unit = TimeUnit.SECONDS)
