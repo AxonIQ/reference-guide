@@ -230,7 +230,7 @@ That's where the `DistributedCommandBus` comes in. Unlike the other `CommandBus`
 
 > **Note**
 >
-> The distributed command bus is not part of the Axon Framework Core module, but in the *axon-distributed-commandbus* module. If you use Maven, make sure you have the appropriate dependencies set. The groupId and version are identical to those of the Core module.
+> While the distributed command bus itself is part of the Axon Framework Core module, it requires components that you can find in one of the *axon-distributed-commandbus-...* modules. If you use Maven, make sure you have the appropriate dependencies set. The groupId and version are identical to those of the Core module.
 
 The `DistributedCommandBus` relies on two components: a `CommandBusConnector`, which implements the communication protocol between the JVM's, and the `CommandRouter`, which chooses a destination for each incoming Command. This Router defines which segment of the Distributed Command Bus should be given a Command, based on a Routing Key calculated by a Routing Strategy. Two commands with the same Routing Key will always be routed to the same segment, as long as there is no change in the number and configuration of the segments. Generally, the identifier of the targeted aggregate is used as a routing key.
 
@@ -250,6 +250,10 @@ JGroupsConnector
 The `JGroupsConnector` uses (as the name already gives away) JGroups as the underlying discovery and dispatching mechanism. Describing the feature set of JGroups is a bit too much for this reference guide, so please refer to the [JGroups User Guide](http://www.jgroups.org/ug.html) for more details.
 
 Since JGroups handles both discovery of nodes and the communication between them, the `JGroupsConnector` acts as both a `CommandBusConnector` and a `CommandRouter`.
+
+> ** Note **
+> 
+> You can find the JGroups specific components for the `DistributedCommandBus` in the `axon-distributed-commandbus-jgroups` module.
 
 The JGroupsConnector has four mandatory configuration elements:
 
