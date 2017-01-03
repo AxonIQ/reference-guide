@@ -65,7 +65,7 @@ public class MyAggregate {
 }
 ```
 
-Entities within an Aggregate can listener to the events the Aggregate publishes, by defining an `@EventHandler` annotated method. These methods will be invoked when an EventMessage is published (before any external handlers are published).
+Entities within an Aggregate can listen to the events the Aggregate publishes, by defining an `@EventHandler` annotated method. These methods will be invoked when an EventMessage is published (before any external handlers are published).
 
 Event sourced aggregates
 ------------------------
