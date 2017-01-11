@@ -23,7 +23,7 @@ Event Processors
 ----------------
 Event Handlers define the business logic to be performed when an Event is received. Event Processors are the components that take care of the technical aspects of that processing. They start a Unit of Work and possibly a transaction, but also ensure that correlation data can be correctly attached to all messages created during Event processing.
 
-Event Processors come in roughly two forms: Subscribing and Tracking. he Subscribing processors subscribe themselves to a source of Events and are invoked by the thread managed by the publishing mechanism. Tracking Processors, on the other hand, pull their messages from a source using a thread that it manages itself.
+Event Processors come in roughly two forms: Subscribing and Tracking. The Subscribing Event Processors subscribe themselves to a source of Events and are invoked by the thread managed by the publishing mechanism. Tracking Event Processors, on the other hand, pull their messages from a source using a thread that it manages itself.
 
 ### Assigning handlers to processors
 
@@ -54,11 +54,11 @@ The `EventHandlingConfiguration` class defines a number of methods that can be u
 
 - `registerEventProcessor(String name, EventProcessorBuilder builder)` defines the factory method to use to create a Processor with given `name`. Note that such Processor is only created if `name` is chosen as the processor for any of the available Event Handler beans.
 
-- `registerTrackingProcessor(String name)` defines that a processor with given name should be configured as a Tracking Event Processor, using default settings. It is configured with a TransactionManager, TokenStore
+- `registerTrackingProcessor(String name)` defines that a processor with given name should be configured as a Tracking Event Processor, using default settings. It is configured with a TransactionManager and a TokenStore.
 
 - `usingTrackingProcessors()` sets the default to Tracking Processors instead of Subscribing ones.
 
-Tracking Processors, unlike Subscribing ones, need a Token Store to store their progress in. Each message a Tracking Processor receives through its Event Stream is accompanies with a Token. This Token allows the processor to reopen the Stream at any later point, picking up where it left off with the last Event.
+Tracking Processors, unlike Subscribing ones, need a Token Store to store their progress in. Each message a Tracking Processor receives through its Event Stream is accompanied by a Token. This Token allows the processor to reopen the Stream at any later point, picking up where it left off with the last Event.
 
 The Configuration API takes the Token Store, as well as most other components Processors need from the Global Configuration instance. If no TokenStore is explicitly defined, an `InMemoryTokenStore` is used, which is *not recommended in production*.
 
