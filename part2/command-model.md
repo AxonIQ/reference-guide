@@ -60,7 +60,7 @@ public class MyAggregate {
     }
     
     // constructor needed by JPA
-    protected MyAggregateRoot() {
+    protected MyAggregate() {
     }
 }
 ```
@@ -141,7 +141,7 @@ Fields that (may) contain child entities must be annotated with `@AggregateMembe
 
 It is recommended to define the Command Handlers directly in the Aggregate that contains the state to process this command, as it is not unlikely that a command handler needs the state of that Aggregate to do its job. 
 
-To define a Command Handler in an Aggregate, simply annotated the Command Handling method with `@CommandHandler`. The rules for an `@CommandHandler` annotated method are the same as for any handler method. However, Commands are not only routed by their payload. Command Messages carry a name, which defaults to the fully qualified class name of the Command object.
+To define a Command Handler in an Aggregate, simply annotate the Command Handling method with `@CommandHandler`. The rules for an `@CommandHandler` annotated method are the same as for any handler method. However, Commands are not only routed by their payload. Command Messages carry a name, which defaults to the fully qualified class name of the Command object.
 
 By default, `@CommandHandler` annotated methods allow the following parameter types:
 
