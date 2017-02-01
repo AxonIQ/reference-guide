@@ -113,7 +113,7 @@ If that is the case, you can extend the `JpaEventStorageEngine`. It contains a n
 
 > **Warning**
 >
-> Note that persistence providers, such as Hibernate, use a first-level cache on their `EntityManager` implementation. Typically, this means that all entities used or returned in queries are attached to the `EntityManager`. They are only cleared when the surrounding transaction is committed or an explicit "clear" in performed inside the transaction. This is especially the case when the Queries are executed in the context of a transaction.
+> Note that persistence providers, such as Hibernate, use a first-level cache on their `EntityManager` implementation. Typically, this means that all entities used or returned in queries are attached to the `EntityManager`. They are only cleared when the surrounding transaction is committed or an explicit "clear" is performed inside the transaction. This is especially the case when the Queries are executed in the context of a transaction.
 >
 > To work around this issue, make sure to exclusively query for non-entity objects. You can use JPA's "SELECT new SomeClass(parameters) FROM ..." style queries to work around this issue. Alternatively, call `EntityManager.flush()` and `EntityManager.clear()` after fetching a batch of events. Failure to do so might result in `OutOfMemoryException`s when loading large streams of events.
 
@@ -150,7 +150,7 @@ Axon provides a number of Event Storage Engines that may be useful in certain ci
 
 The `SequenceEventStorageEngine` is a wrapper around two other Event Storage Engines. When reading, it returns the events from both event storage engines. Appended events are only appended to the second event storage engine. This is useful in cases where two different implementations of Event Storage are used for performance reasons, for example. The first would be a larger, but slower event store, while the second is optimized for quick reading and writing.
 
-There is also an `EventStorageEngine` implementation that keeps te stored events in memory: the `InMemoryEventStorageEngine`. While it probably outperforms any other event store out there, it is not really meant for long-term production use. However, it is very useful in short-lived tools or tests that require an event store.
+There is also an `EventStorageEngine` implementation that keeps the stored events in memory: the `InMemoryEventStorageEngine`. While it probably outperforms any other event store out there, it is not really meant for long-term production use. However, it is very useful in short-lived tools or tests that require an event store.
 
 Influencing the serialization process
 -------------------------------------
@@ -245,7 +245,7 @@ The `AbstractSnapshotter` provides a basic set of properties that allow you to t
 
 -   `Executor` sets the executor, such as a `ThreadPoolExecutor` that will provide the thread to process actual snapshot creation. By default, snapshots are created in the thread that calls the `scheduleSnapshot()` method, which is generally not recommended for production.
 
-The `AggregateSnapshotter` provides on more property:
+The `AggregateSnapshotter` provides one more property:
 
 -   `AggregateFactories` is the property that allows you to set the factories that will create instances of your aggregates. Configuring multiple aggregate factories allows you to use a single Snapshotter to create snapshots for a variety of aggregate types. The `EventSourcingRepository` implementations provide access to the `AggregateFactory` they use. This can be used to configure the same aggregate factories in the Snapshotter as the ones used in the repositories.
 
@@ -298,7 +298,7 @@ One of the major advantages of being explicit about the meaning of changes, is t
 
 Instead of simply rejecting all incoming commands when aggregates have been modified by another process, you could check whether the user's intent conflicts with any unseen changes. 
 
-To detect conflict, pass a parameter of type `ConflictResolver` to the `@CommandHandler` method of your aggregate. This interface provides `detectConflicts` methods that allow you to define the types of events that are considered a conflict whene executing that specific type of command.
+To detect conflict, pass a parameter of type `ConflictResolver` to the `@CommandHandler` method of your aggregate. This interface provides `detectConflicts` methods that allow you to define the types of events that are considered a conflict when executing that specific type of command.
 
 > **Note**
 >

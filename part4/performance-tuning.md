@@ -73,7 +73,7 @@ Here are a few guidelines that help you get the most out of your caching solutio
 
 -   Make sure the Unit Of Work never needs to perform a rollback for functional reasons.
 
-    A rollback means that an aggregate has reached an invalid state. Axon will automatically invalidate the cache entries involved. The next requrest will force the aggregate to be reconstructed from its Events. If you use exceptions as a potential (functional) return value, you can configure a `RollbackConfiguration` on your Command Bus. By default, the Unit Of Work will be rolled back on runtime exceptions.
+    A rollback means that an aggregate has reached an invalid state. Axon will automatically invalidate the cache entries involved. The next request will force the aggregate to be reconstructed from its Events. If you use exceptions as a potential (functional) return value, you can configure a `RollbackConfiguration` on your Command Bus. By default, the Unit Of Work will be rolled back on runtime exceptions.
 
 -   All commands for a single aggregate must arrive on the machine that has the aggregate in its cache.
 
@@ -118,7 +118,7 @@ When you serialize messages yourself, and want to benefit from the Serialization
 Custom Identifier generation
 ============================
 
-The Axon Framework uses an `IdentifierFactory` to generate all the identifiers, whether they are for Events or Commands. The default `IdentifierFactory` uses randomly generated `java.util.UUID` based identifiers. Although they are very safe to use, the process to generate them doesn't excell in performance.
+The Axon Framework uses an `IdentifierFactory` to generate all the identifiers, whether they are for Events or Commands. The default `IdentifierFactory` uses randomly generated `java.util.UUID` based identifiers. Although they are very safe to use, the process to generate them doesn't excel in performance.
 
 IdentifierFactory is an abstract factory that uses Java's ServiceLoader (since Java 6) mechanism to find the implementation to use. This means you can create your own implementation of the factory and put the name of the implementation in a file called "`/META-INF/services/org.axonframework.common.IdentifierFactory`". Java's ServiceLoader mechanism will detect that file and attempt to create an instance of the class named inside.
 
