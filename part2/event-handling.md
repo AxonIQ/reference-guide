@@ -1,7 +1,7 @@
 Event Handling
 ===============
 
-Event listeners are the components that act on incoming events. They typically execute logic based on decisions that have been made by the command model. Usually, this involves updating view models or forwarding updates to other components, such as 3rd party integrations. In some cases Event Handlers will throw Events themselves based on (patterns of) Events that it received, or even send Commands to trigger further changes. 
+Event listeners are the components that act on incoming events. They typically execute logic based on decisions that have been made by the command model. Usually, this involves updating view models or forwarding updates to other components, such as 3rd party integrations. In some cases Event Handlers will throw Events themselves based on (patterns of) Events that they received, or even send Commands to trigger further changes. 
 
 Defining Event Handlers
 -----------------------

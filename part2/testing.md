@@ -58,7 +58,7 @@ The given-when-then test fixture defines three stages: configuration, execution 
 >
 > To make optimal use of the migration between these stages, it is best to use the fluent interface provided by these methods, as shown in the example above.
 
-During the configuration phase (i.e. before the first "given" is provided), you provide the building blocks required to execute the test. Specialized versions of the event bus, command bus and event store are provided as part of the fixture. There are accessor methods in place to obtain references to them. Any Command Handlers not registered directly on the Aggregate need to be explicitly configured using the `registerAnnotatedCommandHandler` method. Besides the Annotated Command Handler, you can configure a wide variety of components and setting that define how the infrastructure around the test should be set up.
+During the configuration phase (i.e. before the first "given" is provided), you provide the building blocks required to execute the test. Specialized versions of the event bus, command bus and event store are provided as part of the fixture. There are accessor methods in place to obtain references to them. Any Command Handlers not registered directly on the Aggregate need to be explicitly configured using the `registerAnnotatedCommandHandler` method. Besides the Annotated Command Handler, you can configure a wide variety of components and settings that define how the infrastructure around the test should be set up.
 
 Once the fixture is configured, you can define the "given" events. The test fixture will wrap these events as `DomainEventMessage`. If the "given" event implements Message, the payload and meta data of that message will be included in the DomainEventMessage, otherwise the given event is used as payload. The sequence numbers of the DomainEventMessage are sequential, starting at 0.
 
@@ -92,7 +92,7 @@ Below is an overview of the available Event List matchers and their purpose:
 
 -   **List with any of**: `Matchers.listWithAnyOf(event matchers...)`
 
-    This matcher will succeed if one of more of the provided Event Matchers matches against one or more of the events in the actual list of events. Some matchers may not even match at all, while another matches against multiple others.
+    This matcher will succeed if one or more of the provided Event Matchers matches against one or more of the events in the actual list of events. Some matchers may not even match at all, while another matches against multiple others.
 
 -   **Sequence of Events**: `Matchers.sequenceOf(event matchers...)`
 
@@ -139,7 +139,7 @@ fixture.given(new FirstEvent(), new SecondEvent())
        ));
 
 // or if we prefer to match on payloads only:
-       .expecteEventsMatching(payloadsMatching(
+       .expectEventsMatching(payloadsMatching(
                exactSequenceOf(
                    // we only have payloads, so we can equalTo directly
                    equalTo(new ThirdEvent()),

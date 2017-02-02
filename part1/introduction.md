@@ -35,7 +35,7 @@ The Axon Framework consists of a number of modules (jars) that provide the tools
 When to use Axon?
 -----------------
 
-Not every application will benefit from Axon. Simple CRUD (Create, Read, Update, Delete) applications which are not expected to scale will probably not benefit from CQRS or Axon. However, there is a wide variety of applications that does benefit from Axon.
+Not every application will benefit from Axon. Simple CRUD (Create, Read, Update, Delete) applications which are not expected to scale will probably not benefit from CQRS or Axon. However, there is a wide variety of applications that do benefit from Axon.
 
 Applications that will likely benefit from CQRS and Axon are those that show one or more of the following characteristics:
 
@@ -95,7 +95,7 @@ If you find a bug, you can report them at [issues.axonframework.org](http://issu
 Contributing to Axon Framework
 ==============================
 
-Development on the Axon Framework is never finished. There will always be more features that we like to include in our framework to continue making development of scalable and extensible application easier. This means we are constantly looking for help in developing our framework.
+Development on the Axon Framework is never finished. There will always be more features that we like to include in our framework to continue making development of scalable and extensible applications easier. This means we are constantly looking for help in developing our framework.
 
 There are a number of ways in which you can contribute to the Axon Framework:
 
