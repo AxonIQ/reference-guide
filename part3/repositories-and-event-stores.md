@@ -188,6 +188,80 @@ Maven users can use the `MavenArtifactRevisionResolver` to automatically use the
 
 Writing an upcaster
 -------------------
+
+Old version of the event: 
+```java
+@Revision("1.0")
+public class ComplaintEvent {
+    private String id;
+    private String companyName;
+
+    // Constructor, getter, setter...
+}
+```
+
+New version of the event: 
+```java
+@Revision("2.0")
+public class ComplaintEvent {
+    private String id;
+    private String companyName;
+    private String complain; // New field
+
+    // Constructor, getter, setter...
+}
+```
+
+Upcaster: 
+```java
+// Upcaster from 1.0 revision to 2.0 revision
+public class ComplaintEventUpcaster extends SingleEventUpcaster {
+    private static SimpleSerializedType targetType = new SimpleSerializedType(ComplainEvent.class.getTypeName(), "1.0");
+
+    @Override
+    protected boolean canUpcast(IntermediateEventRepresentation intermediateRepresentation) {
+        return intermediateRepresentation.getType().equals(targetType);
+    }
+
+    @Override
+    protected IntermediateEventRepresentation doUpcast(IntermediateEventRepresentation intermediateRepresentation) {
+        return intermediateRepresentation.upcastPayload(
+                new SimpleSerializedType(targetType.getName(), "2.0"),
+                org.dom4j.Document.class,
+                document -> {
+                    document.getRootElement().addElement("complaint");
+                    document.getRootElement().element("complaint").setText("no complaint description"); // Default value
+                    return document;
+                }
+        );
+    }
+}
+```
+
+Spring boot configuration: 
+```java
+@Configuration
+public class AxonConfiguration {
+
+    @Bean
+    public SingleEventUpcaster myUpcaster() {
+        return new ComplaintEventUpcaster();
+    }
+
+    @Bean
+    public JpaEventStorageEngine eventStorageEngine(Serializer serializer,
+                                                    DataSource dataSource,
+                                                    SingleEventUpcaster myUpcaster,
+                                                    EntityManagerProvider entityManagerProvider,
+                                                    TransactionManager transactionManager) throws SQLException {
+        return new JpaEventStorageEngine(serializer,
+                myUpcaster::upcast,
+                dataSource,
+                entityManagerProvider,
+                transactionManager);
+    }
+}
+```
 TODO - Describe
  - Upcasters work on intermediate representations
  - They update Stream<IR> to Stream<IR>
