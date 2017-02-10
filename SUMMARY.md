@@ -18,7 +18,7 @@
 * [Command Dispatching](part3/command-dispatching.md)
 * [Event Processing](part3/event-processing.md)
 * [Repository and Event Store](part3/repositories-and-event-stores.md)
-* [Using Spring](part3/using-spring.md)
+* [Spring Boot AutoConfiguration](part3/spring-boot-autoconfig.md)
 
 ### Part IV - Advanced tuning
 * [Advanced customizations](part4/advanced-customizations.md)
