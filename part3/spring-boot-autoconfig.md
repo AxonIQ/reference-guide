@@ -103,6 +103,6 @@ axon.eventhandling.processors["name"].source=myQueueMessageSource
 Distributing commands using JGroups
 -----------------------------------
 
-In progress... If you can't wait, add a dependency to `axon-spring-boot-starter-jgroups`
+In progress... If you can't wait, add a dependency to the `axon-spring-boot-starter-jgroups` module.
 
 <!-- TODO: Add warning about Spring Boot DevTools -->
