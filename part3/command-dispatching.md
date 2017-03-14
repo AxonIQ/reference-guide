@@ -251,7 +251,7 @@ The `JGroupsConnector` uses (as the name already gives away) JGroups as the unde
 
 Since JGroups handles both discovery of nodes and the communication between them, the `JGroupsConnector` acts as both a `CommandBusConnector` and a `CommandRouter`.
 
-> ** Note **
+> **Note**
 > 
 > You can find the JGroups specific components for the `DistributedCommandBus` in the `axon-distributed-commandbus-jgroups` module.
 
@@ -300,4 +300,57 @@ If you use Spring, you may want to consider using the `JGroupsConnectorFactoryBe
 
 Spring Cloud Connector
 ----------------------
-TODO
+
+The Spring Cloud Connector setup uses the service registration and discovery mechanism described by [Spring Cloud](http://projects.spring.io/spring-cloud/) for distributing the Command Bus. You are thus left free to choose which Spring Cloud implementation to use to distribute your commands. Examples implementation are the Eureka Discovery/Eureka Server combination, or the Consul Discovery setup. 
+
+Giving a description of every Spring Cloud implementation would push this reference guide to far. Hence we refer to their respective documentations for further information.
+
+The Spring Cloud Connector setup is a combination of the `SpringCloudCommandRouter` and a `SpringHttpCommandBusConnector`, which respectively fill the place of the `CommandRouter` and the `CommandBusConnector` for the `DistributedCommandBus`.
+  
+> **Note**
+>
+> The Spring Cloud Connector specific components for the `DistributedCommandBus` can be found in the `axon-distributed-commandbus-jgroups` module.
+
+The `SpringCloudCommandRouter` has to be created by providing the following:
+
+- A "discovery client" of type `DiscoveryClient`. This can be provided by annotating your Spring Boot application with `@EnableDiscoveryClient`, which will look for a Spring Cloud implementation on your classpath.
+ 
+- A "routing strategy" of type `RoutingStrategy`. The `axon-core` module currently provides several implementations, but a function call can suffice as well. If you want to route the Commands based on the 'aggregate identifier' for example, setting the routing strategy to `CommandMessage::getIdentifier` would be all you need.   
+
+The `SpringHttpCommandBusConnector` in it's turn requires three parameters for creation:
+ 
+- A "local command bus" of type `CommandBus`. This is the Command Bus implementation that dispatches Commands to the local JVM. These commands may have been dispatched by instances on other JVMs or from the local one.
+
+- A `RestOperations` object to perform the posting of a Command Message to another instance.
+
+- Lastly a "serializer" of type `Serializer`. The serializer is used to serialize the command messages before they are sent over the wire.
+
+The `SpringCloudCommandRouter` and `SpringHttpCommandBusConnector` should then both be used for creating the `DistributedCommandsBus`. In java code, that could look as follows:
+
+``` java
+// Simple Spring Boot App providing the `DiscoveryClient` bean
+@EnableDiscoveryClient
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+``` java
+// Example function providing a Spring Cloud Connector `DistributedCommandBus`
+public DistributedCommandBus sprintCloudDistributedCommandBus(DiscoveryClient discoveryClient) {
+    SpringCloudCommandRouter commandRouter =  new SpringCloudCommandRouter(discoveryClient, CommandMessage::getIdentifier);
+    
+    CommandBus localCommandBus = new SimpleCommandBus();
+    RestTemplate restOperations = new RestTemplate();
+    Serializer serializer = new XStreamSerializer();
+    SpringHttpCommandBusConnector commandBusConnector = new SpringHttpCommandBusConnector(localCommandBus, restOperations, serializer);
+    
+    return new DistributedCommandBus(commandRouter, commandBusConnector);
+}
+```
+
+> **Note**
+>
+> Note that it is not required that all segments have Command Handlers for the same type of Commands. You may use different segments for different Command Types altogether. The Distributed Command Bus will always choose a node to dispatch a Command to that has support for that specific type of Command.
