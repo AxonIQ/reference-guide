@@ -104,5 +104,3 @@ Distributing commands using JGroups
 -----------------------------------
 
 In progress... If you can't wait, add a dependency to the `axon-spring-boot-starter-jgroups` module.
-
-<!-- TODO: Add warning about Spring Boot DevTools -->
