@@ -1,5 +1,5 @@
 {
-  "plugins": ["ga", "anchors"],
+  "plugins": ["ga", "heading-anchors"],
   "pluginsConfig": {
     "ga": {
       "token": "UA-180286-13"
