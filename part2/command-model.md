@@ -104,7 +104,7 @@ public class MyAggregateRoot {
 }                
 ```
 
-`@EventSourcingHandler` annotated methods are resolved using specific rules. These rules are the same for the `@EventHandler` annotated methods, and are thoroughly explained in [Annotated Event Handler](event-listener.md#annotated-event-handler).
+`@EventSourcingHandler` annotated methods are resolved using specific rules. These rules are the same for the `@EventHandler` annotated methods, and are thoroughly explained in [Annotated Event Handler](./event-handling.md#defining-event-handlers).
 
 > **Note**
 >

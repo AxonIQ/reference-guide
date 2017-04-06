@@ -106,7 +106,16 @@ public SpringAMQPMessageSource myMessageSource(Serializer serializer) {
 
 Spring's `@RabbitListener` annotation tells Spring that this method needs to be invoked for each message on the given Queue ('myQueue' in the example). This method simply invokes the `super.onMessage()` method, which performs the actual publication of the Event to all the processors that have been subscribed to it.
 
-To subscribe Processors to this MessageSource, pass the correct `SpringAMQPMessageSource` instance to the constructor of the Subscribing Processor. Note that Tracking Processors are not compatible with the SpringAMQPMessageSource.
+To subscribe Processors to this MessageSource, pass the correct `SpringAMQPMessageSource` instance to the constructor of the Subscribing Processor:
+```java
+// in an @Configuration file:
+@Autowired
+public void configure(EventHandlingConfiguration ehConfig, SpringAmqpMessageSource myMessageSource) {
+    ehConfig.registerSubscribingEventProcessor("myProcessor", c -> myMessageSource);
+}
+```
+
+Note that Tracking Processors are not compatible with the SpringAMQPMessageSource.
 
 Asynchronous Event Processing
 -----------------------------

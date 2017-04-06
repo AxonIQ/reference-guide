@@ -309,7 +309,7 @@ The Spring Cloud Connector setup is a combination of the `SpringCloudCommandRout
   
 > **Note**
 >
-> The Spring Cloud Connector specific components for the `DistributedCommandBus` can be found in the `axon-distributed-commandbus-jgroups` module.
+> The Spring Cloud Connector specific components for the `DistributedCommandBus` can be found in the `axon-distributed-commandbus-springcloud` module.
 
 The `SpringCloudCommandRouter` has to be created by providing the following:
 
