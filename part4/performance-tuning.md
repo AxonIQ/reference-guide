@@ -106,10 +106,17 @@ Avoid the use of upcasters when possible. XStream allows aliases to be used for 
 
 For ultimate performance, you're probably better off without reflection based mechanisms alltogether. In that case, it is probably wisest to create a custom serialization mechanism. The `DataInputStream` and `DataOutputStream` allow you to easilly write the contents of the Events to an output stream. The `ByteArrayOutputStream` and `ByteArrayInputStream` allow writing to and reading from byte arrays.
 
+Preventing duplicate serialization
+----------------------------------
+
+Especially in distributed systems, Event Messages need to be serialized on multiple occasions. Axon's components are aware of this and have support for `SerializationAware` messages. If a `SerializationAware` message is detected, its methods are used to serialize an object, instead of simply passing the payload to a serializer. This allows for performance optimizations.
+
+When you serialize messages yourself, and want to benefit from the `SerializationAware` optimization, use the `MessageSerializer` class to serialize the payload and meta data of messages. All optimization logic is implemented in that class. See the JavaDoc of the `MessageSerializer` for more details.
+
 Custom Identifier generation
 ============================
 
-The Axon Framework uses an `IdentifierFactory` to generate all the identifiers, whether they are for Events or Commands. The default `IdentifierFactory` uses randomly generated `java.util.UUID` based identifiers. Although they are very safe to use, the process to generate them doesn't excell in performance.
+The Axon Framework uses an `IdentifierFactory` to generate all the identifiers, whether they are for Events or Commands. The default `IdentifierFactory` uses randomly generated `java.util.UUID` based identifiers. Although they are very safe to use, the process to generate them doesn't excel in performance.
 
 IdentifierFactory is an abstract factory that uses Java's ServiceLoader (since Java 6) mechanism to find the implementation to use. This means you can create your own implementation of the factory and put the name of the implementation in a file called "`/META-INF/services/org.axonframework.common.IdentifierFactory`". Java's ServiceLoader mechanism will detect that file and attempt to create an instance of the class named inside.
 
