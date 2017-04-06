@@ -109,11 +109,9 @@ For ultimate performance, you're probably better off without reflection based me
 Preventing duplicate serialization
 ----------------------------------
 
-Especially in distributed systems, Event Messages need to be serialized in multiple occasions. In the case of a Command Handling component that uses Event Sourcing, each message is serialized twice: once for the Event Store, and once to publish it on the Event Bus. Axon's components are aware of this and have support for SerializationAware messages. If a SerializationAware message is detected, its methods are used to serialize an object, instead of simply passing the payload to a serializer. This allows for performance optimizations.
+Especially in distributed systems, Event Messages need to be serialized on multiple occasions. Axon's components are aware of this and have support for `SerializationAware` messages. If a `SerializationAware` message is detected, its methods are used to serialize an object, instead of simply passing the payload to a serializer. This allows for performance optimizations.
 
-By configuring the `SerializationOptimizingInterceptor`, all generated Events are wrapped into `SerializationAware` messages, and thus benefit from this optimization. Note that the optimization only helps if the same serializer is used for different components. If you use the `DisruptorCommandBus`, serialization can be optimized by providing a `Serializer` in the `DisruptorConfiguration`. The `DisruptorCommandBus` will then use an extra thread (or more when configured) to pre-serialize the Event Message using that serializer.
-
-When you serialize messages yourself, and want to benefit from the SerializationAware optimization, use the `MessageSerializer` class to serialize the payload and meta data of messages. All optimization logic is implemented in that class. See the JavaDoc of the MessageSerializer for more details.
+When you serialize messages yourself, and want to benefit from the `SerializationAware` optimization, use the `MessageSerializer` class to serialize the payload and meta data of messages. All optimization logic is implemented in that class. See the JavaDoc of the `MessageSerializer` for more details.
 
 Custom Identifier generation
 ============================
