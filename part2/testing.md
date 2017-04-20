@@ -167,7 +167,7 @@ Both the "given" and the "when" phases accept events as part of their interactio
 The following code sample shows an example of how the fixtures can be used to test a saga that sends a notification if an invoice isn't paid within 30 days:
 
 ```java 
-AnnotatedSagaTestFixture fixture = new SagaTestFixture(InvoicingSaga.class);
+FixtureConfiguration fixture = new SagaTestFixture(InvoicingSaga.class);
 fixture.givenAggregate(invoiceId).published(new InvoiceCreatedEvent()) 
        .whenTimeElapses(Duration.ofDays(31)) 
        .expectDispatchedCommandsMatching(Matchers.listWithAllOf(aMarkAsOverdueCommand())); 
