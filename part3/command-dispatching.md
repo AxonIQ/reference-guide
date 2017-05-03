@@ -305,7 +305,7 @@ The Spring Cloud Connector setup uses the service registration and discovery mec
  
  > **Note**
  >
- > The current (Axon version 3.0.4) `SpringCloudCommandRouter` uses the `ServiceInstance.Metadata` field to inform all the nodes in the system which commands it can handle through a `CommandNameFilter`. It is thus of importance that the Spring Cloud implementation selected supports the usage of the ServiceInstance.Metadata field. Spring Cloud Consul for example currently does not support that field, hence is not a viable solution for the `SpringCloudCommandRouter`. We are working on an additional solution to retrieve the `CommandNameFilter` from. 
+ > The current version (Axon 3.0.4) `SpringCloudCommandRouter` uses the `ServiceInstance.Metadata` field to inform all the nodes in the system which commands it can handle through a `CommandNameFilter`. It is thus of importance that the Spring Cloud implementation selected supports the usage of the ServiceInstance.Metadata field. Spring Cloud Consul for example currently does not support that field, hence is not a viable solution for the `SpringCloudCommandRouter`. We are working on an additional solution to retrieve the `CommandNameFilter` from. 
 
 Giving a description of every Spring Cloud implementation would push this reference guide to far. Hence we refer to their respective documentations for further information.
 
