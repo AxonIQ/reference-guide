@@ -301,7 +301,11 @@ If you use Spring, you may want to consider using the `JGroupsConnectorFactoryBe
 Spring Cloud Connector
 ----------------------
 
-The Spring Cloud Connector setup uses the service registration and discovery mechanism described by [Spring Cloud](http://projects.spring.io/spring-cloud/) for distributing the Command Bus. You are thus left free to choose which Spring Cloud implementation to use to distribute your commands. Example implementations are the Eureka Discovery/Eureka Server combination, or the Consul Discovery setup. 
+The Spring Cloud Connector setup uses the service registration and discovery mechanism described by [Spring Cloud](http://projects.spring.io/spring-cloud/) for distributing the Command Bus. You are thus left free to choose which Spring Cloud implementation to use to distribute your commands. An example implementations is the Eureka Discovery/Eureka Server combination.
+ 
+ > **Note**
+ >
+ > The current (Axon version 3.0.4) `SpringCloudCommandRouter` uses the `ServiceInstance.Metadata` field to inform all the nodes in the system which commands it can handle through a `CommandNameFilter`. It is thus of importance that the Spring Cloud implementation selected supports the usage of the ServiceInstance.Metadata field. Spring Cloud Consul for example currently does not support that field, hence is not a viable solution for the `SpringCloudCommandRouter`. We are working on an additional solution to retrieve the `CommandNameFilter` from. 
 
 Giving a description of every Spring Cloud implementation would push this reference guide to far. Hence we refer to their respective documentations for further information.
 
