@@ -349,9 +349,9 @@ public class MyApplication {
     
     @Bean
     public CommandBusConnector springHttpCommandBusConnector(@Qualifier("localSegment") CommandBus localSegment,
-                                                             RestOperations restTemplate,
+                                                             RestOperations restOperations,
                                                              Serializer serializer) {
-        return new SpringHttpCommandBusConnector(localCommandBus, restTemplate, serializer);
+        return new SpringHttpCommandBusConnector(localSegment, restOperations, serializer);
     }
     
     @Primary // to make sure this CommandBus implementation is used for autowiring
