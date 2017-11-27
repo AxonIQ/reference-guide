@@ -161,11 +161,20 @@ The XStreamSerializer can be configured. You can define aliases it should use fo
 
 Alternatively, Axon also provides the `JacksonSerializer`, which uses [Jackson](https://github.com/FasterXML/jackson) to serialize Events into JSON. While it produces a more compact serialized form, it does require that classes stick to the conventions (or configuration) required by Jackson.
 
-> **Note**
->
-> Configuring the serializer using Java code (or other JVM languages) is easy. However, configuring it in a Spring XML Application Context is not so trivial, due to its limitations to invoke methods. One of the options is to create a `FactoryBean` that creates an instance of an XStreamSerializer and configures it in code. Check the Spring Reference for more information.
-
 You may also implement your own Serializer, simply by creating a class that implements `Serializer`, and configuring the Event Store to use that implementation instead of the default.
+
+### Serializing Events vs the rest ###
+
+Since Axon 3.1, it is possible to use a different serializer for the storage of events, than all other objects that Axon needs to serializer (such as Commands, Snapshot, Sagas, etc). While the `XStreamSerializer`'s capability to serialize virtually anything makes it a very decent default, its output isn't always a form that makes it nice to share with other applications. The `JacksonSerializer` creates much nicer output, but requires a certain structure in the objects to serialize. This structure is typically present in events, making it a very suitable event serializer.
+
+Using the Configuration API, you can simply register an Event Serializer as follows:
+
+```java
+Configurer configurer = ... // initialize
+configurer.configureEventSerializer(conf -> /* create serializer here*/);
+```
+
+If no explicit `eventSerializer` is configured, Events are serialized using the main serializer that has been configured (which in turn defaults to the XStream serializer).
 
 Event Upcasting
 ===============

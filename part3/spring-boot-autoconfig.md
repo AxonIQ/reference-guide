@@ -19,6 +19,40 @@ Axon will configure a `SimpleCommandBus` if no `CommandBus` implementation is ex
 
 If the only `CommandBus` bean defined is a `DistributedCommandBus` implementation, Axon will still configure a CommandBus implementation to serve as the local segment for the DistributedCommandBus. This bean will get a Qualifier "localSegment". It is recommended to define the `DistributedCommandBus` as a `@Primary`, so that it gets priority for dependency injection.
 
+Serializer Configuration
+------------------------
+By default, Axon uses an XStream based serializer to serialize objects. This can be changed by
+defining a bean of type `Serializer` in the application context.
+
+While the default Serializer provides an arguably ugly xml based format, it is capable of serializing and deserializing virtually anything, making it a very sensible default. However, for events, which needs to be stored for a long time and perhaps shared across application boundaries, it is desirable to customize the format.
+
+You can define a separate Serializer to be used to serialize events, by assigning it the `eventSerializer` qualifier. Axon will consider a bean with this qualifier to be the event serializer. If no other bean is defined, Axon will use the default serializer for all other objects to serialize.
+
+Example:
+```java
+@Qualifier("eventSerializer")
+@Bean
+public Serializer eventSerializer() {
+    return new JacksonSerialzer();
+}
+```
+
+When overriding both the default serializer and defining an event serializer, we must instruct Spring that the default serializer is, well, the default:
+```java
+
+@Primary // marking it primary means this is the one to use, if no specific Qualifier is requested
+@Bean
+public Serializer serializer() {
+    return new MyCustomSerializer();
+}
+
+@Qualifier("eventSerializer")
+@Bean
+public Serializer eventSerializer() {
+    return new JacksonSerialzer();
+}
+```
+
 Aggregate Configuration
 -----------------------
 The `@Aggregate` annotation (in package `org.axonframework.spring.stereotype`) triggers AutoConfiguration to set up the necessary components to use the annotated type as an Aggregate. Note that only the Aggregate Root needs to be annotated.
