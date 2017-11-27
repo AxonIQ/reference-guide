@@ -42,7 +42,7 @@ The 'type' column in the DomainEventEntry stores the Type Identifiers of aggrega
 MongoDB
 -------
 
-By default, the MongoEventStore will only generate the index it requires for correct operation. That means the required unique index on "Aggregate Identifier", "Aggregate Type" and "Event Sequence Number" is created when the Event Store is created. However, when using the MongoEventStore for certain operations, it might be worthwile to add some extra indices.
+By default, the MongoEventStore will only generate the index it requires for correct operation. That means the required unique index on "Aggregate Identifier", "Aggregate Type" and "Event Sequence Number" is created when the Event Store is created. However, when using the MongoEventStore for certain operations, it might be worthwhile to add some extra indices.
 
 Note that there is always a balance between query optimization and update speed. Load testing is ultimately the best way to discover which indices provide the best performance.
 
@@ -104,7 +104,7 @@ A more advanced topic in XStream is creating custom converters. The default refl
 
 Avoid the use of upcasters when possible. XStream allows aliases to be used for fields, when they have changed name. Imagine revision 0 of an event, that used a field called "clientId". The business prefers the term "customer", so revision 1 was created with a field called "customerId". This can be configured completely in XStream, using field aliases. You need to configure two aliases, in the following order: alias "customerId" to "clientId" and then alias "customerId" to "customerId". This will tell XStream that if it encounters a field called "customerId", it will call the corresponding XML element "customerId" (the second alias overrides the first). But if XStream encounters an XML element called "clientId", it is a known alias and will be resolved to field name "customerId". Check out the XStream documentation for more information.
 
-For ultimate performance, you're probably better off without reflection based mechanisms alltogether. In that case, it is probably wisest to create a custom serialization mechanism. The `DataInputStream` and `DataOutputStream` allow you to easilly write the contents of the Events to an output stream. The `ByteArrayOutputStream` and `ByteArrayInputStream` allow writing to and reading from byte arrays.
+For ultimate performance, you're probably better off without reflection based mechanisms altogether. In that case, it is probably wisest to create a custom serialization mechanism. The `DataInputStream` and `DataOutputStream` allow you to easily write the contents of the Events to an output stream. The `ByteArrayOutputStream` and `ByteArrayInputStream` allow writing to and reading from byte arrays.
 
 Preventing duplicate serialization
 ----------------------------------

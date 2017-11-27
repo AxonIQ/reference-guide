@@ -69,9 +69,9 @@ In some cases, it is necessary to publish events to an external system, such as 
 
 ### Spring AMQP
 
-Axon provides out-of-the-box support to transer Events to and from an AMQP message broker, such as Rabbit MQ.
+Axon provides out-of-the-box support to transfer Events to and from an AMQP message broker, such as Rabbit MQ.
 
-#### Forwarding events to an AMQP Echange
+#### Forwarding events to an AMQP Exchange
 
 The `SpringAMQPPublisher` forwards events to an AMQP Exchange. It is initialized with a `SubscribableMessageSource`, which is generally the `EventBus` or `EventStore`. Theoretically, this could be any source of Events that the publisher can Subscribe to.
 

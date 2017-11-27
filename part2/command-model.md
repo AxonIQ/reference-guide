@@ -75,7 +75,7 @@ For the major part, Event Sourced Aggregates are similar to 'regular' aggregates
 
 Note that the Aggregate Identifier must be set in the `@EventSourcingHandler` of the very first Event published by the Aggregate. This is usually the creation Event.
 
-The Aggregate Root of an Event Sourced Aggregate must also contain a no-arg constructor. Axon Framework uses this constructor to create an empty Aggregate instance before initialize it using past Events. Failure to provide this constructor will result in an Exception when loading the Aggregate.
+The Aggregate Root of an Event Sourced Aggregate must also contain a no-arg constructor. Axon Framework uses this constructor to create an empty Aggregate instance before initializing it using past Events. Failure to provide this constructor will result in an Exception when loading the Aggregate.
 
 ``` java
 public class MyAggregateRoot {

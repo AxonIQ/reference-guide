@@ -42,7 +42,7 @@ For example, to register a Command Handler that requires a serializer:
 configurer.registerCommandHandler(c -> new MyCommandHandler(c.serializer());
 ```
 
-Not all components have their explicit accesor method. To retrieve a component from the configuration, use:
+Not all components have their explicit accessor method. To retrieve a component from the configuration, use:
 ``` java
 configurer.registerCommandHandler(c -> new MyCommandHandler(c.getComponent(MyOtherComponent.class));
 ```

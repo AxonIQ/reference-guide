@@ -3,7 +3,7 @@ Spring Boot AutoConfiguration
 
 Axon's support for Spring Boot AutoConfiguration is by far the easiest option to get started configuring your Axon infrastructure components. By simply adding the `axon-spring-boot-starter` dependency, Axon will automatically configure the basic infrastructure components (Command Bus, Event Bus), as well as any component required to run and store Aggregates and Sagas.
 
-Depending on other components available in the application context, Axon will define certain components, if they aren't alreay explicitly defined in the application context. This means that you only need to configure components that you want different from the default.
+Depending on other components available in the application context, Axon will define certain components, if they aren't already explicitly defined in the application context. This means that you only need to configure components that you want different from the default.
 
 Event Bus and Event Store Configuration
 ---------------------------------------
