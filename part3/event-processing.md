@@ -54,13 +54,32 @@ The `EventHandlingConfiguration` class defines a number of methods that can be u
 
 - `registerEventProcessor(String name, EventProcessorBuilder builder)` defines the factory method to use to create a Processor with given `name`. Note that such Processor is only created if `name` is chosen as the processor for any of the available Event Handler beans.
 
-- `registerTrackingProcessor(String name)` defines that a processor with given name should be configured as a Tracking Event Processor, using default settings. It is configured with a TransactionManager and a TokenStore.
+- `registerTrackingProcessor(String name)` defines that a processor with given name should be configured as a Tracking Event Processor, using default settings. It is configured with a TransactionManager and a TokenStore, both taken from the main configuration by default.
+
+- `registerTrackingProcessor(String name, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration, Function<Configuration, SequencingPolicy<? super EventMessage<?>>> sequencingPolicy)` defines thata a processor with given name should be configured as a Tracking Processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading. The `SequencingPolicy` defines which expectations the processor has on sequential processing of events. See [Parallel Processing](#parallel-processing) for more details.
 
 - `usingTrackingProcessors()` sets the default to Tracking Processors instead of Subscribing ones.
+
+### Token Store ###
 
 Tracking Processors, unlike Subscribing ones, need a Token Store to store their progress in. Each message a Tracking Processor receives through its Event Stream is accompanied by a Token. This Token allows the processor to reopen the Stream at any later point, picking up where it left off with the last Event.
 
 The Configuration API takes the Token Store, as well as most other components Processors need from the Global Configuration instance. If no TokenStore is explicitly defined, an `InMemoryTokenStore` is used, which is *not recommended in production*.
+
+To configure a different Token Store, use `Configurer.registerComponent(TokenStore.class, conf -> ... create token store ...)`
+
+### Parallel Processing ###
+
+As of Axon Framework 3.1, Tracking Processors can use multiple threads to process an Event Stream. They do so, by claiming a so-called segment, identifier by a number. Normally, a single thread will process a single Segment.
+
+The number of Segments used can be defined. When a Processor starts for the first time, it can initialize a number of segments. This number defines the maximum number of threads that can process events simultaneously. Each node running of a TrackingProcessor will attempt to start its configured amount of Threads, to start processing these.
+
+Event Handlers may have specific expectations on the ordering of events. If this is the case, the processor must ensure these events are sent to these Handlers in that specific order. Axon uses teh `SequencingPolicy` for this. The `SequencingPolicy` is essentially a function, that returns a value for any given message. Is that value is equal for two messages, it means that the messages must be processed sequentially. By default, Axon components will use the `SequentialPerAggregatePolicy`, which cases Events published by the same Aggregate instance to be handled sequentially.
+
+> ** Note **
+>
+> Note that Subscribing Processors don't manage their own threads. Therefore, it is not possible to configure how they should receive their events. Effectively, they will always work on a sequential-per-aggregate basis.
+
 
 Distributing Events
 -------------------

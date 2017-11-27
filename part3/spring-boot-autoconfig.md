@@ -52,11 +52,17 @@ public void configure(EventHandlingConfiguration config) {
 Certain aspect of Event Processors can also be configured in `application.properties`.
 
 ```properties
+axon.eventhandling.processors.name.mode=tracking
+axon.eventhandling.processors.name.source=eventBus
+```
+
+If the name of a processor contains periods `.`, use the map notation:
+```properties
 axon.eventhandling.processors["name"].mode=tracking
 axon.eventhandling.processors["name"].source=eventBus
 ```
 
-Of using application.yml:
+Or using application.yml:
 ```yaml
 axon:
     eventhandling:
@@ -67,6 +73,19 @@ axon:
 ```
 
 The source attribute refers to the name of a bean implementing `SubscribableMessageSource` or `StreamableMessageSource` that should be used as the source of events for the mentioned processor. The source default to the Event Bus or Event Store defined in the application context.
+
+### Parallel processing ###
+Tracking Processors can use multiple threads to process events in parallel. Not all threads need to run on the same node. 
+
+One can configure the number of threads (on this instance) as well as the initial number of segments that a processor should define, if non are yet available.
+
+```properties
+axon.eventhandling.processors.name.mode=tracking
+# Sets the number of maximum number threads to start on this node
+axon.eventhandling.processors.name.threadCount=2
+# Sets the initial number of segments (i.e. defines the maximum number of overall threads)
+axon.eventhandling.processors.name.initialSegmentCount=4
+```
 
 Enabling AMQP
 -------------
@@ -96,7 +115,7 @@ public SpringAMQPMessageSource myQueueMessageSource(AMQPMessageConverter message
 ```
 and then configure a processor to use this bean as the source for its messages:
 ```properties
-axon.eventhandling.processors["name"].source=myQueueMessageSource
+axon.eventhandling.processors.name.source=myQueueMessageSource
 ```
 
 
