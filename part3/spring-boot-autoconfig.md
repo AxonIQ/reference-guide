@@ -100,7 +100,70 @@ axon.eventhandling.processors["name"].source=myQueueMessageSource
 ```
 
 
-Distributing commands using JGroups
------------------------------------
+Distributing commands
+---------------------
 
-In progress... If you can't wait, add a dependency to the `axon-spring-boot-starter-jgroups` module.
+Configuring a distributed command bus can (mostly) be done without any modifications in Configuration files.
+
+First of all, the starters for one of the Axon Distributed Command Bus modules needs to be included (e.g. JGroups or SpringCloud).
+
+Once that is present, a single property needs to be added to the application context, to enable the distributed command bus:
+
+```properties
+axon.distributed.enabled=true
+```
+
+There in one setting that is independent of the type of connector used:
+```properties
+axon.distributed.load-factor=100
+```
+
+Axon will automatically configure a DistributedCommandBus when a `CommandRouter` as well as a `CommandBusConnector` are present in the application context. In such case, specifying `axon.distributed.enabled` isn't even necessary. The latter merely enables autoconfiguration of these routers and connectors.
+
+### Using JGroups ###
+
+This module uses JGroups to detect and communicate with other nodes. The AutoConfiguration will set up the JGroupsConnector using default settings, that may need to be adapted to suit your environment.
+
+By default, the JGroupsConnector will attempt to locate a GossipRouter on the localhost, port 12001.
+
+The settings for the JGroups connector are all prefixed with `axon.distributed.jgroups`.
+
+```properties
+# the address to bind this instance to. By default, attempts to find the Global IP address
+axon.distributed.jgroups.bind-addr=GLOBAL
+# the port to bind the local instance to
+axon.distributed.jgroups.bind-port=7800
+
+# the name of the JGroups Cluster to connect to
+axon.distributed.jgroups.cluster-name=Axon
+
+# the JGroups Configuration file to configure JGroups with
+axon.distributed.jgroups.configuration-file=default_tcp_gossip.xml
+
+# The IP and port of the Gossip Servers (comma separated) to connect to
+axon.distributed.jgroups.gossip.hosts=localhost[12001]
+# when true, will start an embedded Gossip Server on bound to the port of the first mentioned gossip host.
+axon.distributed.jgroups.gossip.auto-start=false
+```
+
+The JGroups Configuration file can be use for much more fine-grained control of the Connector's behavior. Check out JGroups's Reference Guide for more information.
+
+### Using Spring Cloud ###
+
+Spring Cloud comes with nice abstractions on top of discovery. Axon can use these abstractions to report its availability and find other Command Bus nodes.
+For communication with these nodes, Axon uses Spring HTTP, by default.
+
+The Spring Cloud AutoConfiguration doesn't have much to configure. It uses an existing Spring Cloud Discovery Client (so make sure `@EnableDiscoveryClient` is used and the necessary client is on the classpath).
+
+However, some discovery clients aren't able to update instance metadata dynamically on the server. If Axon detects this, it will automatically fall back to querying that node using HTTP. This is done once on each discovery heartbeat (usually 30 seconds).
+
+This behavior can be configured or disabled, using the following settings in `appplication.properties`:
+
+```properties
+# whether to fall back to http when no meta-data is available
+axon.distributed.spring-cloud.fallback-to-http-get=true
+# the URL on which to publish local data and retrieve from other nodes.
+axon.distributed.spring-cloud.fallback-url=/message-routing-information
+```
+
+For more fine-grained control, provide a `SpringCloudHttpBackupCommandRouter` or `SpringCloudCommandRouter` bean in your application context.
