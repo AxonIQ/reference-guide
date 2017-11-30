@@ -77,3 +77,5 @@ EventHandlingConfiguration ehConfiguration = new EventHandlingConfiguration()
 Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     .registerModule(ehConfiguration);
 ```
+
+See [Event Handling Configuration](../part3/spring-boot-autoconfig.md#event-handling-configuration) for details on registering event handlers using Spring AutoConfiguration.

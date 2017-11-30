@@ -108,6 +108,10 @@ axon:
 
 The source attribute refers to the name of a bean implementing `SubscribableMessageSource` or `StreamableMessageSource` that should be used as the source of events for the mentioned processor. The source default to the Event Bus or Event Store defined in the application context.
 
+Query Handling Configuration
+----------------------------
+All singleton Spring beans are scanned for methods that have the `@QueryHandler` annotation. For each method that is found, a new query handler is registered with the query bus.
+
 ### Parallel processing ###
 Tracking Processors can use multiple threads to process events in parallel. Not all threads need to run on the same node. 
 
