@@ -200,8 +200,13 @@ To allow an upcaster to see what version of serialized object they are receiving
 
 Maven users can use the `MavenArtifactRevisionResolver` to automatically use the project version. It is initialized using the groupId and artifactId of the project to obtain the version for. Since this only works in JAR files created by Maven, the version cannot always be resolved by an IDE. If a version cannot be resolved, `null` is returned.
 
+The provided upcaster implementations (which will be described later on) do not work with the `EventMessage` directly, but with an `IntermediateEventRepresentation`. The `IntermediateEventRepresentation` provides functionality to retrieve all necessary fields to construct an `EventMessage` (and thus a upcasted `EventMessage` too), together with the actual _upcast_ functions. These upcast functions by default only allow the adjustment of the events payload, payload type and additions to the event its metadata. The actual representation of the events in the upcast function may vary based on the event serializer used or the desired form to work with, so the upcast function of the `IntermediateEventRepresentation` allows the selection of the expected representation type. The other fields, for example the message/aggregate identifier, aggregate type, timestamp etc. are not adjustable by the `IntermediateEventRepresentation`. Adjusting those fields is not the intended work for an Upcaster, hence those options are not provided by the provided `IntermediateEventRepresentation` implementations.
+
+The basic `Upcaster` interface for events in the Axon Framework works on a `Stream` of `IntermediateEventRepresentations` and returns a `Stream` of `IntermediateEventRepresentations`. The upcasting process thus does not directly return the end result of the introduced upcast functions, but chains every upcasting function from one revision to another together by stacking `IntermediateEventRepresentations`. Once this process has taken place and the end result is pulled from them, that is when the actual upcasting function is performed on the serialized event.
+
 Writing an upcaster
 -------------------
+The following Java snippets will serve as a basic example of an Upcaster and the events it works on.  
 
 Old version of the event: 
 ```java
@@ -275,12 +280,7 @@ public class AxonConfiguration {
                 transactionManager);
     }
 }
-```
-TODO - Describe
- - Upcasters work on intermediate representations
- - They update Stream<IR> to Stream<IR>
- - Abstract implementations for 1-to-1 upcasting
- - code examples
+``` 
 
 Content type conversion
 -----------------------
