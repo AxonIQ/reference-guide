@@ -39,6 +39,7 @@ In all circumstances, at most one event handler method is invoked per listener i
 ```java
 // assume EventB extends EventA 
 // and    EventC extends EventB
+// and    a single instance of SubListener is registered
 
 public class TopListener {
 
@@ -56,11 +57,10 @@ public class SubListener extends TopListener {
     @EventHandler
     public void handle(EventB event) {
     }
-
 }
 ```
 
-In the example above, the `SubListener` will receive all instances of `EventB` as well as `EventC` (as it extends `EventB`). In other words, the `TopListener` will not receive any invocations for `EventC` at all. Since `EventA` is not assignable to `EventB` (it's its superclass), those will be processed by `TopListener`.
+In the example above, the handler methods of `SubListener` will be invoked for all instances of `EventB` as well as `EventC` (as it extends `EventB`). In other words, the handler methods of `TopListener` will not receive any invocations for `EventC` at all. Since `EventA` is not assignable to `EventB` (it's its superclass), those will be processed by the handler method in `TopListener`.
 
 Registering Event Handlers
 -----------------------------
