@@ -148,8 +148,13 @@ Event Store Utilities
 
 Axon provides a number of Event Storage Engines that may be useful in certain circumstances.
 
+### Combining multiple Event Stores into one
 The `SequenceEventStorageEngine` is a wrapper around two other Event Storage Engines. When reading, it returns the events from both event storage engines. Appended events are only appended to the second event storage engine. This is useful in cases where two different implementations of Event Storage are used for performance reasons, for example. The first would be a larger, but slower event store, while the second is optimized for quick reading and writing.
 
+### Filtering Stored Events
+The `FilteringEventStorageEngine` allows Events to be filtered based on a predicate. Only Events that match this predicate will be stored. Note that Event Processors that use the Event Store as a source of Events, may not receive these events, as they are not being stored. 
+
+### In-Memory Event Storage
 There is also an `EventStorageEngine` implementation that keeps the stored events in memory: the `InMemoryEventStorageEngine`. While it probably outperforms any other event store out there, it is not really meant for long-term production use. However, it is very useful in short-lived tools or tests that require an event store.
 
 Influencing the serialization process
@@ -163,7 +168,7 @@ Alternatively, Axon also provides the `JacksonSerializer`, which uses [Jackson](
 
 You may also implement your own Serializer, simply by creating a class that implements `Serializer`, and configuring the Event Store to use that implementation instead of the default.
 
-### Serializing Events vs the rest ###
+### Serializing Events vs 'the rest' ###
 
 Since Axon 3.1, it is possible to use a different serializer for the storage of events, than all other objects that Axon needs to serializer (such as Commands, Snapshot, Sagas, etc). While the `XStreamSerializer`'s capability to serialize virtually anything makes it a very decent default, its output isn't always a form that makes it nice to share with other applications. The `JacksonSerializer` creates much nicer output, but requires a certain structure in the objects to serialize. This structure is typically present in events, making it a very suitable event serializer.
 
