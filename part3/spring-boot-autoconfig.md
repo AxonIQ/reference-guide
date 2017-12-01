@@ -69,6 +69,22 @@ To use different `SagaStore`s for Sagas, provide the bean name of the `SagaStore
 
 Sagas will have resources injected from the application context. Note that this doesn't mean Spring-injecting is used to inject these resources. The `@Autowired` and `@javax.inject.Inject` annotation can be used to demarcate dependencies, but they are injected by Axon by looking for these annotations on Fields and Methods. Constructor injection is not (yet) supported.
 
+To tune the configuration of Sagas, it is possible to define a custom SagaConfiguration bean. For an annotated Saga class, Axon will attempt to find a configuration for that Saga. It does so by checking for a bean of type `SagaConfiguration` with a specific name. For a Saga class called `MySaga`, the bean that Axon looks for is `mySagaConfiguration`. If no such bean is found, it creates a Configuration based on available components.
+
+If a `SagaConfiguration` instance is present for an annotated Saga, that configuration is used to retrieve and register the components for this type of Saga. If the SagaConfiguration bean is not named as described above, it is possible that the Saga is registered twice, and receives events in duplicate. To prevent this, you can specify the bean name of the `SagaConfiguration` using the @Saga annotation:
+```java
+@Saga(configurationBean = "mySagaConfigBean")
+public class MySaga {
+    // methods here 
+}
+
+// in the Spring configuration:
+@Bean 
+public SagaConfiguration<MySaga> mySagaConfigBean() {
+    // create and return SagaConfiguration instance
+}
+```
+
 Event Handling Configuration
 ----------------------------
 By default, all singleton Spring beans components containing `@EventHandler` annotated methods will be subscribed to an Event Processor to receive Event Messages published to the Event Bus.
