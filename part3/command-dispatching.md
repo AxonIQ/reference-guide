@@ -382,7 +382,7 @@ Internally, the `SpringCloudCommandRouter` uses the `Metadata` map contained in 
 
 The `SpringCloudHttpBackupCommandRouter`, as the name suggests, has a back up mechanism if the `ServiceInstance.Metadata` field does not contained the expected message routing information. That back up mechanism is to provide an HTTP endpoint from which the message routing information can be retrieved and by simultaneously adding the functionality to query that endpoint of other known nodes in the cluster to retrieve their message routing information. As such the back up mechanism functions is a Spring Controller to receive requests at a specifiable endpoint and uses a `RestTemplate` to send request to other nodes at the specifiable endpoint.
 
-To use the `SpringCloudHttpBackupCommandRouter` instead of the `SpringCloudCommandRouter`, we could add the following Spring Java configuration (which replaces the `SpringCloudCommandRouter` method in our earlier example):
+To use the `SpringCloudHttpBackupCommandRouter` instead of the `SpringCloudCommandRouter`, add the following Spring Java configuration (which replaces the `SpringCloudCommandRouter` method in our earlier example):
 
 ```java
 @Configuration
