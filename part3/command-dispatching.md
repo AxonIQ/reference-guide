@@ -305,7 +305,7 @@ The Spring Cloud Connector setup uses the service registration and discovery mec
  
  > **Note**
  >
- > The current version (Axon 3.0.4) `SpringCloudCommandRouter` uses the `ServiceInstance.Metadata` field to inform all the nodes in the system which commands it can handle through a `CommandNameFilter`. It is thus of importance that the Spring Cloud implementation selected supports the usage of the ServiceInstance.Metadata field. Spring Cloud Consul for example currently does not support that field, hence is not a viable solution for the `SpringCloudCommandRouter`. We are working on an additional solution to retrieve the `CommandNameFilter` from. 
+ > The `SpringCloudCommandRouter` uses the Spring Cloud specific `ServiceInstance.Metadata` field to inform all the nodes in the system of its message routing information. It is thus of importance that the Spring Cloud implementation selected supports the usage of the `ServiceInstance.Metadata` field. If the desired Spring Cloud implementation does not support the modification of the `ServiceInstance.Metadata` (e.g. Consul), the `SpringCloudHttpBackupCommandRouter` is a viable solution. See the end of this chapter for configuration specifics on the `SpringCloudHttpBackupCommandRouter`. 
 
 Giving a description of every Spring Cloud implementation would push this reference guide to far. Hence we refer to their respective documentations for further information.
 
@@ -375,3 +375,23 @@ public CommandBus localSegment() {
 > **Note**
 >
 > Note that it is not required that all segments have Command Handlers for the same type of Commands. You may use different segments for different Command Types altogether. The Distributed Command Bus will always choose a node to dispatch a Command to that has support for that specific type of Command.
+
+##### Spring Cloud Http Back Up Command Router
+
+Internally, the `SpringCloudCommandRouter` uses the `Metadata` map contained in the Spring Cloud `ServiceInstance` to communicate the allowed message routing information throughout the distributed Axon environment. If the desired Spring Cloud implementation however does not allow the modification of the `ServiceInstance.Metadata` field (e.g. Consul), one can choose to instantiate a `SpringCloudHttpBackupCommandRouter` instead of the `SpringCloudCommandRouter`. 
+
+The `SpringCloudHttpBackupCommandRouter`, as the name suggests, has a back up mechanism if the `ServiceInstance.Metadata` field does not contained the expected message routing information. That back up mechanism is to provide an HTTP endpoint from which the message routing information can be retrieved and by simultaneously adding the functionality to query that endpoint of other known nodes in the cluster to retrieve their message routing information. As such the back up mechanism functions is a Spring Controller to receive requests at a specifiable endpoint and uses a `RestTemplate` to send request to other nodes at the specifiable endpoint.
+
+To use the `SpringCloudHttpBackupCommandRouter` instead of the `SpringCloudCommandRouter`, we could add the following Spring Java configuration (which replaces the `SpringCloudCommandRouter` method in our earlier example):
+
+```java
+@Configuration
+public class MyApplicationConfiguration {
+    @Bean
+    public CommandRouter springCloudHttpBackupCommandRouter(DiscoveryClient discoveryClient, 
+                                                            RestTemplate restTemplate, 
+                                                            @Value("${axon.distributed.spring-cloud.fallback-url}") String messageRoutingInformationEndpoint) {
+        return new SpringCloudHttpBackupCommandRouter(discoveryClient, new AnnotationRoutingStrategy(), restTemplate, messageRoutingInformationEndpoint);
+    }
+}
+``` 
