@@ -46,6 +46,10 @@ The Configuration API allows you to configure other strategies for assigning cla
 
 ### Configuring processors
 
+Processors take care of the technical aspects of handling an event, regardless of the business logic triggered by each event. However, the way "regular" (singleton, stateless) event handlers are Configured is slightly different from Sagas, as different aspects are important for both types of handlers.
+
+#### Event Handlers ####
+
 By default, Axon will use Subscribing Event Processors. It is possible to change how Handlers are assigned and how processors are configured using the `EventHandlingConfiguration` class of the Configuration API.
 
 The `EventHandlingConfiguration` class defines a number of methods that can be used to define how processors need to be configured.
@@ -60,6 +64,39 @@ The `EventHandlingConfiguration` class defines a number of methods that can be u
 
 - `usingTrackingProcessors()` sets the default to Tracking Processors instead of Subscribing ones.
 
+#### Sagas ####
+
+Sagas are configured using the `SagaConfiguration` class. It provides static methods to initialize an instance either for Tracking Processing, or Subscribing.
+
+To configure a Saga to run in subscribing mode, simply do:
+
+```java
+SagaConfiguration<MySaga> sagaConfig = SagaConfiguration.subscribingSagaManager(MySaga.class);
+```
+
+If you don't want to use the default EventBus / Store as source for this Saga to get its messages from, you can define another source of messages as well:
+
+```java
+SagaConfiguration.subscribingSagaManager(MySaga.class, c -> /* define source here */);
+```
+Another variant of the `subscribingSagaManager()` method allows you to pass a (builder for an) `EventProcessingStrategy`. By default, Sagas are invoked in synchronously. This can be made asynchronous using this method. However, using Tracking Processors is the preferred way for asynchronous invocation.
+
+To configure a Saga to use a Tracking Processor, simply do:
+```java
+SagaConfiguration.trackingSagaManager(MySaga.class);
+``` 
+
+This will set the default properties, meaning a single Thread is used to process events. To change this:
+```java
+SagaConfiguration.trackingSagaManager(MySaga.class)
+                 // configure 4 threads
+                 .configureTrackingProcessor(c -> TrackingProcessingConfiguration.forParallelProcessing(4)) 
+```
+The `TrackingProcessingConfiguration` has a few methods allowing you to specify how many segments will be created and which ThreadFactory should be used to create Processor threads. See [Parallel Processing](#parallel-processing) for more details.
+
+Check out the API documentation (JavaDoc) of the `SagaConfiguration` class for full details on how to configure event handling for a Saga.
+
+
 ### Token Store ###
 
 Tracking Processors, unlike Subscribing ones, need a Token Store to store their progress in. Each message a Tracking Processor receives through its Event Stream is accompanied by a Token. This Token allows the processor to reopen the Stream at any later point, picking up where it left off with the last Event.
@@ -67,6 +104,8 @@ Tracking Processors, unlike Subscribing ones, need a Token Store to store their 
 The Configuration API takes the Token Store, as well as most other components Processors need from the Global Configuration instance. If no TokenStore is explicitly defined, an `InMemoryTokenStore` is used, which is *not recommended in production*.
 
 To configure a different Token Store, use `Configurer.registerComponent(TokenStore.class, conf -> ... create token store ...)`
+
+Note that you can override the TokenStore to use with Tracking Processors in the respective `EventHandlingConfiguration` or `SagaConfiguration` that defines that Processor. Where possible, it is recommended to use a Token Store that stores tokens in the same database as where the Event Handlers update the view models. This way, changes to the view model can be stored atomically with the changed tokens, guaranteeing exactly once processing semantics.
 
 ### Parallel Processing ###
 
@@ -76,10 +115,17 @@ The number of Segments used can be defined. When a Processor starts for the firs
 
 Event Handlers may have specific expectations on the ordering of events. If this is the case, the processor must ensure these events are sent to these Handlers in that specific order. Axon uses teh `SequencingPolicy` for this. The `SequencingPolicy` is essentially a function, that returns a value for any given message. Is that value is equal for two messages, it means that the messages must be processed sequentially. By default, Axon components will use the `SequentialPerAggregatePolicy`, which cases Events published by the same Aggregate instance to be handled sequentially.
 
+A Saga instance is never invoked concurrently by multiple threads. Therefore, a Sequencing Policy for a Saga is irrelevant. Axon will ensure each Saga instance receives the Events it needs to process in the order they have been published on the Event Bus.
+
 > ** Note **
 >
-> Note that Subscribing Processors don't manage their own threads. Therefore, it is not possible to configure how they should receive their events. Effectively, they will always work on a sequential-per-aggregate basis.
+> Note that Subscribing Processors don't manage their own threads. Therefore, it is not possible to configure how they should receive their events. Effectively, they will always work on a sequential-per-aggregate basis, as that is generally the level of concurrency in the Command Handling component.
 
+#### Multi-node processing ####
+
+For tracking processors, it doesn't matter whether the Threads handling the events are all running on the same node, or on different nodes hosting the same (logical) TrackingProcessor. When two instances of TrackingProcessor, having the same name, are active on different machines, they are considered two instances of the same logical processor. They will 'compete' for segments of the Event Stream. Each instance will 'claim' a segment, preventing events assigned to that segment from being processed on the other nodes.
+
+The `TokenStore` instance will use the JVM's name (usually a combination of the host name and process ID) as the default `nodeId`. This can be overridden in `TokenStore` implementations that support multi-node processing.
 
 Distributing Events
 -------------------
