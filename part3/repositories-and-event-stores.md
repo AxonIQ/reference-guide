@@ -204,9 +204,19 @@ The provided upcaster implementations (which will be described later on) do not 
 
 The basic `Upcaster` interface for events in the Axon Framework works on a `Stream` of `IntermediateEventRepresentations` and returns a `Stream` of `IntermediateEventRepresentations`. The upcasting process thus does not directly return the end result of the introduced upcast functions, but chains every upcasting function from one revision to another together by stacking `IntermediateEventRepresentations`. Once this process has taken place and the end result is pulled from them, that is when the actual upcasting function is performed on the serialized event.
 
+Provided abstract Upcaster implementations 
+------------------------------------------
+
+As described earlier, the `Upcaster` interface does not upcast a single event; it requires a `Stream<IntermediateEventRepresentation>` and returns one. However, an Upcaster is usually written to adjust a single event out of this stream. More elaborate upcasting set ups are also imaginable, for example from one events to multiple, or an upcaster which pulls state from an earlier event and pushes it in a later one. This section describes the currently provided abstract implementations of Event Upcasters which a user can extend to add its own desired upcast functionality.
+
+- `SingleEventUpcaster` - This is a one to one implementation of an event Upcaster. Extending from this implementation requires one to implement a `canUpcast` and `doUpcast` function, which respectively check whether the event at hand is to be upcasted, and if so how it should be upcasted. This is most likely the implementation to extend from, as most event adjustments are based on self contained data and are one to one.
+- `EventMultiUpcaster` - This is a one to many implementation of an event Upcaster. It is mostly identical to a `SingleEventUpcaster`, with the exception that the `doUpcast` function returns a `Stream` instead of a single `IntermediateEventRepresentation`. As such this upcaster allows you to revert a single event to several events. This might be useful if you for example have figured out you want more fine grained events from a _fat_ event.
+- `ContextAwareSingleEventUpcaster` - This is a one to one implementation of an Upcaster, which can store context of events during the process. Next to the `canUpcast` and `doUpcast`, the context aware Upcaster requires one to implement a `buildContext` function, which is used to instantiate a context which is carried between events going through the upcaster. The `canUpcast` and `doUpcast` functions receive the context as a second parameter, next to the `IntermediateEventRepresentation`. The context can then be used within the upcasting process to pull fields from earlier events and populate other events. It thus allows you to move a field from one event to a completely different event.
+- `ContextAwareEventMultiUpcaster` - This is a one to many implementation of an Upcaster, which can store context of events during the process. This abstract implementation is a combination of the `EventMultiUpcaster` and `ContextAwareSingleEventUpcaster`, and thus services the goal of keeping context of `IntermediateEventRepresentations` and upcasting one such representation to several. This implementation is useful if you not only want to copy a field from one event to another, but have the requirement to generate several new events in the process.
+
 Writing an upcaster
 -------------------
-The following Java snippets will serve as a basic example of an Upcaster and the events it works on.  
+The following Java snippets will serve as a basic example of a one to one Upcaster (the `SingleEventUpcaster`).  
 
 Old version of the event: 
 ```java
