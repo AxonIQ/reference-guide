@@ -15,9 +15,17 @@ To configure a different Event Storage Engine, even if JPA is on the class path,
 
 Command Bus Configuration
 -------------------------
-Axon will configure a `SimpleCommandBus` if no `CommandBus` implementation is explicitly defined in the Application Context. This `CommandBus` will use a `PlatformTransactionManager` to manage transactions, if it is available in the context.
+Axon will configure a `SimpleCommandBus` if no `CommandBus` implementation is explicitly defined in the Application Context. This `CommandBus` will use the `TransactionManager` to manage transactions.
 
 If the only `CommandBus` bean defined is a `DistributedCommandBus` implementation, Axon will still configure a CommandBus implementation to serve as the local segment for the DistributedCommandBus. This bean will get a Qualifier "localSegment". It is recommended to define the `DistributedCommandBus` as a `@Primary`, so that it gets priority for dependency injection.
+
+Query Bus Configuration
+-----------------------
+Axon will configure a `SimpleQueryBus` if no `QueryBus` implementation is explicitly defined in the Application Context. This `QueryBus` will use the `TransactionManager` to manage transactions.
+
+Transaction Manager Configuration
+---------------------------------
+If no `TransactionManager` implementation is explicitly defined in the Application Content, Axon will look for the Spring `PlatformTransactionManager` bean and wrap that in a `TransactionManager`. If the Spring bean is not available, the `NoOpTransactionManager` will be used.
 
 Serializer Configuration
 ------------------------
