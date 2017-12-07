@@ -37,7 +37,7 @@ As of Axon 2.1, all modules are OSGi compatible bundles. This means they contain
 Main modules
 ------------
 
-Axon's main modules are the modules that have been thoroughly tested and are robust enough to use in demanding production environments. The maven groupId of all these modules is`org.axonframework`.
+Axon's main modules are the modules that have been thoroughly tested and are robust enough to use in demanding production environments. The maven groupId of all these modules is `org.axonframework`.
 
 The Core module contains, as the name suggests, the Core components of Axon. If you use a single-node setup, this module is likely to provide all the components you need. All other Axon modules depend on this module, so it must always be available on the classpath.
 

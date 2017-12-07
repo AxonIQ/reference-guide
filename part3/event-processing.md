@@ -60,7 +60,7 @@ The `EventHandlingConfiguration` class defines a number of methods that can be u
 
 - `registerTrackingProcessor(String name)` defines that a processor with given name should be configured as a Tracking Event Processor, using default settings. It is configured with a TransactionManager and a TokenStore, both taken from the main configuration by default.
 
-- `registerTrackingProcessor(String name, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration, Function<Configuration, SequencingPolicy<? super EventMessage<?>>> sequencingPolicy)` defines thata a processor with given name should be configured as a Tracking Processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading. The `SequencingPolicy` defines which expectations the processor has on sequential processing of events. See [Parallel Processing](#parallel-processing) for more details.
+- `registerTrackingProcessor(String name, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration, Function<Configuration, SequencingPolicy<? super EventMessage<?>>> sequencingPolicy)` defines that a processor with given name should be configured as a Tracking Processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading. The `SequencingPolicy` defines which expectations the processor has on sequential processing of events. See [Parallel Processing](#parallel-processing) for more details.
 
 - `usingTrackingProcessors()` sets the default to Tracking Processors instead of Subscribing ones.
 
@@ -113,7 +113,7 @@ As of Axon Framework 3.1, Tracking Processors can use multiple threads to proces
 
 The number of Segments used can be defined. When a Processor starts for the first time, it can initialize a number of segments. This number defines the maximum number of threads that can process events simultaneously. Each node running of a TrackingProcessor will attempt to start its configured amount of Threads, to start processing these.
 
-Event Handlers may have specific expectations on the ordering of events. If this is the case, the processor must ensure these events are sent to these Handlers in that specific order. Axon uses teh `SequencingPolicy` for this. The `SequencingPolicy` is essentially a function, that returns a value for any given message. Is that value is equal for two messages, it means that the messages must be processed sequentially. By default, Axon components will use the `SequentialPerAggregatePolicy`, which cases Events published by the same Aggregate instance to be handled sequentially.
+Event Handlers may have specific expectations on the ordering of events. If this is the case, the processor must ensure these events are sent to these Handlers in that specific order. Axon uses the `SequencingPolicy` for this. The `SequencingPolicy` is essentially a function, that returns a value for any given message. Is that value is equal for two messages, it means that the messages must be processed sequentially. By default, Axon components will use the `SequentialPerAggregatePolicy`, which cases Events published by the same Aggregate instance to be handled sequentially.
 
 A Saga instance is never invoked concurrently by multiple threads. Therefore, a Sequencing Policy for a Saga is irrelevant. Axon will ensure each Saga instance receives the Events it needs to process in the order they have been published on the Event Bus.
 
