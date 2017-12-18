@@ -45,6 +45,8 @@ If you use JPA and have JPA annotations on the aggregate, Axon can also use the 
 Aggregates may use the `AggregateLifecycle.apply()` method to register events for publication. Unlike the `EventBus`, where messages need to be wrapped in an EventMessage, `apply()` allows you to pass in the payload object directly.
 
 ``` java
+import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
+
 @Entity // Mark this aggregate as a JPA Entity
 public class MyAggregate {
     
@@ -168,6 +170,8 @@ If you prefer to use another mechanism for routing Commands, the behavior can be
 > When a command creates an aggregate instance, the callback for that command will receive the aggregate identifier when the command executed successfully.
 
 ``` java
+import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
+
 public class MyAggregate {
 
     @AggregateIdentifier
@@ -216,41 +220,42 @@ configurer.configureAggregate(
 
 `@CommandHandler` annotations are not limited to the aggregate root. Placing all command handlers in the root will sometimes lead to a large number of methods on the aggregate root, while many of them simply forward the invocation to one of the underlying entities. If that is the case, you may place the `@CommandHandler` annotation on one of the underlying entities' methods. For Axon to find these annotated methods, the field declaring the entity in the aggregate root must be marked with `@AggregateMember`. Note that only the declared type of the annotated field is inspected for Command Handlers. If a field value is null at the time an incoming command arrives for that entity, an exception is thrown.
 
-    public class MyAggregate {
+```java
+public class MyAggregate {
 
-        @AggregateIdentifier
-        private String id;
+    @AggregateIdentifier
+    private String id;
 
-        @AggregateMember
-        private MyEntity entity;
+    @AggregateMember
+    private MyEntity entity;
 
-        @CommandHandler
-        public MyAggregate(CreateMyAggregateCommand command) {
-            apply(new MyAggregateCreatedEvent(...);
-        }
-
-        // no-arg constructor for Axon
-        MyAggregate() {
-        }
-
-        @CommandHandler
-        public void doSomething(DoSomethingCommand command) {
-            // do something...
-        }
-
-        // code omitted for brevity. The event handler for MyAggregateCreatedEvent must set the id field
-        // and somewhere in the lifecycle, a value for "entity" must be assigned to be able to accept
-        // DoSomethingInEntityCommand commands.
+    @CommandHandler
+    public MyAggregate(CreateMyAggregateCommand command) {
+        apply(new MyAggregateCreatedEvent(...);
     }
 
-    public class MyEntity {
-
-        @CommandHandler
-        public void handleSomeCommand(DoSomethingInEntityCommand command) {
-            // do something
-        }
+    // no-arg constructor for Axon
+    MyAggregate() {
     }
 
+    @CommandHandler
+    public void doSomething(DoSomethingCommand command) {
+        // do something...
+    }
+
+    // code omitted for brevity. The event handler for MyAggregateCreatedEvent must set the id field
+    // and somewhere in the lifecycle, a value for "entity" must be assigned to be able to accept
+    // DoSomethingInEntityCommand commands.
+}
+
+public class MyEntity {
+
+    @CommandHandler
+    public void handleSomeCommand(DoSomethingInEntityCommand command) {
+        // do something
+    }
+}
+```
 > **Note**
 >
 > Note that each command must have exactly one handler in the aggregate. This means that you cannot annotate multiple entities (either root nor not) with @CommandHandler, that handle the same command type. In case you need to conditionally route a command to an entity, the parent of these entities should handle the command, and forward it based on the conditions that apply.
@@ -273,7 +278,7 @@ In certain cases, it is not possible, or desired to route a command directly to 
 
 A Command Handler object is a simple (regular) object, which has `@CommandHandler` annotated methods. Unlike in the case of an Aggregate, there is only a single instance of a Command Handler object, which handles all commands of the types it declares in its methods.
 
-``` java
+```java
 public class MyAnnotatedHandler {
 
     @CommandHandler

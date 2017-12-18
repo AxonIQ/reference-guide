@@ -90,5 +90,5 @@ public class MyQueryHandler {
 
 // To register your query handler
 Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
-    .registerQueryHandler((conf) -> new MyQueryHandler);
+    .registerQueryHandler(conf -> new MyQueryHandler);
 ```

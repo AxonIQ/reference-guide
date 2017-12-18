@@ -23,7 +23,7 @@ In a Saga, Event Handlers are annotated with `@SagaEventHandler`. If a specific 
 
 By default, a new Saga is only started if no suitable existing Saga (of the same type) can be found. You can also force the creation of a new Saga instance by setting the `forceNew` property on the `@StartSaga` annotation to `true`.
 
-Ending a Saga can be done in two ways. If a certain Event always indicates the end of a Saga's life cycle, annotate that Event's handler on the Saga with `@EndSaga`. The Saga's Life Cycle will be ended after the invocation of the handler. Alternatively, you can call `end()` from inside the Saga to end the life cycle. This allows you to conditionally end the Saga.
+Ending a Saga can be done in two ways. If a certain Event always indicates the end of a Saga's life cycle, annotate that Event's handler on the Saga with `@EndSaga`. The Saga's Life Cycle will be ended after the invocation of the handler. Alternatively, you can call `SagaLifecycle.end()` from inside the Saga to end the life cycle. This allows you to conditionally end the Saga.
 
 Event Handling
 --------------
@@ -66,8 +66,8 @@ public class OrderManagementSaga {
         ShippingId shipmentId = createShipmentId();
         InvoiceId invoiceId = createInvoiceId();
         // associate the Saga with these values, before sending the commands
-        associateWith("shipmentId", shipmentId);
-        associateWith("invoiceId", invoiceId);
+        SagaLifecycle.associateWith("shipmentId", shipmentId);
+        SagaLifecycle.associateWith("invoiceId", invoiceId);
         // send the commands
         commandGateway.send(new PrepareShippingCommand(...));
         commandGateway.send(new CreateInvoiceCommand(...));
@@ -76,13 +76,13 @@ public class OrderManagementSaga {
     @SagaEventHandler(associationProperty = "shipmentId")
     public void handle(ShippingArrivedEvent event) {
         delivered = true;
-        if (paid) { end(); }
+        if (paid) { SagaLifecycle.end(); }
     }
 
     @SagaEventHandler(associationProperty = "invoiceId")
     public void handle(InvoicePaidEvent event) {
         paid = true;
-        if (delivered) { end(); }
+        if (delivered) { SagaLifecycle.end(); }
     }
 
     // ...
