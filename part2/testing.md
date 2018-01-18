@@ -47,7 +47,7 @@ public class MyCommandComponentTest {
         example, we use the recommended void return type. The last method
         defines that we expect a single event as result of the command
         execution.
-        /*
+        */
     }
 }
 ```
