@@ -44,6 +44,14 @@ will trigger the creation of two Processors:
 
 The Configuration API allows you to configure other strategies for assigning classes to processors, or even assign specific instances to specific processors.
 
+### Ordering Event Handlers within a single Event Processor
+
+To order Event Handlers within an Event Processor, the ordering in which Event Handlers are registered (as described in the [Registering Event Handlers](../part2/event-handling.md#registering-event-handlers) section) is guiding. Thus, the ordering in which Event Handlers will be called by an Event Processor for Event Handling is their insertion ordering in the configuration API. 
+
+If Spring is selected as the mechanism to wire everything, the ordering of the Event Handlers can be specified by adding the `@Order` annotation. This annotation should be placed on class level of your Event Handler class, adding a `integer` value to specify the ordering.
+
+Do note that it is not possible to order Event Handlers which are not a part of the same Event Processor.
+
 ### Configuring processors
 
 Processors take care of the technical aspects of handling an event, regardless of the business logic triggered by each event. However, the way "regular" (singleton, stateless) event handlers are Configured is slightly different from Sagas, as different aspects are important for both types of handlers.
