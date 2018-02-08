@@ -90,7 +90,7 @@ When you're stuck
 
 While implementing your application, you might run into problems, wonder about why certain things are the way they are, or have some questions that need an answer. The Axon Users mailing list is there to help. Just send an email to [axonframework@googlegroups.com](mailto:axonframework@googlegroups.com). Other users as well as contributors to the Axon Framework are there to help with your issues.
 
-If you find a bug, you can report them at [github.com/AxonFramework/issues](https://github.com/AxonFramework/AxonFramework/issues). When reporting an issue, please make sure you clearly describe the problem. Explain what you did, what the result was and what you expected to happen instead. If possible, please provide a very simple Unit Test (JUnit) that shows the problem. That makes fixing it a lot simpler.
+If you find a bug, you can report them at [github.com/AxonFramework/AxonFramework/issues](https://github.com/AxonFramework/AxonFramework/issues). When reporting an issue, please make sure you clearly describe the problem. Explain what you did, what the result was and what you expected to happen instead. If possible, please provide a very simple Unit Test (JUnit) that shows the problem. That makes fixing it a lot simpler.
 
 Contributing to Axon Framework
 ==============================
@@ -99,7 +99,7 @@ Development on the Axon Framework is never finished. There will always be more f
 
 There are a number of ways in which you can contribute to the Axon Framework:
 
--   You can report any bugs, feature requests or ideas for improvements on our issue page: [github.com/AxonFramework/issues](https://github.com/AxonFramework/AxonFramework/issues). All ideas are welcome. Please be as exact as possible when reporting bugs. This will help us reproduce and thus solve the problem faster.
+-   You can report any bugs, feature requests or ideas for improvements on our issue page: [github.com/AxonFramework/AxonFramework/issues](https://github.com/AxonFramework/AxonFramework/issues). All ideas are welcome. Please be as exact as possible when reporting bugs. This will help us reproduce and thus solve the problem faster.
 
 -   If you have created a component for your own application that you think might be useful to include in the framework, send us a patch or a zip containing the source code. We will evaluate it and try to fit it in the framework. Please make sure code is properly documented using javadoc. This helps us to understand what is going on.
 
