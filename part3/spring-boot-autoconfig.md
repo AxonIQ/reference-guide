@@ -41,7 +41,7 @@ Example:
 @Qualifier("eventSerializer")
 @Bean
 public Serializer eventSerializer() {
-    return new JacksonSerialzer();
+    return new JacksonSerializer();
 }
 ```
 
@@ -57,7 +57,7 @@ public Serializer serializer() {
 @Qualifier("eventSerializer")
 @Bean
 public Serializer eventSerializer() {
-    return new JacksonSerialzer();
+    return new JacksonSerializer();
 }
 ```
 
