@@ -1,8 +1,6 @@
 Performance Tuning
 ==================
 
-TODO: Update to Axon 3
-
 This chapter contains a checklist and some guidelines to take into consideration when getting ready for production-level performance. By now, you have probably used the test fixtures to test your command handling logic and sagas. The production environment isn't as forgiving as a test environment, though. Aggregates tend to live longer, be used more frequently and concurrently. For the extra performance and stability, you're better off tweaking the configuration to suit your specific needs.
 
 Database Indexes and Column Types
@@ -38,6 +36,8 @@ The 'timestamp' column in the DomainEventEntry table only stores ISO 8601 timest
 > It is highly recommended to store all timestamps in UTC format. In countries with Daylight Savings Time, storing timestamps in local time may result in sorting errors for events generated around and during the timezone switch. This does not occur when UTC is used. Some servers are configured to always use UTC. Alternatively, you should configure the Event Store to convert timestamps to UTC before storing them.
 
 The 'type' column in the DomainEventEntry stores the Type Identifiers of aggregates. Generally, these are the 'simple name' of the aggregate. Event the infamous 'AbstractDependencyInjectionSpringContextTests' in spring only counts 45 characters. Here, again, a shorter (but variable) length field should suffice.
+
+<!-- TODO: Describe possibility to use META-INF/orm.xml to tune entities. -->  
 
 MongoDB
 -------
