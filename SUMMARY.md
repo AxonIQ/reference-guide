@@ -1,26 +1,30 @@
-# Summary
+# Table of contents
 
 * [About this guide](README.md)
 
-### Part I - Getting started
-* [Introduction](part1/introduction.md)
-* [Architecture overview](part1/architecture-overview.md)
-* [Messaging concepts](part1/messaging-concepts.md)
-* [Configuration API](part1/configuration-api.md)
+## Part I - Getting started
 
-### Part II - Domain Logic
-* [Command Model](part2/command-model.md)
-* [Event Handling](part2/event-handling.md)
-* [Sagas](part2/sagas.md)
-* [Testing](part2/testing.md)
+* [Introduction](part-i-getting-started/introduction.md)
+* [Architecture overview](part-i-getting-started/architecture-overview.md)
+* [Messaging concepts](part-i-getting-started/messaging-concepts.md)
+* [Configuration API](part-i-getting-started/configuration-api.md)
 
-### Part III - Infrastructure components
-* [Command Dispatching](part3/command-dispatching.md)
-* [Event Processing](part3/event-processing.md)
-* [Repository and Event Store](part3/repositories-and-event-stores.md)
-* [Spring Boot AutoConfiguration](part3/spring-boot-autoconfig.md)
+## Part II - Domain Logic
 
-### Part IV - Advanced tuning
-* [Advanced customizations](part4/advanced-customizations.md)
-* [Performance Tuning](part4/performance-tuning.md)
+* [Command Model](part-ii-domain-logic/command-model.md)
+* [Event Handling](part-ii-domain-logic/event-handling.md)
+* [Sagas](part-ii-domain-logic/sagas.md)
+* [Testing](part-ii-domain-logic/testing.md)
+
+## Part III - Infrastructure components
+
+* [Command Dispatching](part-iii-infrastructure-components/command-dispatching.md)
+* [Event Processing](part-iii-infrastructure-components/event-processing.md)
+* [Repository and Event Store](part-iii-infrastructure-components/repository-and-event-store.md)
+* [Spring Boot AutoConfiguration](part-iii-infrastructure-components/spring-boot-autoconfiguration.md)
+
+## Part IV - Advanced tuning
+
+* [Advanced customizations](part-iv-advanced-tuning/advanced-customizations.md)
+* [Performance Tuning](part-iv-advanced-tuning/performance-tuning.md)
 
