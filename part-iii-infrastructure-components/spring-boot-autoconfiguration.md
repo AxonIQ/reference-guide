@@ -68,9 +68,39 @@ Axon will automatically register all the `@CommandHandler` annotated methods wit
 
 To set up a different repository than the default, define one in the application context. Optionally, you may define the name of the repository to use, using the `repository` attribute on `@Aggregate`. If no `repository` attribute is defined, Axon will attempt to use the repository with the name of the aggregate \(first character lowercase\), suffixed with `Repository`. So on a class of type `MyAggregate`, the default Repository name is `myAggregateRepository`. If no bean with that name is found, Axon will define an `EventSourcingRepository` \(which fails if no `EventStore` is available\).
 
-It is possible to define a custom [`SnapshotTriggerDefinition`](repository-and-event-store.md#creating-a-snapshot) for an aggregate as a spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation.
+```java
+@Bean
+public Repository<MyAggregate> repositoryForMyAggregate(EventStore eventStore) {
+    return new EventSourcingRepository<>(MyAggregate.class, eventStore);
+}
+...
+@Aggregate(repository = "repositoryForMyAggregate")
+public class MyAggregate {...}
+```
 
-Defining a [`CommandTargetResolver`](/part-ii-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in spring application context will cause this resolver being used for all aggregates. However, using the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior.
+It is possible to define a custom [`SnapshotTriggerDefinition`](repository-and-event-store.md#creating-a-snapshot) for an aggregate as a spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows defining a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot on each 500th event.
+
+```java
+@Bean
+public SnapshotTriggerDefinition mySnapshotTriggerDefinition(Snapshotter snapshotter) {
+    return new EventCountSnapshotTriggerDefinition(snapshotter, 500);
+}
+...
+@Aggregate(snapshotTriggerDefinition = "mySnapshotTriggerDefinition")
+public class MyAggregate {...}
+```
+
+Defining a [`CommandTargetResolver`](/part-ii-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in spring application context will cause this resolver being used for all aggregates. However, using the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. Bean definition of `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
+
+```java
+@Bean
+public CommandTargetResolver myCommandTargetResolver() {
+    return new MetaDataCommandTargetResolver("myAggregateId");
+}
+...
+@Aggregate(commandTargetResolver = "myCommandTargetResolver")
+public class MyAggregate {...}
+```
 
 ## Saga Configuration
 
