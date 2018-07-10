@@ -124,7 +124,17 @@ Complex business logic often requires more than what an aggregate with only an a
 
 Axon provides support for event sourcing in complex aggregate structures. Entities are, just like the Aggregate Root, simple objects. The field that declares the child entity must be annotated with `@AggregateMember`. This annotation tells Axon that the annotated field contains a class that should be inspected for Command and Event Handlers.
 
-When an Entity \(including the Aggregate Root\) applies an Event, it is handled by the Aggregate Root first, and then bubbles down through all `@AggregateMember` annotated fields to its child entities.
+When an Entity \(including the Aggregate Root\) applies an Event, it is handled by the Aggregate Root first, and then bubbles down through `@AggregateMember` annotated fields to its child entities.
+
+> **Note** There is a way to filter the entities which would handle an event applied by the Aggregate Root. This can be achieved using `eventForwardingMode` attribute of `@AggregateMember` annotation. By default, an event is propagated to **all** child entities. An event can be blocked using `ForwardNone` event forwarding mode. If you want to forward an event to specific entity instances use `ForwardMatchingInstances` event forwarding mode. Listing below shows how to specify forwarding mode on aggregate member.
+>```java
+>public class MyAggregate {
+>    ...
+>    @AggregateMember(eventForwardingMode = ForwardNone.class)
+>    private MyEntity myEntity;
+>    ...
+>}
+>```
 
 Fields that \(may\) contain child entities must be annotated with `@AggregateMember`. This annotation may be used on a number of field types:
 
