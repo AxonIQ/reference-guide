@@ -158,6 +158,27 @@ There are different types of interceptors: Dispatch Interceptors and Handler Int
 
 Message Dispatch Interceptors are invoked when a command is dispatched on a Command Bus. They have the ability to alter the Command Message, by adding Meta Data, for example, or block the command by throwing an Exception. These interceptors are always invoked on the thread that dispatches the Command.
 
+Let's create a Message Dispatch Interceptor which log each command message being dispatched on a `CommandBus`.
+```java
+public class MyCommandDispatchInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyCommandDispatchInterceptor.class);
+    
+    @Override
+    public BiFunction<Integer, CommandMessage<?>, CommandMessage<?>> handle(
+            List<? extends CommandMessage<?>> messages) {
+        return (index, command) -> {
+            LOGGER.info("Dispatching a command {}.", command);
+            return command;
+        };
+    }
+}
+```
+We can register this interceptor with `CommandBus` by doing the following:
+```java
+commandBus.registerDispatchInterceptor(new MyCommandDispatchInterceptor());
+```
+
 #### Structural validation
 
 There is no point in processing a command if it does not contain all required information in the correct format. In fact, a command that lacks information should be blocked as early as possible, preferably even before any transaction is started. Therefore, an interceptor should check all incoming commands for the availability of such information. This is called structural validation.
@@ -179,6 +200,30 @@ Interceptors must implement the `MessageHandlerInterceptor` interface. This inte
 Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of the Command Handler. That means they can attach correlation data based on the Message being handled to the Unit of Work, for example. This correlation data will then be attached to messages being created in the context of that Unit of Work.
 
 Handler Interceptors are also typically used to manage transactions around the handling of a command. To do so, register a `TransactionManagingInterceptor`, which in turn is configured with a `TransactionManager` to start and commit \(or roll back\) the actual transaction.
+
+Let's create a Message Handler Interceptor which will allow handling of commands that contain `axonUser` as a value for `userId` field in meta-data. If the `userId` is not present in the meta-data exception will be thrown which will prevent the command from being handled. If the `userId` does not match `axonUser` value, we will not proceed through the chain. 
+
+```java
+public class MyCommandHandlerInterceptor implements MessageHandlerInterceptor<CommandMessage<?>> {
+
+    @Override
+    public Object handle(UnitOfWork<? extends CommandMessage<?>> unitOfWork, InterceptorChain interceptorChain)
+            throws Exception {
+        CommandMessage<?> command = unitOfWork.getMessage();
+        String userId = Optional.ofNullable(command.getMetaData().get("userId"))
+                                .map(uId -> (String) uId)
+                                .orElseThrow(IllegalCommandException::new);
+        if ("axonUser".equals(userId)) {
+            return interceptorChain.proceed();
+        }
+        return null;
+    }
+}
+```
+We can register the interceptor with the `CommandBus`:
+```java
+commandBus.registerHandlerInterceptor(new MyCommandHandlerInterceptor());
+```
 
 ## Distributing the Command Bus
 
