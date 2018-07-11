@@ -126,11 +126,20 @@ Axon provides support for event sourcing in complex aggregate structures. Entiti
 
 When an Entity \(including the Aggregate Root\) applies an Event, it is handled by the Aggregate Root first, and then bubbles down through `@AggregateMember` annotated fields to its child entities.
 
-> **Note** There is a way to filter the entities which would handle an event applied by the Aggregate Root. This can be achieved using `eventForwardingMode` attribute of `@AggregateMember` annotation. By default, an event is propagated to **all** child entities. An event can be blocked using `ForwardNone` event forwarding mode. If you want to forward an event to specific entity instances use `ForwardMatchingInstances` event forwarding mode. Listing below shows how to specify forwarding mode on aggregate member.
+> **Note** There is a way to filter the entities which would handle an event applied by the Aggregate Root. This can be achieved by using `eventForwardingMode` attribute of `@AggregateMember` annotation. By default, an event is propagated to **all** child entities. An event can be blocked using `ForwardNone` event forwarding mode (see listing below). 
 >```java
 >public class MyAggregate {
 >    ...
 >    @AggregateMember(eventForwardingMode = ForwardNone.class)
+>    private MyEntity myEntity;
+>    ...
+>}
+>```
+>If you want to forward an event to the entity only in a case when an event message has matching entity identifier use `ForwardMatchingInstances` event forwarding mode. Entity identifier matching will be done based on specified `routingKey` on `@AggregateMember` annotation. If `routingKey` is not specified on `@AggregateMember` annotation, matching will be done based on `routingKey` attribute on `@EntityId` annotation. If `routingKey` is not specified on `@EntityId` annotation matching will be done based on field name of entity identifier. Let's take a look at example how to define `ForwardMatchingInstances` event forwarding mode:
+>```java
+>public class MyAggregate {
+>    ...
+>    @AggregateMember(eventForwardingMode = ForwardMatchingInstances.class)
 >    private MyEntity myEntity;
 >    ...
 >}
