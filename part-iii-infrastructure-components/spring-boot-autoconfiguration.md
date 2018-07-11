@@ -78,7 +78,7 @@ public Repository<MyAggregate> repositoryForMyAggregate(EventStore eventStore) {
 public class MyAggregate {...}
 ```
 
-It is possible to define a custom [`SnapshotTriggerDefinition`](repository-and-event-store.md#creating-a-snapshot) for an aggregate as a spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows defining a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot on each 500th event.
+It is possible to define a custom [`SnapshotTriggerDefinition`](repository-and-event-store.md#creating-a-snapshot) for an aggregate as a spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows how to define a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot on each 500th event.
 
 ```java
 @Bean
@@ -90,7 +90,7 @@ public SnapshotTriggerDefinition mySnapshotTriggerDefinition(Snapshotter snapsho
 public class MyAggregate {...}
 ```
 
-Defining a [`CommandTargetResolver`](/part-ii-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in spring application context will cause this resolver being used for all aggregates. However, using the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. Bean definition of `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
+Defining a [`CommandTargetResolver`](/part-ii-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring Application context will cause that resolver to be used for all aggregate definitions. However, using the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
 
 ```java
 @Bean
