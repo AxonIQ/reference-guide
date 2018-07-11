@@ -8,6 +8,39 @@ You can configure additional `ParameterResolver`s by extending the `ParameterRes
 >
 > At this moment, OSGi support is limited to the fact that the required headers are mentioned in the manifest file. The automatic detection of `ParameterResolverFactory` instances works in OSGi, but due to classloader limitations, it might be necessary to copy the contents of the `/META-INF/service/org.axonframework.common.annotation.ParameterResolverFactory` file to the OSGi bundle containing the classes to resolve parameters for \(i.e. the event handler\).
 
+## Serializers
+
+Serializers come in several flavors in the Axon Framework and are used for a variety of subjects. Currently you can choose between the `XStreamSerializer`, `JacksonSerializer` and `JavaSerializer` to serialize the messages (commands/queries/events), tokens, snapshots and sagas in an Axon application. 
+
+As there are several objects to be serialized, it is typically desired to tune which serializer handles which. To that end, the `Configuration` API allows you to define a default, message and event serializer, which lead to the following object-serialization break down:
+
+1. The Event `Serializer` is in charge of de-/serializing Event messages.
+2. The Message `Serializer` is in charge of de-/serializing the Command and Query messages (used in a distributed application set up). 
+3. The Default `Serializer` is in charge of de-/serializing the remainder, being the Tokens, Snapshots and Sagas.
+
+By default all three `Serializer` flavors are set to use the `XStreamSerializer`, which internally uses the [XStream](http://x-stream.github.io/) to serialize objects to an XML format. XML is a verbose format to serialize to, but has the major benefit of being able to serialize almost everything. This verbosity is typically fine when storing your tokens, sagas and snapshots, but for messages (and specifically events) XML might proof to cost to much due to its serialized size. Thus for optimization reasons you can configure different serializers for your messages. 
+
+There is an implicit ordering between the configurable serializer. If no Event `Serializer` is configured, the Event de-/serialization will be performed by the Message `Serializer`. In turn, if not Message `Serializer` is configured, the Default `Serializer` will take that role.
+
+See the following example on how to configure each serializer specifically, were we use `XStreamSerializer` as the default and `JacksonSerializer` for all our messages: 
+
+```java
+public class SerializerConfiguration {
+    
+    public void serializerConfiguration(Configurer configurer) {
+        // Per default we want the XStreamSerializer
+        XStreamSerializer defaultSerializer = new XStreamSerializer();
+        // But for all our messages we'd prefer the JacksonSerializer due to JSON its smaller format
+        JacksonSerializer messageSerializer = new JacksonSerializer();
+        
+        configurer.configureSerializer(configuration -> defaultSerializer)
+                  .configureMessageSerializer(configuration -> messageSerializer)
+                  .configureEventSerializer(configuration -> messageSerializer);
+    }
+}
+
+```
+
 ## Meta Annotations
 
 TODO
