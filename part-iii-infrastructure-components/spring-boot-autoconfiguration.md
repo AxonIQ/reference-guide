@@ -28,7 +28,7 @@ If no `TransactionManager` implementation is explicitly defined in the Applicati
 
 ## Serializer Configuration
 
-By default, Axon uses an XStream based serializer to serialize objects, as is described in further detail [here](../part-iv-advanced-tuning/advanced-customizations.md#serializers). This can be changed by defining a bean of type `Serializer` in the application context.
+By default, Axon uses an XStream based serializer to serialize objects, as is described in further detail in the [Advanced Customizations](../part-iv-advanced-tuning/advanced-customizations.md#serializers) section. This can be changed by defining a bean of type `Serializer` in the application context.
 
 While the default Serializer provides an arguably ugly xml based format, it is capable of serializing and deserializing virtually anything, making it a very sensible default. However, for events, which needs to be stored for a long time and perhaps shared across application boundaries, it is desirable to customize the format.
 

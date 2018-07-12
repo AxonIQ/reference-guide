@@ -14,13 +14,13 @@ Serializers come in several flavors in the Axon Framework and are used for a var
 
 As there are several objects to be serialized, it is typically desired to tune which serializer handles which. To that end, the `Configuration` API allows you to define a default, message and event serializer, which lead to the following object-serialization break down:
 
-1. The Event `Serializer` is in charge of de-/serializing Event messages.
-2. The Message `Serializer` is in charge of de-/serializing the Command and Query messages (used in a distributed application set up). 
-3. The Default `Serializer` is in charge of de-/serializing the remainder, being the Tokens, Snapshots and Sagas.
+1. The Event `Serializer` is in charge of de-/serializing Event messages. Events are typically stored in an Event Store for a long period of time. This is the main driver for choosing the Event `Serializer` implementation.
+2. The Message `Serializer` is in charge of de-/serializing the Command and Query messages (used in a distributed application set up). Messages are shared between nodes and typically need to be interoperable and/or compact. Take this into account when choosing the Message `Serializer`. 
+3. The Default `Serializer` is in charge of de-/serializing the remainder, being the Tokens, Snapshots and Sagas. These objects are generally not shared between different applications, and most of these classes aren't expected to have some of the getters and setters that are, for example, typically required by Jackson based serializers. A flexible, general purpose serializer like [XStream](http://x-stream.github.io/) is quite suited for this purpose.
 
-By default all three `Serializer` flavors are set to use the `XStreamSerializer`, which internally uses the [XStream](http://x-stream.github.io/) to serialize objects to an XML format. XML is a verbose format to serialize to, but has the major benefit of being able to serialize almost everything. This verbosity is typically fine when storing your tokens, sagas and snapshots, but for messages (and specifically events) XML might proof to cost to much due to its serialized size. Thus for optimization reasons you can configure different serializers for your messages. 
+By default all three `Serializer` flavors are set to use the `XStreamSerializer`, which internally uses [XStream](http://x-stream.github.io/) to serialize objects to an XML format. XML is a verbose format to serialize to, but XStream has the major benefit of being able to serialize virtually anything. This verbosity is typically fine when storing tokens, sagas or snapshots, but for messages (and specifically events) XML might prove to cost too much due to its serialized size. Thus for optimization reasons you can configure different serializers for your messages. 
 
-There is an implicit ordering between the configurable serializer. If no Event `Serializer` is configured, the Event de-/serialization will be performed by the Message `Serializer`. In turn, if not Message `Serializer` is configured, the Default `Serializer` will take that role.
+There is an implicit ordering between the configurable serializer. If no Event `Serializer` is configured, the Event de-/serialization will be performed by the Message `Serializer`. In turn, if no Message `Serializer` is configured, the Default `Serializer` will take that role.
 
 See the following example on how to configure each serializer specifically, were we use `XStreamSerializer` as the default and `JacksonSerializer` for all our messages: 
 
