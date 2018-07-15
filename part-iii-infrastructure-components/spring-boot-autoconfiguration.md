@@ -90,7 +90,7 @@ public SnapshotTriggerDefinition mySnapshotTriggerDefinition(Snapshotter snapsho
 public class MyAggregate {...}
 ```
 
-Defining a [`CommandTargetResolver`](/part-ii-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring Application context will cause that resolver to be used for all aggregate definitions. However, using the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
+Defining a [`CommandTargetResolver`](/part-ii-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring Application context will cause that resolver to be used for all aggregate definitions. However, you can also define multiple beans and specify the instance to use with the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
 
 ```java
 @Bean
