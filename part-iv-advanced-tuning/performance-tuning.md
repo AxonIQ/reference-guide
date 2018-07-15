@@ -2,8 +2,6 @@
 
 ## Performance Tuning
 
-TODO: Update to Axon 3
-
 This chapter contains a checklist and some guidelines to take into consideration when getting ready for production-level performance. By now, you have probably used the test fixtures to test your command handling logic and sagas. The production environment isn't as forgiving as a test environment, though. Aggregates tend to live longer, be used more frequently and concurrently. For the extra performance and stability, you're better off tweaking the configuration to suit your specific needs.
 
 ## Database Indexes and Column Types
@@ -70,15 +68,19 @@ Here are a few guidelines that help you get the most out of your caching solutio
 
 * Make sure the Unit Of Work never needs to perform a rollback for functional reasons.
 
-  A rollback means that an aggregate has reached an invalid state. Axon will automatically invalidate the cache entries involved. The next request will force the aggregate to be reconstructed from its Events. If you use exceptions as a potential \(functional\) return value, you can configure a `RollbackConfiguration` on your Command Bus. By default, the Unit Of Work will be rolled back on runtime exceptions.
+  A rollback means that an aggregate has reached an invalid state. Axon will automatically invalidate the cache entries involved. The next request will force the aggregate to be reconstructed from its Events. If you use exceptions as a potential \(functional\) return value, you can configure a `RollbackConfiguration` on your Command Bus. By default, the Unit Of Work will be rolled back on runtime exceptions for Command handlers, and on all exceptions for Event Handlers.
 
 * All commands for a single aggregate must arrive on the machine that has the aggregate in its cache.
 
-  This means that commands should be consistently routed to the same machine, for as long as that machine is "healthy". Routing commands consistently prevents the cache from going stale. A hit on a stale cache will cause a command to be executed and fail at the moment events are stored in the event store.
+  This means that commands should be consistently routed to the same machine, for as long as that machine is "healthy". Routing commands consistently prevents the cache from going stale. A hit on a stale cache will cause a command to be executed and fail at the moment events are stored in the event store. By default, Axon's Distributed Command Bus components will use consistent hashing to route Commands.
 
 * Configure a sensible time to live / time to idle
 
   By default, caches have a tendency to have a relatively short time to live, a matter of minutes. For a command handling component with consistent routing, a longer time-to-idle and time-to-live is usually better. This prevents the need to re-initialize an aggregate based on its events, just because its cache entry expired. The time-to-live of your cache should match the expected lifetime of your aggregate.
+  
+* Cache data in-memory
+
+   For true optimziation, caches should keep data in-memory (and preferably on-heap) to best performance. This prevents the need to (se)serialize Aggregates when storing to disk and even off-heap. 
 
 ## Snapshotting
 
