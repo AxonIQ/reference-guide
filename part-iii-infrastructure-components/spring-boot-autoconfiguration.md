@@ -118,8 +118,8 @@ axon.eventhandling.processors.name.source=eventBus
 If the name of a processor contains periods `.`, use the map notation:
 
 ```text
-axon.eventhandling.processors["name"].mode=tracking
-axon.eventhandling.processors["name"].source=eventBus
+axon.eventhandling.processors[name].mode=tracking
+axon.eventhandling.processors[name].source=eventBus
 ```
 
 Or using application.yml:
