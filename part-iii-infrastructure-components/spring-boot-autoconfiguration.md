@@ -66,19 +66,9 @@ The `@Aggregate` annotation \(in package `org.axonframework.spring.stereotype`\)
 
 Axon will automatically register all the `@CommandHandler` annotated methods with the Command Bus and set up a repository if none is present.
 
-To set up a different repository than the default, define one in the application context. Optionally, you may define the name of the repository to use, using the `repository` attribute on `@Aggregate`. If no `repository` attribute is defined, Axon will attempt to use the repository with the name of the aggregate \(first character lowercase\), suffixed with `Repository`. So on a class of type `MyAggregate`, the default Repository name is `myAggregateRepository`. If no bean with that name is found, Axon will define an `EventSourcingRepository` \(which fails if no `EventStore` is available\).
-
-```java
-@Bean
-public Repository<MyAggregate> repositoryForMyAggregate(EventStore eventStore) {
-    return new EventSourcingRepository<>(MyAggregate.class, eventStore);
-}
-...
-@Aggregate(repository = "repositoryForMyAggregate")
-public class MyAggregate {...}
-```
-
 It is possible to define a custom [`SnapshotTriggerDefinition`](repository-and-event-store.md#creating-a-snapshot) for an aggregate as a spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows how to define a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot on each 500th event.
+
+Note that a `Snapshotter` instance, if not explicitly defined as a Bean already, will be automatically configured for you. This means you can simply pass the `Snapshotter` as a parameter to your `SnapshotTriggerDefinition`.
 
 ```java
 @Bean
@@ -101,6 +91,21 @@ public CommandTargetResolver myCommandTargetResolver() {
 @Aggregate(commandTargetResolver = "myCommandTargetResolver")
 public class MyAggregate {...}
 ```
+
+To fully customize the repository used, you can define one in the Application Context. For Axon Framework to use this repository for the intended Aggregate, define the bean name of the repository in the `repository` attribute on `@Aggregate` Annotation. Alternatively, specify the bean name of the Repository to be the aggregate's name, \(first character lowercase\), suffixed with `Repository`. So on a class of type `MyAggregate`, the default Repository name is `myAggregateRepository`. If no bean with that name is found, Axon will define an `EventSourcingRepository` \(which fails if no `EventStore` is available\).
+
+```java
+@Bean
+public Repository<MyAggregate> repositoryForMyAggregate(EventStore eventStore) {
+    return new EventSourcingRepository<>(MyAggregate.class, eventStore);
+}
+...
+@Aggregate(repository = "repositoryForMyAggregate")
+public class MyAggregate {...}
+```
+
+Note that this requires full configuration of the Repository, including any `SnapshotTriggerDefinition` or `AggregateFactory` that may otherwise have been configured automatically.
+
 
 ## Saga Configuration
 
