@@ -36,23 +36,51 @@ The 'timestamp' column in the DomainEventEntry table only stores ISO 8601 timest
 
 The 'type' column in the DomainEventEntry stores the Type Identifiers of aggregates. Generally, these are the 'simple name' of the aggregate. Event the infamous 'AbstractDependencyInjectionSpringContextTests' in spring only counts 45 characters. Here, again, a shorter \(but variable\) length field should suffice.
 
+#### Auto-increments and Sequences
+
+When using a relational database as an event store, Axon relies on an auto-increment value to allow tracking processors to read all events, roughly in the order they were inserted. "Roughly", because "insert-order" and "commit-order" are different things. 
+
+While auto-increment values are (generally) generated at insert-time, these values only become visible at commit-time. This means another process may observe these sequence numbers arriving in a different order. While Axon has mechanisms to ensure eventually all events are handled, even when they become visible in a different order, there are limitations and performance aspects to consider.
+
+When a tracking processor read events, it uses the "global sequence" to track its progress. When events become available in a different order than they were inserted, Axon will encounter a "Gap". Axon will remember these "Gaps" to verify it data has become available since the last read. 
+These gaps may be the result of events becoming visible in a different order, but also because a transaction was rolled back. It is highly recommended to ensure that no gaps exist because of over eagerly increasing the sequence number. The mechanism for checking gaps is convenient, but comes with a performance impact.
+
+When using a JPA based Event Storage Engine, Axon relies on the JPA implementation to create the table structure. While this will work, it is unlikely to provide the configuration that has the best performance for the database engine in use. That is because Axon uses default settings on the `@GeneratedValue` anntation.
+
+To override these settings, create a file called `/META-INF/orm.xml` on the classpath, which looks as follows:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="1.0" xmlns="http://java.sun.com/xml/ns/persistence/orm">
+
+    <mapped-superclass access="FIELD" metadata-complete="false"
+                       class="org.axonframework.eventsourcing.eventstore.AbstractSequencedDomainEventEntry">
+        <attributes>
+            <id name="globalIndex">
+                <generated-value strategy="SEQUENCE" generator="myGenerator"/>
+                <sequence-generator name="myGenerator" sequence-name="mySequence"/>
+            </id>
+        </attributes>
+    </mapped-superclass>
+</entity-mappings>
+```
+
+It is important to specify `metadata-complete="false"`, as this indicates this file should be used to override existing annotations, instead of replacing them. For the best results, ensure that the `DomainEventEntry` table uses its own sequence. This can be ensured by specifying a different sequence generate for that entity only.
+
 ### MongoDB
 
-By default, the MongoEventStore will only generate the index it requires for correct operation. That means the required unique index on "Aggregate Identifier", "Aggregate Type" and "Event Sequence Number" is created when the Event Store is created. However, when using the MongoEventStore for certain operations, it might be worthwhile to add some extra indices.
+The MongoEventStorageEngine has an `@PostConstruct` annotated method, called `ensureIndexes` which will generate the indexes required for correct operation. That means, when running in a container that automatically calls `@PostConstruct` handlers, the required unique index on "Aggregate Identifier" and "Event Sequence Number" is created when the Event Store is created. 
 
 Note that there is always a balance between query optimization and update speed. Load testing is ultimately the best way to discover which indices provide the best performance.
 
 * Normal operational use:
 
   An index is automatically created on "aggregateIdentifier", "type" and "sequenceNumber" in the domain events \(default name: "domainevents"\) collection
+  
+  Additionally, a non-unique index on "timestamp" and "sequenceNumber" is configured on the domain events \(default name: "domainevents"\) collection, for the Tracking Event Processors    
 
 * Snapshotting:
 
-  Put a \(unique\) index on "aggregateIdentifier", "type" and "sequenceNumber" in the snapshot events \(default name: "snapshotevents"\) collection
-
-* Replaying events:
-
-  Put a non-unique index on "timestamp" and "sequenceNumber" in the domain events \(default name: "domainevents"\) collection
+  An \(unique\) index on "aggregateIdentifier" and "sequenceNumber" is automatically created in the snapshot events \(default name: "snapshotevents"\) collection
 
 * Sagas:
 
@@ -125,4 +153,3 @@ There are a few requirements for the `IdentifierFactory`. The implementation mus
 * extend `IdentifierFactory`,
 * be accessible by the context classloader of the application or by the classloader that loaded the `IdentifierFactory` class, and must
 * be thread-safe.
-
