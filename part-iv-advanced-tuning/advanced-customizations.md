@@ -14,7 +14,7 @@ TODO
 
 ## Customizing Message Handler behavior
 
-### HanderEnhancers
+### HandlerEnhancers
 
 It is possible to wrap handlers with custom logic. This differs from HandlerInterceptors in that you have access to the Aggregate member at the time of resolving.
 You can use HandlerEnhancers to intercept and perform checks on groups of `@CommandHandler`s or `@EventHandler`s. 
@@ -74,3 +74,9 @@ public class MethodCommandHandlerDefinition implements HandlerEnhancerDefinition
 
 To skip all handling of the handler then just throw an exception.
 
+## Filtering Event Storage Engine
+In cases when we want to chose which events to store, `FilteringEventStorageEngine` comes handy. One imaginable case could be that we don't want to store non-domain events. `FilteringEventStorageEngine` uses a `Predicate<? super EventMessage<?>>` in order to filter events which get stored in the delegated engine. Let's try to configure a `FilteringEventStorageEngine` with `Configurer` (if you are using spring, it's enough to have a bean of type `EventStorageEngine` in your application context). This engine will store domain events only.
+```java
+EventStorageEngine delegate = ...
+configurer.configureEmbeddedEventStore(c -> new FilteringEventStorageEngine(delegate, em -> em instanceof DomainEventMessage));
+```
