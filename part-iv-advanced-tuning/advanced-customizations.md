@@ -10,13 +10,37 @@ You can configure additional `ParameterResolver`s by extending the `ParameterRes
 
 ## Meta Annotations
 
-TODO
+Most annotations in Axon can be placed on other annotations, as so-called meta-annotation. When Axon scans for annotations, it will automatically scan meta-annotations as well. Annotations can override the properties defined on the meta-annotations, if desired.
+
+For example, if you have a practice in your development team that payloads are always represented in JSON and you wish the command name to be explicitly configured, you could create your own annotation:
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.ANNOTATION_TYPE})
+@CommandHandler(payloadType = JsonNode.class)
+public @interface JsonCommandHandler {
+    
+    String commandName;
+    
+    String routingKey() default "";
+}
+```
+
+By specifying the `payloadType` on the `@CommandHandler` meta-annotation, this becomes the value used for all Command Handlers annotated with `JsonCommandHandler`. These command handlers may (and should) still provide a parameter for the payload, but Axon will complain if it isn't a subclass of `JsonNode`.
+
+The `commandName` attribute on the `JsonCommandHandler` annotation does not have a default value, and will therefore force developers to specify the name of the command. Note that, to override values, the attribute name must identical to the name on the `@CommandHandler` meta-annotation.
+
+Lastly, the `routingKey` property is defined exactly as in the `@CommandHandler` annotation's specification to still allow developers to choose to provide a Routing Key when using the `JsonCommandHandler`.
+
+When writing custom logic to access properties of annotation that may be meta-annotated, be use to use the `AnnotationUtils#findAnnotationAttributes(AnnotatedElement, String)` method, or the `annotationAttributes` on the `MessageHandlingMember`. Using Java's annotation API will not consider meta-annotations.
 
 ## Customizing Message Handler behavior
 
-### HanderEnhancers
+Overriding annotations is very useful to implement best practices that you have established in your team, providing defaults or restrictions of how annotations may be used. However, they can also be very useful when special behavior needs to be added to message handlers based on the presence of an annotation.
 
-It is possible to wrap handlers with custom logic. This differs from HandlerInterceptors in that you have access to the Aggregate member at the time of resolving.
+### HandlerEnhancers
+
+Handler Enhancers allow you to wrap handlers and add custom logic to the execution, or eligibility of handlers for a certain message. This differs from HandlerInterceptors in that you have access to the Aggregate member at the time of resolving, and it allows for more fine-grained control
+.
 You can use HandlerEnhancers to intercept and perform checks on groups of `@CommandHandler`s or `@EventHandler`s. 
 
 To create a HandlerEnhancer you start by implementing `HandlerEnhancerDefinition` and overriding the `wrapHandler()` method. 
@@ -25,7 +49,7 @@ All this method does is give you access to the `MessageHandlingMember<T>` which 
 You can then sort these handlers based on their annotations by using the `annotationAttributes(Annotation annotation)` method. This will filter out only those handlers that use that `Annotation`.
 
 For your HandlerEnhancer to run you'll need to create a `META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition` file containing
-the fully qualified name of the handler enhancer you would like to use.
+the fully qualified class name of the handler enhancer you have created.
 
 Example:
 
