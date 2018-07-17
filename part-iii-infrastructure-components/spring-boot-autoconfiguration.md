@@ -28,7 +28,7 @@ If no `TransactionManager` implementation is explicitly defined in the Applicati
 
 ## Serializer Configuration
 
-By default, Axon uses an XStream based serializer to serialize objects. This can be changed by defining a bean of type `Serializer` in the application context.
+By default, Axon uses an XStream based serializer to serialize objects, as is described in further detail in the [Advanced Customizations](../part-iv-advanced-tuning/advanced-customizations.md#serializers) section. This can be changed by defining a bean of type `Serializer` in the application context.
 
 While the default Serializer provides an arguably ugly xml based format, it is capable of serializing and deserializing virtually anything, making it a very sensible default. However, for events, which needs to be stored for a long time and perhaps shared across application boundaries, it is desirable to customize the format.
 
@@ -37,26 +37,46 @@ You can define a separate Serializer to be used to serialize events, by assignin
 Example:
 
 ```java
-@Qualifier("eventSerializer")
-@Bean
-public Serializer eventSerializer() {
-    return new JacksonSerializer();
+class SerializerConfiguration {
+    
+    @Qualifier("eventSerializer")
+    @Bean
+    public Serializer eventSerializer() {
+        return new JacksonSerializer();
+    }
 }
+```
+
+Equal to events, you can also customize the Message `Serializer` used by your application. The Message `Serializer` comes into play when your Command and Query message are sent from one node to another in a distributed environment. To set a custom `Serializer` for you message you can simply define a `messageSerializer` bean like so:
+
+```java
+class SerializerConfiguration {
+    
+    @Qualifier("messageSerializer")
+    @Bean
+    public Serializer messageSerializer() {
+        return new XStreamSerializer();
+    }
+}
+
 ```
 
 When overriding both the default serializer and defining an event serializer, we must instruct Spring that the default serializer is, well, the default:
 
 ```java
-@Primary // marking it primary means this is the one to use, if no specific Qualifier is requested
-@Bean
-public Serializer serializer() {
-    return new MyCustomSerializer();
-}
+class SerializerConfiguration {
 
-@Qualifier("eventSerializer")
-@Bean
-public Serializer eventSerializer() {
-    return new JacksonSerializer();
+    @Primary // Marking it primary means this is the one to use, if no specific Qualifier is requested
+    @Bean
+    public Serializer serializer() {
+        return new MyCustomSerializer();
+    }
+
+    @Qualifier("eventSerializer")
+    @Bean
+    public Serializer eventSerializer() {
+        return new JacksonSerializer();
+    }
 }
 ```
 
