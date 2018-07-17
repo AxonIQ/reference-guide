@@ -165,7 +165,7 @@ public class MyCommandDispatchInterceptor implements MessageDispatchInterceptor<
     private static final Logger LOGGER = LoggerFactory.getLogger(MyCommandDispatchInterceptor.class);
     
     @Override
-    public BiFunction<Integer, CommandMessage<?>, CommandMessage<?>> handle( List<? extends CommandMessage<?>> messages) {
+    public BiFunction<Integer, CommandMessage<?>, CommandMessage<?>> handle(List<? extends CommandMessage<?>> messages) {
         return (index, command) -> {
             LOGGER.info("Dispatching a command {}.", command);
             return command;
@@ -179,9 +179,7 @@ public class CommandBusConfiguration {
     
     public CommandBus configureCommandBus() {
         CommandBus commandBus = new SimpleCommandBus();
-        
         commandBus.registerDispatchInterceptor(new MyCommandDispatchInterceptor());
-        
         return commandBus;
     }
 }
@@ -209,7 +207,7 @@ Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of
 
 Handler Interceptors are also typically used to manage transactions around the handling of a command. To do so, register a `TransactionManagingInterceptor`, which in turn is configured with a `TransactionManager` to start and commit \(or roll back\) the actual transaction.
 
-Let's create a Message Handler Interceptor which will allow handling of commands that contain `axonUser` as a value for the `userId` field contained in the `MetaData`. If the `userId` is not present in the meta-data an exception will be thrown which will prevent the command from being handled. If the `userId`'s value does not match `axonUser`, we will not proceed through the chain. 
+Let's create a Message Handler Interceptor which will only allow the handling of commands that contain `axonUser` as a value for the `userId` field in the `MetaData`. If the `userId` is not present in the meta-data, an exception will be thrown which will prevent the command from being handled. And if the `userId`'s value does not match `axonUser`, we will also not proceed up the chain. 
 
 ```java
 public class MyCommandHandlerInterceptor implements MessageHandlerInterceptor<CommandMessage<?>> {
@@ -233,9 +231,7 @@ public class CommandBusConfiguration {
     
     public CommandBus configureCommandBus() {
         CommandBus commandBus = new SimpleCommandBus();
-        
         commandBus.registerHandlerInterceptor(new MyCommandHandlerInterceptor());
-        
         return commandBus;
     }
 }
