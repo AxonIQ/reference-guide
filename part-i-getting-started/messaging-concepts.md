@@ -102,3 +102,16 @@ When application components need resources at different stages of message proces
 
 When nested Units of Work need to be able to access a resource, it is recommended to register it on the root Unit of Work, which can be accessed using `unitOfWork.root()`. If a Unit of Work is the root, it will simply return itself.
 
+## Correlation Data Provider
+As already mentioned, Axon Framework is based on messaging concepts. In order to understand the flow of the living system, it is crucial to follow the message path. Hence, certain meta-data should be added to the message to be possible to track the message path through the system. Correlation Data is something that is usually added to the message meta-data so we can track the origins and causality of the message.
+
+Axon defines `CorrelationDataProvider` as the mechanism to extract the Correlation Data from the Message. There are three implementations of `CorrelationDataProvider` that come with Axon:
+* `MessageOriginProvider` - Provides the correlation identifier and trace identifier based on configurable keys in meta-data. Correlation identifier is always the identifier of the current message. Trace identifier is the identifier of the message which started the current processing (this could be the identifier of the current message if the current message starts the processing). Processing in this context can be understood as a business transaction. This is the default provider.
+* `SimpleCorrelationDataProvider` - It is broader provider than `MessageOriginProvider` in a sense that it does not rely on correlation and trace identifiers only but defines configurable headers (similar to keys in `MessageOriginProvider`) and extracts information from meta-data based on them.
+* `MultiCorrelationDataProvider` - It simply has a list of delegate `CorrelationDataProvider`s and delegates Correlation Data extraction to them.
+
+It is possible to define your own `CorrelationDataProvider`.
+
+On top of `CorrelationDataProvider`s there is a `CorrelationDataInterceptor` which is a handler interceptor and it registers all configured `CorrelationDataProvider`s with a current unit of work.
+
+By calling `configurer.configureCorrelationDataProviders(Function<Configuration, List<CorrelationDataProvider>> correlationDataProviderBuilder)` it is possible to configure `CorrelationDataProvider`s. If you are using spring, having a bean of type `CorrelationDataProvider` in spring application context is sufficient.
