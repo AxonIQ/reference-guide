@@ -158,15 +158,14 @@ There are different types of interceptors: Dispatch Interceptors and Handler Int
 
 Message Dispatch Interceptors are invoked when a command is dispatched on a Command Bus. They have the ability to alter the Command Message, by adding Meta Data, for example, or block the command by throwing an Exception. These interceptors are always invoked on the thread that dispatches the Command.
 
-Let's create a Message Dispatch Interceptor which log each command message being dispatched on a `CommandBus`.
+Let's create a Message Dispatch Interceptor which logs each command message being dispatched on a `CommandBus`.
 ```java
 public class MyCommandDispatchInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MyCommandDispatchInterceptor.class);
     
     @Override
-    public BiFunction<Integer, CommandMessage<?>, CommandMessage<?>> handle(
-            List<? extends CommandMessage<?>> messages) {
+    public BiFunction<Integer, CommandMessage<?>, CommandMessage<?>> handle( List<? extends CommandMessage<?>> messages) {
         return (index, command) -> {
             LOGGER.info("Dispatching a command {}.", command);
             return command;
@@ -174,9 +173,18 @@ public class MyCommandDispatchInterceptor implements MessageDispatchInterceptor<
     }
 }
 ```
-We can register this interceptor with `CommandBus` by doing the following:
+We can register this dispatch interceptor with a `CommandBus` by doing the following:
 ```java
-commandBus.registerDispatchInterceptor(new MyCommandDispatchInterceptor());
+public class CommandBusConfiguration {
+    
+    public CommandBus configureCommandBus() {
+        CommandBus commandBus = new SimpleCommandBus();
+        
+        commandBus.registerDispatchInterceptor(new MyCommandDispatchInterceptor());
+        
+        return commandBus;
+    }
+}
 ```
 
 #### Structural validation
@@ -201,14 +209,13 @@ Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of
 
 Handler Interceptors are also typically used to manage transactions around the handling of a command. To do so, register a `TransactionManagingInterceptor`, which in turn is configured with a `TransactionManager` to start and commit \(or roll back\) the actual transaction.
 
-Let's create a Message Handler Interceptor which will allow handling of commands that contain `axonUser` as a value for `userId` field in meta-data. If the `userId` is not present in the meta-data exception will be thrown which will prevent the command from being handled. If the `userId` does not match `axonUser` value, we will not proceed through the chain. 
+Let's create a Message Handler Interceptor which will allow handling of commands that contain `axonUser` as a value for the `userId` field contained in the `MetaData`. If the `userId` is not present in the meta-data an exception will be thrown which will prevent the command from being handled. If the `userId`'s value does not match `axonUser`, we will not proceed through the chain. 
 
 ```java
 public class MyCommandHandlerInterceptor implements MessageHandlerInterceptor<CommandMessage<?>> {
 
     @Override
-    public Object handle(UnitOfWork<? extends CommandMessage<?>> unitOfWork, InterceptorChain interceptorChain)
-            throws Exception {
+    public Object handle(UnitOfWork<? extends CommandMessage<?>> unitOfWork, InterceptorChain interceptorChain) throws Exception {
         CommandMessage<?> command = unitOfWork.getMessage();
         String userId = Optional.ofNullable(command.getMetaData().get("userId"))
                                 .map(uId -> (String) uId)
@@ -220,9 +227,18 @@ public class MyCommandHandlerInterceptor implements MessageHandlerInterceptor<Co
     }
 }
 ```
-We can register the interceptor with the `CommandBus`:
+We can register the handler interceptor with a `CommandBus` like so:
 ```java
-commandBus.registerHandlerInterceptor(new MyCommandHandlerInterceptor());
+public class CommandBusConfiguration {
+    
+    public CommandBus configureCommandBus() {
+        CommandBus commandBus = new SimpleCommandBus();
+        
+        commandBus.registerHandlerInterceptor(new MyCommandHandlerInterceptor());
+        
+        return commandBus;
+    }
+}
 ```
 
 ## Distributing the Command Bus
