@@ -64,7 +64,7 @@ The `commandName` attribute on the `JsonCommandHandler` annotation does not have
 
 Lastly, the `routingKey` property is defined exactly as in the `@CommandHandler` annotation's specification to still allow developers to choose to provide a Routing Key when using the `JsonCommandHandler`.
 
-When writing custom logic to access properties of annotation that may be meta-annotated, be use to use the `AnnotationUtils#findAnnotationAttributes(AnnotatedElement, String)` method, or the `annotationAttributes` on the `MessageHandlingMember`. Using Java's annotation API will not consider meta-annotations.
+When writing custom logic to access properties of annotation that may be meta-annotated, be sure to use the `AnnotationUtils#findAnnotationAttributes(AnnotatedElement, String)` method, or the `annotationAttributes` on the `MessageHandlingMember`. Using Java's annotation API will not take meta-annotations into consideration.
 
 ## Customizing Message Handler behavior
 
