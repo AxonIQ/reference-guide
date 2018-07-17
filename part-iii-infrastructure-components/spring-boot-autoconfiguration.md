@@ -47,7 +47,7 @@ class SerializerConfiguration {
 }
 ```
 
-Equal to events, you can also customize the Message `Serializer` used by your application. The Message `Serializer` comes into play when your Command and Query message are send from one node to another in a distributed environment. To set a custom `Serializer` for you message you can simply define a `messageSerializer` bean like so:
+Equal to events, you can also customize the Message `Serializer` used by your application. The Message `Serializer` comes into play when your Command and Query message are sent from one node to another in a distributed environment. To set a custom `Serializer` for you message you can simply define a `messageSerializer` bean like so:
 
 ```java
 class SerializerConfiguration {
