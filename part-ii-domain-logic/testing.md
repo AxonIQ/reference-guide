@@ -20,6 +20,10 @@ Although being more complex, the API of a command handling component is fairly e
 
 Axon Framework provides a test fixture that allows you to do exactly that. The `AggregateTestFixture` allows you to configure a certain infrastructure, composed of the necessary command handler and repository, and express your scenario in terms of given-when-then events and commands.
 
+> **Note**
+>
+> Since a unit of testing here is the Aggregate, `AggregateTestFixture` is meant to test one Aggregate only. So, all commands in `when` (or `given`) clause are meant to target the Aggregate under test fixture. Also, all `given` and `expected` events are meant to be triggered from the Aggregate under test fixture.
+
 The following example shows the usage of the given-when-then test fixture with JUnit 4:
 
 ```java
