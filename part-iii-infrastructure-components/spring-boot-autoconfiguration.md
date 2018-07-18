@@ -276,3 +276,10 @@ axon.distributed.spring-cloud.fallback-url=/message-routing-information
 
 For more fine-grained control, provide a `SpringCloudHttpBackupCommandRouter` or `SpringCloudCommandRouter` bean in your application context.
 
+#### Blacklisting
+
+On each heartbeat, membership of the cluster is updated. If message routing information of certain service instance is not available on this heartbeat signal, this service instance gets blacklisted. Service instance gets removed from the blacklist when it is no longer present on following heartbeats.
+
+> **Note**
+>
+> Good practice to follow on naming your service instances is to assign to the service instance name a random value. So, if service instance gets restarted it will get a different name which will help not being unnecessarily blacklisted.
