@@ -131,3 +131,15 @@ public class MethodCommandHandlerDefinition implements HandlerEnhancerDefinition
 
 To skip all handling of the handler then just throw an exception.
 
+## Filtering Event Storage Engine
+In some scenarios you might want to chose which events to store. For this you can use the `FilteringEventStorageEngine`. One imaginable use case could be that we don't want to store non-domain events. `FilteringEventStorageEngine` uses a `Predicate<? super EventMessage<?>>` in order to filter events which get stored in the delegated engine. Let's try to configure a `FilteringEventStorageEngine` with the `Configurer` (if you are using Spring, it's enough to have a bean of type `EventStorageEngine` in your Application Context). The next example will only store domain events:
+```java
+public class EventStorageEngineConfiguration {
+    
+    public void configureEventStorageEngine(Configurer configurer) {
+        EventStorageEngine delegate = ...; // It does not matter for this example what storage engine you use
+        
+        configurer.configureEmbeddedEventStore(c -> new FilteringEventStorageEngine(delegate, em -> em instanceof DomainEventMessage));        
+    }
+}
+```
