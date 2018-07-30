@@ -131,6 +131,8 @@ public class RedeemedEvt {
 ```
 
 > **Note** Command/Event definition looks a bit cumbersome, this can be avoided using hierarchy between commands/events, or using libraries like [lombok](https://projectlombok.org/), or using [kotlin](https://kotlinlang.org/) which provides more concise way of defining commands/events.
+>
+> Defined commands and events do not have `equals/hashCode/toString` methods overriden since our example would be lengthy. However, it is highly recommended to do so due to testing/debugging/auditing reasons.
 
 ### Aggregate
 
@@ -147,13 +149,13 @@ public class GiftCard {
         // (2)
     }
 	
-	@CommandHandler
+    @CommandHandler // (3)
     public GiftCard(IssueCmd cmd) {        
         if(cmd.getAmount() <= 0) throw new IllegalArgumentException("amount <= 0");
-        AggregateLifecycle.apply(new IssuedEvt(cmd.getId(), cmd.getAmount()));
+        AggregateLifecycle.apply(new IssuedEvt(cmd.getId(), cmd.getAmount())); // (4)
     }
 	
-	@EventSourcingHandler
+    @EventSourcingHandler // (5)
     public void on(IssuedEvt evt) {
         id = evt.getId();
         remainingValue = evt.getAmount();
@@ -177,11 +179,19 @@ public class GiftCard {
 
 (2) If you are using Axon for Event Sourcing, default constructor is needed so Axon can instantiate the Aggregate and apply all sourced events.
 
+(3) Annotation that is put on methods/constructors that handle commands. When an `IssueCmd` is dispatched, annotated constructor will be invoked.
+
+(4) Invoking `AggregateLifecycle.apply` method will apply method on given aggregate (`@EventSourcingHandler` matching this event will be called on aggregate), and then it will be published to the `EventBus`, so other components can react upon it.
+
+(5) Annotation that is put on methods that handle sourced events.
+
+For more details about `@CommandHandler`s and `@EventSourcingHandler`s please check [command model](/part-ii-domain-logic/command-model.md).
+
 > **Note** All business logic / rules are defined in the `@CommandHandler`s, and all state changes are defined in the `@EventSourcingHandler`s. The reason for this is when we want to get the current state of event-sourced Aggregate, we have to apply all sourced events - we have to invoke `@EventSourcingHandler`s. If the state of our Aggregate is changed outside of `@EventSourcingHandler`s it will not be reflected when we do a replay.
 
 ### Query Model
 
-Once we have our Aggregate defined which processes commands and fires events, we can create a Query Model (Projection) based on those fired events. Let's say that we want to build a view that has summary of Giftcards. In order to do that, view will issue a query to our Query Model to retrieve necessary information about Giftcards. We will use good old `List` Java structure as our storage. `CardSummary` class could look like this:
+Once we have our Aggregate defined which processes commands and fires events, we can create a Query Model (Projection) based on those fired events. Let's say that we want to build a view that has a summary of Giftcards. In order to do that, the view will issue a query to our Query Model to retrieve necessary information about Giftcards. We will use good old `List` Java structure as our storage. The `CardSummary` class could look like this:
 
 ```java
 public class CardSummary {
@@ -245,14 +255,14 @@ public class FetchCardSummariesQuery {
 }
 ```
 
-Query is, as commands and events, a POJO. We can start building our Query Model.
+Query is, as commands and events, a POJO. We can start building our Query Model now.
 
 ```java
 public class CardSummaryProjection {
 
     private final List<CardSummary> cardSummaries = new CopyOnWriteArrayList<>();
 
-    @EventHandler
+    @EventHandler // (1)
     public void on(IssuedEvt evt) {
         CardSummary cardSummary = new CardSummary(evt.getId(), evt.getAmount(), evt.getAmount());
         cardSummaries.add(cardSummary);
@@ -270,7 +280,7 @@ public class CardSummaryProjection {
                      });
     }
 
-    @QueryHandler
+    @QueryHandler // (2)
     public List<CardSummary> fetch(FetchCardSummariesQuery query) {
         return cardSummaries.stream()
                             .skip(query.getOffset())
@@ -280,9 +290,13 @@ public class CardSummaryProjection {
 }
 ```
 
+(1) Annotation that is put on event handlers. Usually used to update a query model. When an `IssuedEvt` is published, this method will be invoked. For more details check [event handling](/part-ii-domain-logic/event-handling.md).
+
+(2) Annotation that is used to mark a method as a query handler. For more details check [query handling](/part-ii-domain-logic/query-handling.md).
+
 ### Configuration
 
-Having all this components defined, we can start wiring them in the configuration:
+Having all these components defined, we can start wiring them in the configuration:
 
 ```java
 CardSummaryProjection projection = new CardSummaryProjection();
@@ -299,7 +313,7 @@ Configuration configuration = DefaultConfigurer.defaultConfiguration()
 
 (1) Aggregate configuration - it will recognize all command/event handlers and wire them up
 
-(2) For this purpose we'll use in-memory event store to store events
+(2) For the purpose of this quick start, we'll use in-memory event store to store events
 
 (3) Our projection has event and query handlers, that's why we have it registered within `EventHandlingConfiguration` and as a query handler (4)
 
