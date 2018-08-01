@@ -135,12 +135,29 @@ When an Entity \(including the Aggregate Root\) applies an Event, it is handled 
 >    ...
 >}
 >```
->If you want to forward an event to the entity only in a case when an event message has matching entity identifier use `ForwardMatchingInstances` event forwarding mode. Entity identifier matching will be done based on specified `routingKey` on `@AggregateMember` annotation. If `routingKey` is not specified on `@AggregateMember` annotation, matching will be done based on `routingKey` attribute on `@EntityId` annotation. If `routingKey` is not specified on `@EntityId` annotation matching will be done based on field name of entity identifier. Let's take a look at example how to define `ForwardMatchingInstances` event forwarding mode:
+>If you want to forward an event to the entity only in a case when an event message has matching entity identifier use `ForwardMatchingInstances` event forwarding mode. Entity identifier matching will be done based on specified `routingKey` on `@AggregateMember` annotation. If `routingKey` is not specified on `@AggregateMember` annotation, matching will be done based on `routingKey` attribute on `@EntityId` annotation. If `routingKey` is not specified on `@EntityId` annotation matching will be done based on field name of entity identifier. Let's take a look at example on how to define `ForwardMatchingInstances` event forwarding mode with specifying a routing key for the entity identifier:
 >```java
 >public class MyAggregate {
 >    ...
 >    @AggregateMember(eventForwardingMode = ForwardMatchingInstances.class)
 >    private MyEntity myEntity;
+>    ...
+>}
+>...
+>public class MyEntity {
+>    ...
+>    @EntityId(routingKey = "myEntityId")
+>    private String id;
+>    ...
+>    @EventSourcingHandler
+>    public void on(MyEvent event) {
+>        // handle event
+>    }
+>}
+>...
+>public class MyEvent {
+>    ...
+>    private String myEntityId;
 >    ...
 >}
 >```
