@@ -124,7 +124,43 @@ Complex business logic often requires more than what an aggregate with only an a
 
 Axon provides support for event sourcing in complex aggregate structures. Entities are, just like the Aggregate Root, simple objects. The field that declares the child entity must be annotated with `@AggregateMember`. This annotation tells Axon that the annotated field contains a class that should be inspected for Command and Event Handlers.
 
-When an Entity \(including the Aggregate Root\) applies an Event, it is handled by the Aggregate Root first, and then bubbles down through all `@AggregateMember` annotated fields to its child entities.
+When an Entity \(including the Aggregate Root\) applies an Event, it is handled by the Aggregate Root first, and then bubbles down through `@AggregateMember` annotated fields to its child entities.
+
+> **Note** There is a way to filter the entities which would handle an event applied by the Aggregate Root. This can be achieved by using `eventForwardingMode` attribute of `@AggregateMember` annotation. By default, an event is propagated to **all** child entities. An event can be blocked using `ForwardNone` event forwarding mode (see listing below). 
+>```java
+>public class MyAggregate {
+>    ...
+>    @AggregateMember(eventForwardingMode = ForwardNone.class)
+>    private MyEntity myEntity;
+>    ...
+>}
+>```
+>If you want to forward an event to the entity only in a case when an event message has matching entity identifier use `ForwardMatchingInstances` event forwarding mode. Entity identifier matching will be done based on specified `routingKey` on `@AggregateMember` annotation. If `routingKey` is not specified on `@AggregateMember` annotation, matching will be done based on `routingKey` attribute on `@EntityId` annotation. If `routingKey` is not specified on `@EntityId` annotation matching will be done based on field name of entity identifier. Let's take a look at example on how to define `ForwardMatchingInstances` event forwarding mode with specifying a routing key for the entity identifier:
+>```java
+>public class MyAggregate {
+>    ...
+>    @AggregateMember(eventForwardingMode = ForwardMatchingInstances.class)
+>    private MyEntity myEntity;
+>    ...
+>}
+>...
+>public class MyEntity {
+>    ...
+>    @EntityId(routingKey = "myEntityId")
+>    private String id;
+>    ...
+>    @EventSourcingHandler
+>    public void on(MyEvent event) {
+>        // handle event
+>    }
+>}
+>...
+>public class MyEvent {
+>    ...
+>    private String myEntityId;
+>    ...
+>}
+>```
 
 Fields that \(may\) contain child entities must be annotated with `@AggregateMember`. This annotation may be used on a number of field types:
 
