@@ -28,7 +28,7 @@ If no `TransactionManager` implementation is explicitly defined in the Applicati
 
 ## Serializer Configuration
 
-By default, Axon uses an XStream based serializer to serialize objects. This can be changed by defining a bean of type `Serializer` in the application context.
+By default, Axon uses an XStream based serializer to serialize objects, as is described in further detail in the [Advanced Customizations](../part-iv-advanced-tuning/advanced-customizations.md#serializers) section. This can be changed by defining a bean of type `Serializer` in the application context.
 
 While the default Serializer provides an arguably ugly xml based format, it is capable of serializing and deserializing virtually anything, making it a very sensible default. However, for events, which needs to be stored for a long time and perhaps shared across application boundaries, it is desirable to customize the format.
 
@@ -37,26 +37,46 @@ You can define a separate Serializer to be used to serialize events, by assignin
 Example:
 
 ```java
-@Qualifier("eventSerializer")
-@Bean
-public Serializer eventSerializer() {
-    return new JacksonSerializer();
+class SerializerConfiguration {
+    
+    @Qualifier("eventSerializer")
+    @Bean
+    public Serializer eventSerializer() {
+        return new JacksonSerializer();
+    }
 }
+```
+
+Equal to events, you can also customize the Message `Serializer` used by your application. The Message `Serializer` comes into play when your Command and Query message are sent from one node to another in a distributed environment. To set a custom `Serializer` for you message you can simply define a `messageSerializer` bean like so:
+
+```java
+class SerializerConfiguration {
+    
+    @Qualifier("messageSerializer")
+    @Bean
+    public Serializer messageSerializer() {
+        return new XStreamSerializer();
+    }
+}
+
 ```
 
 When overriding both the default serializer and defining an event serializer, we must instruct Spring that the default serializer is, well, the default:
 
 ```java
-@Primary // marking it primary means this is the one to use, if no specific Qualifier is requested
-@Bean
-public Serializer serializer() {
-    return new MyCustomSerializer();
-}
+class SerializerConfiguration {
 
-@Qualifier("eventSerializer")
-@Bean
-public Serializer eventSerializer() {
-    return new JacksonSerializer();
+    @Primary // Marking it primary means this is the one to use, if no specific Qualifier is requested
+    @Bean
+    public Serializer serializer() {
+        return new MyCustomSerializer();
+    }
+
+    @Qualifier("eventSerializer")
+    @Bean
+    public Serializer eventSerializer() {
+        return new JacksonSerializer();
+    }
 }
 ```
 
@@ -66,7 +86,46 @@ The `@Aggregate` annotation \(in package `org.axonframework.spring.stereotype`\)
 
 Axon will automatically register all the `@CommandHandler` annotated methods with the Command Bus and set up a repository if none is present.
 
-To set up a different repository than the default, define one in the application context. Optionally, you may define the name of the repository to use, using the `repository` attribute on `@Aggregate`. If no `repository` attribute is defined, Axon will attempt to use the repository with the name of the aggregate \(first character lowercase\), suffixed with `Repository`. So on a class of type `MyAggregate`, the default Repository name is `myAggregateRepository`. If no bean with that name is found, Axon will define an `EventSourcingRepository` \(which fails if no `EventStore` is available\).
+It is possible to define a custom [`SnapshotTriggerDefinition`](repository-and-event-store.md#creating-a-snapshot) for an aggregate as a spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows how to define a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot on each 500th event.
+
+Note that a `Snapshotter` instance, if not explicitly defined as a Bean already, will be automatically configured for you. This means you can simply pass the `Snapshotter` as a parameter to your `SnapshotTriggerDefinition`.
+
+```java
+@Bean
+public SnapshotTriggerDefinition mySnapshotTriggerDefinition(Snapshotter snapshotter) {
+    return new EventCountSnapshotTriggerDefinition(snapshotter, 500);
+}
+...
+@Aggregate(snapshotTriggerDefinition = "mySnapshotTriggerDefinition")
+public class MyAggregate {...}
+```
+
+Defining a [`CommandTargetResolver`](/part-ii-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring Application context will cause that resolver to be used for all aggregate definitions. However, you can also define multiple beans and specify the instance to use with the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
+
+```java
+@Bean
+public CommandTargetResolver myCommandTargetResolver() {
+    return new MetaDataCommandTargetResolver("myAggregateId");
+}
+...
+@Aggregate(commandTargetResolver = "myCommandTargetResolver")
+public class MyAggregate {...}
+```
+
+To fully customize the repository used, you can define one in the Application Context. For Axon Framework to use this repository for the intended Aggregate, define the bean name of the repository in the `repository` attribute on `@Aggregate` Annotation. Alternatively, specify the bean name of the Repository to be the aggregate's name, \(first character lowercase\), suffixed with `Repository`. So on a class of type `MyAggregate`, the default Repository name is `myAggregateRepository`. If no bean with that name is found, Axon will define an `EventSourcingRepository` \(which fails if no `EventStore` is available\).
+
+```java
+@Bean
+public Repository<MyAggregate> repositoryForMyAggregate(EventStore eventStore) {
+    return new EventSourcingRepository<>(MyAggregate.class, eventStore);
+}
+...
+@Aggregate(repository = "repositoryForMyAggregate")
+public class MyAggregate {...}
+```
+
+Note that this requires full configuration of the Repository, including any `SnapshotTriggerDefinition` or `AggregateFactory` that may otherwise have been configured automatically.
+
 
 ## Saga Configuration
 
@@ -256,3 +315,10 @@ axon.distributed.spring-cloud.fallback-url=/message-routing-information
 
 For more fine-grained control, provide a `SpringCloudHttpBackupCommandRouter` or `SpringCloudCommandRouter` bean in your application context.
 
+#### Blacklisting
+
+On each heartbeat the memberships of all the nodes in the cluster are updated. If message routing information of a given service instance is not available on this heartbeat signal, that specific service instance gets blacklisted. That blacklisted service instance will be removed from the blacklist if it is no longer present on thereon following heartbeats.
+
+> **Note**
+>
+> It is regarded as good practice to assign a random value to every service instance name. In doing so, if a given service instance is restarted, it will receive a different name which will mitigate unnecessary blacklisting of nodes.
