@@ -41,6 +41,14 @@ public class SerializerConfiguration {
 
 ```
 
+> **Note** If you are using Spring Boot, it is possible to define serializers in `application.properties` file:
+>```java
+>axon.serializer.general
+>axon.serializer.events
+>axon.serializer.messages
+>```
+> Possible values for these keys are `default`, `xstream`, `java`, and `jackson`.
+
 ## Meta Annotations
 
 Most annotations in Axon can be placed on other annotations, as so-called meta-annotation. When Axon scans for annotations, it will automatically scan meta-annotations as well. Annotations can override the properties defined on the meta-annotations, if desired.
