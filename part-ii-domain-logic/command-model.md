@@ -205,7 +205,7 @@ configurer.configureAggregate(
         AggregateConfigurer.defaultConfiguration(MyAggregate.class)
                            .configureCommandTargetResolver(c -> new CustomCommandTargetResolver())
 );
-{%- language name="Spring Configuration", type="java" -%}
+{%- language name="Spring Boot AutoConfiguration", type="java" -%}
 @Aggregate(commandTargetResolver = "customCommandTargetResolver")
 public class MyAggregate {...}
 ...

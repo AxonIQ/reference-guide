@@ -65,7 +65,7 @@ EventHandlingConfiguration ehConfiguration = new EventHandlingConfiguration()
 // the module needs to be registered with the Axon Configuration
 Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     .registerModule(ehConfiguration);
-{%- language name="Spring Configuration", type="java" -%}
+{%- language name="Spring Boot AutoConfiguration", type="java" -%}
 @Component
 public class MyEventHandlerClass {
     // contains @EventHandler(s)

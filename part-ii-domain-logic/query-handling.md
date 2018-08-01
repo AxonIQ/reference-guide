@@ -75,7 +75,7 @@ public class MyQueryHandler {
 // To register your query handler
 Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     .registerQueryHandler(conf -> new MyQueryHandler);
-{%- language name="Spring Configuration", type="java" -%}
+{%- language name="Spring Boot AutoConfiguration", type="java" -%}
 // Sample query handler
 @Component
 public class MyQueryHandler {

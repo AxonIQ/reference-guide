@@ -151,14 +151,14 @@ configurer.registerModule(
 
 // alternatively, it is possible to register a single SagaStore for all Saga types:
 configurer.registerComponent(SagaStore.class, c -> new JpaSagaStore(...));
-{%- language name="Spring Configuration", type="java" -%}
+{%- language name="Spring Boot AutoConfiguration", type="java" -%}
 @Saga(sagaStore = "mySagaStore")
 public class MySaga {...}
 ...
 // somewhere in configuration
 @Bean
 public SagaStore mySagaStore() {
-    return new JpaSagaStore(...);
+    return new MongoSagaStore(...); // default is JpaSagaStore
 }
 {%- endcodetabs %}
 

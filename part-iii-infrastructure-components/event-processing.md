@@ -15,12 +15,14 @@ When using the Configuration API, the `SimpleEventBus` is used by default. To co
 {% codetabs name="Axon Configuration API", type="java" -%}
     Configurer configurer = DefaultConfigurer.defaultConfiguration();
     configurer.configureEmbeddedEventStore(c -> new InMemoryEventStorageEngine());
-{%- language name="Spring Configuration", type="java" -%}
+{%- language name="Spring Boot AutoConfiguration", type="java" -%}
 // somewhere in configuration
 @Bean
 public EventStorageEngine eventStorageEngine() {
-    return new InMemoryEventStorageEngine();
+    return new InMemoryEventStorageEngine(); 
 }
+// When StorageEngine is provided EmbeddedEventStore is configured as EventStore.
+// If JPA configuration is detected JpaEventStorageEngine is configured as EventStorageEngine.
 {%- endcodetabs %}
 
 ## Event Processors
@@ -114,8 +116,8 @@ public class Saga {...}
 ...
 // somewhere in configuration
 @Bean
-public SagaConfiguration mySagaConfiguration() {
-	// return saga configuration
+public SagaConfiguration<Saga> mySagaConfiguration() {
+	return SagaConfiguration.subscribingSagaManager(Saga.class);
 }
 ```
 
