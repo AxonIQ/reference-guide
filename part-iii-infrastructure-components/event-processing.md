@@ -114,7 +114,7 @@ Note that you can override the TokenStore to use with Tracking Processors in the
 
 ### Event Tracker Status
 
-In some cases it might be useful to know the state of the Tracking Event Processor for specific segment. One of those cases could be when we want to rebuild our view model and we want to check when the Processor caught up all the events. For cases like these, `TrackingEventProcessor` exposes `processingStatus` method which returns the map where the key is the segment identifier, and the value is the status of event processing. Based on this status we can determine whether the Processor is caught up, whether is replaying, and we can get the Tracking Token for this segment.
+In some cases it might be useful to know the state of a Tracking Event Processor for each of its segment. One of those cases could be when we want to rebuild our view model and we want to check when the Processor is caught up with all the events. For cases like these, the `TrackingEventProcessor` exposes `processingStatus()` method, which returns a map where the key is the segment identifier, and the value is the event processing status. Based on this status we can determine whether the Processor is caught up and/or is replaying, and we can verify the Tracking Token of its segments.
 
 ### Parallel Processing
 
