@@ -211,7 +211,7 @@ It is recommended to explicitly define an `ErrorHandler` when using the `Asynchr
 
 ### Replaying events
 
-In cases when you want to rebuild projections (view models), replaying of already happened events comes handy. The idea is to start from the beginning of time and invoke event handlers. `TrackingEventProcessor` supports replaying of events. In order to do that, you should invoke `resetTokens` method on it (it's important to know that the Processor must not be in active state, wo it's wise to shut it down first, reset it and then start it again). It is possible to define a reset handler so you can do some preparation before resetting is done. Let's take a look how we can accomplish replaying. First, we'll see one simple projection:
+In cases when you want to rebuild projections (view models), replaying past events comes in handy. The idea is to start from the beginning of time and invoke all event handlers anew. The `TrackingEventProcessor` supports replaying of events. In order to achieve that, you should invoke the `resetTokens()` method on it (it's important to know that the Processor must not be in active state, so it's wise to shut it down first, reset it and then start it up again). It is possible to define a `@ResetHandler`, so you can do some preparation prior to resetting. Let's take a look how we can accomplish replaying. First, we'll see one simple projecting class:
 
 ```java
 @ProcessingGroup("projections")
