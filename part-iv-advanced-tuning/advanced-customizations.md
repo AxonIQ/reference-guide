@@ -41,12 +41,18 @@ public class SerializerConfiguration {
 
 ```
 
-> **Note** If you are using Spring Boot, it is possible to define serializers in `application.properties` file:
->```java
->axon.serializer.general
->axon.serializer.events
->axon.serializer.messages
->```
+> **Note** If you are using Spring Boot, it is possible to define serializers:
+{%codetabs name="application.properties", type="text" -%}
+axon.serializer.general
+axon.serializer.events
+axon.serializer.messages
+{%- language name="application.yml", type="text" -%}
+axon:
+  serializer:
+    general: 
+    events: 
+    messages: 
+{%- endcodetabs %}
 > Possible values for these keys are `default`, `xstream`, `java`, and `jackson`.
 
 ## Meta Annotations
