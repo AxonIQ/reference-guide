@@ -209,3 +209,37 @@ Besides these provided policies, you can define your own. All policies must impl
 
 It is recommended to explicitly define an `ErrorHandler` when using the `AsynchronousEventProcessingStrategy`. The default `ErrorHandler` propagates exceptions, but in an asynchronous execution, there is nothing to propagate to, other than the Executor. This may result in Events not being processed. Instead, it is recommended to use an `ErrorHandler` that reports errors and allows processing to continue. The `ErrorHandler` is configured on the constructor of the `SubscribingEventProcessor`, where the `EventProcessingStrategy` is also provided.
 
+### Replaying events
+
+In cases when you want to rebuild projections (view models), replaying of already happened events comes handy. The idea is to start from the beginning of time and invoke event handlers. `TrackingEventProcessor` supports replaying of events. In order to do that, you should invoke `resetTokens` method on it (it's important to know that the Processor must not be in active state, wo it's wise to shut it down first, reset it and then start it again). It is possible to define a reset handler so you can do some preparation before resetting is done. Let's take a look how we can accomplish replaying. First, we'll see one simple projection:
+
+```java
+@ProcessingGroup("projections")
+public class MyProjection {
+    ...
+    @EventHandler
+    public void on(MyEvent evt, ReplayStatus replayStatus) { // we can wire a ReplayStatus here so we can see whether this
+                                                             // event is delivered to our handler as a 'REGULAR' event or
+                                                             // 'REPLAY' event
+        // do event handling
+    }
+    
+    @ResetHandler
+    public void onReset() { // will be called before replay starts
+        // do pre-reset logic
+    }
+    ...
+}
+```
+
+And now, we can reset our `TrackingEventProcessor`:
+
+```java
+configuration.eventProcessingConfiguration()
+             .eventProcessorByProcessingGroup("projections", TrackingEventProcessor.class)
+             .ifPresent(trackingEventProcessor -> {
+                 trackingEventProcessor.shutDown();
+                 trackingEventProcessor.resetTokens();
+                 trackingEventProcessor.start();
+             });
+```
