@@ -224,9 +224,15 @@ public class MyProjection {
         // do event handling
     }
     
+    @AllowReplay(false) // it is possible to prevent some handlers from being replayed
+    @EventHandler
+    public void on(MyOtherEvent evt) {
+        // perform some side effect introducing functionality, like sending an e-mail, which we do not want to be replayed
+    }    
+    
     @ResetHandler
     public void onReset() { // will be called before replay starts
-        // do pre-reset logic
+        // do pre-reset logic, like clearing out the Projection table for a clean slate
     }
     ...
 }
