@@ -7,9 +7,9 @@ Especially in a location transparent environment like an Axon application it is 
 
 Interesting metrics in a message centric system come in several forms and flavors, like count, capacity and latency for example.  
 The Axon Framework allows you to retrieve such measurements through the use of the `axon-metrics` module.
-With this module you can registers a number of `MessageMonitor` implementations to your messaging components, like the [`CommandBus`](../part-iii-infrastructure-components/command-dispatching.md#the-command-bus), [`EventBus`](../part-iii-infrastructure-components/event-processing.md#event-bus), [`QueryBus`](../part-iii-infrastructure-components/query-processing.md#query-bus) and [`EventProcessors`](../part-iii-infrastructure-components/event-processing.md#event-processors).
+With this module you can register a number of `MessageMonitor` implementations to your messaging components, like the [`CommandBus`](../part-iii-infrastructure-components/command-dispatching.md#the-command-bus), [`EventBus`](../part-iii-infrastructure-components/event-processing.md#event-bus), [`QueryBus`](../part-iii-infrastructure-components/query-processing.md#query-bus) and [`EventProcessors`](../part-iii-infrastructure-components/event-processing.md#event-processors).
 
-Internally, the `axon-metrics` module uses the [Dropwizard Metrics](https://metrics.dropwizard.io/) for registering the measurements correctly.
+Internally, the `axon-metrics` module uses [Dropwizard Metrics](https://metrics.dropwizard.io/) for registering the measurements correctly.
 That thus means that `MessageMonitors` are registered against the Dropwizard `MetricRegistry`.
 The following monitor implementations are currently provided:
 1. `CapacityMonitor` - Calculates capacity by tracking, within a configurable time window, the average message processing time and multiplying that by the amount of messages processed.
@@ -41,7 +41,7 @@ public class MetricsConfiguration {
         // More specifically, we want to count the messages per type of event being published.
         PayloadTypeMessageMonitorWrapper<MessageCountingMonitor> messageCounterPerType =
                 new PayloadTypeMessageMonitorWrapper<>(MessageCountingMonitor::new);
-        // Add we also want to set a message timer per payload type
+        // And we also want to set a message timer per payload type
         PayloadTypeMessageMonitorWrapper<MessageTimerMonitor> messageTimerPerType =
                 new PayloadTypeMessageMonitorWrapper<>(MessageTimerMonitor::new);
         // Which we group in a MultiMessageMonitor
