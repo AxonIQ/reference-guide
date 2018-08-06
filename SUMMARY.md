@@ -5,6 +5,7 @@
 ## Part I - Getting started
 
 * [Introduction](part-i-getting-started/introduction.md)
+* [Quick Start](part-i-getting-started/quick-start.md)
 * [Architecture overview](part-i-getting-started/architecture-overview.md)
 * [Messaging concepts](part-i-getting-started/messaging-concepts.md)
 * [Configuration API](part-i-getting-started/configuration-api.md)
@@ -27,6 +28,7 @@
 
 ## Part IV - Advanced tuning
 
+* [Metrics and Monitoring](part-iv-advanced-tuning/metrics-and-monitoring.md)
 * [Advanced customizations](part-iv-advanced-tuning/advanced-customizations.md)
 * [Performance Tuning](part-iv-advanced-tuning/performance-tuning.md)
 

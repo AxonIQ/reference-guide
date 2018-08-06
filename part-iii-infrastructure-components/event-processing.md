@@ -12,10 +12,18 @@ The `EventBus` is the mechanism that dispatches events to the subscribed event h
 
 When using the Configuration API, the `SimpleEventBus` is used by default. To configure the `EmbeddedEventStore` instead, you need to supply an implementation of a StorageEngine, which does the actual storage of Events.
 
-```java
+{% codetabs name="Axon Configuration API", type="java" -%}
     Configurer configurer = DefaultConfigurer.defaultConfiguration();
     configurer.configureEmbeddedEventStore(c -> new InMemoryEventStorageEngine());
-```
+{%- language name="Spring Boot AutoConfiguration", type="java" -%}
+// somewhere in configuration
+@Bean
+public EventStorageEngine eventStorageEngine() {
+    return new InMemoryEventStorageEngine(); 
+}
+// When StorageEngine is provided EmbeddedEventStore is configured as EventStore.
+// If JPA configuration is detected JpaEventStorageEngine is configured as EventStorageEngine.
+{%- endcodetabs %}
 
 ## Event Processors
 
@@ -99,6 +107,19 @@ SagaConfiguration.trackingSagaManager(MySaga.class)
 ```
 
 The `TrackingProcessingConfiguration` has a few methods allowing you to specify how many segments will be created and which ThreadFactory should be used to create Processor threads. See [Parallel Processing](event-processing.md#parallel-processing) for more details.
+
+If you are using Spring, you can configure your saga like this:
+
+```java
+@Saga(configurationBean = "mySagaConfiguration")
+public class Saga {...}
+...
+// somewhere in configuration
+@Bean
+public SagaConfiguration<Saga> mySagaConfiguration() {
+	return SagaConfiguration.subscribingSagaManager(Saga.class);
+}
+```
 
 Check out the API documentation \(JavaDoc\) of the `SagaConfiguration` class for full details on how to configure event handling for a Saga.
 
