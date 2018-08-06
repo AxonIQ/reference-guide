@@ -133,6 +133,10 @@ To configure a different Token Store, use `Configurer.registerComponent(TokenSto
 
 Note that you can override the TokenStore to use with Tracking Processors in the respective `EventHandlingConfiguration` or `SagaConfiguration` that defines that Processor. Where possible, it is recommended to use a Token Store that stores tokens in the same database as where the Event Handlers update the view models. This way, changes to the view model can be stored atomically with the changed tokens, guaranteeing exactly once processing semantics.
 
+### Event Tracker Status
+
+In some cases it might be useful to know the state of a Tracking Event Processor for each of its segment. One of those cases could be when we want to rebuild our view model and we want to check when the Processor is caught up with all the events. For cases like these, the `TrackingEventProcessor` exposes `processingStatus()` method, which returns a map where the key is the segment identifier, and the value is the event processing status. Based on this status we can determine whether the Processor is caught up and/or is replaying, and we can verify the Tracking Token of its segments.
+
 ### Parallel Processing
 
 As of Axon Framework 3.1, Tracking Processors can use multiple threads to process an Event Stream. They do so, by claiming a so-called segment, identifier by a number. Normally, a single thread will process a single Segment.
@@ -230,3 +234,43 @@ Besides these provided policies, you can define your own. All policies must impl
 
 It is recommended to explicitly define an `ErrorHandler` when using the `AsynchronousEventProcessingStrategy`. The default `ErrorHandler` propagates exceptions, but in an asynchronous execution, there is nothing to propagate to, other than the Executor. This may result in Events not being processed. Instead, it is recommended to use an `ErrorHandler` that reports errors and allows processing to continue. The `ErrorHandler` is configured on the constructor of the `SubscribingEventProcessor`, where the `EventProcessingStrategy` is also provided.
 
+### Replaying events
+
+In cases when you want to rebuild projections (view models), replaying past events comes in handy. The idea is to start from the beginning of time and invoke all event handlers anew. The `TrackingEventProcessor` supports replaying of events. In order to achieve that, you should invoke the `resetTokens()` method on it. It is important to know that the Tracking Event Processor must not be in active state when starting a reset. Hence it is wise to shut it down first, then reset it and once this was successful, start it up again. It is possible to define a `@ResetHandler`, so you can do some preparation prior to resetting. Let's take a look how we can accomplish replaying. First, we'll see one simple projecting class:
+
+```java
+@ProcessingGroup("projections")
+public class MyProjection {
+    ...
+    @EventHandler
+    public void on(MyEvent event, ReplayStatus replayStatus) { // we can wire a ReplayStatus here so we can see whether this
+                                                             // event is delivered to our handler as a 'REGULAR' event or
+                                                             // 'REPLAY' event
+        // do event handling
+    }
+    
+    @AllowReplay(false) // it is possible to prevent some handlers from being replayed
+    @EventHandler
+    public void on(MyOtherEvent event) {
+        // perform some side effect introducing functionality, like sending an e-mail, which we do not want to be replayed
+    }    
+    
+    @ResetHandler
+    public void onReset() { // will be called before replay starts
+        // do pre-reset logic, like clearing out the Projection table for a clean slate
+    }
+    ...
+}
+```
+
+And now, we can reset our `TrackingEventProcessor`:
+
+```java
+configuration.eventProcessingConfiguration()
+             .eventProcessorByProcessingGroup("projections", TrackingEventProcessor.class)
+             .ifPresent(trackingEventProcessor -> {
+                 trackingEventProcessor.shutDown();
+                 trackingEventProcessor.resetTokens();
+                 trackingEventProcessor.start();
+             });
+```
