@@ -215,14 +215,14 @@ It is recommended to explicitly define an `ErrorHandler` when using the `Asynchr
 
 ### Replaying events
 
-In cases when you want to rebuild projections (view models), replaying past events comes in handy. The idea is to start from the beginning of time and invoke all event handlers anew. The `TrackingEventProcessor` supports replaying of events. In order to achieve that, you should invoke the `resetTokens()` method on it (it's important to know that the Processor must not be in active state, so it's wise to shut it down first, reset it and then start it up again). It is possible to define a `@ResetHandler`, so you can do some preparation prior to resetting. Let's take a look how we can accomplish replaying. First, we'll see one simple projecting class:
+In cases when you want to rebuild projections (view models), replaying past events comes in handy. The idea is to start from the beginning of time and invoke all event handlers anew. The `TrackingEventProcessor` supports replaying of events. In order to achieve that, you should invoke the `resetTokens()` method on it. It is important to know that the Tracking Event Processor must not be in active state when starting a reset. Hence it is wise to shut it down first, then reset it and once this was successful, start it up again. It is possible to define a `@ResetHandler`, so you can do some preparation prior to resetting. Let's take a look how we can accomplish replaying. First, we'll see one simple projecting class:
 
 ```java
 @ProcessingGroup("projections")
 public class MyProjection {
     ...
     @EventHandler
-    public void on(MyEvent evt, ReplayStatus replayStatus) { // we can wire a ReplayStatus here so we can see whether this
+    public void on(MyEvent event, ReplayStatus replayStatus) { // we can wire a ReplayStatus here so we can see whether this
                                                              // event is delivered to our handler as a 'REGULAR' event or
                                                              // 'REPLAY' event
         // do event handling
@@ -230,7 +230,7 @@ public class MyProjection {
     
     @AllowReplay(false) // it is possible to prevent some handlers from being replayed
     @EventHandler
-    public void on(MyOtherEvent evt) {
+    public void on(MyOtherEvent event) {
         // perform some side effect introducing functionality, like sending an e-mail, which we do not want to be replayed
     }    
     
