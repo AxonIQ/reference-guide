@@ -72,7 +72,10 @@ To that end the framework provides the `CorrelationDataProvider`, as described b
 This interface and its implementations provide you the means to populate the meta-data of your messages with specific fields, like a 'trace-id', 'correlation-id' or any other field you might be interested in.
 
 For configuring the `MessageOriginProvider` you can do the following:
-{% codetabs name="Axon Configuration API", type="java" -%}
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
 public class MonitoringConfiguration {
     
     public Configurer buildConfigurer() {
@@ -88,7 +91,11 @@ public class MonitoringConfiguration {
     }
     
 }
-{%- language name="Spring Boot AutoConfiguration", type="java" -%}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
 public class MonitoringConfiguration {
 
     // When using Spring Boot, simply defining a CorrelationDataProvider bean is sufficient
@@ -97,7 +104,9 @@ public class MonitoringConfiguration {
     }
 
 }
-{%- endcodetabs %}
+```
+{% endtab %}
+{% endtabs %}
 
 ### Interceptor Logging
 
