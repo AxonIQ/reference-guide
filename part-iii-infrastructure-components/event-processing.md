@@ -123,8 +123,8 @@ public class EventProcessorConfiguration {
 > **Note**
 >
 > Different from the `CommandBus` and `QueryBus`, which both can have Handler and Dispatch Interceptors, the `EventBus` can only have registered Dispatch Interceptors. 
-> This is the case because the Event publishing part, so the place which is in control of Event Message dispatching, is the sole purpose of the Event Bus. 
-> The `EventProcessor`s are in charge of handling the event messages, thus are the spot where the Handler Interceptors are registered. 
+> This is the case because the Event publishing part, so the place which is in control of Event Message dispatching, is the sole purpose of the Event Bus.
+> The `EventProcessor`s are in charge of handling the Event Messages, thus are the spot where the Handler Interceptors are registered. 
 
 
 ### Assigning handlers to processors
