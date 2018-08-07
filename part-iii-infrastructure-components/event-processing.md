@@ -31,6 +31,56 @@ Event Handlers define the business logic to be performed when an Event is receiv
 
 Event Processors come in roughly two forms: Subscribing and Tracking. The Subscribing Event Processors subscribe themselves to a source of Events and are invoked by the thread managed by the publishing mechanism. Tracking Event Processors, on the other hand, pull their messages from a source using a thread that it manages itself.
 
+## Event Interceptors
+
+Similarly as with [Command Messages](command-dispatching.md#command-interceptors), Event Messages can also be intercepted prior to publishing and handling to perform additional actions on all Events.
+This thus boils down to same two types of interceptors for messages: the Dispatch- and the HandlerInterceptor. 
+
+Dispatch Interceptors are invoked before a Event (Message) is published on the Event Bus.  
+Handler Interceptors on the other hand are invoked just before the Event Handler is invoked with a given Event (Message) in the Event Processor.
+Examples of operations performed in an interceptor are logging or authentication, which you might want to do regardless of the type of event.
+
+### Dispatch Interceptors
+
+Any Message Dispatch Interceptors registered to an Event Bus will be invoked when a event is published.
+They have the ability to alter the Event Message, by adding Meta Data for example, or they can provide you with overall logging capabilities for when an event is published. 
+These interceptors are always invoked on the thread that published the Event.
+
+Let's create an Event Message Dispatch Interceptor which logs each Event message being published on an `EventBus`.
+```java
+public class EventLoggingDispatchInterceptor implements MessageDispatchInterceptor<EventMessage<?>> {
+
+    private static final Logger logger = LoggerFactory.getLogger(EventLoggingDispatchInterceptor.class);
+    
+    @Override
+    public BiFunction<Integer, EventMessage<?>, EventMessage<?>> handle(List<? extends EventMessage<?>> messages) {
+        return (index, event) -> {
+            logger.info("Publishing event: [{}].", event);
+            return event;
+        };
+    }
+}
+```
+We can then register this dispatch interceptor with an `EventBus` by doing the following:
+```java
+public class EventBusConfiguration {
+    
+    public EventBus configureEventBus(EventStorageEngine eventStorageEngine) {
+        // Note that an EventStore is a more specific implementation of an EventBus
+        EventBus eventBus = new EmbeddedEventStore(eventStorageEngine);
+        eventBus.registerDispatchInterceptor(new EventLoggingDispatchInterceptor());
+        return eventBus;
+    }
+}
+```
+
+> **Note**
+>
+> Different from the `CommandBus` and `QueryBus`, which both can have Handler and Dispatch Interceptors, the `EventBus` can only have registered Dispatch Interceptors. 
+> This is the case because the Event publishing part, so the place which is in control of Event Message dispatching, is the sole purpose of the Event Bus. 
+> The `EventProcessor`s are in charge of handling the event messages, thus contain the Handler Interceptors. 
+
+
 ### Assigning handlers to processors
 
 All processors have a name, which identifies a processor instance across JVM instances. Two processors with the same name, can be considered as two instances of the same processor.
