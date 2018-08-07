@@ -32,13 +32,11 @@ Since Axon doesn't create any connections or threads by itself, it is safe to ru
 
 ## Let's build our first Axon application
 
-As our domain we'll take a Giftcard management. See the [wikipedia article](https://en.wikipedia.org/wiki/Gift_card) for a basic definition of gift cards. Essentially, there are just two events in the life cycle of a gift card:
-
+As our domain we'll take a Giftcard management. See the [wikipedia article](https://en.wikipedia.org/wiki/Gift_card) for a basic definition of gift cards. Essentially, there are just two events in the life cycle of a gift card:                                               
 * They get issued: a new gift card gets created with some amount of money stored.
 * They get redeemed: all or part of the monetary value stored on the gift card is used to purchase something.
 
 ### Commands and Events
-
 As mentioned, we need a command to issue the Giftcard. This command will contain the identifier of the Giftcard and the initial amount. Let's build one:
 
 ```java
@@ -46,16 +44,16 @@ public class IssueCmd {
 
     private final String id;
     private final Integer amount;
-
+    
     public IssueCmd(String id, Integer amount) {
         this.id = id;
         this.amount = amount;
     }
-
+    
     public String getId() {
         return id;
     }
-
+    
     public Integer getAmount() {
         return amount;
     }
@@ -69,23 +67,23 @@ public class IssuedEvt {
 
     private final String id;
     private final Integer amount;
-
+    
     public IssuedEvt(String id, Integer amount) {
         this.id = id;
         this.amount = amount;
     }
-
+    
     public String getId() {
         return id;
     }
-
+    
     public Integer getAmount() {
         return amount;
     }
 }
 ```
 
-Similarly, we'll create `RedeemCmd` \(do note that `amount` is amount to be deducted from the Giftcard\) and `RedeemEvt`:
+Similarly, we'll create `RedeemCmd` (do note that `amount` is amount to be deducted from the Giftcard) and `RedeemEvt`:
 
 ```java
 public class RedeemCmd {
@@ -93,39 +91,39 @@ public class RedeemCmd {
     @TargetAggregateIdentifier // (1)
     private final String id;
     private final Integer amount;
-
+    
     public RedeemCmd(String id, Integer amount) {
         this.id = id;
         this.amount = amount;
     }
-
+    
     public String getId() {
         return id;
     }
-
+        
     public Integer getAmount() {
         return amount;
     }
 }
 ```
 
-\(1\) `@TargetAggregateIdentifier` annotation is used by Axon to find the correct Giftcard aggregate instance.
+(1) `@TargetAggregateIdentifier` annotation is used by Axon to find the correct Giftcard aggregate instance.
 
 ```java
 public class RedeemedEvt {
-
+    
     private final String id;
     private final Integer amount;
-
+    
     public RedeemedEvt(String id, Integer amount) {
         this.id = id;
         this.amount = amount;
     }
-
+    
     public String getId() {
         return id;
     }
-
+        
     public Integer getAmount() {
         return amount;
     }
@@ -150,13 +148,13 @@ public class GiftCard {
     public GiftCard() {
         // (2)
     }
-
+	
     @CommandHandler // (3)
     public GiftCard(IssueCmd cmd) {        
         if(cmd.getAmount() <= 0) throw new IllegalArgumentException("amount <= 0");
         AggregateLifecycle.apply(new IssuedEvt(cmd.getId(), cmd.getAmount())); // (4)
     }
-
+	
     @EventSourcingHandler // (5)
     public void on(IssuedEvt evt) {
         id = evt.getId();
@@ -177,23 +175,23 @@ public class GiftCard {
 }
 ```
 
-\(1\) `@AggregateIdentifier` annotation tells Axon that annotated field will be used as identifier of the Aggregate.
+(1) `@AggregateIdentifier` annotation tells Axon that annotated field will be used as identifier of the Aggregate.
 
-\(2\) If you are using Axon for Event Sourcing, default constructor is needed so Axon can instantiate the Aggregate and apply all sourced events.
+(2) If you are using Axon for Event Sourcing, default constructor is needed so Axon can instantiate the Aggregate and apply all sourced events.
 
-\(3\) Annotation that is put on methods/constructors that handle commands. When an `IssueCmd` is dispatched, annotated constructor will be invoked.
+(3) Annotation that is put on methods/constructors that handle commands. When an `IssueCmd` is dispatched, annotated constructor will be invoked.
 
-\(4\) Invoking `AggregateLifecycle.apply` method will apply method on given aggregate \(`@EventSourcingHandler` matching this event will be called on aggregate\), and then it will be published to the `EventBus`, so other components can react upon it.
+(4) Invoking `AggregateLifecycle.apply` method will apply method on given aggregate (`@EventSourcingHandler` matching this event will be called on aggregate), and then it will be published to the `EventBus`, so other components can react upon it.
 
-\(5\) Annotation that is put on methods that handle sourced events.
+(5) Annotation that is put on methods that handle sourced events.
 
-For more details about `@CommandHandler`s and `@EventSourcingHandler`s please check [command model](../part-ii-domain-logic/command-model.md).
+For more details about `@CommandHandler`s and `@EventSourcingHandler`s please check [command model](/part-ii-domain-logic/command-model.md).
 
 > **Note** All business logic / rules are defined in the `@CommandHandler`s, and all state changes are defined in the `@EventSourcingHandler`s. The reason for this is when we want to get the current state of event-sourced Aggregate, we have to apply all sourced events - we have to invoke `@EventSourcingHandler`s. If the state of our Aggregate is changed outside of `@EventSourcingHandler`s it will not be reflected when we do a replay.
 
 ### Query Model
 
-Once we have our Aggregate defined which processes commands and fires events, we can create a Query Model \(Projection\) based on those fired events. Let's say that we want to build a view that has a summary of Giftcards. In order to do that, the view will issue a query to our Query Model to retrieve necessary information about Giftcards. We will use good old `List` Java structure as our storage. The `CardSummary` class could look like this:
+Once we have our Aggregate defined which processes commands and fires events, we can create a Query Model (Projection) based on those fired events. Let's say that we want to build a view that has a summary of Giftcards. In order to do that, the view will issue a query to our Query Model to retrieve necessary information about Giftcards. We will use good old `List` Java structure as our storage. The `CardSummary` class could look like this:
 
 ```java
 public class CardSummary {
@@ -292,9 +290,9 @@ public class CardSummaryProjection {
 }
 ```
 
-\(1\) Annotation that is put on event handlers. Usually used to update a query model. When an `IssuedEvt` is published, this method will be invoked. For more details check [event handling](../part-ii-domain-logic/event-handling.md).
+(1) Annotation that is put on event handlers. Usually used to update a query model. When an `IssuedEvt` is published, this method will be invoked. For more details check [event handling](/part-ii-domain-logic/event-handling.md).
 
-\(2\) Annotation that is used to mark a method as a query handler. For more details check [query handling](../part-ii-domain-logic/query-handling.md).
+(2) Annotation that is used to mark a method as a query handler. For more details check [query handling](/part-ii-domain-logic/query-handling.md).
 
 ### Configuration
 
@@ -313,13 +311,13 @@ Configuration configuration = DefaultConfigurer.defaultConfiguration()
                                                .buildConfiguration(); // (5)
 ```
 
-\(1\) Aggregate configuration - it will recognize all command/event handlers and wire them up
+(1) Aggregate configuration - it will recognize all command/event handlers and wire them up
 
-\(2\) For the purpose of this quick start, we'll use in-memory event store to store events
+(2) For the purpose of this quick start, we'll use in-memory event store to store events
 
-\(3\) Our projection has event and query handlers, that's why we have it registered within `EventHandlingConfiguration` and as a query handler \(4\)
+(3) Our projection has event and query handlers, that's why we have it registered within `EventHandlingConfiguration` and as a query handler (4)
 
-\(5\) At this point we are safe to start our configuration by:
+(5) At this point we are safe to start our configuration by:
 
 ```java
 configuration.start();
@@ -367,4 +365,5 @@ Congratulations! You made it! Your first Axon application!
 While implementing your application, you might run into problems, wonder about why certain things are the way they are, or have some questions that need an answer. The Axon Users mailing list is there to help. Just send an email to [axonframework@googlegroups.com](mailto:axonframework@googlegroups.com). Other users as well as contributors to the Axon Framework are there to help with your issues.
 
 If you find a bug, you can report them at [github.com/AxonFramework/AxonFramework/issues](https://github.com/AxonFramework/AxonFramework/issues). When reporting an issue, please make sure you clearly describe the problem. Explain what you did, what the result was and what you expected to happen instead. If possible, please provide a very simple Unit Test \(JUnit\) that shows the problem. That makes fixing it a lot simpler.
+
 
