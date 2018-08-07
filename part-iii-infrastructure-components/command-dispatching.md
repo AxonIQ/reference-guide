@@ -201,7 +201,9 @@ The BeanValidationInterceptor also implements `MessageHandlerInterceptor`, allow
 
 Message Handler Interceptors can take action both before and after command processing. Interceptors can even block command processing altogether, for example for security reasons.
 
-Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle`, that takes three parameters: the command message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process.
+Interceptors must implement the `MessageHandlerInterceptor` interface. 
+This interface declares one method, `handle`, that takes three parameters: the command message, the current `UnitOfWork` and an `InterceptorChain`. 
+The `InterceptorChain` is used to continue the dispatching process, where as the `UnitOfWork` gives you (1) the message being handled and (2) provides the possibility to tie in logic prior, during or after (command) message handling (see [UnitOfWork](../part-i-getting-started#unit-of-work) for more information about the phases).
 
 Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of the Command Handler. That means they can attach correlation data based on the Message being handled to the Unit of Work, for example. This correlation data will then be attached to messages being created in the context of that Unit of Work.
 
