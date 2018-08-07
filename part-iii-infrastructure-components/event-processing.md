@@ -220,6 +220,10 @@ Kafka is a very popular system for publishing and consuming events. It's archite
 
 To use the Kafka components from Axon, make sure the `axon-kafka` module is available on the classpath.
 
+{% hint style='tip' %}
+The `axon-kafka` module is a new addition to the framework. Minor releases of the framework could include breaking changes to the APIs. 
+{% endhint %}
+
 #### Publishing Events to a Kafka topic
 
 When Event Messages are published to an Event Bus (or Event Store), they can be forwarded to a Kafka topic using the `KafkaPublisher`. Publication of the messages to Kafka will happen in the same thread (and Unit of Work) that published the events to the Event Bus.
