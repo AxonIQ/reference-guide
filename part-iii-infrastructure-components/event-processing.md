@@ -251,7 +251,7 @@ Examples of operations performed in an interceptor are logging or authentication
 
 Any Message Dispatch Interceptors registered to an Event Bus will be invoked when an Event is published.
 They have the ability to alter the Event Message, by adding Meta Data for example, or they can provide you with overall logging capabilities for when an Event is published. 
-These interceptors are always invoked on the thread that published the Event.w
+These interceptors are always invoked on the thread that published the Event.
 
 Let's create an Event Message Dispatch Interceptor which logs each Event message being published on an `EventBus`.
 ```java
