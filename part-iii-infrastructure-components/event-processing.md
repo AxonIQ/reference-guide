@@ -38,12 +38,12 @@ This thus boils down to same two types of interceptors for messages: the Dispatc
 
 Dispatch Interceptors are invoked before a Event (Message) is published on the Event Bus.  
 Handler Interceptors on the other hand are invoked just before the Event Handler is invoked with a given Event (Message) in the Event Processor.
-Examples of operations performed in an interceptor are logging or authentication, which you might want to do regardless of the type of event.
+Examples of operations performed in an interceptor are logging or authentication, which you might want to do regardless of the type of Event.
 
 ### Dispatch Interceptors
 
-Any Message Dispatch Interceptors registered to an Event Bus will be invoked when a event is published.
-They have the ability to alter the Event Message, by adding Meta Data for example, or they can provide you with overall logging capabilities for when an event is published. 
+Any Message Dispatch Interceptors registered to an Event Bus will be invoked when an Event is published.
+They have the ability to alter the Event Message, by adding Meta Data for example, or they can provide you with overall logging capabilities for when an Event is published. 
 These interceptors are always invoked on the thread that published the Event.
 
 Let's create an Event Message Dispatch Interceptor which logs each Event message being published on an `EventBus`.
@@ -76,8 +76,8 @@ public class EventBusConfiguration {
 
 ### Handler Interceptors
 
-Message Handler Interceptors can take action both before and after event processing. 
-Interceptors can even block event processing altogether, for example for security reasons.
+Message Handler Interceptors can take action both before and after Event processing. 
+Interceptors can even block Event processing altogether, for example for security reasons.
 
 Interceptors must implement the `MessageHandlerInterceptor` interface. 
 This interface declares one method, `handle`, that takes three parameters: the (Event) Message, the current `UnitOfWork` and an `InterceptorChain`. 
@@ -87,8 +87,8 @@ Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of
 That means they can attach correlation data based on the Message being handled to the Unit of Work, for example. 
 This correlation data will then be attached to Event Messages being created in the context of that Unit of Work.
 
-Let's create a Message Handler Interceptor which will only allow the handling of events that contain `axonUser` as a value for the `userId` field in the `MetaData`. 
-If the `userId` is not present in the meta-data, an exception will be thrown which will prevent the event from being handled. 
+Let's create a Message Handler Interceptor which will only allow the handling of Events that contain `axonUser` as a value for the `userId` field in the `MetaData`. 
+If the `userId` is not present in the meta-data, an exception will be thrown which will prevent the Event from being handled. 
 And if the `userId`'s value does not match `axonUser`, we will also not proceed up the chain.
 Authenticating the Event Message like shown in this example is a regular use case of the `MessageHandlerInterceptor`. 
 
