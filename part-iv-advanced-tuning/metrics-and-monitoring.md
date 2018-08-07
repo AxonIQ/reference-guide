@@ -36,7 +36,7 @@ public class MetricsConfiguration {
         globalMetricRegistry.registerWithConfigurer(configurer);
     }
 } 
-{%- language name="Spring Boot AutoConfiguration", type="yml" -%}
+{%- language name="Spring Boot AutoConfiguration", type="properties" -%}
 
 # The default value is `true`. Thus you will have Metrics configured if axon-metrics and io.dropwizard.metrics are on your classpath.
 axon.metrics.auto-configuration.enabled=true
