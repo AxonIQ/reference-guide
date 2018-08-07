@@ -38,7 +38,7 @@ public class MetricsConfiguration {
 } 
 {%- language name="Spring Boot AutoConfiguration", type="yml" -%}
 
-# The default value is `true`. Thus you will have Metrics configured if axon-spring-boot-autoconfigure and io.dropwizard.metrics are on your classpath.
+# The default value is `true`. Thus you will have Metrics configured if axon-metrics and io.dropwizard.metrics are on your classpath.
 axon.metrics.auto-configuration.enabled=true
 
 {%- endcodetabs %}
