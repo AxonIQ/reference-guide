@@ -74,11 +74,57 @@ public class EventBusConfiguration {
 }
 ```
 
+### Handler Interceptors
+
+Message Handler Interceptors can take action both before and after event processing. 
+Interceptors can even block event processing altogether, for example for security reasons.
+
+Interceptors must implement the `MessageHandlerInterceptor` interface. 
+This interface declares one method, `handle`, that takes three parameters: the (Event) Message, the current `UnitOfWork` and an `InterceptorChain`. 
+The `InterceptorChain` is used to continue the dispatching process, where as the `UnitOfWork` gives you (1) the message being handled and (2) provides the possibility to tie in logic prior, during or after (event) message handling (see [UnitOfWork](../part-i-getting-started#unit-of-work) for more information about the phases). 
+
+Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of the Event Handler. 
+That means they can attach correlation data based on the Message being handled to the Unit of Work, for example. 
+This correlation data will then be attached to Event Messages being created in the context of that Unit of Work.
+
+Let's create a Message Handler Interceptor which will only allow the handling of events that contain `axonUser` as a value for the `userId` field in the `MetaData`. 
+If the `userId` is not present in the meta-data, an exception will be thrown which will prevent the event from being handled. 
+And if the `userId`'s value does not match `axonUser`, we will also not proceed up the chain.
+Authenticating the Event Message like shown in this example is a regular use case of the `MessageHandlerInterceptor`. 
+
+```java
+public class MyEventHandlerInterceptor implements MessageHandlerInterceptor<EventMessage<?>> {
+
+    @Override
+    public Object handle(UnitOfWork<? extends EventMessage<?>> unitOfWork, InterceptorChain interceptorChain) throws Exception {
+        EventMessage<?> event = unitOfWork.getMessage();
+        String userId = Optional.ofNullable(event.getMetaData().get("userId"))
+                                .map(uId -> (String) uId)
+                                .orElseThrow(IllegalEventException::new);
+        if ("axonUser".equals(userId)) {
+            return interceptorChain.proceed();
+        }
+        return null;
+    }
+}
+```
+We can register the handler interceptor with an `EventProcessor` like so:
+```java
+public class EventProcessorConfiguration {
+    
+    public EventProcessingConfiguration eventProcessingConfiguration() {
+        return new EventProcessingConfiguration()
+                .registerTrackingEventProcessor("my-tracking-processor")
+                .registerHandlerInterceptor("my-tracking-processor", configuration -> new MyEventHandlerInterceptor());
+    }
+}
+```
+
 > **Note**
 >
 > Different from the `CommandBus` and `QueryBus` which both can have Handler and Dispatch Interceptors, the `EventBus` can only have registered Dispatch Interceptors. 
 > This is the case because the event publishing part, so the place which is in control of event message dispatching, is the sole purpose of the Event Bus. 
-> The `EventProcessor`s are in charge of handling the event messages, thus contain the Handler Interceptors. 
+> The `EventProcessor`s are in charge of handling the event messages, thus are the spot where the Handler Interceptors are registered. 
 
 
 ### Assigning handlers to processors
