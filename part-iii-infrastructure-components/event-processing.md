@@ -12,18 +12,26 @@ The `EventBus` is the mechanism that dispatches events to the subscribed event h
 
 When using the Configuration API, the `SimpleEventBus` is used by default. To configure the `EmbeddedEventStore` instead, you need to supply an implementation of a StorageEngine, which does the actual storage of Events.
 
-{% codetabs name="Axon Configuration API", type="java" -%}
-    Configurer configurer = DefaultConfigurer.defaultConfiguration();
-    configurer.configureEmbeddedEventStore(c -> new InMemoryEventStorageEngine());
-{%- language name="Spring Boot AutoConfiguration", type="java" -%}
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration();
+configurer.configureEmbeddedEventStore(c -> new InMemoryEventStorageEngine());
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
 // somewhere in configuration
 @Bean
 public EventStorageEngine eventStorageEngine() {
     return new InMemoryEventStorageEngine(); 
 }
-// When StorageEngine is provided EmbeddedEventStore is configured as EventStore.
-// If JPA configuration is detected JpaEventStorageEngine is configured as EventStorageEngine.
-{%- endcodetabs %}
+// When a EventStorageEngine is provided, the EmbeddedEventStore is configured as the EventStore.
+// And if JPA configuration is detected JpaEventStorageEngine is configured as EventStorageEngine.
+```
+{% endtab %}
+{% endtabs %}
 
 ## Event Processors
 
