@@ -128,7 +128,7 @@ The `JdbcEventStorageEngine` uses a `ConnectionProvider` to obtain connections. 
 
 ### MongoDB Event Storage Engine
 
-MongoDB is a document based NoSQL store. Its scalability characteristics make it suitable for use as an Event Store. Axon provides the `MongoEventStorageEngine`, which uses MongoDB as backing database. It is contained in the Axon Mongo module \(Maven artifactId `axon-mongo`\).
+MongoDB is a document based NoSQL store. Axon provides the `MongoEventStorageEngine`, which uses MongoDB as backing database. It is contained in the Axon Mongo module \(Maven artifactId `axon-mongo`\).
 
 Events are stored in two separate collections: one for the actual event streams and one for the snapshots.
 
@@ -136,7 +136,14 @@ By default, the `MongoEventStorageEngine` stores each event in a separate docume
 
 Storing an entire commit in a single document has the advantage that a commit is stored atomically. Furthermore, it requires only a single roundtrip for any number of events. A disadvantage is that it becomes harder to query events directly in the database. When refactoring the domain model, for example, it is harder to "transfer" events from one aggregate to another if they are included in a "commit document".
 
-The MongoDB doesn't take a lot of configuration. All it needs is a reference to the collections to store the Events in, and you're set to go. For production environments, you may want to double check the indexes on your collections.
+The MongoDB does not take a lot of configuration. All it needs is a reference to the collections to store the Events in, and you're set to go. For production environments, you may want to double check the indexes on your collections.
+
+{% hint style='tip' %}
+In pre Axon Framework 3 release we found MongoDb to be a very good fit as an `EventStorageEngine`. 
+With the introduction of Tracking Event Processors and how they trace their events, we have encountered pain points in regards to the `MongoEventStorageEngine`.
+Additionally, we have noted very good results for regular RDBMS `EventStorageEngine`, thus tuning down the necessity for MongoDb as a storage engine.
+It is thus advised take in consideration if MongoDb is real requirement for your application.   
+{% endhint %}
 
 ### Event Store Utilities
 
