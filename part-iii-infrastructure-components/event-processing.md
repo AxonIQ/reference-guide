@@ -37,7 +37,7 @@ Similarly as with [Command Messages](command-dispatching.md#command-interceptors
 This thus boils down to same two types of interceptors for messages: the Dispatch- and the HandlerInterceptor. 
 
 Dispatch Interceptors are invoked before a Event (Message) is published on the Event Bus.  
-Handler Interceptors on the other end are invoked just before the Event Handler is invoked with a given Event (Message) in the Event Processor.
+Handler Interceptors on the other hand are invoked just before the Event Handler is invoked with a given Event (Message) in the Event Processor.
 Examples of operations performed in an interceptor are logging or authentication, which you might want to do regardless of the type of event.
 
 ### Dispatch Interceptors
@@ -46,7 +46,7 @@ Any Message Dispatch Interceptors registered to an Event Bus will be invoked whe
 They have the ability to alter the Event Message, by adding Meta Data for example, or they can provide you with overall logging capabilities for when an event is published. 
 These interceptors are always invoked on the thread that published the Event.
 
-Let's create a Event Message Dispatch Interceptor which logs each Event message being published on an `EventBus`.
+Let's create an Event Message Dispatch Interceptor which logs each Event message being published on an `EventBus`.
 ```java
 public class EventLoggingDispatchInterceptor implements MessageDispatchInterceptor<EventMessage<?>> {
 
@@ -122,8 +122,8 @@ public class EventProcessorConfiguration {
 
 > **Note**
 >
-> Different from the `CommandBus` and `QueryBus` which both can have Handler and Dispatch Interceptors, the `EventBus` can only have registered Dispatch Interceptors. 
-> This is the case because the event publishing part, so the place which is in control of event message dispatching, is the sole purpose of the Event Bus. 
+> Different from the `CommandBus` and `QueryBus`, which both can have Handler and Dispatch Interceptors, the `EventBus` can only have registered Dispatch Interceptors. 
+> This is the case because the Event publishing part, so the place which is in control of Event Message dispatching, is the sole purpose of the Event Bus. 
 > The `EventProcessor`s are in charge of handling the event messages, thus are the spot where the Handler Interceptors are registered. 
 
 
