@@ -154,7 +154,7 @@ One of the advantages of using a command bus is the ability to undertake action 
 
 There are different types of interceptors: Dispatch Interceptors and Handler Interceptors. Dispatch Interceptors are invoked before a command is dispatched to a Command Handler. At that point, it may not even be sure that any handler exists for that command. Handler Interceptors are invoked just before the Command Handler is invoked.
 
-### Message Dispatch Interceptors
+### Dispatch Interceptors
 
 Message Dispatch Interceptors are invoked when a command is dispatched on a Command Bus. They have the ability to alter the Command Message, by adding Meta Data, for example, or block the command by throwing an Exception. These interceptors are always invoked on the thread that dispatches the Command.
 
@@ -197,7 +197,7 @@ Axon Framework has support for JSR 303 Bean Validation based validation. This al
 
 The BeanValidationInterceptor also implements `MessageHandlerInterceptor`, allowing you to configure it as a Handler Interceptor as well.
 
-### Message Handler Interceptors
+### Handler Interceptors
 
 Message Handler Interceptors can take action both before and after command processing. Interceptors can even block command processing altogether, for example for security reasons.
 
