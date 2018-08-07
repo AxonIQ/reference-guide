@@ -22,7 +22,9 @@ You are free to configure any combination of `MessageMonitors` through construct
 The `GlobalMetricRegistry` contained in the `axon-metrics` module provides a set of sensible defaults per type of messaging component.
 The following example shows you how to configure default metrics for your message handling components: 
 
-{% codetabs name="Axon Configuration API", type="java" -%}
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
 public class MetricsConfiguration {
     
     public Configurer buildConfigurer() {
@@ -36,12 +38,16 @@ public class MetricsConfiguration {
         globalMetricRegistry.registerWithConfigurer(configurer);
     }
 } 
-{%- language name="Spring Boot AutoConfiguration", type="properties" -%}
+```
+{% endtab %}
 
+{% tab title="Spring Boot AutoConfiguration" %}
+```text
 # The default value is `true`. Thus you will have Metrics configured if axon-metrics and io.dropwizard.metrics are on your classpath.
 axon.metrics.auto-configuration.enabled=true
-
-{%- endcodetabs %}
+```
+{% endtab %}
+{% endtabs %}
 
 If you want to have more specific metrics on a message handling component like the `EventBus`, you can do the following:
 
