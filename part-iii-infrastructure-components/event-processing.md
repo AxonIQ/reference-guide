@@ -251,7 +251,7 @@ Examples of operations performed in an interceptor are logging or authentication
 
 Any Message Dispatch Interceptors registered to an Event Bus will be invoked when an Event is published.
 They have the ability to alter the Event Message, by adding Meta Data for example, or they can provide you with overall logging capabilities for when an Event is published. 
-These interceptors are always invoked on the thread that published the Event.
+These interceptors are always invoked on the thread that published the Event.w
 
 Let's create an Event Message Dispatch Interceptor which logs each Event message being published on an `EventBus`.
 ```java
@@ -288,7 +288,7 @@ Interceptors can even block Event processing altogether, for example for securit
 
 Interceptors must implement the `MessageHandlerInterceptor` interface. 
 This interface declares one method, `handle`, that takes three parameters: the (Event) Message, the current `UnitOfWork` and an `InterceptorChain`. 
-The `InterceptorChain` is used to continue the dispatching process, where as the `UnitOfWork` gives you (1) the message being handled and (2) provides the possibility to tie in logic prior, during or after (event) message handling (see [UnitOfWork](../part-i-getting-started#unit-of-work) for more information about the phases). 
+The `InterceptorChain` is used to continue the dispatching process, whereas the `UnitOfWork` gives you (1) the message being handled and (2) provides the possibility to tie in logic prior, during or after (event) message handling (see [UnitOfWork](../part-i-getting-started#unit-of-work) for more information about the phases). 
 
 Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of the Event Handler. 
 That means they can attach correlation data based on the Message being handled to the Unit of Work, for example. 
