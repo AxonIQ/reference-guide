@@ -61,28 +61,11 @@ In the example above, the handler method of `SubHandler` will be invoked for que
 
 It is possible to register multiple query handlers for the same query name and type of response. When dispatching queries, the client can indicate whether he wants a result from one or from all available query handlers.
 
-{% codetabs name="Axon Configuration API", type="java" -%}
-// Sample query handler
-public class MyQueryHandler {
-    @QueryHandler
-    public String echo(String echo) {
-        return echo;
-    }
-}
+// Sample query handler public class MyQueryHandler { @QueryHandler public String echo\(String echo\) { return echo; } }
 
 ...
 
-// To register your query handler
-Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
-    .registerQueryHandler(conf -> new MyQueryHandler);
-{%- language name="Spring Boot AutoConfiguration", type="java" -%}
-// Sample query handler
-@Component
-public class MyQueryHandler {
-    @QueryHandler
-    public String echo(String echo) {
-        return echo;
-    }
-}
-{%- endcodetabs %}
+// To register your query handler Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration\(\) .registerQueryHandler\(conf -&gt; new MyQueryHandler\);
+
+// Sample query handler @Component public class MyQueryHandler { @QueryHandler public String echo\(String echo\) { return echo; } }
 
