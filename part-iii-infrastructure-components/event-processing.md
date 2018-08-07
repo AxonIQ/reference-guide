@@ -159,8 +159,7 @@ The `TokenStore` instance will use the JVM's name \(usually a combination of the
 
 ## Distributing Events
 
-In some cases, it is necessary to publish events to an external system, such as a message broker. Axon uses `Publisher`s to publish events to third-party messaging systems, and `MessageSource`s to read events from these systems into your
-Axon based application.
+In some cases, it is necessary to publish events to an external system, such as a message broker. Axon uses `Publisher`s to publish events to third-party messaging systems, and `MessageSource`s to read events from these systems into your Axon based application.
 
 At the moment, there is support for publishing (and reading) events via Spring AMQP and Kafka.
 
@@ -238,7 +237,7 @@ KafkaPublisher<String, byte[]> publisher = new KafkaPublisher<>(configuration); 
 publisher.start(); // to start publishing all events
 ```
 
-Axon provides a `DefaultProducerFactory`, which attempts to reuse created instances to avoid continuous creation of new ones. It's creation uses a similar builder pattern. The builder requires a `configs` Map, which are the settings Kafka to use for the Kafka client, such as the Kafka instance locations. Please check the Kafka guide for the possible settings and their values. 
+Axon provides a `DefaultProducerFactory`, which attempts to reuse created instances to avoid continuous creation of new ones. It's creation uses a similar builder pattern. The builder requires a `configs` Map, which are the settings to use for the Kafka client, such as the Kafka instance locations. Please check the Kafka guide for the possible settings and their values. 
 
 ```java
 DefaultProducerFactory.builder(configs)
@@ -253,10 +252,9 @@ DefaultProducerFactory.builder(configs)
 
 Note that the `DefaultProducerFactory` needs to be `shutDown` properly, to ensure all producer instances are properly closed.
 
-
 #### Consuming Events from a Kafka topic
 
-Messages can be consumed by Tracking Event Processors by configuring an `KafkaMessageSource`. This message source uses a `Fetcher` to retrieve the actual messages from Kafka. You can either use the `AsyncFetcher`, or provide your own.
+Messages can be consumed by Tracking Event Processors by configuring a `KafkaMessageSource`. This message source uses a `Fetcher` to retrieve the actual messages from Kafka. You can either use the `AsyncFetcher`, or provide your own.
 
 The `AsyncFetcher` is initialized using a builder, which requires the Kafka Configuration to initialize the client. Please check the Kafka guide for the possible settings and their values.
 
