@@ -111,7 +111,7 @@ public class MonitoringConfiguration {
 ### Interceptor Logging
 
 Another good approach to track the flow of messages throughout an Axon application is by setting up the right interceptors in your application.  
-As you might now there are two flavors of interceptors, the Dispatch and Handler interceptors (like discussed [here](../part-iii-infrastructure-components/command-dispatching.md#command-interceptors) for commands and [here](../part-iii-infrastructure-components/query-processing.md#handler-interceptors) for queries), which intercept a message prior to publishing (Dispatch Interceptor) or whilst it is being handled (Handler Interceptor).
+There are two flavors of interceptors, the Dispatch and Handler Interceptors (like discussed [here](../part-iii-infrastructure-components/command-dispatching.md#command-interceptors) for commands, [here](../part-iii-infrastructure-components/event-processing.md#event-interceptors) for events and [here](../part-iii-infrastructure-components/query-processing.md#handler-interceptors) for queries), which intercept a message prior to publishing (Dispatch Interceptor) or whilst it is being handled (Handler Interceptor).
 The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled.
 The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J, but also provides a simple overridable template to set up your own desired logging format. 
 We refer to the command, event and query sections for the specifics on how to configure message interceptors.
