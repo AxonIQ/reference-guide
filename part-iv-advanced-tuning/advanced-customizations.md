@@ -43,7 +43,7 @@ public class SerializerConfiguration {
 ```
 {% endtab %}
 {% tab title="Spring Boot AutoConfiguration - Properties file" %}
-```text
+```properties
 # Possible values for these keys are `default`, `xstream`, `java`, and `jackson`.
 axon.serializer.general
 axon.serializer.events
@@ -51,7 +51,7 @@ axon.serializer.messages
 ```
 {% endtab %}
 {% tab title="Spring Boot AutoConfiguration - YML file" %}
-```text
+```yaml
 # Possible values for these keys are `default`, `xstream`, `java`, and `jackson`.
 axon:
     serializer:
