@@ -241,7 +241,7 @@ It is recommended to explicitly define an `ErrorHandler` when using the `Asynchr
 ## Event Interceptors
 
 Similarly as with [Command Messages](command-dispatching.md#command-interceptors), Event Messages can also be intercepted prior to publishing and handling to perform additional actions on all Events.
-This thus boils down to same two types of interceptors for messages: the Dispatch- and the HandlerInterceptor. 
+This thus boils down to same two types of interceptors for messages: the Dispatch- and the Handler Interceptor. 
 
 Dispatch Interceptors are invoked before a Event (Message) is published on the Event Bus.  
 Handler Interceptors on the other hand are invoked just before the Event Handler is invoked with a given Event (Message) in the Event Processor.
