@@ -12,11 +12,148 @@ The Query Gateway is a convenient interface towards the Query dispatching mechan
 
 ## Query Bus
 
-The Query Bus is the mechanism that dispatches queries to Query Handlers. Queries are registered using the combination of the query request name and query response type. It is possible to register multiple handlers for the same request-response combination, which can be used to implement for instance the scatter-gather pattern. When dispatching queries, the client must indicate whether it wants a response from a single handler or from all handlers.
+The Query Bus is the mechanism that dispatches queries to Query Handlers. Queries are registered using the combination of the query request name and query response type. It is possible to register multiple handlers for the same request-response combination. Axon supports 3 query types:
+* Direct query
+* Scatter-gather query
+* Subscription query
 
-If the client requests a response from a single handler, and no handler is found, a `NoHandlerForQueryException` is thrown. In case multiple handlers are registered, it is up to the implementation of the Query Bus to decide which handler is actually invoked.
+### Direct query
 
-If the client requests a response from all handlers, a stream of results is returned. This stream contains a result from each handler that successfully handled the query, in unspecified order. In case there are no handlers for the query, or all handlers threw an exception while handling the request, the stream is empty.
+It represents a query request from a single query handler. If no handler is found, a `NoHandlerForQueryException` is thrown. In case multiple handlers are registered, it is up to the implementation of the Query Bus to decide which handler is actually invoked. In the listing below we have a query handler:
+
+```java
+@QueryHandler // (1)
+public List<String> query(String criteria) {
+    // return the query result based on given criteria
+}
+```
+
+(1) By default the name of the query is fully qualified class name of query payload (`java.lang.String` in our case). However, this behavior can be overridden by stating the `queryName` attribute of `@QueryHandler` annotation.   
+
+If we want to query our model, we would do something like this:
+
+```java
+// (1) create a query message
+GenericQueryMessage<String, List<String>> query =
+        new GenericQueryMessage<>("criteria", ResponseTypes.multipleInstancesOf(String.class));
+// (2) send a query message and print query response
+queryBus.query(query).thenAccept(System.out::println);
+```
+
+(1) It is also possible to state the query name when we are building the query message, by default it is fully qualified class name of query payload.
+
+(2) Response of sending a query is a java `CompletableFuture` which depending on the type of the query bus may be resolved immediately. However, if our query handler returns type of `CompletableFuture`, result will be returned asynchronously regardless of the type of query bus.
+
+### Scatter-gather query
+
+When you want responses from all of the query handlers matching your query message, this is the type of query to use. As a response a stream of results is returned. This stream contains a result from each handler that successfully handled the query, in unspecified order. In case there are no handlers for the query, or all handlers threw an exception while handling the request, the stream is empty.
+
+In the listing below we have two query handlers:
+
+```java
+@QueryHandler(queryName = "query")
+public List<String> query1(String criteria) {
+    // return the query result based on given criteria
+}
+```
+
+```java
+@QueryHandler(queryName = "query")
+public List<String> query2(String criteria) {
+    // return the query result based on given criteria
+}
+```
+
+Since they are query handlers that are possibly in different components we would like to get result from both of them. So, we will use a scatter-gather query:
+
+```java
+// create a query message
+GenericQueryMessage<String, List<String>> query =
+        new GenericQueryMessage<>("criteria", "query", ResponseTypes.multipleInstancesOf(String.class));
+// send a query message and print query response
+queryBus.scatterGather(query, 10, TimeUnit.SECONDS)
+        .map(Message::getPayload)
+        .flatMap(Collection::stream)
+        .forEach(System.out::println);
+```
+
+### Subscription query
+
+This type of query allows a client to get the initial state of the model it wants to query and to stay up-to-date as the response of a query changes. It's an invocation of Direct Query with possibility to be updated when the initial state changes. To be up-to-date with changes of the model, we'll use `QueryUpdateEmitter` component provided by Axon.
+
+Let's extend our `CardSummaryProjection` in [Quick Start](/part-i-getting-started/quick-start.md) example with a query handler for a specific GiftCard:
+
+```java
+@QueryHandler
+public CardSummary fetch(String cardId) {
+    return cardSummaries.stream()
+                        .filter(cs -> cs.getId().equals(cardId))
+                        .findFirst()
+                        .orElse(null);
+}
+```
+
+This query handler will provide us with initial state of the GiftCard. Once our GiftCard gets redeemed we would like to update any component which is interested in the state of the GiftCard. We'll achieve this by emitting an update using `QueryUpdateEmitter` component within handler of `RedeemedEvt` event:
+
+```java
+@EventHandler
+public void on(RedeemedEvt evt) {
+    // (1)
+    cardSummaries.stream()
+                 .filter(cs -> evt.getId().equals(cs.getId()))
+                 .findFirst()
+                 .ifPresent(cardSummary -> {
+                     CardSummary updatedCardSummary = cardSummary.deductAmount(evt.getAmount());
+                     cardSummaries.remove(cardSummary);
+                     cardSummaries.add(updatedCardSummary);
+                 });
+    // (2)
+    queryUpdateEmitter.emit(String.class, cardId -> cardId.equals(evt.getId()), evt.getAmount());
+}
+```
+
+(1) First, we update our view model the same view it was already done.
+
+(2) If there is a subscription query interested in updates about this specific GiftCard we emit an update. First parameter of emission is type of the query (String in our case which corresponds to the query type in previously defined query handler). Second parameter is predicate which will select the subscription query to be updated, in our case we will update only subscription queries interested in given GiftCard. Third parameter is the actual update, in our case it is the redeemed amount. There are several overloads of emit method, feel free to take a look at JavaDoc. Important thing to underline here is that an update is a message and that some overloads take the update message as a parameter (in our case we just sent the payload which was wrapped in the message) which enables us to attach meta-data for example. 
+
+Once we have query handling and emitting side implemented, we can issue a subscription query to get initial state of the GiftCard and be updated once this GiftCard gets redeemed:
+
+```java
+// (1)
+commandGateway.sendAndWait(new IssueCmd("gc1", 100)); 
+// (2)
+GenericSubscriptionQueryMessage<String, CardSummary, Integer> query =
+                new GenericSubscriptionQueryMessage<>("gc1",
+                                                      ResponseTypes.instanceOf(CardSummary.class),
+                                                      ResponseTypes.instanceOf(Integer.class));
+// (3)
+SubscriptionQueryResult<QueryResponseMessage<CardSummary>, SubscriptionQueryUpdateMessage<Integer>> queryResult =
+                queryBus.subscriptionQuery(query);
+// (4)
+queryResult.handle(System.out::println, System.out::println);
+// (5)	
+commandGateway.sendAndWait(new RedeemCmd("gc1", 10));			
+```
+
+(1) Issuing a GiftCard with "gc1" id and initial value of 100.
+
+(2) Creating a subscription query message to get the initial state of "gc1" GiftCard (this initial state is of `CardSummary` type) and to be updated once state of "gc1" GiftCard gets changed (in our case this is redeeming). Type of this update is `Integer`. Do note that type of update must match one on the emission side.
+
+(3) Once created message we are sending via Query Bus. We receive a query result which contains two components: one is `initialResult` and the other is `updates`. In order to achieve reactiveness we use [Project Reactor](https://projectreactor.io/)'s `Mono` for `initialResult` and `Flux` for `updates`. Do note that `reactor-core` dependency is mandatory for usage of subscription queries. However, it is a compile time dependency and it is not required for other Axon features.
+
+> **Note**
+> Once the subscription query is issued, all updates are queued until the subscription to the `Flux` of `updates` is done. This behavior prevents losing of updates.
+
+(4) `handle` method gives us possibility to subscribe to `initialResult` and `updates` in one go. If we want more granular control over results, we can use `initialResult` and `updates` methods on query result.
+
+(5) When we issue a `RedeemCmd` our event handler in projection will be triggered which will emit the update. Since we subscribed with `println` method to updates, it will be printed.
+
+When we run our example, this is the output we receive something like this:
+
+```text
+GenericQueryResponseMessage{payload={CardSummary{id='gc1', initialAmount=100, remainingAmount=100}}, metadata={}, messageIdentifier='c8c49834-55b8-40f9-b5ef-8268f9f335d0'}
+GenericSubscriptionQueryUpdateMessage{payload={10}, metadata={'traceId'->'00cef44d-d09a-4abb-b62e-89a56fdef1f7', 'correlationId'->'30185a39-1652-45c5-b1a6-01c200f5b038'}, messageIdentifier='b7d6d6b3-110d-4b5b-afa2-1da7cb6568bf'}
+```
 
 ### SimpleQueryBus
 
