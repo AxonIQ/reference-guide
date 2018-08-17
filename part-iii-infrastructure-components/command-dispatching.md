@@ -239,6 +239,33 @@ public class CommandBusConfiguration {
 }
 ```
 
+### `@CommandHandlerInterceptor` Annotation
+
+Axon introduces the possibility to add a handler interceptor as a method annotated with `@CommandHandlerInterceptor` on Aggregate. The difference between method on aggregate and 'regular' command handler interceptor is that now you can make decisions based on the current state of the aggregate. Some properties of annotated command handler interceptor:
+
+* Annotation can be put on entities within the Aggregate. 
+* It is possible to intercept a command on Aggregate level which handler is in child entity.
+* Command execution can be prevented by firing an exception from annotated command handler interceptor.
+* It is possible to define `InterceptorChain` as a parameter of command handler interceptor method and use it to control command execution.
+* Using `commandNamePattern` attribute of `@CommandHandlerInterceptor` annotation we can intercept all commands matching provided regular expression.
+* Events can be applied from annotated command handler interceptor.
+
+In the listing below we can see `@CommandHandlerInterceptor` which prevents command execution if command's `state` field does not match Aggregate's `state` field:
+
+```java
+public class MyAggregate {
+    ...
+    private String state;
+    ...
+    @CommandHandlerInterceptor
+    public void intercept(MyCommand myCommand, InterceptorChain interceptorChain) {
+        if (this.state.equals(myCommand.getState()) {
+            interceptorChain.proceed();
+        }
+    }
+}
+```
+
 ## Distributing the Command Bus
 
 The CommandBus implementations described in earlier only allow Command Messages to be dispatched within a single JVM. Sometimes, you want multiple instances of Command Buses in different JVMs to act as one. Commands dispatched on one JVM's Command Bus should be seamlessly transported to a Command Handler in another JVM while sending back any results.
