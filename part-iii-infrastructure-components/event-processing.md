@@ -344,8 +344,8 @@ public class MyProjection {
     ...
     @EventHandler
     public void on(MyEvent event, ReplayStatus replayStatus) { // we can wire a ReplayStatus here so we can see whether this
-                                                             // event is delivered to our handler as a 'REGULAR' event or
-                                                             // 'REPLAY' event
+                                                               // event is delivered to our handler as a 'REGULAR' event or
+                                                               // 'REPLAY' event
         // do event handling
     }
     
@@ -370,9 +370,28 @@ configuration.eventProcessingConfiguration()
              .eventProcessorByProcessingGroup("projections", TrackingEventProcessor.class)
              .ifPresent(trackingEventProcessor -> {
                  trackingEventProcessor.shutDown();
-                 trackingEventProcessor.resetTokens();
+                 trackingEventProcessor.resetTokens(); // (1)
                  trackingEventProcessor.start();
              });
+```
+
+(1) Since version 3.3 of framework it is possible to provide a token position to be used for resetting - from which point in event log `TrackingEventProcessor` should start replaying the events. 
+
+## Custom tracking token position
+
+Prior 3.3 Axon version, it was possible to start `TrackingEventProcessor` from the beginning of event stream. In version 3.3 functionality of starting `TrackingEventProcessor` from a custom position was introduced. `TrackingEventProcessorConfiguration` gives a possibility to provide an initial token for the `TrackingEventProcessor` with `andInitialTrackingToken(Function<StreamableMessageSource, TrackingToken>)` builder method. As an input parameter for the token builder function we receive `StreamableMessageSource` which gives us three possibilities to build a token: 
+
+1) From the head of event stream: `createHeadToken()`.
+2) From the tail of event stream: `createTailToken()`.
+3) From some point in time: `createTokenAt(Instant)` and `createTokenSince(Duration)` - Creates a token that tracks all events after given time. If there is an event exactly at the given time, it will be tracked too.
+
+Of course, you can completely disregard the `StreamableMessageSource` input parameter and create a token by yourself.
+
+Below we can see an example of creating `TrackingEventProcessorConfiguration` with initial token on "2007-12-03T10:15:30.00Z":
+
+```java
+TrackingEventProcessorConfiguration.forSingleThreadedProcessing()
+                                   .andInitialTrackingToken(streamableMessageSource -> streamableMessageSource.createTokenAt("2007-12-03T10:15:30.00Z"));
 ```
 
 ## Event Interceptors
