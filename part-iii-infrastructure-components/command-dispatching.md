@@ -241,16 +241,16 @@ public class CommandBusConfiguration {
 
 ### `@CommandHandlerInterceptor` Annotation
 
-Axon introduces the possibility to add a handler interceptor as a method annotated with `@CommandHandlerInterceptor` on Aggregate. The difference between method on aggregate and 'regular' command handler interceptor is that now you can make decisions based on the current state of the aggregate. Some properties of annotated command handler interceptor:
+The framework has the possibility to add a handler interceptor as an `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. The difference between a method on an aggregate and a ['regular'](./command-dispatching.md#handler-interceptors) command handler interceptor, is that with the annotation approach you can make decisions based on the current state of the given aggregate. Some properties of an annotated command handler interceptor are:
 
-* Annotation can be put on entities within the Aggregate. 
-* It is possible to intercept a command on Aggregate level which handler is in child entity.
+* The annotation can be put on entities within the Aggregate. 
+* It is possible to intercept a command on Aggregate Root level, whilst the command handler is in a child entity.
 * Command execution can be prevented by firing an exception from annotated command handler interceptor.
-* It is possible to define `InterceptorChain` as a parameter of command handler interceptor method and use it to control command execution.
-* Using `commandNamePattern` attribute of `@CommandHandlerInterceptor` annotation we can intercept all commands matching provided regular expression.
+* It is possible to define an `InterceptorChain` as a parameter of the command handler interceptor method and use it to control command execution.
+* By using the `commandNamePattern` attribute of the `@CommandHandlerInterceptor` annotation we can intercept all commands matching provided regular expression.
 * Events can be applied from annotated command handler interceptor.
 
-In the listing below we can see `@CommandHandlerInterceptor` which prevents command execution if command's `state` field does not match Aggregate's `state` field:
+In the listing below we can see a `@CommandHandlerInterceptor` method which prevents command execution if a command's `state` field does not match the Aggregate's `state` field:
 
 ```java
 public class MyAggregate {
