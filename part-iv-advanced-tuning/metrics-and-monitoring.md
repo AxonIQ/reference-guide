@@ -12,6 +12,7 @@ With this module you can register a number of `MessageMonitor` implementations t
 Internally, the `axon-metrics` module uses [Dropwizard Metrics](https://metrics.dropwizard.io/) for registering the measurements correctly.
 That thus means that `MessageMonitors` are registered against the Dropwizard `MetricRegistry`.
 The following monitor implementations are currently provided:
+
 1. `CapacityMonitor` - Measure the message capacity by keeping track of the total time spent on message handling compared to total time it is active. This returns a number between 0 and n number of threads, thus if there are 4 threads working, the maximum capacity is 4 if every thread is active for 100% 
 2. `EventProcessorLatencyMonitor` - Measures the difference in message timestamps between the last ingested and the last processed event message.
 3. `MessageCountingMonitor` - Counts the number of ingested, successful, failed, ignored and processed messages.
