@@ -241,7 +241,7 @@ public class CommandBusConfiguration {
 
 ### `@CommandHandlerInterceptor` Annotation
 
-The framework has the possibility to add a handler interceptor as an `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. The difference between a method on an aggregate and a ['regular'](./command-dispatching.md#handler-interceptors) command handler interceptor, is that with the annotation approach you can make decisions based on the current state of the given aggregate. Some properties of an annotated command handler interceptor are:
+The framework has the possibility to add a Handler Interceptor as an `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. The difference between a method on an Aggregate and a "[regular](./command-dispatching.md#handler-interceptors)" Command Handler Interceptor, is that with the annotation approach you can make decisions based on the current state of the given Aggregate. Some properties of an annotated Command Handler Interceptor are:
 
 * The annotation can be put on entities within the Aggregate. 
 * It is possible to intercept a command on Aggregate Root level, whilst the command handler is in a child entity.
