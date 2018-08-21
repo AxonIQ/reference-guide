@@ -239,6 +239,33 @@ public class CommandBusConfiguration {
 }
 ```
 
+### `@CommandHandlerInterceptor` Annotation
+
+The framework has the possibility to add a Handler Interceptor as an `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. The difference between a method on an Aggregate and a "[regular](./command-dispatching.md#handler-interceptors)" Command Handler Interceptor, is that with the annotation approach you can make decisions based on the current state of the given Aggregate. Some properties of an annotated Command Handler Interceptor are:
+
+* The annotation can be put on entities within the Aggregate. 
+* It is possible to intercept a command on Aggregate Root level, whilst the command handler is in a child entity.
+* Command execution can be prevented by firing an exception from annotated command handler interceptor.
+* It is possible to define an `InterceptorChain` as a parameter of the command handler interceptor method and use it to control command execution.
+* By using the `commandNamePattern` attribute of the `@CommandHandlerInterceptor` annotation we can intercept all commands matching provided regular expression.
+* Events can be applied from annotated command handler interceptor.
+
+In the listing below we can see a `@CommandHandlerInterceptor` method which prevents command execution if a command's `state` field does not match the Aggregate's `state` field:
+
+```java
+public class MyAggregate {
+    ...
+    private String state;
+    ...
+    @CommandHandlerInterceptor
+    public void intercept(MyCommand myCommand, InterceptorChain interceptorChain) {
+        if (this.state.equals(myCommand.getState()) {
+            interceptorChain.proceed();
+        }
+    }
+}
+```
+
 ## Distributing the Command Bus
 
 The CommandBus implementations described in earlier only allow Command Messages to be dispatched within a single JVM. Sometimes, you want multiple instances of Command Buses in different JVMs to act as one. Commands dispatched on one JVM's Command Bus should be seamlessly transported to a Command Handler in another JVM while sending back any results.
