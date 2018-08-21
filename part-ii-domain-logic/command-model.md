@@ -116,6 +116,40 @@ It is possible to `apply()` new events inside an Event Sourcing Handler method. 
 
 You can also use the static `AggregateLifecycle.isLive()` method to check whether the aggregate is 'live'. Basically, an aggregate is considered live if it has finished replaying historic events. While replaying these events, isLive\(\) will return false. Using this `isLive()` method, you can perform activity that should only be done when handling newly generated events.
 
+## Spawning a new Aggregate
+
+New Aggregate can be created by issuing a creation command, can be created from a Saga (again by issuing a creation command), but in some cases it can be created from an Aggregate. Prior to version 3.3, this had to be orchestrated via Saga. Version 3.3 introduces a functionality to create a new Aggregate from an Aggregate. `AggregateLifecycle` introduces static method `createNew`. 
+
+Consider a case where you have `AggregateA` defined like this:
+
+```java
+public class AggregateA {
+    ...            
+    public AggregateA(String id) {
+        // apply the creation event
+    }
+    ...
+}
+```
+
+We would like to create this aggregate as a consequence of handling a command in `AggregateB`:
+
+```java
+public class AggregateB {
+    ...
+    @CommandHandler
+    public void AggregateB(SomeAggregateBCommand command) {
+        AggregateLifecycle.createNew(AggregateA.class, () -> new AggregateA(/* provide the id for AggregateA */)); // (1)
+    }
+    ...
+}
+```
+
+(1) The first parameter of `createNew` method is the type of Aggregate to be created. The second parameter is the factory method - the method to be used in order to create that Aggregate.
+
+> **Note**
+> Creation of new Aggregate should be done in command handling rather than in event handling (if Aggregates are Event Sourced). Rationale: we don't want to create new Aggregates when we are sourcing current Aggregate - previously created aggregate will be Event Sourced based on its events.
+
 ## Complex Aggregate structures
 
 Complex business logic often requires more than what an aggregate with only an aggregate root can provide. In that case, it is important that the complexity is spread over a number of entities within the aggregate. When using event sourcing, not only the aggregate root needs to use events to trigger state transitions, but so does each of the entities within that aggregate.
