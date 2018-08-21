@@ -139,10 +139,13 @@ commandGateway.sendAndWait(new RedeemCmd("gc1", 10));
 
 (2) Creating a subscription query message to get the initial state of "gc1" GiftCard (this initial state is of type `CardSummary`) and to be updated once the state of GiftCard with id "gc1" is changed (in our case update means the card is redeemed). The type of the update is an `Integer`. Do note that the type of the update must match the type of the emission side.
 
-(3) Once the message is created, we are sending it via the `QueryBus`. We receive a query result which contains two components: one is `initialResult` and the other is `updates`. In order to achieve 'reactiveness' we use [Project Reactor](https://projectreactor.io/)'s `Mono` for `initialResult` and `Flux` for `updates`. Do note that `reactor-core` dependency is mandatory for usage of subscription queries. However, it is a compile time dependency and it is not required for other Axon features.
+(3) Once the message is created, we are sending it via the `QueryBus`. We receive a query result which contains two components: one is `initialResult` and the other is `updates`. In order to achieve 'reactiveness' we use [Project Reactor](https://projectreactor.io/)'s `Mono` for `initialResult` and `Flux` for `updates`. 
 
 > **Note**
 > Once the subscription query is issued, all updates are queued until the subscription to the `Flux` of `updates` is done. This behavior prevents losing of updates.
+
+> **Note**
+> `reactor-core` dependency is mandatory for usage of subscription queries. However, it is a compile time dependency and it is not required for other Axon features.
 
 (4) The `SubscriptionQueryResult#handle(Consumer<? super I>, Consumer<? super U>)` method gives us the possibility to subscribe to the `initialResult` and the `updates` in one go. If we want more granular control over the results, we can use the `initialResult()` and `updates()` methods on the query result.
 
