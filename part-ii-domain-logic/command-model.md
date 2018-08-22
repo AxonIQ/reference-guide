@@ -118,7 +118,7 @@ You can also use the static `AggregateLifecycle.isLive()` method to check whethe
 
 ## Spawning a new Aggregate
 
-New Aggregate can be created by issuing a creation command, can be created from a Saga (again by issuing a creation command), but in some cases it can be created from an Aggregate. Prior to version 3.3, this had to be orchestrated via Saga. Version 3.3 introduces a functionality to create a new Aggregate from an Aggregate. `AggregateLifecycle` introduces static method `createNew`. 
+New Aggregate can be created by issuing a creation command, can be created from a Event Handling Component (Saga or Event Processor), again by issuing a creation command, but in some cases it can be created from an Aggregate. Prior to version 3.3, this had to be orchestrated via Event Handling Component. Version 3.3 introduces a functionality to create a new Aggregate from an Aggregate. `AggregateLifecycle` introduces static method `createNew`. 
 
 Consider a case where you have `AggregateA` defined like this:
 
@@ -148,7 +148,7 @@ public class AggregateB {
 (1) The first parameter of `createNew` method is the type of Aggregate to be created. The second parameter is the factory method - the method to be used in order to create that Aggregate.
 
 > **Note**
-> Creation of new Aggregate should be done in command handling rather than in event handling (if Aggregates are Event Sourced). Rationale: we don't want to create new Aggregates when we are sourcing current Aggregate - previously created aggregate will be Event Sourced based on its events.
+> Creation of new Aggregate should be done in command handling rather than in event handling (if Aggregates are Event Sourced). Rationale: we don't want to create new Aggregates when we are sourcing current Aggregate - previously created aggregate will be Event Sourced based on its events. However, if you try to create a new Aggregate while Axon is replaying events, an `UnsupportedOperationException` will be thrown.
 
 ## Complex Aggregate structures
 
