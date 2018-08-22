@@ -145,6 +145,9 @@ commandGateway.sendAndWait(new RedeemCmd("gc1", 10));
 > Once the subscription query is issued, all updates are queued until the subscription to the `Flux` of `updates` is done. This behavior prevents losing of updates.
 
 > **Note**
+> The Framework prevents issuing more than one query message with the same id. If it is necessary to be updated in several different places, create a new query message.
+
+> **Note**
 > `reactor-core` dependency is mandatory for usage of subscription queries. However, it is a compile time dependency and it is not required for other Axon features.
 
 (4) The `SubscriptionQueryResult#handle(Consumer<? super I>, Consumer<? super U>)` method gives us the possibility to subscribe to the `initialResult` and the `updates` in one go. If we want more granular control over the results, we can use the `initialResult()` and `updates()` methods on the query result.
