@@ -118,7 +118,7 @@ You can also use the static `AggregateLifecycle.isLive()` method to check whethe
 
 ## Spawning a new Aggregate
 
-New Aggregate can be created by issuing a creation command, can be created from a Event Handling Component (Saga or Event Processor), again by issuing a creation command, but in some cases it can be created from an Aggregate. Prior to version 3.3, this had to be orchestrated via Event Handling Component. Version 3.3 introduces a functionality to create a new Aggregate from an Aggregate. `AggregateLifecycle` introduces static method `createNew`. 
+Instantiating new Aggregates is done by issuing a creation command, which for example might originate from an Event Handling Component (Saga or Event Processor). But in some cases it might be beneficial to create an Aggregate from another Aggregate. Prior to version 3.3, instantiating an Aggregate as a follow up form another Aggregate had to be orchestrated via an Event Handling Component. Version 3.3 introduces functionality to create a new Aggregate from another Aggregate. To this end, the `AggregateLifecycle` introduces the static method `createNew()`. 
 
 Consider a case where you have `AggregateA` defined like this:
 
@@ -132,7 +132,7 @@ public class AggregateA {
 }
 ```
 
-We would like to create this aggregate as a consequence of handling a command in `AggregateB`:
+We would like to create this Aggregate as a consequence of handling a command in `AggregateB`, like so:
 
 ```java
 public class AggregateB {
@@ -145,10 +145,10 @@ public class AggregateB {
 }
 ```
 
-(1) The first parameter of `createNew` method is the type of Aggregate to be created. The second parameter is the factory method - the method to be used in order to create that Aggregate.
+(1) The first parameter of the `AggregateLifecycle#createNew()` method is the type of Aggregate to be created. The second parameter is the factory method - the method to be used in order to instantiate the desired Aggregate.
 
 > **Note**
-> Creation of new Aggregate should be done in command handling rather than in event handling (if Aggregates are Event Sourced). Rationale: we don't want to create new Aggregates when we are sourcing current Aggregate - previously created aggregate will be Event Sourced based on its events. However, if you try to create a new Aggregate while Axon is replaying events, an `UnsupportedOperationException` will be thrown.
+> Creation of a new Aggregate should be done in a Command Handling function rather than in an Event Handling function (given the usage of Event Sourced Aggregate). Rationale: we do not want to create new Aggregates when we are sourcing a given Aggregate - previously created aggregate will be Event Sourced based on its events. However, if you try to create a new Aggregate while Axon is replaying events, an `UnsupportedOperationException` will be thrown.
 
 ## Complex Aggregate structures
 
