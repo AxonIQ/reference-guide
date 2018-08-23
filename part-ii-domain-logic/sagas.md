@@ -108,11 +108,13 @@ The `QuartzEventScheduler` is a more reliable and enterprise-worthy implementati
 
 It needs to be configured with a Quartz `Scheduler` and an `EventBus`. Optionally, you may set the name of the group that Quartz jobs are scheduled in, which defaults to "AxonFramework-Events".
 
-One or more components will be listening for scheduled Events. These components might rely on a Transaction being bound to the Thread that invokes them. Scheduled Events are published by Threads managed by the `EventScheduler`. To manage transactions on these threads, you can configure a `TransactionManager` or a `UnitOfWorkFactory` that creates a Transaction Bound Unit of Work.
+One or more component will be listening for scheduled Events. These components might rely on a Transaction being bound to the Thread that invokes them. Scheduled Events are published by Threads managed by the `EventScheduler`. To manage transactions on these threads, you can configure a `TransactionManager` or a `UnitOfWorkFactory` that creates a Transaction Bound Unit of Work.
 
 > **Note**
 >
 > Spring users can use the `QuartzEventSchedulerFactoryBean` or `SimpleEventSchedulerFactoryBean` for easier configuration. It allows you to set the PlatformTransactionManager directly.
+
+If you need a bit more of a control when a deadline is met check [Deadline support](deadlines.md).
 
 ### Injecting Resources
 
