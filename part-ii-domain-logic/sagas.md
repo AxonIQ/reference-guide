@@ -114,7 +114,7 @@ One or more component will be listening for scheduled Events. These components m
 >
 > Spring users can use the `QuartzEventSchedulerFactoryBean` or `SimpleEventSchedulerFactoryBean` for easier configuration. It allows you to set the PlatformTransactionManager directly.
 
-If you need a bit more of a control when a deadline is met check [Deadline support](deadlines.md).
+If you need more fine grained control when scheduling deadlines and in which contexts this should be handled, check out the [Deadline section](deadlines.md).
 
 ### Injecting Resources
 
