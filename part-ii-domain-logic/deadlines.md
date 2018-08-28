@@ -1,6 +1,6 @@
 # Deadlines
 
-This feature is introduced in 3.3 version of Axon. The Deadline is a mechanism which enables certain action (in our case `@DeadlineHandler` annotated method) to be executed after certain amount of time. Context of this execution is Aggregate or Saga in which the Deadline was scheduled. If the Deadline becomes obsolete there is a possibility to cancel it.  
+This feature is introduced in 3.3 version of Axon. The 'Deadline concept' in the Axon Framework is a mechanism which enables certain actions (in our case a `@DeadlineHandler` annotated method) to be executed after certain amount of time. The context of this execution is an Aggregate or a Saga in which the Deadline was scheduled. If the Deadline becomes obsolete there is the possibility to cancel it as well.  
 
 Deadlines are possible to be scheduled from Sagas and Aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`s when the deadline is met. The `DeadlineManager` can be injected as a resource. It has two flavors: `SimpleDeadlineManager` and `QuartzDeadlineManager`, just like  the [Event Scheduling](sagas.md#keeping-track-of-deadlines) mechanism for Sagas. 
 
@@ -8,7 +8,9 @@ Deadlines are possible to be scheduled from Sagas and Aggregates. The `DeadlineM
 
 A deadline can be scheduled only by providing a `Duration` after which it will be triggered (or `Instance` at which it will be triggered) and a name.
 
-> **Note** Unlike Event Scheduling, when a Deadline is triggered there is no storing of published Message.
+> **Note**
+>  
+> Unlike [Event Scheduling](sagas.md#keeping-track-of-deadlines), when a Deadline is triggered there will be no storing of the published Message.
 
 ```java
 String deadlineId = deadlineManager.schedule(Duration.ofMillis(500), "myDeadline");
@@ -34,7 +36,7 @@ Lastly, you could also provide the Deadline Identifier to the `DeadlineManager` 
 
 ## Handling a Deadline
 
-We have now seen how to schedule a Deadline. When the scheduled time is met, the corresponding `@DeadlineHandler` is invoked. `@DeadlineHandler` is a Message Handler as any other in Axon - it is possible to inject parameters for which the `ParameterResolver`s exist. 
+We have now seen how to schedule a Deadline. When the scheduled time is met, the corresponding `@DeadlineHandler` is invoked. A `@DeadlineHandler` is a Message Handler as any other in Axon - it is possible to inject parameters for which the `ParameterResolver`s exist. 
 
 > **Note** 
 >
@@ -42,7 +44,7 @@ We have now seen how to schedule a Deadline. When the scheduled time is met, the
 > That means a given scheduled deadline will only be triggered in its originating context. 
 > Thus any `@DeadlineHandler` annotated function you wish to be called on a met deadline, must be in the same Aggregate/Saga from which is was scheduled.
 >
-> Axon calls this Context a Scope. If necessary, implementing and providing your own Scope will allow you to schedule Deadlines in your own custom, scoped components.
+> Axon calls this Context a Scope. If necessary, implementing and providing your own Scope will allow you to schedule Deadlines in your custom, scoped components.
 
 A `@DeadlineHandler` is matched based on the Deadline Name and the Deadline Payload. 
 
