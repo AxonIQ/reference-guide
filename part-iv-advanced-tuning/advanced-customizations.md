@@ -105,6 +105,8 @@ You can then sort these handlers based on their annotations by using the `annota
 For your HandlerEnhancer to run you'll need to create a `META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition` file containing
 the fully qualified class name of the handler enhancer you have created.
 
+> **Note** Since 3.3 Axon version it is possible to configure `HandlerDefinition` with Axon `Configuration`. If you are using Spring Boot defining `HandlerDefintion`s and `HandlerEnhancerDefinition`s as beans is sufficient (Axon autoconfiguration will pick them up and configure within Axon `Configuration`).
+
 Example:
 
 ```java
