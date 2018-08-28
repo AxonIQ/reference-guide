@@ -120,6 +120,10 @@ There is no default behavior for all types of applications. Some will specify a 
 
 See [Using Snapshot Events](../part-iii-infrastructure-components/repository-and-event-store.md#snapshotting) for more about snapshotting.
 
+### Filtering Snapshots
+
+Sometimes a snapshot becomes obsolete (the Aggregate structure has changed since it was snapshotted). In those cases it is convenient to filter snapshots. This is where `SnapshotJury` comes in place. It decides based on `DomainEventData` whether a snapshot should be taken into processing. If none provided, implementation (`NoSnapshotJury`) which returns always `true` is used. `RevisionBasedSnapshotJury` can be used as an alternative provided by Axon which checks the snapshot based on Aggregate revision. `SnapshotJury` has to be provided to the `EventStore`. If required, a custom implementation can be provided.  
+
 ## Event Serializer tuning
 
 ### XStream Serializer
