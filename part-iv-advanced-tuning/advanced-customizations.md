@@ -153,7 +153,7 @@ public class MethodCommandHandlerDefinition implements HandlerEnhancerDefinition
 
 To skip all handling of the handler then just throw an exception.
 
-Since 3.3 Axon version it is possible to configure `HandlerDefinition` with Axon `Configuration`. If you are using Spring Boot defining `HandlerDefintion`s and `HandlerEnhancerDefinition`s as beans is sufficient (Axon autoconfiguration will pick them up and configure within Axon `Configuration`).
+It is possible to configure `HandlerDefinition` with Axon `Configuration`. If you are using Spring Boot defining `HandlerDefintion`s and `HandlerEnhancerDefinition`s as beans is sufficient (Axon autoconfiguration will pick them up and configure within Axon `Configuration`).
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
