@@ -122,7 +122,7 @@ See [Using Snapshot Events](../part-iii-infrastructure-components/repository-and
 
 ### Filtering Snapshots
 
-Sometimes a snapshot becomes obsolete (the Aggregate structure has changed since it was snapshotted). In those cases it is convenient to filter snapshots. This is where `snapshotFilter` comes in place. It is a Java `Predicate` which decides based on `DomainEventData` whether a snapshot should be taken into processing. If none provided, implementation which returns always `true` is used. `snapshotFilter` has to be provided to the `EventStorageEngine`:
+Sometimes a snapshot becomes obsolete (the Aggregate structure has changed since it was snapshotted). In those cases it is convenient to filter snapshots. This is where `snapshotFilter` comes in place. It is a Java `Predicate` which decides based on `DomainEventData` whether a snapshot should be taken into account for processing. If none provided, an implementation which returns always `true` is used. `snapshotFilter` has to be provided to the `EventStorageEngine`:
 
 ```java
 JdbcEventStorageEngine storageEngine = new JdbcEventStorageEngine(serializer, 
