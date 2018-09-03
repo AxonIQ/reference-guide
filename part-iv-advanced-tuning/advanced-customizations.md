@@ -105,7 +105,6 @@ You can then sort these handlers based on their annotations by using the `annota
 For your HandlerEnhancer to run you'll need to create a `META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition` file containing
 the fully qualified class name of the handler enhancer you have created.
 
-> **Note** Since 3.3 Axon version it is possible to configure `HandlerDefinition` with Axon `Configuration`. If you are using Spring Boot defining `HandlerDefintion`s and `HandlerEnhancerDefinition`s as beans is sufficient (Axon autoconfiguration will pick them up and configure within Axon `Configuration`).
 
 Example:
 
@@ -153,6 +152,12 @@ public class MethodCommandHandlerDefinition implements HandlerEnhancerDefinition
 5. If you would like to skip handling just return the original that was passed into the `wrapHandler` method.
 
 To skip all handling of the handler then just throw an exception.
+
+Since 3.3 Axon version it is possible to configure `HandlerDefinition` with Axon `Configuration`. If you are using Spring Boot defining `HandlerDefintion`s and `HandlerEnhancerDefinition`s as beans is sufficient (Axon autoconfiguration will pick them up and configure within Axon `Configuration`).
+
+```java
+configurer.registerHandlerDefinition(c -> new MethodCommandHandlerDefinition());
+```
 
 ## Filtering Event Storage Engine
 In some scenarios you might want to chose which events to store. For this you can use the `FilteringEventStorageEngine`. One imaginable use case could be that we don't want to store non-domain events. `FilteringEventStorageEngine` uses a `Predicate<? super EventMessage<?>>` in order to filter events which get stored in the delegated engine. Let's try to configure a `FilteringEventStorageEngine` with the `Configurer` (if you are using Spring, it's enough to have a bean of type `EventStorageEngine` in your Application Context). The next example will only store domain events:
