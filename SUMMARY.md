@@ -13,10 +13,10 @@
 
 ## - Part I Introduction and Concepts
 
-* [Introduction](part-i-introduction-and-concepts/introduction.md)
-* [Architecture overview](part-i-introduction-and-concepts/architecture-overview.md)
-* [Messaging concepts](part-i-introduction-and-concepts/messaging-concepts.md)
-* [Configuration API](part-i-introduction-and-concepts/configuration-api.md)
+* [Introduction](part-ii-concepts/introduction.md)
+* [Architecture overview](part-ii-concepts/architecture-overview.md)
+* [Messaging concepts](part-ii-concepts/messaging-concepts.md)
+* [Configuration API](part-ii-concepts/configuration-api.md)
 
 ## - Part II Domain Logic
 
