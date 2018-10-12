@@ -125,7 +125,7 @@ public class Saga {...}
 // somewhere in configuration
 @Bean
 public SagaConfiguration<Saga> mySagaConfiguration() {
-	return SagaConfiguration.subscribingSagaManager(Saga.class);
+    return SagaConfiguration.subscribingSagaManager(Saga.class);
 }
 ```
 
@@ -155,7 +155,7 @@ Event Handlers may have specific expectations on the ordering of events. If this
 
 A Saga instance is never invoked concurrently by multiple threads. Therefore, a Sequencing Policy for a Saga is irrelevant. Axon will ensure each Saga instance receives the Events it needs to process in the order they have been published on the Event Bus.
 
-> **Note** 
+> **Note**
 >
 > Note that Subscribing Processors don't manage their own threads. Therefore, it is not possible to configure how they should receive their events. Effectively, they will always work on a sequential-per-aggregate basis, as that is generally the level of concurrency in the Command Handling component.
 
@@ -244,7 +244,7 @@ It is recommended to explicitly define an `ErrorHandler` when using the `Asynchr
 
 ## Replaying events
 
-In cases when you want to rebuild projections (view models), replaying past events comes in handy. The idea is to start from the beginning of time and invoke all event handlers anew. The `TrackingEventProcessor` supports replaying of events. In order to achieve that, you should invoke the `resetTokens()` method on it. It is important to know that the Tracking Event Processor must not be in active state when starting a reset. Hence it is wise to shut it down first, then reset it and once this was successful, start it up again. It is possible to define a `@ResetHandler`, so you can do some preparation prior to resetting. Let's take a look how we can accomplish replaying. First, we'll see one simple projecting class:
+In cases when you want to rebuild projections \(view models\), replaying past events comes in handy. The idea is to start from the beginning of time and invoke all event handlers anew. The `TrackingEventProcessor` supports replaying of events. In order to achieve that, you should invoke the `resetTokens()` method on it. It is important to know that the Tracking Event Processor must not be in active state when starting a reset. Hence it is wise to shut it down first, then reset it and once this was successful, start it up again. It is possible to define a `@ResetHandler`, so you can do some preparation prior to resetting. Let's take a look how we can accomplish replaying. First, we'll see one simple projecting class:
 
 ```java
 @ProcessingGroup("projections")
@@ -256,13 +256,13 @@ public class MyProjection {
                                                              // 'REPLAY' event
         // do event handling
     }
-    
+
     @AllowReplay(false) // it is possible to prevent some handlers from being replayed
     @EventHandler
     public void on(MyOtherEvent event) {
         // perform some side effect introducing functionality, like sending an e-mail, which we do not want to be replayed
     }    
-    
+
     @ResetHandler
     public void onReset() { // will be called before replay starts
         // do pre-reset logic, like clearing out the Projection table for a clean slate
@@ -285,25 +285,22 @@ configuration.eventProcessingConfiguration()
 
 ## Event Interceptors
 
-Similarly as with [Command Messages](command-dispatching.md#command-interceptors), Event Messages can also be intercepted prior to publishing and handling to perform additional actions on all Events.
-This thus boils down to same two types of interceptors for messages: the Dispatch- and the Handler Interceptor. 
+Similarly as with [Command Messages](command-dispatching.md#command-interceptors), Event Messages can also be intercepted prior to publishing and handling to perform additional actions on all Events. This thus boils down to same two types of interceptors for messages: the Dispatch- and the Handler Interceptor.
 
-Dispatch Interceptors are invoked before a Event (Message) is published on the Event Bus.  
-Handler Interceptors on the other hand are invoked just before the Event Handler is invoked with a given Event (Message) in the Event Processor.
-Examples of operations performed in an interceptor are logging or authentication, which you might want to do regardless of the type of Event.
+Dispatch Interceptors are invoked before a Event \(Message\) is published on the Event Bus.  
+Handler Interceptors on the other hand are invoked just before the Event Handler is invoked with a given Event \(Message\) in the Event Processor. Examples of operations performed in an interceptor are logging or authentication, which you might want to do regardless of the type of Event.
 
 ### Dispatch Interceptors
 
-Any Message Dispatch Interceptors registered to an Event Bus will be invoked when an Event is published.
-They have the ability to alter the Event Message, by adding Meta Data for example, or they can provide you with overall logging capabilities for when an Event is published. 
-These interceptors are always invoked on the thread that published the Event.
+Any Message Dispatch Interceptors registered to an Event Bus will be invoked when an Event is published. They have the ability to alter the Event Message, by adding Meta Data for example, or they can provide you with overall logging capabilities for when an Event is published. These interceptors are always invoked on the thread that published the Event.
 
 Let's create an Event Message Dispatch Interceptor which logs each Event message being published on an `EventBus`.
+
 ```java
 public class EventLoggingDispatchInterceptor implements MessageDispatchInterceptor<EventMessage<?>> {
 
     private static final Logger logger = LoggerFactory.getLogger(EventLoggingDispatchInterceptor.class);
-    
+
     @Override
     public BiFunction<Integer, EventMessage<?>, EventMessage<?>> handle(List<? extends EventMessage<?>> messages) {
         return (index, event) -> {
@@ -313,10 +310,12 @@ public class EventLoggingDispatchInterceptor implements MessageDispatchIntercept
     }
 }
 ```
+
 We can then register this dispatch interceptor with an `EventBus` by doing the following:
+
 ```java
 public class EventBusConfiguration {
-    
+
     public EventBus configureEventBus(EventStorageEngine eventStorageEngine) {
         // Note that an EventStore is a more specific implementation of an EventBus
         EventBus eventBus = new EmbeddedEventStore(eventStorageEngine);
@@ -328,21 +327,13 @@ public class EventBusConfiguration {
 
 ### Handler Interceptors
 
-Message Handler Interceptors can take action both before and after Event processing. 
-Interceptors can even block Event processing altogether, for example for security reasons.
+Message Handler Interceptors can take action both before and after Event processing. Interceptors can even block Event processing altogether, for example for security reasons.
 
-Interceptors must implement the `MessageHandlerInterceptor` interface. 
-This interface declares one method, `handle`, that takes three parameters: the (Event) Message, the current `UnitOfWork` and an `InterceptorChain`. 
-The `InterceptorChain` is used to continue the dispatching process, whereas the `UnitOfWork` gives you (1) the message being handled and (2) provides the possibility to tie in logic prior, during or after (event) message handling (see [UnitOfWork](../part-i-getting-started#unit-of-work) for more information about the phases). 
+Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle`, that takes three parameters: the \(Event\) Message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process, whereas the `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(event\) message handling \(see [UnitOfWork](https://github.com/AxonIQ/reference-guide/tree/6cd3c64f406a368b73694877be84e39840cb7daa/part-i-getting-started/README.md#unit-of-work) for more information about the phases\).
 
-Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of the Event Handler. 
-That means they can attach correlation data based on the Message being handled to the Unit of Work, for example. 
-This correlation data will then be attached to Event Messages being created in the context of that Unit of Work.
+Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of the Event Handler. That means they can attach correlation data based on the Message being handled to the Unit of Work, for example. This correlation data will then be attached to Event Messages being created in the context of that Unit of Work.
 
-Let's create a Message Handler Interceptor which will only allow the handling of Events that contain `axonUser` as a value for the `userId` field in the `MetaData`. 
-If the `userId` is not present in the meta-data, an exception will be thrown which will prevent the Event from being handled. 
-And if the `userId`'s value does not match `axonUser`, we will also not proceed up the chain.
-Authenticating the Event Message like shown in this example is a regular use case of the `MessageHandlerInterceptor`. 
+Let's create a Message Handler Interceptor which will only allow the handling of Events that contain `axonUser` as a value for the `userId` field in the `MetaData`. If the `userId` is not present in the meta-data, an exception will be thrown which will prevent the Event from being handled. And if the `userId`'s value does not match `axonUser`, we will also not proceed up the chain. Authenticating the Event Message like shown in this example is a regular use case of the `MessageHandlerInterceptor`.
 
 ```java
 public class MyEventHandlerInterceptor implements MessageHandlerInterceptor<EventMessage<?>> {
@@ -360,10 +351,12 @@ public class MyEventHandlerInterceptor implements MessageHandlerInterceptor<Even
     }
 }
 ```
+
 We can register the handler interceptor with an `EventProcessor` like so:
+
 ```java
 public class EventProcessorConfiguration {
-    
+
     public EventProcessingConfiguration eventProcessingConfiguration() {
         return new EventProcessingConfiguration()
                 .registerTrackingEventProcessor("my-tracking-processor")
@@ -374,6 +367,5 @@ public class EventProcessorConfiguration {
 
 > **Note**
 >
-> Different from the `CommandBus` and `QueryBus`, which both can have Handler and Dispatch Interceptors, the `EventBus` can only have registered Dispatch Interceptors. 
-> This is the case because the Event publishing part, so the place which is in control of Event Message dispatching, is the sole purpose of the Event Bus.
-> The `EventProcessor`s are in charge of handling the Event Messages, thus are the spot where the Handler Interceptors are registered. 
+> Different from the `CommandBus` and `QueryBus`, which both can have Handler and Dispatch Interceptors, the `EventBus` can only have registered Dispatch Interceptors. This is the case because the Event publishing part, so the place which is in control of Event Message dispatching, is the sole purpose of the Event Bus. The `EventProcessor`s are in charge of handling the Event Messages, thus are the spot where the Handler Interceptors are registered.
+

@@ -38,7 +38,7 @@ Example:
 
 ```java
 class SerializerConfiguration {
-    
+
     @Qualifier("eventSerializer")
     @Bean
     public Serializer eventSerializer() {
@@ -51,14 +51,13 @@ Equal to events, you can also customize the Message `Serializer` used by your ap
 
 ```java
 class SerializerConfiguration {
-    
+
     @Qualifier("messageSerializer")
     @Bean
     public Serializer messageSerializer() {
         return new XStreamSerializer();
     }
 }
-
 ```
 
 When overriding both the default serializer and defining an event serializer, we must instruct Spring that the default serializer is, well, the default:
@@ -100,7 +99,7 @@ public SnapshotTriggerDefinition mySnapshotTriggerDefinition(Snapshotter snapsho
 public class MyAggregate {...}
 ```
 
-Defining a [`CommandTargetResolver`](/part-ii-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring Application context will cause that resolver to be used for all aggregate definitions. However, you can also define multiple beans and specify the instance to use with the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
+Defining a [`CommandTargetResolver`](../part-ii-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring Application context will cause that resolver to be used for all aggregate definitions. However, you can also define multiple beans and specify the instance to use with the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
 
 ```java
 @Bean
@@ -125,7 +124,6 @@ public class MyAggregate {...}
 ```
 
 Note that this requires full configuration of the Repository, including any `SnapshotTriggerDefinition` or `AggregateFactory` that may otherwise have been configured automatically.
-
 
 ## Saga Configuration
 
@@ -322,3 +320,4 @@ On each heartbeat the memberships of all the nodes in the cluster are updated. I
 > **Note**
 >
 > It is regarded as good practice to assign a random value to every service instance name. In doing so, if a given service instance is restarted, it will receive a different name which will mitigate unnecessary blacklisting of nodes.
+
