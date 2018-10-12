@@ -8,6 +8,7 @@
 
 * [Introduction](axon-server/about.md)
 * [Architecture](axon-server/architecture.md)
+* [Architecture](axon-server/setup.md)
 
 ## Axon Framework
 
