@@ -26,12 +26,12 @@ Default ports used by Axon Server are:
 
 Basically, you are ready to go now. Start the Axon server using the following command:
 
-[subs="attributes"]
 ```sh
 # ./axonserver.jar
 ```
+
 or when not running bash shell:
-[subs="attributes"]
+
 ```sh
 # java -jar axonserver.jar
 ```
