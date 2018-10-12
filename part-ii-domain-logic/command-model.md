@@ -118,7 +118,7 @@ You can also use the static `AggregateLifecycle.isLive()` method to check whethe
 
 ## Spawning a new Aggregate
 
-Instantiating new Aggregates is done by issuing a creation command, which for example might originate from an Event Handling Component (Saga or Event Processor). But in some cases it might be beneficial to create an Aggregate from another Aggregate. Prior to version 3.3, instantiating an Aggregate as a follow up form another Aggregate had to be orchestrated via an Event Handling Component. Version 3.3 introduces functionality to create a new Aggregate from another Aggregate. To this end, the `AggregateLifecycle` introduces the static method `createNew()`. 
+Instantiating new Aggregates is done by issuing a creation command, which for example might originate from an Event Handling Component \(Saga or Event Processor\). But in some cases it might be beneficial to create an Aggregate from another Aggregate. Prior to version 3.3, instantiating an Aggregate as a follow up form another Aggregate had to be orchestrated via an Event Handling Component. Version 3.3 introduces functionality to create a new Aggregate from another Aggregate. To this end, the `AggregateLifecycle` introduces the static method `createNew()`.
 
 Consider a case where you have `AggregateA` defined like this:
 
@@ -145,40 +145,42 @@ public class AggregateB {
 }
 ```
 
-(1) The first parameter of the `AggregateLifecycle#createNew()` method is the type of Aggregate to be created. The second parameter is the factory method - the method to be used in order to instantiate the desired Aggregate.
+\(1\) The first parameter of the `AggregateLifecycle#createNew()` method is the type of Aggregate to be created. The second parameter is the factory method - the method to be used in order to instantiate the desired Aggregate.
 
-> **Note**
-> Creation of a new Aggregate should be done in a Command Handling function rather than in an Event Handling function (given the usage of Event Sourced Aggregate). Rationale: we do not want to create new Aggregates when we are sourcing a given Aggregate - previously created aggregate will be Event Sourced based on its events. However, if you try to create a new Aggregate while Axon is replaying events, an `UnsupportedOperationException` will be thrown.
+> **Note** Creation of a new Aggregate should be done in a Command Handling function rather than in an Event Handling function \(given the usage of Event Sourced Aggregate\). Rationale: we do not want to create new Aggregates when we are sourcing a given Aggregate - previously created aggregate will be Event Sourced based on its events. However, if you try to create a new Aggregate while Axon is replaying events, an `UnsupportedOperationException` will be thrown.
 
 ## Complex Aggregate structures
 
 Complex business logic often requires more than what an aggregate with only an aggregate root can provide. In that case, it is important that the complexity is spread over a number of entities within the aggregate. When using event sourcing, not only the aggregate root needs to use events to trigger state transitions, but so does each of the entities within that aggregate.
 
-> **Note**  A common misinterpretation of the rule that Aggregates should not expose state is that none of the Entities should contain any property accessor methods. This is not the case. In fact, an Aggregate will probably benefit a lot if the entities _within_ the aggregate expose state to the other entities in that same aggregate. However, it is recommended not to expose the state _outside_ of the Aggregate.
+> **Note** A common misinterpretation of the rule that Aggregates should not expose state is that none of the Entities should contain any property accessor methods. This is not the case. In fact, an Aggregate will probably benefit a lot if the entities _within_ the aggregate expose state to the other entities in that same aggregate. However, it is recommended not to expose the state _outside_ of the Aggregate.
 
 Axon provides support for event sourcing in complex aggregate structures. Entities are, just like the Aggregate Root, simple objects. The field that declares the child entity must be annotated with `@AggregateMember`. This annotation tells Axon that the annotated field contains a class that should be inspected for Command and Event Handlers.
 
 When an Entity \(including the Aggregate Root\) applies an Event, it is handled by the Aggregate Root first, and then bubbles down through `@AggregateMember` annotated fields to its child entities.
 
-> **Note** There is a way to filter the entities which would handle an event applied by the Aggregate Root. This can be achieved by using `eventForwardingMode` attribute of `@AggregateMember` annotation. By default, an event is propagated to **all** child entities. An event can be blocked using `ForwardNone` event forwarding mode (see listing below). 
->```java
->public class MyAggregate {
+> **Note** There is a way to filter the entities which would handle an event applied by the Aggregate Root. This can be achieved by using `eventForwardingMode` attribute of `@AggregateMember` annotation. By default, an event is propagated to **all** child entities. An event can be blocked using `ForwardNone` event forwarding mode \(see listing below\).
+>
+> ```java
+> public class MyAggregate {
 >    ...
 >    @AggregateMember(eventForwardingMode = ForwardNone.class)
 >    private MyEntity myEntity;
 >    ...
->}
->```
->If you want to forward an event to the entity only in a case when an event message has matching entity identifier use `ForwardMatchingInstances` event forwarding mode. Entity identifier matching will be done based on specified `routingKey` on `@AggregateMember` annotation. If `routingKey` is not specified on `@AggregateMember` annotation, matching will be done based on `routingKey` attribute on `@EntityId` annotation. If `routingKey` is not specified on `@EntityId` annotation matching will be done based on field name of entity identifier. Let's take a look at example on how to define `ForwardMatchingInstances` event forwarding mode with specifying a routing key for the entity identifier:
->```java
->public class MyAggregate {
+> }
+> ```
+>
+> If you want to forward an event to the entity only in a case when an event message has matching entity identifier use `ForwardMatchingInstances` event forwarding mode. Entity identifier matching will be done based on specified `routingKey` on `@AggregateMember` annotation. If `routingKey` is not specified on `@AggregateMember` annotation, matching will be done based on `routingKey` attribute on `@EntityId` annotation. If `routingKey` is not specified on `@EntityId` annotation matching will be done based on field name of entity identifier. Let's take a look at example on how to define `ForwardMatchingInstances` event forwarding mode with specifying a routing key for the entity identifier:
+>
+> ```java
+> public class MyAggregate {
 >    ...
 >    @AggregateMember(eventForwardingMode = ForwardMatchingInstances.class)
 >    private MyEntity myEntity;
 >    ...
->}
->...
->public class MyEntity {
+> }
+> ...
+> public class MyEntity {
 >    ...
 >    @EntityId(routingKey = "myEntityId")
 >    private String id;
@@ -187,14 +189,14 @@ When an Entity \(including the Aggregate Root\) applies an Event, it is handled 
 >    public void on(MyEvent event) {
 >        // handle event
 >    }
->}
->...
->public class MyEvent {
+> }
+> ...
+> public class MyEvent {
 >    ...
 >    private String myEntityId;
 >    ...
->}
->```
+> }
+> ```
 
 Fields that \(may\) contain child entities must be annotated with `@AggregateMember`. This annotation may be used on a number of field types:
 
@@ -279,6 +281,7 @@ configurer.configureAggregate(
 );
 ```
 {% endtab %}
+
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
 @Aggregate(commandTargetResolver = "customCommandTargetResolver")

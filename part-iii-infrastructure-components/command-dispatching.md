@@ -159,11 +159,12 @@ There are different types of interceptors: Dispatch Interceptors and Handler Int
 Message Dispatch Interceptors are invoked when a command is dispatched on a Command Bus. They have the ability to alter the Command Message, by adding Meta Data, for example, or block the command by throwing an Exception. These interceptors are always invoked on the thread that dispatches the Command.
 
 Let's create a Message Dispatch Interceptor which logs each command message being dispatched on a `CommandBus`.
+
 ```java
 public class MyCommandDispatchInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MyCommandDispatchInterceptor.class);
-    
+
     @Override
     public BiFunction<Integer, CommandMessage<?>, CommandMessage<?>> handle(List<? extends CommandMessage<?>> messages) {
         return (index, command) -> {
@@ -173,10 +174,12 @@ public class MyCommandDispatchInterceptor implements MessageDispatchInterceptor<
     }
 }
 ```
+
 We can register this dispatch interceptor with a `CommandBus` by doing the following:
+
 ```java
 public class CommandBusConfiguration {
-    
+
     public CommandBus configureCommandBus() {
         CommandBus commandBus = new SimpleCommandBus();
         commandBus.registerDispatchInterceptor(new MyCommandDispatchInterceptor());
@@ -201,15 +204,13 @@ The BeanValidationInterceptor also implements `MessageHandlerInterceptor`, allow
 
 Message Handler Interceptors can take action both before and after command processing. Interceptors can even block command processing altogether, for example for security reasons.
 
-Interceptors must implement the `MessageHandlerInterceptor` interface. 
-This interface declares one method, `handle`, that takes three parameters: the command message, the current `UnitOfWork` and an `InterceptorChain`. 
-The `InterceptorChain` is used to continue the dispatching process, whereas the `UnitOfWork` gives you (1) the message being handled and (2) provides the possibility to tie in logic prior, during or after (command) message handling (see [UnitOfWork](../part-i-getting-started#unit-of-work) for more information about the phases).
+Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle`, that takes three parameters: the command message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process, whereas the `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(command\) message handling \(see [UnitOfWork](https://github.com/AxonIQ/reference-guide/tree/c77c960f420ecfd7d3d540bc4312fc9f053a2955/part-i-getting-started/README.md#unit-of-work) for more information about the phases\).
 
 Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of the Command Handler. That means they can attach correlation data based on the Message being handled to the Unit of Work, for example. This correlation data will then be attached to messages being created in the context of that Unit of Work.
 
 Handler Interceptors are also typically used to manage transactions around the handling of a command. To do so, register a `TransactionManagingInterceptor`, which in turn is configured with a `TransactionManager` to start and commit \(or roll back\) the actual transaction.
 
-Let's create a Message Handler Interceptor which will only allow the handling of commands that contain `axonUser` as a value for the `userId` field in the `MetaData`. If the `userId` is not present in the meta-data, an exception will be thrown which will prevent the command from being handled. And if the `userId`'s value does not match `axonUser`, we will also not proceed up the chain. 
+Let's create a Message Handler Interceptor which will only allow the handling of commands that contain `axonUser` as a value for the `userId` field in the `MetaData`. If the `userId` is not present in the meta-data, an exception will be thrown which will prevent the command from being handled. And if the `userId`'s value does not match `axonUser`, we will also not proceed up the chain.
 
 ```java
 public class MyCommandHandlerInterceptor implements MessageHandlerInterceptor<CommandMessage<?>> {
@@ -227,10 +228,12 @@ public class MyCommandHandlerInterceptor implements MessageHandlerInterceptor<Co
     }
 }
 ```
+
 We can register the handler interceptor with a `CommandBus` like so:
+
 ```java
 public class CommandBusConfiguration {
-    
+
     public CommandBus configureCommandBus() {
         CommandBus commandBus = new SimpleCommandBus();
         commandBus.registerHandlerInterceptor(new MyCommandHandlerInterceptor());
@@ -241,7 +244,7 @@ public class CommandBusConfiguration {
 
 ### `@CommandHandlerInterceptor` Annotation
 
-The framework has the possibility to add a Handler Interceptor as an `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. The difference between a method on an Aggregate and a "[regular](./command-dispatching.md#handler-interceptors)" Command Handler Interceptor, is that with the annotation approach you can make decisions based on the current state of the given Aggregate. Some properties of an annotated Command Handler Interceptor are:
+The framework has the possibility to add a Handler Interceptor as an `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. The difference between a method on an Aggregate and a "[regular](command-dispatching.md#handler-interceptors)" Command Handler Interceptor, is that with the annotation approach you can make decisions based on the current state of the given Aggregate. Some properties of an annotated Command Handler Interceptor are:
 
 * The annotation can be put on entities within the Aggregate. 
 * It is possible to intercept a command on Aggregate Root level, whilst the command handler is in a child entity.
@@ -272,7 +275,7 @@ The CommandBus implementations described in earlier only allow Command Messages 
 
 That's where the `DistributedCommandBus` comes in. Unlike the other `CommandBus` implementations, the `DistributedCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between Command Bus implementations on different JVM's. Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
 
-![Structure of the Distributed Command Bus](../.gitbook/assets/distributed-command-bus.png)
+![Structure of the Distributed Command Bus](../.gitbook/assets/distributed-command-bus%20%281%29.png)
 
 > **Note**
 >
