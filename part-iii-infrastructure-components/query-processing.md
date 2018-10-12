@@ -48,9 +48,7 @@ The BeanValidationInterceptor also implements `MessageHandlerInterceptor`, allow
 
 Message Handler Interceptors can take action both before and after query processing. Interceptors can even block query processing altogether, for example for security reasons.
 
-Interceptors must implement the `MessageHandlerInterceptor` interface. 
-This interface declares one method, `handle`, that takes three parameters: the query message, the current `UnitOfWork` and an `InterceptorChain`. 
-The `InterceptorChain` is used to continue the dispatching process, whereas the `UnitOfWork` gives you (1) the message being handled and (2) provides the possibility to tie in logic prior, during or after (query) message handling (see [UnitOfWork](../part-i-getting-started#unit-of-work) for more information about the phases).
+Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle`, that takes three parameters: the query message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process, whereas the `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(query\) message handling \(see [UnitOfWork](https://github.com/AxonIQ/reference-guide/tree/ef91cded95d9ac14c1ce43660805e00c5acc0456/part-i-getting-started/README.md#unit-of-work) for more information about the phases\).
 
 Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of the Query Handler. That means they can attach correlation data based on the Message being handled to the Unit of Work, for example. This correlation data will then be attached to messages being created in the context of that Unit of Work.
 
