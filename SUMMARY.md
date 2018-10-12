@@ -1,6 +1,6 @@
 # Table of contents
 
-* [About this guide](README.md)
+* [About 4.0](README.md)
 * [License](license.md)
 * [Architecture Overview](architecture-overview.md)
 

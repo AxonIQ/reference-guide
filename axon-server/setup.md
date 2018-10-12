@@ -12,9 +12,8 @@ The Axon Server delivery contains the following artifacts:
 * axonserver-migration.jar
 * axonserver.properties
 * {Cli}
-* AxonServer\_Guide.pdf
 
-Copy axonserver.jar and axonserver.properties to a directory of your choice. As Axon Server also acts as an event store, you need to tell it where to store the events. In the provided axonserver.properties file this is set up to be the events subdirectory in the startup directory. If you want to change this you can change the value of the property _axoniq.axonserver.event.storage_ to the location where you want to store the files.
+Copy `axonserver.jar` and `axonserver.properties` to a directory of your choice. As Axon Server also acts as an event store, you need to tell it where to store the events. In the provided `axonserver.properties` file this is set up to be the events subdirectory in the startup directory. If you want to change this you can change the value of the property `axoniq.axonserver.event.storage` to the location where you want to store the files.
 
 Default ports used by Axon Server are:
 
