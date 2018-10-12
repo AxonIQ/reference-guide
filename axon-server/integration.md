@@ -1,8 +1,8 @@
-# Using Axon Server from applications
+# Integration
 
 Axon Server is configured by default when you use the axon-spring-boot-starter with Maven dependency:
 
-```xml
+```markup
 <dependency>
   <groupId>org.axonframework</groupId>
   <artifactId>axon-spring-boot-starter</artifactId>
@@ -10,10 +10,9 @@ Axon Server is configured by default when you use the axon-spring-boot-starter w
 </dependency>
 ```
 
-The same configuration can also be done manually, when you are not using Spring boot. For this you need
-to include the following dependency:
+The same configuration can also be done manually, when you are not using Spring boot. For this you need to include the following dependency:
 
-```xml
+```markup
 <dependency>
   <groupId>org.axonframework</groupId>
   <artifactId>axonserver-connector</artifactId>
@@ -53,3 +52,4 @@ public class AxonStarter {
     }
 }
 ```
+
