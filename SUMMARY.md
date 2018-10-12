@@ -1,6 +1,7 @@
 # Table of contents
 
 * [About this guide](README.md)
+* [License](license.md)
 * [Architecture Overview](architecture-overview.md)
 
 ## Axon Server
