@@ -1,4 +1,4 @@
-# Setting up the Axon Server server
+# Getting started
 
 ## Prerequisites
 A Java 8+ JRE should be installed on the system.
