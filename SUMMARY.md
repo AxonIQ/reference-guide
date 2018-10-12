@@ -9,6 +9,7 @@
 * [Introduction](axon-server/about.md)
 * [Architecture](axon-server/architecture.md)
 * [Getting started](axon-server/setup.md)
+* [Integration](axon-server/integration.md)
 
 ## - Part I Introduction and Concepts
 
