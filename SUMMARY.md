@@ -15,10 +15,9 @@
 * [Properties](axon-server/properties.md)
 
 ## Axon Framework
-
-## - Part I Introduction and Concepts
-
 * [Introduction](part-i-introduction-and-concepts/introduction.md)
+
+## - Part I Concepts
 * [Architecture overview](part-i-introduction-and-concepts/architecture-overview.md)
 * [Messaging concepts](part-i-introduction-and-concepts/messaging-concepts.md)
 * [Configuration API](part-i-introduction-and-concepts/configuration-api.md)
