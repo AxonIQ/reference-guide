@@ -10,6 +10,9 @@
 * [Architecture](axon-server/architecture.md)
 * [Getting started](axon-server/setup.md)
 * [Integration](axon-server/integration.md)
+* [Advanced](axon-server/advanced.md)
+* [Operations](axon-server/operations.md)
+* [Properties](axon-server/properties.md)
 
 ## Axon Framework
 
