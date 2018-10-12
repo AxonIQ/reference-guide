@@ -22,7 +22,7 @@ Axon Framework provides a test fixture that allows you to do exactly that. The `
 
 > **Note**
 >
-> Since a unit of testing here is the Aggregate, `AggregateTestFixture` is meant to test one Aggregate only. So, all commands in `when` (or `given`) clause are meant to target the Aggregate under test fixture. Also, all `given` and `expected` events are meant to be triggered from the Aggregate under test fixture.
+> Since a unit of testing here is the Aggregate, `AggregateTestFixture` is meant to test one Aggregate only. So, all commands in `when` \(or `given`\) clause are meant to target the Aggregate under test fixture. Also, all `given` and `expected` events are meant to be triggered from the Aggregate under test fixture.
 
 The following example shows the usage of the given-when-then test fixture with JUnit 4:
 
