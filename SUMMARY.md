@@ -5,7 +5,8 @@
 
 ## Axon Server
 
-* [Introduction](axon-server/introduction.md)
+* [Introduction](axon-server/about.md)
+* [License](axon-server/license.md)
 
 ## Axon Framework
 
