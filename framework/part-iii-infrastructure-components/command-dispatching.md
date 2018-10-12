@@ -248,7 +248,7 @@ The CommandBus implementations described in earlier only allow Command Messages 
 
 That's where the `DistributedCommandBus` comes in. Unlike the other `CommandBus` implementations, the `DistributedCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between Command Bus implementations on different JVM's. Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
 
-![Structure of the Distributed Command Bus](../.gitbook/assets/distributed-command-bus.png)
+![Structure of the Distributed Command Bus](../../.gitbook/assets/distributed-command-bus.png)
 
 > **Note**
 >
