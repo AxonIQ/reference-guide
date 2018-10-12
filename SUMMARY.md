@@ -1,8 +1,8 @@
 # Table of contents
 
 * [About 4.0](README.md)
-* [License](license.md)
 * [Architecture Overview](architecture-overview.md)
+* [License](license.md)
 
 ## Axon Server
 
