@@ -16,16 +16,13 @@ TODO
 
 ### HanderEnhancers
 
-It is possible to wrap handlers with custom logic. This differs from HandlerInterceptors in that you have access to the Aggregate member at the time of resolving.
-You can use HandlerEnhancers to intercept and perform checks on groups of `@CommandHandler`s or `@EventHandler`s. 
+It is possible to wrap handlers with custom logic. This differs from HandlerInterceptors in that you have access to the Aggregate member at the time of resolving. You can use HandlerEnhancers to intercept and perform checks on groups of `@CommandHandler`s or `@EventHandler`s.
 
-To create a HandlerEnhancer you start by implementing `HandlerEnhancerDefinition` and overriding the `wrapHandler()` method. 
-All this method does is give you access to the `MessageHandlingMember<T>` which is an object representing any handler that is specified in the system. 
+To create a HandlerEnhancer you start by implementing `HandlerEnhancerDefinition` and overriding the `wrapHandler()` method. All this method does is give you access to the `MessageHandlingMember<T>` which is an object representing any handler that is specified in the system.
 
 You can then sort these handlers based on their annotations by using the `annotationAttributes(Annotation annotation)` method. This will filter out only those handlers that use that `Annotation`.
 
-For your HandlerEnhancer to run you'll need to create a `META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition` file containing
-the fully qualified name of the handler enhancer you would like to use.
+For your HandlerEnhancer to run you'll need to create a `META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition` file containing the fully qualified name of the handler enhancer you would like to use.
 
 Example:
 

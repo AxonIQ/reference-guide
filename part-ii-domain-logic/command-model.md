@@ -118,7 +118,7 @@ You can also use the static `AggregateLifecycle.isLive()` method to check whethe
 
 Complex business logic often requires more than what an aggregate with only an aggregate root can provide. In that case, it is important that the complexity is spread over a number of entities within the aggregate. When using event sourcing, not only the aggregate root needs to use events to trigger state transitions, but so does each of the entities within that aggregate.
 
-> **Note**  A common misinterpretation of the rule that Aggregates should not expose state is that none of the Entities should contain any property accessor methods. This is not the case. In fact, an Aggregate will probably benefit a lot if the entities _within_ the aggregate expose state to the other entities in that same aggregate. However, is is recommended not to expose the state _outside_ of the Aggregate.
+> **Note** A common misinterpretation of the rule that Aggregates should not expose state is that none of the Entities should contain any property accessor methods. This is not the case. In fact, an Aggregate will probably benefit a lot if the entities _within_ the aggregate expose state to the other entities in that same aggregate. However, is is recommended not to expose the state _outside_ of the Aggregate.
 
 Axon provides support for event sourcing in complex aggregate structures. Entities are, just like the Aggregate Root, simple objects. The field that declares the child entity must be annotated with `@AggregateMember`. This annotation tells Axon that the annotated field contains a class that should be inspected for Command and Event Handlers.
 
