@@ -1,4 +1,4 @@
-# Query Processing
+# 3.3 Query Processing
 
 ## Query Dispatching
 

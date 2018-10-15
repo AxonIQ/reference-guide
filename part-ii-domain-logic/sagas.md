@@ -1,4 +1,4 @@
-# Sagas
+# 2.4 Sagas
 
 ## Managing complex business transactions
 

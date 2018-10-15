@@ -4,6 +4,37 @@
 * [Architecture Overview](architecture-overview.md)
 * [License](license.md)
 
+## Axon Framework
+
+* [Introduction](axon-framework/introduction.md)
+
+## 1. Concepts
+
+* [1.1 Architecture overview](part-i-concepts/architecture-overview.md)
+* [1.2 Messaging concepts](part-i-concepts/messaging-concepts.md)
+* [1.3 Configuration API](part-i-concepts/configuration-api.md)
+
+## 2 Domain Logic
+
+* [2.1 Command Model](part-ii-domain-logic/command-model.md)
+* [2.2 Event Handling](part-ii-domain-logic/event-handling.md)
+* [2.3 Query Handling](part-ii-domain-logic/query-handling.md)
+* [2.4 Sagas](part-ii-domain-logic/sagas.md)
+* [2.5 Testing](part-ii-domain-logic/testing.md)
+
+## 3 Infrastructure components
+
+* [3.1 Command Dispatching](part-iii-infrastructure-components/command-dispatching.md)
+* [3.2 Event Processing](part-iii-infrastructure-components/event-processing.md)
+* [3.3 Query Processing](part-iii-infrastructure-components/query-processing.md)
+* [Repository and Event Store](part-iii-infrastructure-components/repository-and-event-store.md)
+* [Spring Boot AutoConfiguration](part-iii-infrastructure-components/spring-boot-autoconfiguration.md)
+
+## - Part IV Advanced tuning
+
+* [Advanced customizations](part-iv-advanced-tuning/advanced-customizations.md)
+* [Performance Tuning](part-iv-advanced-tuning/performance-tuning.md)
+
 ## Axon Server
 
 * [Introduction](axon-server/about.md)
@@ -14,32 +45,7 @@
 * [Operations](axon-server/operations.md)
 * [Properties](axon-server/properties.md)
 
-## Axon Framework
-* [Introduction](part-i-introduction-and-concepts/introduction.md)
+## Migration
 
-## - Part I Concepts
-* [Architecture overview](part-i-introduction-and-concepts/architecture-overview.md)
-* [Messaging concepts](part-i-introduction-and-concepts/messaging-concepts.md)
-* [Configuration API](part-i-introduction-and-concepts/configuration-api.md)
-
-## - Part II Domain Logic
-
-* [Command Model](part-ii-domain-logic/command-model.md)
-* [Event Handling](part-ii-domain-logic/event-handling.md)
-* [Query Handling](part-ii-domain-logic/query-handling.md)
-* [Sagas](part-ii-domain-logic/sagas.md)
-* [Testing](part-ii-domain-logic/testing.md)
-
-## - Part III Infrastructure components
-
-* [Command Dispatching](part-iii-infrastructure-components/command-dispatching.md)
-* [Event Processing](part-iii-infrastructure-components/event-processing.md)
-* [Query Processing](part-iii-infrastructure-components/query-processing.md)
-* [Repository and Event Store](part-iii-infrastructure-components/repository-and-event-store.md)
-* [Spring Boot AutoConfiguration](part-iii-infrastructure-components/spring-boot-autoconfiguration.md)
-
-## - Part IV Advanced tuning
-
-* [Advanced customizations](part-iv-advanced-tuning/advanced-customizations.md)
-* [Performance Tuning](part-iv-advanced-tuning/performance-tuning.md)
+* [Migration guide](migration/migration-guide.md)
 

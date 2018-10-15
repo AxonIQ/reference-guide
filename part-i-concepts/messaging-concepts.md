@@ -1,4 +1,4 @@
-# Messaging concepts
+# 1.2 Messaging concepts
 
 One of the core concepts in Axon is messaging. All communication between components is done using message objects. This gives these components the location transparency needed to be able to scale and distribute these components when necessary.
 
