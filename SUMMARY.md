@@ -38,12 +38,20 @@
 ## Axon Server
 
 * [Introduction](axon-server/about.md)
-* [Architecture](axon-server/architecture.md)
-* [Getting started](axon-server/setup.md)
-* [Integration](axon-server/integration.md)
-* [Advanced](axon-server/advanced.md)
-* [Operations](axon-server/operations.md)
-* [Properties](axon-server/properties.md)
+
+## 1 Architecture
+
+* [1.1 Architecture](1-architecture/architecture.md)
+
+## 2 Setup
+
+* [2.1 Getting started](getting-started/setup.md)
+* [2.2 Integration](getting-started/integration.md)
+
+## 3 Advanced
+
+* [2.3 Advanced](3-advanced/advanced.md)
+* [Properties](3-advanced/properties.md)
 
 ## Migration
 

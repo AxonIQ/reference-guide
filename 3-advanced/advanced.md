@@ -1,4 +1,4 @@
-# Advanced
+# 2.3 Advanced
 
 ## Names and ports
 
@@ -158,7 +158,8 @@ openssl pkcs12 -export -in [public-cert-file] -inkey [private-key-file] -out [ke
 
 ## Configure the Messaging Platform server to use HTTPs by adding the following properties to the axonserver.properties file:
 
-server.port=8443 server.ssl.key-store=\[keystore-file\] server.ssl.key-store-password=\[password\] server.ssl.key-store-type=PKCS12
+server.port=8443 server.ssl.key-store=\[keystore-file\]   
+server.ssl.key-store-password=\[password\] server.ssl.key-store-type=PKCS12
 
 ## server.ssl.key-alias=\[alias\]
 
