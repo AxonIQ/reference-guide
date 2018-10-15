@@ -30,7 +30,7 @@ logging.file=messaging.log
 logging.path=/var/log
 ```
 
-## Cluster [Not in Free edition]
+## Cluster [Enterprise edition only]
 
 When runnning Axon Server in a licensed edition, you can set up a cluster of Axon servers. The servers run in active/active mode, so each node can receive and handle requests.
 
@@ -165,7 +165,7 @@ server.ssl.key-store-type=PKCS12
 server.ssl.key-alias=[alias]
 ```
 
-## Multi-context [Enterprise Edition only]
+## Multi-context [Enterprise edition only]
 
 You can use a single Axon Server (cluster) to store events for multiple bounded contexts. Each context will have its own set of files (stored in a separate directory). Each context may have a different master in an AxonDB cluster.
 
