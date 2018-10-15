@@ -2,10 +2,10 @@
 
 ## Names and ports
 
-* `axoniq.axonserver.name`: the unique node name of the AxonServer node is taken from the hostname of the server.
-* `axoniq.axonserver.hostname`: the hostname of the AxonServer node, as returned to clients, is taken from the hostname of the server.
-* `axoniq.axonserver.port`: the gRPC port for clients to connect is set to 8124 by default
-* `server.port`: the HTTP port for REST clients to connect is set to 8024 by default
+* `axoniq.axonserver.name` - the unique node name of the AxonServer node is taken from the hostname of the server.
+* `axoniq.axonserver.hostname` - the hostname of the AxonServer node, as returned to clients, is taken from the hostname of the server.
+* `axoniq.axonserver.port` - the gRPC port for clients to connect is set to 8124 by default
+* `server.port` - the HTTP port for REST clients to connect is set to 8024 by default
 
 ## Database
 
