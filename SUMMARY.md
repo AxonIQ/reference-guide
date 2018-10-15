@@ -27,13 +27,13 @@
 * [3.1 Command Dispatching](part-iii-infrastructure-components/command-dispatching.md)
 * [3.2 Event Processing](part-iii-infrastructure-components/event-processing.md)
 * [3.3 Query Processing](part-iii-infrastructure-components/query-processing.md)
-* [Repository and Event Store](part-iii-infrastructure-components/repository-and-event-store.md)
-* [Spring Boot AutoConfiguration](part-iii-infrastructure-components/spring-boot-autoconfiguration.md)
+* [3.4 Repository and Event Store](part-iii-infrastructure-components/repository-and-event-store.md)
+* [3.5 Spring Boot AutoConfiguration](part-iii-infrastructure-components/spring-boot-autoconfiguration.md)
 
-## - Part IV Advanced tuning
+## 4 Advanced tuning
 
-* [Advanced customizations](part-iv-advanced-tuning/advanced-customizations.md)
-* [Performance Tuning](part-iv-advanced-tuning/performance-tuning.md)
+* [4.1 Advanced customizations](part-iv-advanced-tuning/advanced-customizations.md)
+* [4.2 Performance Tuning](part-iv-advanced-tuning/performance-tuning.md)
 
 ## Axon Server
 

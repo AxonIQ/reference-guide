@@ -1,4 +1,4 @@
-# Repository and Event Store
+# 3.4 Repository and Event Store
 
 ## Repositories and Event Stores
 
