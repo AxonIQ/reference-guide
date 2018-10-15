@@ -2,8 +2,6 @@
 
 ## Performance Tuning
 
-TODO: Update to Axon 3
-
 This chapter contains a checklist and some guidelines to take into consideration when getting ready for production-level performance. By now, you have probably used the test fixtures to test your command handling logic and sagas. The production environment isn't as forgiving as a test environment, though. Aggregates tend to live longer, be used more frequently and concurrently. For the extra performance and stability, you're better off tweaking the configuration to suit your specific needs.
 
 ## Database Indexes and Column Types
@@ -86,7 +84,7 @@ Snapshotting removes the need to reload and replay large numbers of events. A si
 
 There is no default behavior for all types of applications. Some will specify a number of events after which a snapshot will be created, while other applications require a time-based snapshotting interval. Whatever way you choose for your application, make sure snapshotting is in place if you have long-living aggregates.
 
-See [Using Snapshot Events](https://github.com/AxonFramework/ReferenceGuide/tree/3f006f8eeb862583f15d68381846baf9dd4a561e/part4/5-repositories-and-event-stores.md#using-snapshot-events) for more about snapshotting.
+See [Using Snapshot Events](../part-iii-infrastructure-components/repository-and-event-store.md#snapshotting) for more information about snapshotting.
 
 ## Event Serializer tuning
 
