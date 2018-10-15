@@ -138,10 +138,8 @@ Storing an entire commit in a single document has the advantage that a commit is
 
 The MongoDB does not take a lot of configuration. All it needs is a reference to the collections to store the Events in, and you're set to go. For production environments, you may want to double check the indexes on your collections.
 
-{% hint style='tip' %}
-In pre Axon Framework 3 release we found MongoDb to be a very good fit as an Event Store. 
-However with the introduction of Tracking Event Processors and how they track their events, we have encountered some inefficiencies in regards to the Mongo Event Store implementation.
-We thus typically recommend using a RDBMS based Event Store (the JPA or JDBC implementations for example), and would only suggest to use Mongo for this use case if you have found its performance to be beneficial for your application.   
+{% hint style="info" %}
+In pre Axon Framework 3 release we found MongoDb to be a very good fit as an Event Store. However with the introduction of Tracking Event Processors and how they track their events, we have encountered some inefficiencies in regards to the Mongo Event Store implementation. We thus typically recommend using a RDBMS based Event Store \(the JPA or JDBC implementations for example\), and would only suggest to use Mongo for this use case if you have found its performance to be beneficial for your application.
 {% endhint %}
 
 ### Event Store Utilities
