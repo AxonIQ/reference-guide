@@ -11,7 +11,7 @@
 
 By default each Axon Server node will create its own H2 database in a file axonserver-controldb in the working directory. To change this, set the property:
 
-* `axoniq.axonserver.controldb-path`: Path to controlDB
+* `axoniq.axonserver.controldb-path` - path to controlDB
 
 ## Logging
 
@@ -23,7 +23,7 @@ logging.level.io.axoniq.axonserver=INFO
 
 Log messages are written to stdout by default. To change this add the properties logging.file and/or logging.path to the axonserver.properties file.
 
-```
+```bash
 # write log entries to file called messaging.log
 logging.file=messaging.log
 # create logfiles in directory /var/log
@@ -47,7 +47,7 @@ When there is no hostname specified it defaults to the hostname as returned by t
 
 Sample configuration:
 
-```
+```bash
 axoniq.axonserver.hostname=messaging1.axoniq.io
 axoniq.axonserver.name=messaging1
 ```
