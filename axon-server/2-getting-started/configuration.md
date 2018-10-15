@@ -2,14 +2,14 @@
 
 ## Names and ports
 
-* `axoniq.axonserver.name` - the unique node name of the AxonServer node is taken from the hostname of the server.
-* `axoniq.axonserver.hostname` - the hostname of the AxonServer node, as returned to clients, is taken from the hostname of the server.
+* `axoniq.axonserver.name` - the unique node name of the Axon Server node is taken from the hostname of the server.
+* `axoniq.axonserver.hostname` - the hostname of the Axon Server node, as returned to clients, is taken from the hostname of the server.
 * `axoniq.axonserver.port` - the gRPC port for clients to connect is set to 8124 by default
 * `server.port` - the HTTP port for REST clients to connect is set to 8024 by default
 
 ## Database
 
-By default each AxonServer node will create its own H2 database in a file axonserver-controldb in the working directory. To change this, set the property:
+By default each Axon Server node will create its own H2 database in a file axonserver-controldb in the working directory. To change this, set the property:
 
 * `axoniq.axonserver.controldb-path`: Path to controlDB
 
@@ -32,7 +32,7 @@ logging.path=/var/log
 
 ## Cluster \[Not in Free edition\]
 
-When runnning AxonServer in a licensed edition, you can set up a cluster of Axon servers. The servers run in active/active mode, so each node can receive and handle requests.
+When runnning Axon Server in a licensed edition, you can set up a cluster of Axon servers. The servers run in active/active mode, so each node can receive and handle requests.
 
 You can set the following properties in the axonserver.properties configuration file:
 
@@ -82,9 +82,9 @@ The client needs to set the following properties to configure flow control:
 * `axon.axonserver.nr-of-new-permits` \[90000\] - additional number of messages that the server can send to client.
 * `axon.axonserver.new-permits-threshold` \[10000\] -  when client reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
 
-AxonServer nodes:
+Axon Server nodes:
 
-Set the following properties to set flow control on the synchronization between nodes in an AxonServer cluster:
+Set the following properties to set flow control on the synchronization between nodes in an Axon Server cluster:
 
 * `axoniq.axonserver.commandFlowControl.initial-nr-of-permits` \[100000\] - number of messages that the master can initially send to replica.
 * `axoniq.axonserver.commandFlowControl.nr-of-new-permits` \[90000\] - additional number of messages that the master can send to replica.
@@ -129,9 +129,9 @@ You can access the Axon webpages when access control is enabled by providing a u
 
 The command will prompt for a password. If you want to set the password directly you can use the -p option.
 
-Note that the command line interface also requires a token when executing remote commands. If you execute a command from an AxonServer node itself, you do not need to provide a token.
+Note that the command line interface also requires a token when executing remote commands. If you execute a command from an Axon Server node itself, you do not need to provide a token.
 
-If access control is enabled and AxonServer is running in clustered mode, the nodes in the cluster also need to attach a token with the messages sent between them. This token must be defined in the application properties file on each node with property `axoniq.axonserver.accesscontrol.internal-token`. The value of this property must be the same for all nodes.
+If access control is enabled and Axon Server is running in clustered mode, the nodes in the cluster also need to attach a token with the messages sent between them. This token must be defined in the application properties file on each node with property `axoniq.axonserver.accesscontrol.internal-token`. The value of this property must be the same for all nodes.
 
 ## SSL
 
@@ -167,7 +167,7 @@ server.ssl.key-alias=\[alias\]
 
 ## Multi-context \[Enterprise Edition only\]
 
-You can use a single AxonServer \(cluster\) to store events for multiple bounded contexts. Each context will have its own set of files \(stored in a separate directory\). Each context may have a different master in an AxonDB cluster.
+You can use a single Axon Server \(cluster\) to store events for multiple bounded contexts. Each context will have its own set of files \(stored in a separate directory\). Each context may have a different master in an AxonDB cluster.
 
 Creating a new context is done using the command line interface:
 
@@ -179,13 +179,13 @@ The server address here is the address of the master for the `default` context. 
 
 ## Migration
 
-The AxonServer package contains a migration tool to migrate from an already existing RDBMS event store to a new AxonServer instance. The tool reads events and snapshots from the existing store and pushes them to the AxonServer server.
+The Axon Server package contains a migration tool to migrate from an already existing RDBMS event store to a new Axon Server instance. The tool reads events and snapshots from the existing store and pushes them to the Axon Server server.
 
 The migration tool maintains the state of its migration, so it can be run multiple times.
 
-Set the following properties to define the existing event store and the target AxonServer server:
+Set the following properties to define the existing event store and the target Axon Server server:
 
-* `axoniq.axonserver.servers` - comma separated list of hostnames and ports for the AxonServer cluster.
+* `axoniq.axonserver.servers` - comma separated list of hostnames and ports for the Axon Server cluster.
 * `axoniq.datasource.eventstore.url` - URL of the JDBC data store containing the existing event store
 * `axoniq.datasource.eventstore.username` - Username to connect to the JDBC data store containing the existing event store
 * `axoniq.datasource.eventstore.password` - Password to connect to the JDBC data store containing the existing event store
@@ -207,5 +207,5 @@ Run the command `axonserver-migration.jar`
 
 When the source eventstore is requiring a specific JDBC driver, you should put the required JDBC driver jar files in the libs directory.
 
-Note that the migration tool only migrates the event store data to AxonServer. It does not update the tracking token values in token\_entry tables. Tracking tokens are highly dependent on the implementation of the actual event store used. Migrating them is case specific and error prone. Our recommendation is to reset the tracking processors after the migration.
+Note that the migration tool only migrates the event store data to Axon Server. It does not update the tracking token values in token\_entry tables. Tracking tokens are highly dependent on the implementation of the actual event store used. Migrating them is case specific and error prone. Our recommendation is to reset the tracking processors after the migration.
 
