@@ -28,7 +28,7 @@ If no `TransactionManager` implementation is explicitly defined in the Applicati
 
 ## Serializer Configuration
 
-By default, Axon uses an XStream based serializer to serialize objects, as is described in further detail in the [Advanced Customizations](../part-iv-advanced-tuning/advanced-customizations.md#serializers) section. This can be changed by defining a bean of type `Serializer` in the application context.
+By default, Axon uses an XStream based serializer to serialize objects, as is described in further detail in the [Advanced Customizations](../4-advanced-tuning/advanced-customizations.md#serializers) section. This can be changed by defining a bean of type `Serializer` in the application context.
 
 While the default Serializer provides an arguably ugly xml based format, it is capable of serializing and deserializing virtually anything, making it a very sensible default. However, for events, which needs to be stored for a long time and perhaps shared across application boundaries, it is desirable to customize the format.
 
@@ -99,7 +99,7 @@ public SnapshotTriggerDefinition mySnapshotTriggerDefinition(Snapshotter snapsho
 public class MyAggregate {...}
 ```
 
-Defining a [`CommandTargetResolver`](../part-ii-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring Application context will cause that resolver to be used for all aggregate definitions. However, you can also define multiple beans and specify the instance to use with the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
+Defining a [`CommandTargetResolver`](../2-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring Application context will cause that resolver to be used for all aggregate definitions. However, you can also define multiple beans and specify the instance to use with the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
 
 ```java
 @Bean
@@ -154,7 +154,7 @@ public SagaConfiguration<MySaga> mySagaConfigBean() {
 
 By default, all singleton Spring beans components containing `@EventHandler` annotated methods will be subscribed to an Event Processor to receive Event Messages published to the Event Bus.
 
-The `EventHandlingConfiguration` bean, available in the Application Context, has methods to tweak the configuration of the Event Handlers. See [Configuration API](../part-i-concepts/configuration-api.md) for details on configuring Event Handlers and Event Processors.
+The `EventHandlingConfiguration` bean, available in the Application Context, has methods to tweak the configuration of the Event Handlers. See [Configuration API](../1-concepts/configuration-api.md) for details on configuring Event Handlers and Event Processors.
 
 To update the Event Handling Configuration, create an autowired method that set the configuration you desire:
 

@@ -44,7 +44,7 @@ The Configuration API allows you to configure other strategies for assigning cla
 
 ### Ordering Event Handlers within a single Event Processor
 
-To order Event Handlers within an Event Processor, the ordering in which Event Handlers are registered \(as described in the [Registering Event Handlers](../part-ii-domain-logic/event-handling.md#registering-event-handlers) section\) is guiding. Thus, the ordering in which Event Handlers will be called by an Event Processor for Event Handling is their insertion ordering in the configuration API.
+To order Event Handlers within an Event Processor, the ordering in which Event Handlers are registered \(as described in the [Registering Event Handlers](../2-domain-logic/event-handling.md#registering-event-handlers) section\) is guiding. Thus, the ordering in which Event Handlers will be called by an Event Processor for Event Handling is their insertion ordering in the configuration API.
 
 If Spring is selected as the mechanism to wire everything, the ordering of the Event Handlers can be specified by adding the `@Order` annotation. This annotation should be placed on class level of your Event Handler class, adding a `integer` value to specify the ordering.
 
