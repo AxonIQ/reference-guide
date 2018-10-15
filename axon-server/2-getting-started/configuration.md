@@ -205,7 +205,7 @@ axoniq.datasource.eventstore.password=mypassword
 
 Run the command `axonserver-migration.jar`
 
-When the source eventstore is requiring a specific JDBC driver, you should put the required JDBC driver jar files in the libs directory.
+When the source event store is requiring a specific JDBC driver, you should put the required JDBC driver jar files in the libs directory.
 
 Note that the migration tool only migrates the event store data to Axon Server. It does not update the tracking token values in token_entry tables. Tracking tokens are highly dependent on the implementation of the actual event store used. Migrating them is case specific and error prone. Our recommendation is to reset the tracking processors after the migration.
 

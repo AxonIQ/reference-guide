@@ -45,7 +45,7 @@
 
 ## 2 Setup
 
-* [2.1 Getting started](axon-server/2-getting-started/setup.md)
+* [2.1 Getting started](axon-server/2-getting-started/getting-started.md)
 * [2.2 Integration](axon-server/2-getting-started/integration.md)
 * [3.1 Configuration](axon-server/2-getting-started/configuration.md)
 * [3.2 Properties](axon-server/2-getting-started/properties.md)
