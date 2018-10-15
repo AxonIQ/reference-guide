@@ -30,7 +30,7 @@ logging.file=messaging.log
 logging.path=/var/log
 ```
 
-## Cluster \[Not in Free edition\]
+## Cluster [Not in Free edition]
 
 When runnning Axon Server in a licensed edition, you can set up a cluster of Axon servers. The servers run in active/active mode, so each node can receive and handle requests.
 
@@ -64,7 +64,7 @@ When you have a default setup with all nodes using the default port you can omit
 # {CliCmd} register-node -h node1
 ```
 
-Default value for `-S` option is [http://localhost:8024](http://localhost:8024) and for -p is 8224 \(default internal communication port\).
+Default value for `-S` option is [http://localhost:8024](http://localhost:8024) and for -p is 8224 (default internal communication port).
 
 This only has to be done once, each node maintains a list of all nodes in the cluster.
 
@@ -78,20 +78,20 @@ Messaging platform - message handler:
 
 The client needs to set the following properties to configure flow control:
 
-* `axon.axonserver.initial-nr-of-permits` \[100000\] - number of messages that the server can initially send to client.
-* `axon.axonserver.nr-of-new-permits` \[90000\] - additional number of messages that the server can send to client.
-* `axon.axonserver.new-permits-threshold` \[10000\] -  when client reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
+* `axon.axonserver.initial-nr-of-permits` [100000] - number of messages that the server can initially send to client.
+* `axon.axonserver.nr-of-new-permits` [90000] - additional number of messages that the server can send to client.
+* `axon.axonserver.new-permits-threshold` [10000] -  when client reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
 
 Axon Server nodes:
 
 Set the following properties to set flow control on the synchronization between nodes in an Axon Server cluster:
 
-* `axoniq.axonserver.commandFlowControl.initial-nr-of-permits` \[100000\] - number of messages that the master can initially send to replica.
-* `axoniq.axonserver.commandFlowControl.nr-of-new-permits` \[90000\] - additional number of messages that the master can send to replica.
-* `axoniq.axonserver.commandFlowControl.new-permits-threshold` \[10000\] - when replica reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
-* `axoniq.axonserver.queryFlowControl.initial-nr-of-permits` \[100000\] - number of messages that the master can initially send to replica.
-* `axoniq.axonserver.queryFlowControl.nr-of-new-permits` \[90000\] - additional number of messages that the master can send to replica.
-* `axoniq.axonserver.queryFlowControl.new-permits-threshold` \[10000\] - when replica reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
+* `axoniq.axonserver.commandFlowControl.initial-nr-of-permits` [100000] - number of messages that the master can initially send to replica.
+* `axoniq.axonserver.commandFlowControl.nr-of-new-permits` [90000] - additional number of messages that the master can send to replica.
+* `axoniq.axonserver.commandFlowControl.new-permits-threshold` [10000] - when replica reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
+* `axoniq.axonserver.queryFlowControl.initial-nr-of-permits` [100000] - number of messages that the master can initially send to replica.
+* `axoniq.axonserver.queryFlowControl.nr-of-new-permits` [90000] - additional number of messages that the master can send to replica.
+* `axoniq.axonserver.queryFlowControl.new-permits-threshold` [10000] - when replica reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
 
 ## Access control
 
@@ -117,7 +117,7 @@ The minimum length for a token is 8 characters.
 
 Specify the access token in the client by setting the property:
 
-* `axon.axonserver.token=\[Token\]`
+* `axon.axonserver.token=[Token]`
 
 In the Free Edition it is not possible to create applications. If you want to use access control in this edition specify the property `axoniq.axonserver.accesscontrol.token` with any value you want on the Axon server and set the same value in the `axoniq.axonserver.token` property on the client.
 
@@ -159,15 +159,15 @@ Configure the Messaging Platform server to use HTTPs by adding the following pro
 
 ```
 server.port=8443 
-server.ssl.key-store=\[keystore-file\]   
-server.ssl.key-store-password=\[password\] 
+server.ssl.key-store=[keystore-file]   
+server.ssl.key-store-password=[password] 
 server.ssl.key-store-type=PKCS12
-server.ssl.key-alias=\[alias\]
+server.ssl.key-alias=[alias]
 ```
 
-## Multi-context \[Enterprise Edition only\]
+## Multi-context [Enterprise Edition only]
 
-You can use a single Axon Server \(cluster\) to store events for multiple bounded contexts. Each context will have its own set of files \(stored in a separate directory\). Each context may have a different master in an AxonDB cluster.
+You can use a single Axon Server (cluster) to store events for multiple bounded contexts. Each context will have its own set of files (stored in a separate directory). Each context may have a different master in an AxonDB cluster.
 
 Creating a new context is done using the command line interface:
 
