@@ -17,13 +17,13 @@ By default each AxonServer node will create its own H2 database in a file axonse
 
 Logging is by default set to WARN level for all packages. To change the logging levels for specific packages or classes add logging level properties to the axonserver.properties file, for example:
 
-```text
+```
 logging.level.io.axoniq.axonserver=INFO
 ```
 
 Log messages are written to stdout by default. To change this add the properties logging.file and/or logging.path to the axonserver.properties file.
 
-```bash
+```
 # write log entries to file called messaging.log
 logging.file=messaging.log
 # create logfiles in directory /var/log
@@ -47,20 +47,20 @@ When there is no hostname specified it defaults to the hostname as returned by t
 
 Sample configuration:
 
-```text
+```
 axoniq.axonserver.hostname=messaging1.axoniq.io
 axoniq.axonserver.name=messaging1
 ```
 
 Connecting the nodes of a cluster is done using the command line interface. Send the register-node command to one node, specifying the address of another node in the cluster, e.g.
 
-```bash
+```
 # {CliCmd} register-node -S http://node-to-add:port -h node-in-cluster -p internal-port-of-node-in-cluster
 ```
 
 When you have a default setup with all nodes using the default port you can omit a number of parameters from this request. To connect node2 to with node1 run the following command on node2:
 
-```bash
+```
 # {CliCmd} register-node -h node1
 ```
 
@@ -74,7 +74,7 @@ Flow control is the process of managing the rate of data transmission between tw
 
 In the messaging platform flow control is possible both between the messaging platform and the message handlers, and between the nodes in the messaging platform cluster.
 
-Messaging platform - message handler::
+Messaging platform - message handler:
 
 The client needs to set the following properties to configure flow control:
 
@@ -82,7 +82,7 @@ The client needs to set the following properties to configure flow control:
 * `axon.axonserver.nr-of-new-permits` \[90000\] - additional number of messages that the server can send to client.
 * `axon.axonserver.new-permits-threshold` \[10000\] -  when client reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
 
-AxonServer nodes::
+AxonServer nodes:
 
 Set the following properties to set flow control on the synchronization between nodes in an AxonServer cluster:
 
@@ -95,21 +95,21 @@ Set the following properties to set flow control on the synchronization between 
 
 ## Access control
 
-To enable access control add the following property to the axonserver.properties:
+To enable access control add the following property to the `axonserver.properties`:
 
-* _axoniq.axonserver.accesscontrol.enabled_=true
+* `axoniq.axonserver.accesscontrol.enabled_=true`
 
 To register an application and get an access token use the following command:
 
-```text
+```
 {CliCmd} register-application -S http://messaging:8080 -a applicationname -d description -r READ,WRITE,ADMIN
 ```
 
 The address of the server specified in this command is the address of the current master node. The master will distribute the applications to all the replicas.
 
-This command returns the generated token to use. _Note that this token is only generated once, if you loose it you must delete the application and register it again to get a new token_. If you want to define the token yourself, you can provide one in the command line command using the -T flag, e.g.:
+This command returns the generated token to use. Note that this token is only generated once, if you loose it you must delete the application and register it again to get a new token_. If you want to define the token yourself, you can provide one in the command line command using the -T flag, e.g.:
 
-```text
+```
 {CliCmd} register-application -a applicationname -d description -r READ,WRITE -T this-is-my-token
 ```
 
@@ -123,9 +123,7 @@ In the Free Edition it is not possible to create applications. If you want to us
 
 You can access the Axon webpages when access control is enabled by providing a username and password. Users are created through the command line using the following command:
 
-\[subs="attributes"\]
-
-```text
+```
 {CliCmd} register-user -S http://axonserver:8024 -u USERNAME -r USER,ADMIN
 ```
 
@@ -144,24 +142,28 @@ For gRPC communication add file locations to the axonserver.properties file:
 * `axoniq.axonserver.ssl.cert-chain-file` - location of the public certificate file
 * `axoniq.axonserver.ssl.private-key-file` - location of the private key file
 
-## Sample:
-
-axoniq.axonserver.ssl.enabled=true axoniq.axonserver.ssl.cert-chain-file=./resources/axoniq-public.crt
-
-## axoniq.axonserver.ssl.private-key-file=./resources/axoniq-private.pem
+Sample: 
+```
+axoniq.axonserver.ssl.enabled=true 
+axoniq.axonserver.ssl.cert-chain-file=./resources/axoniq-public.crt
+axoniq.axonserver.ssl.private-key-file=./resources/axoniq-private.pem
+```
 
 For HTTPs configuration the certificate and key need to be installed in a p12 keystore. To install the keys use the following command:
 
-```text
+```
 openssl pkcs12 -export -in [public-cert-file] -inkey [private-key-file] -out [keystore-file] -name [alias]
 ```
 
-## Configure the Messaging Platform server to use HTTPs by adding the following properties to the axonserver.properties file:
+Configure the Messaging Platform server to use HTTPs by adding the following properties to the axonserver.properties file:
 
-server.port=8443 server.ssl.key-store=\[keystore-file\]   
-server.ssl.key-store-password=\[password\] server.ssl.key-store-type=PKCS12
-
-## server.ssl.key-alias=\[alias\]
+```
+server.port=8443 
+server.ssl.key-store=\[keystore-file\]   
+server.ssl.key-store-password=\[password\] 
+server.ssl.key-store-type=PKCS12
+server.ssl.key-alias=\[alias\]
+```
 
 ## Multi-context \[Enterprise Edition only\]
 
