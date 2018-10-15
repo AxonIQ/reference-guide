@@ -2,10 +2,10 @@
 
 ## Names and ports
 
-* `axoniq.axonserver.name` - the unique node name of the Axon Server node is taken from the hostname of the server.
-* `axoniq.axonserver.hostname` - the hostname of the Axon Server node, as returned to clients, is taken from the hostname of the server.
-* `axoniq.axonserver.port` - the gRPC port for clients to connect is set to 8124 by default
-* `server.port` - the HTTP port for REST clients to connect is set to 8024 by default
+* `axoniq.axonserver.name` - unique node name of the Axon Server node is taken from the hostname of the server.
+* `axoniq.axonserver.hostname` - hostname of the Axon Server node, as returned to clients, is taken from the hostname of the server.
+* `axoniq.axonserver.port` - gRPC port for clients to connect is set to 8124 by default
+* `server.port` - HTTP port for REST clients to connect is set to 8024 by default
 
 ## Database
 
@@ -186,15 +186,15 @@ The migration tool maintains the state of its migration, so it can be run multip
 Set the following properties to define the existing event store and the target Axon Server server:
 
 * `axoniq.axonserver.servers` - comma separated list of hostnames and ports for the Axon Server cluster.
-* `axoniq.datasource.eventstore.url` - URL of the JDBC data store containing the existing event store
-* `axoniq.datasource.eventstore.username` - Username to connect to the JDBC data store containing the existing event store
-* `axoniq.datasource.eventstore.password` - Password to connect to the JDBC data store containing the existing event store
+* `axoniq.datasource.eventstore.url` - url of the JDBC data store containing the existing event store
+* `axoniq.datasource.eventstore.username` - username to connect to the JDBC data store containing the existing event store
+* `axoniq.datasource.eventstore.password` - password to connect to the JDBC data store containing the existing event store
 
-The default settings expect the data in the current event store to be serialized using the XstreamSerializer. When the data is serialized using the JacksonSerializer add the following property:
+The default settings expect the data in the current event store to be serialized using the `XstreamSerializer`. When the data is serialized using the JacksonSerializer add the following property:
 
 * `axon.serializer.events*=jackson`
 
-To run the migration tool create a file application.properties, containing the properties mentioned above, e.g.
+To run the migration tool create a file `application.properties`, containing the properties mentioned above, e.g.
 
 ```
 axoniq.axonserver.servers=localhost
