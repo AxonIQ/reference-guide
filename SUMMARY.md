@@ -47,11 +47,12 @@
 
 * [2.1 Getting started](getting-started/setup.md)
 * [2.2 Integration](getting-started/integration.md)
+* [3.1 Configuration](getting-started/advanced.md)
+* [3.2 Properties](getting-started/properties.md)
 
-## 3 Advanced
+## 3 Query Reference
 
-* [3.1 Configuration](3-advanced/advanced.md)
-* [3.2 Properties](3-advanced/properties.md)
+* [3.1 Query Reference](3-query-reference/3.1-query-reference.md)
 
 ## Migration
 
