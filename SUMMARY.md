@@ -50,8 +50,8 @@
 
 ## 3 Advanced
 
-* [2.3 Advanced](3-advanced/advanced.md)
-* [Properties](3-advanced/properties.md)
+* [3.1 Configuration](3-advanced/advanced.md)
+* [3.2 Properties](3-advanced/properties.md)
 
 ## Migration
 
