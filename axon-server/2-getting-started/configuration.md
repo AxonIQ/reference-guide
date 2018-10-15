@@ -64,7 +64,7 @@ When you have a default setup with all nodes using the default port you can omit
 # {CliCmd} register-node -h node1
 ```
 
-Default value for -S option is [http://localhost:8024](http://localhost:8024) and for -p is 8224 \(default internal communication port\).
+Default value for `-S` option is [http://localhost:8024](http://localhost:8024) and for -p is 8224 \(default internal communication port\).
 
 This only has to be done once, each node maintains a list of all nodes in the cluster.
 
@@ -97,7 +97,7 @@ Set the following properties to set flow control on the synchronization between 
 
 To enable access control add the following property to the `axonserver.properties`:
 
-* `axoniq.axonserver.accesscontrol.enabled_=true`
+* `axoniq.axonserver.accesscontrol.enabled=true`
 
 To register an application and get an access token use the following command:
 
@@ -107,7 +107,7 @@ To register an application and get an access token use the following command:
 
 The address of the server specified in this command is the address of the current master node. The master will distribute the applications to all the replicas.
 
-This command returns the generated token to use. Note that this token is only generated once, if you loose it you must delete the application and register it again to get a new token_. If you want to define the token yourself, you can provide one in the command line command using the -T flag, e.g.:
+This command returns the generated token to use. Note that this token is only generated once, if you loose it you must delete the application and register it again to get a new token. If you want to define the token yourself, you can provide one in the command line command using the `-T` flag, e.g.:
 
 ```
 {CliCmd} register-application -a applicationname -d description -r READ,WRITE -T this-is-my-token
@@ -117,7 +117,7 @@ The minimum length for a token is 8 characters.
 
 Specify the access token in the client by setting the property:
 
-* `axon.axonserver.token`=\[Token\]
+* `axon.axonserver.token=\[Token\]`
 
 In the Free Edition it is not possible to create applications. If you want to use access control in this edition specify the property `axoniq.axonserver.accesscontrol.token` with any value you want on the Axon server and set the same value in the `axoniq.axonserver.token` property on the client.
 
@@ -127,7 +127,7 @@ You can access the Axon webpages when access control is enabled by providing a u
 {CliCmd} register-user -S http://axonserver:8024 -u USERNAME -r USER,ADMIN
 ```
 
-The command will prompt for a password. If you want to set the password directly you can use the -p option.
+The command will prompt for a password. If you want to set the password directly you can use the `-p` option.
 
 Note that the command line interface also requires a token when executing remote commands. If you execute a command from an Axon Server node itself, you do not need to provide a token.
 
@@ -196,7 +196,7 @@ The default settings expect the data in the current event store to be serialized
 
 To run the migration tool create a file application.properties, containing the properties mentioned above, e.g.
 
-```text
+```
 axoniq.axonserver.servers=localhost
 axoniq.datasource.eventstore.url=jdbc:mysql://localhost:3306/applicationdb?useSSL=false
 axoniq.datasource.eventstore.username=myusername
@@ -207,5 +207,5 @@ Run the command `axonserver-migration.jar`
 
 When the source eventstore is requiring a specific JDBC driver, you should put the required JDBC driver jar files in the libs directory.
 
-Note that the migration tool only migrates the event store data to Axon Server. It does not update the tracking token values in token\_entry tables. Tracking tokens are highly dependent on the implementation of the actual event store used. Migrating them is case specific and error prone. Our recommendation is to reset the tracking processors after the migration.
+Note that the migration tool only migrates the event store data to Axon Server. It does not update the tracking token values in token_entry tables. Tracking tokens are highly dependent on the implementation of the actual event store used. Migrating them is case specific and error prone. Our recommendation is to reset the tracking processors after the migration.
 
