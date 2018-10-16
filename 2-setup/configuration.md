@@ -17,7 +17,7 @@ By default each Axon Server node will create its own H2 database in a file axons
 
 Logging is by default set to WARN level for all packages. To change the logging levels for specific packages or classes add logging level properties to the axonserver.properties file, for example:
 
-```
+```text
 logging.level.io.axoniq.axonserver=INFO
 ```
 
@@ -30,7 +30,7 @@ logging.file=messaging.log
 logging.path=/var/log
 ```
 
-## Cluster [Enterprise edition only]
+## Cluster \[Enterprise edition only\]
 
 When runnning Axon Server in a licensed edition, you can set up a cluster of Axon servers. The servers run in active/active mode, so each node can receive and handle requests.
 
@@ -54,17 +54,17 @@ axoniq.axonserver.name=messaging1
 
 Connecting the nodes of a cluster is done using the command line interface. Send the register-node command to one node, specifying the address of another node in the cluster, e.g.
 
-```
+```text
 # {CliCmd} register-node -S http://node-to-add:port -h node-in-cluster -p internal-port-of-node-in-cluster
 ```
 
 When you have a default setup with all nodes using the default port you can omit a number of parameters from this request. To connect node2 to with node1 run the following command on node2:
 
-```
+```text
 # {CliCmd} register-node -h node1
 ```
 
-Default value for `-S` option is [http://localhost:8024](http://localhost:8024) and for -p is 8224 (default internal communication port).
+Default value for `-S` option is [http://localhost:8024](http://localhost:8024) and for -p is 8224 \(default internal communication port\).
 
 This only has to be done once, each node maintains a list of all nodes in the cluster.
 
@@ -78,20 +78,20 @@ Messaging platform - message handler:
 
 The client needs to set the following properties to configure flow control:
 
-* `axon.axonserver.initial-nr-of-permits` [100000] - number of messages that the server can initially send to client.
-* `axon.axonserver.nr-of-new-permits` [90000] - additional number of messages that the server can send to client.
-* `axon.axonserver.new-permits-threshold` [10000] -  when client reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
+* `axon.axonserver.initial-nr-of-permits` \[100000\] - number of messages that the server can initially send to client.
+* `axon.axonserver.nr-of-new-permits` \[90000\] - additional number of messages that the server can send to client.
+* `axon.axonserver.new-permits-threshold` \[10000\] -  when client reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
 
 Axon Server nodes:
 
 Set the following properties to set flow control on the synchronization between nodes in an Axon Server cluster:
 
-* `axoniq.axonserver.commandFlowControl.initial-nr-of-permits` [100000] - number of messages that the master can initially send to replica.
-* `axoniq.axonserver.commandFlowControl.nr-of-new-permits` [90000] - additional number of messages that the master can send to replica.
-* `axoniq.axonserver.commandFlowControl.new-permits-threshold` [10000] - when replica reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
-* `axoniq.axonserver.queryFlowControl.initial-nr-of-permits` [100000] - number of messages that the master can initially send to replica.
-* `axoniq.axonserver.queryFlowControl.nr-of-new-permits` [90000] - additional number of messages that the master can send to replica.
-* `axoniq.axonserver.queryFlowControl.new-permits-threshold` [10000] - when replica reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
+* `axoniq.axonserver.commandFlowControl.initial-nr-of-permits` \[100000\] - number of messages that the master can initially send to replica.
+* `axoniq.axonserver.commandFlowControl.nr-of-new-permits` \[90000\] - additional number of messages that the master can send to replica.
+* `axoniq.axonserver.commandFlowControl.new-permits-threshold` \[10000\] - when replica reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
+* `axoniq.axonserver.queryFlowControl.initial-nr-of-permits` \[100000\] - number of messages that the master can initially send to replica.
+* `axoniq.axonserver.queryFlowControl.nr-of-new-permits` \[90000\] - additional number of messages that the master can send to replica.
+* `axoniq.axonserver.queryFlowControl.new-permits-threshold` \[10000\] - when replica reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
 
 ## Access control
 
@@ -101,7 +101,7 @@ To enable access control add the following property to the `axonserver.propertie
 
 To register an application and get an access token use the following command:
 
-```
+```text
 {CliCmd} register-application -S http://messaging:8080 -a applicationname -d description -r READ,WRITE,ADMIN
 ```
 
@@ -109,7 +109,7 @@ The address of the server specified in this command is the address of the curren
 
 This command returns the generated token to use. Note that this token is only generated once, if you loose it you must delete the application and register it again to get a new token. If you want to define the token yourself, you can provide one in the command line command using the `-T` flag, e.g.:
 
-```
+```text
 {CliCmd} register-application -a applicationname -d description -r READ,WRITE -T this-is-my-token
 ```
 
@@ -123,7 +123,7 @@ In the Free Edition it is not possible to create applications. If you want to us
 
 You can access the Axon webpages when access control is enabled by providing a username and password. Users are created through the command line using the following command:
 
-```
+```text
 {CliCmd} register-user -S http://axonserver:8024 -u USERNAME -r USER,ADMIN
 ```
 
@@ -142,8 +142,9 @@ For gRPC communication add file locations to the axonserver.properties file:
 * `axoniq.axonserver.ssl.cert-chain-file` - location of the public certificate file
 * `axoniq.axonserver.ssl.private-key-file` - location of the private key file
 
-Sample: 
-```
+Sample:
+
+```text
 axoniq.axonserver.ssl.enabled=true 
 axoniq.axonserver.ssl.cert-chain-file=./resources/axoniq-public.crt
 axoniq.axonserver.ssl.private-key-file=./resources/axoniq-private.pem
@@ -151,13 +152,13 @@ axoniq.axonserver.ssl.private-key-file=./resources/axoniq-private.pem
 
 For HTTPs configuration the certificate and key need to be installed in a p12 keystore. To install the keys use the following command:
 
-```
+```text
 openssl pkcs12 -export -in [public-cert-file] -inkey [private-key-file] -out [keystore-file] -name [alias]
 ```
 
 Configure the Messaging Platform server to use HTTPs by adding the following properties to the axonserver.properties file:
 
-```
+```text
 server.port=8443 
 server.ssl.key-store=[keystore-file]   
 server.ssl.key-store-password=[password] 
@@ -165,9 +166,9 @@ server.ssl.key-store-type=PKCS12
 server.ssl.key-alias=[alias]
 ```
 
-## Multi-context [Enterprise edition only]
+## Multi-context \[Enterprise edition only\]
 
-You can use a single Axon Server (cluster) to store events for multiple bounded contexts. Each context will have its own set of files (stored in a separate directory). Each context may have a different master in an AxonDB cluster.
+You can use a single Axon Server \(cluster\) to store events for multiple bounded contexts. Each context will have its own set of files \(stored in a separate directory\). Each context may have a different master in an AxonDB cluster.
 
 Creating a new context is done using the command line interface:
 
@@ -196,7 +197,7 @@ The default settings expect the data in the current event store to be serialized
 
 To run the migration tool create a file `application.properties`, containing the properties mentioned above, e.g.
 
-```
+```text
 axoniq.axonserver.servers=localhost
 axoniq.datasource.eventstore.url=jdbc:mysql://localhost:3306/applicationdb?useSSL=false
 axoniq.datasource.eventstore.username=myusername
@@ -207,5 +208,5 @@ Run the command `axonserver-migration.jar`
 
 When the source event store is requiring a specific JDBC driver, you should put the required JDBC driver jar files in the libs directory.
 
-Note that the migration tool only migrates the event store data to Axon Server. It does not update the tracking token values in token_entry tables. Tracking tokens are highly dependent on the implementation of the actual event store used. Migrating them is case specific and error prone. Our recommendation is to reset the tracking processors after the migration.
+Note that the migration tool only migrates the event store data to Axon Server. It does not update the tracking token values in token\_entry tables. Tracking tokens are highly dependent on the implementation of the actual event store used. Migrating them is case specific and error prone. Our recommendation is to reset the tracking processors after the migration.
 
