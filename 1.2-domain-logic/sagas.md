@@ -1,4 +1,4 @@
-# 2.4 Sagas
+# 1.2.4 Sagas
 
 ## Managing complex business transactions
 
@@ -167,7 +167,7 @@ In some cases, applications benefit from caching Saga instances. In that case, t
 
 #### JpaSagaStore
 
-The `JpaSagaStore` uses JPA to store the state and Association Values of Sagas. Sagas themselves do not need any JPA annotations; Axon will serialize the sagas using a `Serializer` \(similar to Event serialization, you can choose between an `XStreamSerializer`, `JacksonSerializer` or `JavaSerializer`, which can be set by configuring the 'Default `Serializer`' in your application. For more detail, check [Serializers](../4-advanced-tuning/advanced-customizations.md#serializers)\).
+The `JpaSagaStore` uses JPA to store the state and Association Values of Sagas. Sagas themselves do not need any JPA annotations; Axon will serialize the sagas using a `Serializer` \(similar to Event serialization, you can choose between an `XStreamSerializer`, `JacksonSerializer` or `JavaSerializer`, which can be set by configuring the 'Default `Serializer`' in your application. For more detail, check [Serializers](../1.4-advanced-tuning/advanced-customizations.md#serializers)\).
 
 The `JpaSagaStore` is configured with an `EntityManagerProvider`, which provides access to an `EntityManager` instance to use. This abstraction allows for the use of both application managed and container managed `EntityManager`s. Optionally, you can define the serializer to serialize the Saga instances with. Axon defaults to the `XStreamSerializer`.
 

@@ -1,4 +1,4 @@
-# 2.2 Event Handling
+# 1.2.2 Event Handling
 
 Event listeners are the components that act on incoming events. They typically execute logic based on decisions that have been made by the command model. Usually, this involves updating view models or forwarding updates to other components, such as 3rd party integrations. In some cases Event Handlers will throw Events themselves based on \(patterns of\) Events that they received, or even send Commands to trigger further changes.
 
@@ -16,7 +16,7 @@ Axon provides out-of-the-box support for the following parameter types:
 * Parameters assignable to Message will have the entire `EventMessage` injected \(if the message is assignable to that parameter\). If the first parameter is of type message, it effectively matches an Event of any type, even if generic parameters would suggest otherwise. Due to type erasure, Axon cannot detect what parameter is expected. In such case, it is best to declare a parameter of the payload type, followed by a parameter of type Message.
 * When using Spring and the Axon Configuration is activated \(either by including the Axon Spring Boot Starter module, or by specifying `@EnableAxon` on your `@Configuration` file\), any other parameters will resolve to autowired beans, if exactly one injectable candidate is available in the application context. This allows you to inject resources directly into `@EventHandler` annotated methods.
 
-You can configure additional `ParameterResolver`s by implementing the `ParameterResolverFactory` interface and creating a file named `/META-INF/service/org.axonframework.common.annotation.ParameterResolverFactory` containing the fully qualified name of the implementing class. See [Advanced Customizations](../4-advanced-tuning/advanced-customizations.md) for details.
+You can configure additional `ParameterResolver`s by implementing the `ParameterResolverFactory` interface and creating a file named `/META-INF/service/org.axonframework.common.annotation.ParameterResolverFactory` containing the fully qualified name of the implementing class. See [Advanced Customizations](../1.4-advanced-tuning/advanced-customizations.md) for details.
 
 In all circumstances, at most one event handler method is invoked per listener instance. Axon will search for the most specific method to invoke, using following rules:
 

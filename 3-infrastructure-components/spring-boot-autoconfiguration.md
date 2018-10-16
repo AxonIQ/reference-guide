@@ -1,4 +1,4 @@
-# 3.5 Spring Boot AutoConfiguration
+# 1.3.5 Spring Boot AutoConfiguration
 
 Axon's support for Spring Boot AutoConfiguration is by far the easiest option to get started configuring your Axon infrastructure components. By simply adding the `axon-spring-boot-starter` dependency, Axon will automatically configure the basic infrastructure components \(Command Bus, Event Bus\), as well as any component required to run and store Aggregates and Sagas.
 
@@ -28,7 +28,7 @@ If no `TransactionManager` implementation is explicitly defined in the Applicati
 
 ## Serializer Configuration
 
-By default, Axon uses an XStream based serializer to serialize objects, as is described in further detail in the [Advanced Customizations](../4-advanced-tuning/advanced-customizations.md#serializers) section. This can be changed by defining a bean of type `Serializer` in the application context.
+By default, Axon uses an XStream based serializer to serialize objects, as is described in further detail in the [Advanced Customizations](../1.4-advanced-tuning/advanced-customizations.md#serializers) section. This can be changed by defining a bean of type `Serializer` in the application context.
 
 While the default Serializer provides an arguably ugly xml based format, it is capable of serializing and deserializing virtually anything, making it a very sensible default. However, for events, which needs to be stored for a long time and perhaps shared across application boundaries, it is desirable to customize the format.
 
@@ -99,7 +99,7 @@ public SnapshotTriggerDefinition mySnapshotTriggerDefinition(Snapshotter snapsho
 public class MyAggregate {...}
 ```
 
-Defining a [`CommandTargetResolver`](../2-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring Application context will cause that resolver to be used for all aggregate definitions. However, you can also define multiple beans and specify the instance to use with the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
+Defining a [`CommandTargetResolver`](../1.2-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring Application context will cause that resolver to be used for all aggregate definitions. However, you can also define multiple beans and specify the instance to use with the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
 
 ```java
 @Bean

@@ -1,4 +1,4 @@
-# 2.1 Getting started
+# 2.2.1 Getting started
 
 ## Prerequisites
 
