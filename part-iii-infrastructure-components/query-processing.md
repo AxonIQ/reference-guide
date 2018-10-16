@@ -161,7 +161,7 @@ GenericSubscriptionQueryUpdateMessage{payload={10}, metadata={'traceId'->'00cef4
 
 ### SimpleQueryBus
 
-The `SimpleQueryBus` is the only Query Bus implementation in Axon 3.1. It does straightforward processing of queries in the thread that dispatches them. The `SimpleQueryBus` allows interceptors to be configured, see [Query Interceptors](query-processing.md#query-interceptors) for more information.
+The `SimpleQueryBus` is the only Query Bus implementation in Axon 3.1. It does straightforward processing of queries in the thread that dispatches them. The `SimpleQueryBus` allows interceptors to be configured.
 
 ## Query Interceptors
 
