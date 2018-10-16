@@ -4,7 +4,7 @@
 
 The use of an explicit command dispatching mechanism has a number of advantages. First of all, there is a single object that clearly describes the intent of the client. By logging the command, you store both the intent and related data for future reference. Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. Testing also becomes a lot easier, you could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing](../2-domain-logic/testing.md)\). The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
 
-This doesn't mean Command dispatching using explicit command object is the only way to do it. The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way, while providing best practices as the default behavior. It is still possible to use a Service layer that you can invoke to execute commands. The method will just need to start a unit of work \(see [Unit of Work](../1.-concepts/messaging-concepts.md#unit-of-work)\) and perform a commit or rollback on it when the method is finished.
+This doesn't mean Command dispatching using explicit command object is the only way to do it. The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way, while providing best practices as the default behavior. It is still possible to use a Service layer that you can invoke to execute commands. The method will just need to start a unit of work \(see [Unit of Work](../1-concepts/messaging-concepts.md#unit-of-work)\) and perform a commit or rollback on it when the method is finished.
 
 The next sections provide an overview of the tasks related to setting up a Command dispatching infrastructure with the Axon Framework.
 
@@ -248,7 +248,7 @@ The CommandBus implementations described in earlier only allow Command Messages 
 
 That's where the `DistributedCommandBus` comes in. Unlike the other `CommandBus` implementations, the `DistributedCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between Command Bus implementations on different JVM's. Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
 
-![Structure of the Distributed Command Bus](../.gitbook/assets/distributed-command-bus.png)
+![Structure of the Distributed Command Bus](../../.gitbook/assets/distributed-command-bus.png)
 
 > **Note**
 >
