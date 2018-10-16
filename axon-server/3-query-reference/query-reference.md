@@ -2,7 +2,7 @@
 
 ## Principles
 
-The {ProductName} query language processes a stream of events. Processing steps include filters and projections,
+The Axon Server query language processes a stream of events. Processing steps include filters and projections,
 defined in a pipeline. The query engine executes each step in the pipeline and forwards the result to the next step.
 The result of the last step is returned. The idea is based on the UNIX pipe commands.
 
@@ -21,6 +21,7 @@ The input of a query is a stream of events with the following fields:
 
 Filters are expressions that evaluate to either true or false. Basic filter operations do comparisons between fields
 and other fields or fixed values.
+
 The following are samples of valid filters:
 
 ```
@@ -59,7 +60,7 @@ In expressions you can use basic arithmetic operators:
 
 All expect for the '+' only work on numeric values. '+' on String does a concatenation.
 
-Apart from these operators there are 2 matching functions:
+Apart from these operators there are two matching functions:
 
 - contains: if both parameters are string values it is true when the first contains the second. If the first parameter is
 a list it returns true if the list contains the second value.
@@ -185,7 +186,7 @@ You can add time constraints to the pipeline to only search recent events.
 ```
 last 2 minutes
 ```
-Returns all events from the last 2 minutes.
+Returns all events from the last two minutes.
 
 ```
 aggregateSequenceNumber = 0 | last hour
