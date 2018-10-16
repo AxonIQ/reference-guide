@@ -1,7 +1,5 @@
 # Repository and Event Store
 
-## Repositories and Event Stores
-
 The repository is the mechanism that provides access to aggregates. The repository acts as a gateway to the actual storage mechanism used to persist the data. In CQRS, the repositories only need to be able to find aggregates based on their unique identifier. Any other types of queries should be performed against the query database.
 
 In the Axon Framework, all repositories must implement the `Repository` interface. This interface prescribes three methods: `load(identifier, version)`, `load(identifier)` and `newInstance(factoryMethod)`. The `load` methods allows you to load aggregates from the repository. The optional `version` parameter is used to detect concurrent modifications \(see [Advanced conflict detection and resolution](repository-and-event-store.md#advanced-conflict-detection-and-resolution)\). `newInstance` is used to register newly created aggregates in the repository.
