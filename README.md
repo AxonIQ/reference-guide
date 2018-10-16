@@ -1,6 +1,6 @@
 # About this guide
 
-The GitBook Axon Reference Guide is set up since Axon Framework 3.0. 
+The GitBook Axon Reference Guide is set up since Axon Framework 3.0.
 
 For documentation of older versions:
 
@@ -10,7 +10,6 @@ For documentation of older versions:
 
 [Release 2.1](http://www.axonframework.org/docs/2.1/)
 
-
 [Release 1.4](http://www.axonframework.org/docs/1.4/)
 
 [Release 1.3](http://www.axonframework.org/docs/1.3/)
@@ -18,6 +17,4 @@ For documentation of older versions:
 [Release 1.2](http://www.axonframework.org/docs/1.2/)
 
 [Release 1.1](http://www.axonframework.org/docs/1.2/)
-
-
 
