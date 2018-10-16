@@ -8,7 +8,7 @@ In the vast majority of cases, the Aggregates will publish events by applying th
 
 ## Event Bus
 
-The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides two implementation of the Event Bus: `SimpleEventBus` and `EmbeddedEventStore`. While both implementations support subscribing and tracking processors \(see [Events Processors](event-processing.md#event-processors)\), the `EmbeddedEventStore` persists events, which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
+The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides two implementation of the Event Bus: `SimpleEventBus` and `EmbeddedEventStore`. While both implementations support subscribing and tracking processors \(see [Events Processors](event-processing.md#event-processors) below\), the `EmbeddedEventStore` persists events, which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
 
 When using the Configuration API, the `SimpleEventBus` is used by default. To configure the `EmbeddedEventStore` instead, you need to supply an implementation of a StorageEngine, which does the actual storage of Events.
 
