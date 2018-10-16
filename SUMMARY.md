@@ -52,7 +52,7 @@
 
 ## 3 Query Reference
 
-* [3.1 Query Reference](axon-server/3-query-reference/3.1-query-reference.md)
+* [3.1 Query Reference](axon-server/3-query-reference/query-reference.md)
 
 ## Migration
 
