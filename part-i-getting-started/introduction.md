@@ -48,7 +48,7 @@ Development on the Axon Framework is never finished. There will always be more f
 
 There are a number of ways in which you can contribute to the Axon Framework:
 
-* You can report any bugs, feature requests or ideas for improvements on our issue page: [github.com/AxonFramework/AxonFramework/issues](https://github.com/AxonFramework/AxonFramework/issues). All ideas are welcome. Please be as exact as possible when reporting bugs. This will help us reproduce and thus solve the problem faster.
+* You can report any bugs, feature requests or ideas for improvements on our issue page on [GitHub](https://github.com/AxonFramework/AxonFramework/issues/). All ideas are welcome. Please be as exact as possible when reporting bugs. This will help us reproduce and thus solve the problem faster.
 * If you have created a component for your own application that you think might be useful to include in the framework, send us a patch or a zip containing the source code. We will evaluate it and try to fit it in the framework. Please make sure code is properly documented using javadoc. This helps us to understand what is going on.
 * If you know of any other way you think you can help us, do not hesitate to send a message to the [Axon Framework mailing list](mailto:axonframework@googlegroups.com).
 
@@ -56,7 +56,7 @@ There are a number of ways in which you can contribute to the Axon Framework:
 
 Axon Framework is open source and freely available for anyone to use. However, if you have specific requirements, or just want to be assured of someone to be standby to help you in case of trouble, AxonIQ provides several commercial support services for Axon Framework. These services include Training, Consultancy and Operational Support and are provided by the people that know Axon more than anyone else.
 
-For more information about AxonIQ and its services, visit [axoniq.io](http://axoniq.io) or [axoniq.io/services](http://axoniq.io/services).
+For more information about AxonIQ and its services, visit [axoniq.io](https://axoniq.io) or [https://www.axoniq.io/services](https://axoniq.io/services).
 
 ## License information
 
