@@ -47,8 +47,8 @@
 
 * [2.1 Getting started](2-setup/getting-started.md)
 * [2.2 Integration](2-setup/integration.md)
-* [3.1 Configuration](2-setup/configuration.md)
-* [3.2 Properties](2-setup/properties.md)
+* [2.3 Configuration](2-setup/configuration.md)
+* [2.4 Properties](2-setup/properties.md)
 
 ## 3 Query Reference
 

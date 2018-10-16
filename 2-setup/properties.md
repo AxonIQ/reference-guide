@@ -1,4 +1,4 @@
-# 3.2 Properties
+# 2.4 Properties
 
 ## Configuration Properties
 
