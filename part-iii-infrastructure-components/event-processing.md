@@ -8,7 +8,7 @@ In the vast majority of cases, the Aggregates will publish events by applying th
 
 ## Event Bus
 
-The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides two implementation of the Event Bus: `SimpleEventBus` and `EmbeddedEventStore`. While both implementations support subscribing and tracking processors \(see [Events Processors](event-processing.md#event-processors)\), the `EmbeddedEventStore` persists events, which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
+The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides two implementation of the Event Bus: `SimpleEventBus` and `EmbeddedEventStore`. While both implementations support subscribing and tracking processors \(see [Events Processors](event-processing.md#event-processors) below\), the `EmbeddedEventStore` persists events, which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
 
 When using the Configuration API, the `SimpleEventBus` is used by default. To configure the `EmbeddedEventStore` instead, you need to supply an implementation of a StorageEngine, which does the actual storage of Events.
 
@@ -79,7 +79,7 @@ The `EventHandlingConfiguration` class defines a number of methods that can be u
 * `registerEventProcessorFactory` allows you to define a default factory method that creates Event Processors for which no explicit factories have been defined.
 * `registerEventProcessor(String name, EventProcessorBuilder builder)` defines the factory method to use to create a Processor with given `name`. Note that such Processor is only created if `name` is chosen as the processor for any of the available Event Handler beans.
 * `registerTrackingProcessor(String name)` defines that a processor with given name should be configured as a Tracking Event Processor, using default settings. It is configured with a TransactionManager and a TokenStore, both taken from the main configuration by default.
-* `registerTrackingProcessor(String name, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration, Function<Configuration, SequencingPolicy<? super EventMessage<?>>> sequencingPolicy)` defines that a processor with given name should be configured as a Tracking Processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading. The `SequencingPolicy` defines which expectations the processor has on sequential processing of events. See [Parallel Processing](event-processing.md#parallel-processing) for more details.
+* `registerTrackingProcessor(String name, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration, Function<Configuration, SequencingPolicy<? super EventMessage<?>>> sequencingPolicy)` defines that a processor with given name should be configured as a Tracking Processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading. The `SequencingPolicy` defines which expectations the processor has on sequential processing of events. See [Parallel Processing](event-processing.md#parallel-processing) below for more details.
 * `usingTrackingProcessors()` sets the default to Tracking Processors instead of Subscribing ones.
 
 #### Sagas
