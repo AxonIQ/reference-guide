@@ -78,7 +78,7 @@ Since Axon doesn't create any connections or threads by itself, it is safe to ru
 
 While implementing your application, you might run into problems, wonder about why certain things are the way they are, or have some questions that need an answer. The Axon Users mailing list is there to help. Just send an email to [axonframework@googlegroups.com](mailto:axonframework@googlegroups.com). Other users as well as contributors to the Axon Framework are there to help with your issues.
 
-If you find a bug, you can report them at [issues.axonframework.org](http://issues.axonframework.org). When reporting an issue, please make sure you clearly describe the problem. Explain what you did, what the result was and what you expected to happen instead. If possible, please provide a very simple Unit Test \(JUnit\) that shows the problem. That makes fixing it a lot simpler.
+If you find a bug, you can report them on [GitHub](https://github.com/AxonFramework/AxonFramework/issues/). When reporting an issue, please make sure you clearly describe the problem. Explain what you did, what the result was and what you expected to happen instead. If possible, please provide a very simple Unit Test \(JUnit\) that shows the problem. That makes fixing it a lot simpler.
 
 ## Contributing to Axon Framework
 
@@ -86,7 +86,7 @@ Development on the Axon Framework is never finished. There will always be more f
 
 There are a number of ways in which you can contribute to the Axon Framework:
 
-* You can report any bugs, feature requests or ideas for improvements on our issue page: [issues.axonframework.org](http://issues.axonframework.org). All ideas are welcome. Please be as exact as possible when reporting bugs. This will help us reproduce and thus solve the problem faster.
+* You can report any bugs, feature requests or ideas for improvements on our issue page on [GitHub](https://github.com/AxonFramework/AxonFramework/issues/). All ideas are welcome. Please be as exact as possible when reporting bugs. This will help us reproduce and thus solve the problem faster.
 * If you have created a component for your own application that you think might be useful to include in the framework, send us a patch or a zip containing the source code. We will evaluate it and try to fit it in the framework. Please make sure code is properly documented using javadoc. This helps us to understand what is going on.
 * If you know of any other way you think you can help us, do not hesitate to send a message to the [Axon Framework mailing list](mailto:axonframework@googlegroups.com).
 
@@ -94,7 +94,7 @@ There are a number of ways in which you can contribute to the Axon Framework:
 
 Axon Framework is open source and freely available for anyone to use. However, if you have specific requirements, or just want to be assured of someone to be standby to help you in case of trouble, AxonIQ provides several commercial support services for Axon Framework. These services include Training, Consultancy and Operational Support and are provided by the people that know Axon more than anyone else.
 
-For more information about AxonIQ and its services, visit [axoniq.io](http://axoniq.io) or [axoniq.io/services](http://axoniq.io/services).
+For more information about AxonIQ and its services, visit [axoniq.io](https://axoniq.io) or [axoniq.io/services](https://axoniq.io/services).
 
 ## License information
 
