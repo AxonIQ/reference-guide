@@ -1,4 +1,4 @@
-# 3.1 Configuration
+# 2.3 Configuration
 
 ## Names and ports
 
