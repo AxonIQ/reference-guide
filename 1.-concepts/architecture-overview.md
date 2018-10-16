@@ -1,7 +1,5 @@
 # 1.1 Architecture overview
 
-## Architectural Overview
-
 CQRS on itself is a very simple pattern. It only prescribes that the component of an application that processes commands should be separated from the component that processes queries. Although this separation is very simple on itself, it provides a number of very powerful features when combined with other patterns. Axon provides the building blocks that make it easier to implement the different patterns that can be used in combination with CQRS.
 
 The diagram below shows an example of an extended layout of a CQRS-based event driven architecture. The UI component, displayed on the left, interacts with the rest of the application in two ways: it sends commands to the application \(shown in the top section\), and it queries the application for information \(shown in the bottom section\).
