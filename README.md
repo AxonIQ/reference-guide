@@ -1,6 +1,23 @@
 # About this guide
 
-Axon is a lightweight framework that helps developers build scalable and extensible applications by addressing these concerns directly in the architecture. This reference guide explains what Axon is, how it can help you and how you can use it.
+The GitBook Axon Reference Guide is set up since Axon Framework 3.0. 
 
-If you want to know more about Axon and its background, continue reading in [Axon Framework Background](./part-i-getting-started/introduction.md#axon-framework-background). If you're eager to get started building your own application using Axon, go quickly to [Getting Started](./part-i-getting-started/introduction#getting-started). If you're interested in helping out building the Axon Framework, [Contributing](./part-i-getting-started/introduction#contributing-to-axon-framework) will contain the information you require. All help is welcome. Finally, this chapter covers some legal concerns in [License](./part-i-getting-started/introduction#license).
+For documentation of older versions:
+
+[Release 2.3](http://www.axonframework.org/docs/2.3/)
+
+[Release 2.2](http://www.axonframework.org/docs/2.2/)
+
+[Release 2.1](http://www.axonframework.org/docs/2.1/)
+
+
+[Release 1.4](http://www.axonframework.org/docs/1.4/)
+
+[Release 1.3](http://www.axonframework.org/docs/1.3/)
+
+[Release 1.2](http://www.axonframework.org/docs/1.2/)
+
+[Release 1.1](http://www.axonframework.org/docs/1.2/)
+
+
 
