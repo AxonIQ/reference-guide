@@ -94,7 +94,7 @@ There are a number of ways in which you can contribute to the Axon Framework:
 
 Axon Framework is open source and freely available for anyone to use. However, if you have specific requirements, or just want to be assured of someone to be standby to help you in case of trouble, AxonIQ provides several commercial support services for Axon Framework. These services include Training, Consultancy and Operational Support and are provided by the people that know Axon more than anyone else.
 
-For more information about AxonIQ and its services, visit [axoniq.io](https://axoniq.io) or [https://www.axoniq.io/services](https://axoniq.io/services).
+For more information about AxonIQ and its services, visit [axoniq.io](https://axoniq.io) or [axoniq.io/services](https://axoniq.io/services).
 
 ## License information
 
