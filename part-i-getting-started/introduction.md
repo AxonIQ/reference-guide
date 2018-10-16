@@ -58,7 +58,7 @@ Axon Framework is open source and freely available for anyone to use. However, i
 
 For more information about AxonIQ and its services, visit [axoniq.io](http://axoniq.io) or [axoniq.io/services](http://axoniq.io/services).
 
-## License information
+## License
 
 The Axon Framework and its documentation are licensed under the Apache License, Version 2.0. You may obtain a copy of the License at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
