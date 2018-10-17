@@ -25,8 +25,10 @@ In your Axon application you need to configure the various buses manually, e.g.:
 ```java
 public class AxonStarter {
     public static void main(String[] args) {
-        AxonServerConfiguration axonServerConfiguration = AxonServerConfiguration.newBuilder("localhost", "AxonStarter").build();
-        PlatformConnectionManager platformConnectionManager = new PlatformConnectionManager(axonServerConfiguration);
+        AxonServerConfiguration axonServerConfiguration = 
+            AxonServerConfiguration.newBuilder("localhost", "AxonStarter").build();
+        PlatformConnectionManager platformConnectionManager = 
+            new PlatformConnectionManager(axonServerConfiguration);
 
         Serializer genericSerializer = new JacksonSerializer();
         
@@ -47,20 +49,21 @@ public class AxonStarter {
 
         SimpleQueryBus localQueryBus = new SimpleQueryBus();
         QueryBus axonHubQueryBus = new AxonServerQueryBus(platformConnectionManager, 
-                                                          axonServerConfiguration, 
-                                                          localQueryBus, 
-                                                          localQueryBus,  
-                                                          genericSerializer,
-                                                          genericSerializer,
-                                                          new QueryPriorityCalculator() {});
+                                              axonServerConfiguration, 
+                                              localQueryBus, 
+                                              localQueryBus,  
+                                              genericSerializer,
+                                              genericSerializer,
+                                              new QueryPriorityCalculator() {});
 
-        Configuration config = DefaultConfigurer.defaultConfiguration()
-                                                .configureEventBus(c -> axonHubEventStore)
-                                                .configureCommandBus(c -> axonHubCommandBus)
-                                                .configureQueryBus(c -> axonHubQueryBus)
-                                                // more configuration for Axon
-                                                .configureSerializer(c -> genericSerializer)
-                                                .buildConfiguration();
+        Configuration config = 
+            DefaultConfigurer.defaultConfiguration()
+                                .configureEventBus(c -> axonHubEventStore)
+                                .configureCommandBus(c -> axonHubCommandBus)
+                                .configureQueryBus(c -> axonHubQueryBus)
+                                // more configuration for Axon
+                                .configureSerializer(c -> genericSerializer)
+                                .buildConfiguration();
 
         config.start();
     }
