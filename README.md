@@ -1,14 +1,14 @@
 # About 4.0
 
-Axon 4.0 is a platform consisting of the popular, Apache 2 licensed, Axon Framework, and the new, built-for-purpose Axon Server.
+Axon 4.0 was released on 18 October 2018 as the successor to Axon Framework 3.x. The name change from "Axon Framework" to "Axon" is intentional: starting from 4.0, Axon is not just a framework, but a complete platform consisting of both Axon Framework and Axon Server.
 
-While they can be used independently, together they show their true power. Build microservices systems in Java, following DDD, event sourcing and CQRS best practices, while focusing on business logic instead of boilerplate and plumbing.
+While many types of applications can be built using Axon, it has proven to be very popular for microservices architectures. Many of the recent changes to Axon have been made with this use case in mind.
 
-[Register now](https://register.gotowebinar.com/register/8638441040424418050) for the Product Launch webinar
+Please visit [the AxonIQ website](https://axoniq.io/) to learn more about AxonIQ and the Axon community. There, you will find information about Axon training, support options, upcoming and past events.
 
+### About this guide
 
-
-## About this guide
+In the subsequent pages, you'll find an architecture overview of the Axon platform and details about the licensing. After that, the two main components will be described in depth. Finally, the guide covers migration from prior Axon Framework versions.
 
 [Axon Framework](1-axon-framework/introduction.md)
 
