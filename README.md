@@ -8,5 +8,5 @@ Please visit [the AxonIQ website](https://axoniq.io/) to learn more about AxonIQ
 
 ## About this guide
 
-In the subsequent pages, you'll find an architecture overview of the Axon platform and details about the licensing. After that, the two main components, [Axon Framework ](1-axon-framework/introduction.md)and [Axon Server](2-axon-server/about.md), will be described in depth. Finally, the guide covers [migration ](3-migration/migration-guide.md)from prior Axon Framework versions.
+In the subsequent pages, you'll find an architecture overview of the Axon platform and details about the licensing. After that, the two main components, [Axon Framework ](axon-framework/introduction.md)and [Axon Server](axon-server/about.md), will be described in depth. Finally, the guide covers [migration ](migration/migration-guide.md)from prior Axon Framework versions.
 
