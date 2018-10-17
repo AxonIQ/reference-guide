@@ -1,8 +1,8 @@
 # 1.1.3 Configuration API
 
-Axon keeps a strict separation when it comes to business logic and infrastructure configuration. In order to do so, Axon will provide a number of building blocks that take care of the infrastructural concerns, such as transaction management around a message handler. The actual payload of the messages and the contents of the handler are implemented in \(as much as possible\) Axon-independent Java classes.
+Axon Framework keeps a strict separation when it comes to business logic and infrastructure configuration. In order to do so, Axon Framework will provide a number of building blocks that take care of the infrastructural concerns, such as transaction management around a message handler. The actual payload of the messages and the contents of the handler are implemented in \(as much as possible\) framework-independent Java classes.
 
-To make the configuration of these infrastructure components easier and to define their relationship with each of the functional components, Axon provides a Configuration API.
+To make the configuration of these infrastructure components easier and to define their relationship with each of the functional components, Axon Framework provides a Configuration API.
 
 ## Setting up a configuration
 

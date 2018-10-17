@@ -6,7 +6,7 @@
 
 ## 1 Axon Framework
 
-* [Introduction](1-axon-framework/introduction.md)
+* [Introduction](axon-framework/introduction.md)
 
 ## 1.1 Concepts
 
@@ -37,7 +37,7 @@
 
 ## 2 Axon Server
 
-* [Introduction](2-axon-server/about.md)
+* [Introduction](axon-server/about.md)
 
 ## 2.1 Architecture
 
@@ -56,5 +56,5 @@
 
 ## 3 Migration
 
-* [Migration guide](3-migration/migration-guide.md)
+* [Migration guide](migration/migration-guide.md)
 
