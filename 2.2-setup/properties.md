@@ -6,17 +6,17 @@ The following table gives a complete list of all the configuration properties av
 
 | Name | Default value | Type | Description |
 | :--- | :--- | :--- | :--- |
-| server.port | 8024 | Integer | The Http Server port |
-| axoniq.axonserver.name |  | String | Node name of this Axon Server node, if not set defaults to the hostname. |
-| axoniq.axonserver.port | 8124 | Integer | gRPC port for Axon Server |
-| axoniq.axonserver.internal-port | 8224 | Integer | gRPC port for communication between Axon Server nodes |
-| axoniq.axonserver.hostname |  | String | Hostname of this node as communicated to clients, defaults to the result of hostname command |
-| axoniq.axonserver.internal-hostname |  | String | Hostname as communicated to other nodes of the cluster. Defaults to hostname. |
-| axoniq.axonserver.domain |  | String | Domain of this node as communicated to clients. Optional, if set will be appended to the hostname in communication with clients. |
-| axoniq.axonserver.internal-domain |  | String | Domain as communicated to other nodes of the cluster. Optional, if not set, it will use the domain value. |
-| axoniq.axonserver.accesscontrol.enabled | false | Boolean | Access control active |
-| axoniq.axonserver.accesscontrol.cache-ttl | 30000 | Long | Milliseconds that authenticated tokens will be cached |
-| axoniq.axonserver.accesscontrol.internal-token |  | String | Token to add to Axon Server internal cluster message |
+| `server.port` | 8024 | Integer | The Http Server port |
+| `axoniq.axonserver.name` |  | String | Node name of this Axon Server node, if not set defaults to the hostname. |
+| `axoniq.axonserver.port` | 8124 | Integer | gRPC port for Axon Server |
+| `axoniq.axonserver.internal-port` | 8224 | Integer | gRPC port for communication between Axon Server nodes |
+| `axoniq.axonserver.hostname` |  | String | Hostname of this node as communicated to clients, defaults to the result of hostname command |
+| `axoniq.axonserver.internal-hostname` |  | String | Hostname as communicated to other nodes of the cluster. Defaults to hostname. |
+| `axoniq.axonserver.domain` |  | String | Domain of this node as communicated to clients. Optional, if set will be appended to the hostname in communication with clients. |
+| `axoniq.axonserver.internal-domain` |  | String | Domain as communicated to other nodes of the cluster. Optional, if not set, it will use the domain value. |
+| `axoniq.axonserver.accesscontrol.enabled` | false | Boolean | Access control active |
+| `axoniq.axonserver.accesscontrol.cache-ttl` | 30000 | Long | Milliseconds that authenticated tokens will be cached |
+| `axoniq.axonserver.accesscontrol.internal-token` |  | String | Token to add to Axon Server internal cluster message |
 | axoniq.axonserver.accesscontrol.token |  | String | Token expected from client requests \[Developer edition only\] |
 | axoniq.axonserver.cluster.enabled | false | Boolean | Cluster enabled |
 | axoniq.axonserver.cluster.connection-check-delay | 1000 | Long | Delay before the first run of the connection checker \(in ms.\) |
