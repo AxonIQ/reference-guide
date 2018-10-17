@@ -1,4 +1,4 @@
-# 2.2.3 Advanced configuration
+# 2.2.2 Advanced configuration
 
 ## Names and ports
 

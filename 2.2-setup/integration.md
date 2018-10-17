@@ -1,4 +1,4 @@
-# 2.2.2 Integration
+# 2.2.1 Integration
 
 Axon Server is configured by default when you use the `axon-spring-boot-starter` with Maven dependency:
 

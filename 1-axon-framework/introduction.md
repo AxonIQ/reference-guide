@@ -30,7 +30,7 @@ The Axon Framework consists of a number of modules that provide the tools and co
 
 ### When to use Axon?
 
-There is a wide variety of applications that do benefit from Axon. Of course, not every application will benefit from Axon. Simple CRUD \(Create, Read, Update, Delete\) applications which are not expected to scale will probably not benefit from CQRS or Axon. 
+There is a wide variety of applications that do benefit from Axon. Of course, not every application will benefit from Axon. Simple CRUD \(Create, Read, Update, Delete\) applications which are not expected to scale will probably not benefit from CQRS or Axon.
 
 Applications that will likely benefit from CQRS and Axon are those that show one or more of the following characteristics:
 

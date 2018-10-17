@@ -1,4 +1,4 @@
-# 2.2.1 Getting started
+# Getting started
 
 ## Prerequisites
 
@@ -36,7 +36,7 @@ If you want to run the clients in Docker containers as well, and are not using s
 $ docker run -d --name my-axon-server -p 8024:8024 -p 8124:8124 --hostname axonserver -e AXONSERVER_HOSTNAME=axonserver axoniq/axonserver
 ```
 
-When you start the client containers, you can now use "`--link axonserver`" to provide them with the correct DNS entry. The Axon Server-connector looks at the "`axon.axonserver.servers`" property to determine where Axon Server lives, so don't forget to set it to "`axonserver`" and pass it to your app. For more information on the environment variables you can use to tweak settings, see [Customizing the Docker image of Axon Server](properties.md#customizing-the-docker-image-of-axon-server).
+When you start the client containers, you can now use "`--link axonserver`" to provide them with the correct DNS entry. The Axon Server-connector looks at the "`axon.axonserver.servers`" property to determine where Axon Server lives, so don't forget to set it to "`axonserver`" and pass it to your app. For more information on the environment variables you can use to tweak settings, see [Customizing the Docker image of Axon Server](../2.2-setup/properties.md#customizing-the-docker-image-of-axon-server).
 
 ## Running Axon Server in Kubernetes and Minikube
 

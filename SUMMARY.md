@@ -6,8 +6,8 @@
 
 ## 1 Axon Framework
 
-* [Introduction](axon-framework/introduction.md)
-* [Getting started](axon-framework/getting-started.md)
+* [Introduction](1-axon-framework/introduction.md)
+* [Getting started](1-axon-framework/getting-started.md)
 
 ## 1.1 Concepts
 
@@ -38,7 +38,8 @@
 
 ## 2 Axon Server
 
-* [Introduction](axon-server/about.md)
+* [Introduction](2-axon-server/about.md)
+* [Getting started](2-axon-server/getting-started.md)
 
 ## 2.1 Architecture
 
@@ -46,10 +47,9 @@
 
 ## 2.2 Setup
 
-* [2.2.1 Getting started](2.2-setup/getting-started.md)
-* [2.2.2 Integration](2.2-setup/integration.md)
-* [2.2.3 Advanced configuration](2.2-setup/configuration.md)
-* [2.2.4 Properties](2.2-setup/properties.md)
+* [2.2.1 Integration](2.2-setup/integration.md)
+* [2.2.2 Advanced configuration](2.2-setup/configuration.md)
+* [2.2.3 Properties](2.2-setup/properties.md)
 
 ## 2.3 Query Reference
 
@@ -57,5 +57,5 @@
 
 ## 3 Migration
 
-* [Migration guide](migration/migration-guide.md)
+* [Migration guide](3-migration/migration-guide.md)
 

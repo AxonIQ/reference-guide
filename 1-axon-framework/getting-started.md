@@ -33,3 +33,4 @@ Since Axon doesn't create any connections or threads by itself, it is safe to ru
 While implementing your application, you might run into problems, wonder about why certain things are the way they are, or have some questions that need an answer. The Axon Users [mailing](https://groups.google.com/forum/#!forum/axonframework) list is there to help. Just send an email to [axonframework@googlegroups.com](mailto:axonframework@googlegroups.com). Other users as well as contributors to the Axon Framework are there to help with your issues.
 
 If you find a bug, you can report them at our [GitHub](https://github.com/AxonFramework/AxonFramework/issues) issues page. When reporting an issue, please make sure you clearly describe the problem. Explain what you did, what the result was and what you expected to happen instead. If possible, please provide a very simple Unit Test \(JUnit\) that shows the problem. That makes fixing it a lot simpler.
+
