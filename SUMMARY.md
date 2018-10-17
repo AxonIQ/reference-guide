@@ -7,6 +7,7 @@
 ## 1 Axon Framework
 
 * [Introduction](1-axon-framework/introduction.md)
+* [Getting started](1-axon-framework/getting-started.md)
 
 ## 1.1 Concepts
 
