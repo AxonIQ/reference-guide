@@ -1,6 +1,6 @@
 # 2.2.2 Integration
 
-Axon Server is configured by default when you use the axon-spring-boot-starter with Maven dependency:
+Axon Server is configured by default when you use the `axon-spring-boot-starter` with Maven dependency:
 
 ```markup
 <dependency>
@@ -29,14 +29,28 @@ public class AxonStarter {
         PlatformConnectionManager platformConnectionManager = new PlatformConnectionManager(axonServerConfiguration);
 
         Serializer genericSerializer = new JacksonSerializer();
-        EventBus axonHubEventStore = new AxonServerEventStore(axonServerConfiguration, platformConnectionManager, genericSerializer, genericSerializer,
-                                                              NoOpEventUpcaster.INSTANCE);
-        CommandBus localSegment = new SimpleCommandBus();
-        CommandBus axonHubCommandBus = new AxonServerCommandBus(platformConnectionManager, axonServerConfiguration, localSegment, genericSerializer,
-                                                                new AnnotationRoutingStrategy());
+        
+        EventBus axonHubEventStore = new AxonServerEventStore(
+                                            axonServerConfiguration, 
+                                            platformConnectionManager, 
+                                            genericSerializer, 
+                                            genericSerializer,
+                                            NoOpEventUpcaster.INSTANCE);
+                                            
+        CommandBus localSegment = new SimpleCommandBus();       
+        CommandBus axonHubCommandBus = new AxonServerCommandBus(
+                                            platformConnectionManager, 
+                                            axonServerConfiguration, 
+                                            localSegment, 
+                                            genericSerializer,
+                                            new AnnotationRoutingStrategy());
 
         SimpleQueryBus localQueryBus = new SimpleQueryBus();
-        QueryBus axonHubQueryBus = new AxonServerQueryBus(platformConnectionManager, axonServerConfiguration, localQueryBus, localQueryBus,  genericSerializer,
+        QueryBus axonHubQueryBus = new AxonServerQueryBus(platformConnectionManager, 
+                                                          axonServerConfiguration, 
+                                                          localQueryBus, 
+                                                          localQueryBus,  
+                                                          genericSerializer,
                                                           genericSerializer,
                                                           new QueryPriorityCalculator() {});
 

@@ -10,9 +10,9 @@ While they can be used independently, together they show their true power. Build
 
 ## About this guide
 
-[Axon Framework](axon-framework/introduction.md)
+[Axon Framework](1-axon-framework/introduction.md)
 
-[Axon Server](axon-server/about.md)
+[Axon Server](2-axon-server/about.md)
 
-[Migration guide](migration/migration-guide.md)
+[Migration guide](3-migration/migration-guide.md)
 

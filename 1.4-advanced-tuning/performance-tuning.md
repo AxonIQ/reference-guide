@@ -116,7 +116,7 @@ Snapshotting removes the need to reload and replay large numbers of events. A si
 
 There is no default behavior for all types of applications. Some will specify a number of events after which a snapshot will be created, while other applications require a time-based snapshotting interval. Whatever way you choose for your application, make sure snapshotting is in place if you have long-living aggregates.
 
-See [Using Snapshot Events](../3-infrastructure-components/repository-and-event-store.md#snapshotting) for more about snapshotting.
+See [Using Snapshot Events](../1.3-infrastructure-components/repository-and-event-store.md#snapshotting) for more about snapshotting.
 
 ## Event Serializer tuning
 

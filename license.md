@@ -11,3 +11,4 @@ The standard version, called "Axon Server", is open source and free to download 
 The commercial version, called "Axon Server Enterprise", as well as the various "Packs", are closed source and provided under a commercial license agreement.
 
 If you have any questions about licensing, or want to obtain a license to our commercial software, please contact us via [https://axoniq.io](https://axoniq.io) or [sales@axoniq.io](mailto:sales@axoniq.io).
+

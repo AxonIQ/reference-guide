@@ -6,7 +6,7 @@
 
 ## 1 Axon Framework
 
-* [Introduction](axon-framework/introduction.md)
+* [Introduction](1-axon-framework/introduction.md)
 
 ## 1.1 Concepts
 
@@ -24,11 +24,11 @@
 
 ## 1.3 Infrastructure components
 
-* [1.3.1 Command Dispatching](3-infrastructure-components/command-dispatching.md)
-* [1.3.2 Event Processing](3-infrastructure-components/event-processing.md)
-* [1.3.3 Query Processing](3-infrastructure-components/query-processing.md)
-* [1.3.4 Repository and Event Store](3-infrastructure-components/repository-and-event-store.md)
-* [1.3.5 Spring Boot AutoConfiguration](3-infrastructure-components/spring-boot-autoconfiguration.md)
+* [1.3.1 Command Dispatching](1.3-infrastructure-components/command-dispatching.md)
+* [1.3.2 Event Processing](1.3-infrastructure-components/event-processing.md)
+* [1.3.3 Query Processing](1.3-infrastructure-components/query-processing.md)
+* [1.3.4 Repository and Event Store](1.3-infrastructure-components/repository-and-event-store.md)
+* [1.3.5 Spring Boot AutoConfiguration](1.3-infrastructure-components/spring-boot-autoconfiguration.md)
 
 ## 1.4 Advanced tuning
 
@@ -37,7 +37,7 @@
 
 ## 2 Axon Server
 
-* [Introduction](axon-server/about.md)
+* [Introduction](2-axon-server/about.md)
 
 ## 2.1 Architecture
 
@@ -56,5 +56,5 @@
 
 ## 3 Migration
 
-* [Migration guide](migration/migration-guide.md)
+* [Migration guide](3-migration/migration-guide.md)
 

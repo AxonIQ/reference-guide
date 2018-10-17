@@ -58,32 +58,39 @@ The following table gives a complete list of all the configuration properties av
 | axon.axonserver.query-threads | 10 | Integer | Number of threads processing queries |
 | axon.axonserver.context |  | String | Axon Server context used by the application \(Enterprise Edition only\) |
 
-
 ## Customizing the Docker image of Axon Server
 
 The `axoniq/axonserver` image can be customized at start by using one of the following environment variables. If no default is mentioned, leaving the environement variable unspecified will not add a line to the properties file.
 
 * `AXONSERVER_NAME`
 
-    This is the name the Axon Server uses for itself.
+  This is the name the Axon Server uses for itself.
+
 * `AXONSERVER_HOSTNAME`
 
-    This is the hostname Axon Server communicates to the client as its contact point. Default is "`localhost`", because Docker generates a random name that is not resolvable outside of the container.
+  This is the hostname Axon Server communicates to the client as its contact point. Default is "`localhost`", because Docker generates a random name that is not resolvable outside of the container.
+
 * `AXONSERVER_DOMAIN`
 
-    This is the domain Axon Server can suffix the hostname with.
+  This is the domain Axon Server can suffix the hostname with.
+
 * `AXONSERVER_HTTP_PORT`
 
-    This is the port Axon Server uses for its Web GUI and REST API.
+  This is the port Axon Server uses for its Web GUI and REST API.
+
 * `AXONSERVER_GRPC_PORT`
 
-    This is the gRPC port used by clients to exchange data with the server.
+  This is the gRPC port used by clients to exchange data with the server.
+
 * `AXONSERVER_TOKEN`
 
-    Setting this will enable access control, which means the clients need to pass this token with each request.
+  Setting this will enable access control, which means the clients need to pass this token with each request.
+
 * `AXONSERVER_EVENTSTORE`
 
-    This is the directory used for storing the Events.
+  This is the directory used for storing the Events.
+
 * `AXONSERVER_CONTROLDB`
 
-    This is where Axon Server stores information of clients and what types of messages they are interested in.
+  This is where Axon Server stores information of clients and what types of messages they are interested in.
+

@@ -18,8 +18,7 @@ or when not running bash shell:
 $ java -jar axonserver.jar
 ```
 
-When you see a log line announcing "Started AxonServer in _some-value_ seconds (JVM running for _some-other-value_)", the server is ready for action. To verify that the server is started correctly, open the page [http://localhost:8024](http://localhost:8024).
-
+When you see a log line announcing "Started AxonServer in _some-value_ seconds \(JVM running for _some-other-value_\)", the server is ready for action. To verify that the server is started correctly, open the page [http://localhost:8024](http://localhost:8024).
 
 ## Running Axon Server in a Docker container
 
@@ -29,7 +28,7 @@ To run Axon Server in Docker you can use the image provided on Docker Hub:
 $ docker run -d --name my-axon-server -p 8024:8024 -p 8124:8124 axoniq/axonserver
 ```
 
-*WARNING* This is not a supported image for production purposes. Please use with caution.
+_WARNING_ This is not a supported image for production purposes. Please use with caution.
 
 If you want to run the clients in Docker containers as well, and are not using something like Kubernetes, use the "`--hostname`" option of the `docker` command to set a useful name like "`axonserver`", and pass the `AXONSERVER_HOSTNAME` environment variable to adjust the properties accordingly:
 
@@ -41,7 +40,7 @@ When you start the client containers, you can now use "`--link axonserver`" to p
 
 ## Running Axon Server in Kubernetes and Minikube
 
-*WARNING*: Although you can get a pretty functional cluster running locally using Minikube, you can run into trouble when you want to let it serve clients outside of the cluster. Minikube can provide access to HTTP servers running in the cluster, for other protocols you have to run a special protocol-agnostic proxy like you can with "`kubectl port-forward` _&lt;pod-name&gt;_ _&lt;port-number&gt;_". For non-development scenarios, we don't recommend using Minikube.
+_WARNING_: Although you can get a pretty functional cluster running locally using Minikube, you can run into trouble when you want to let it serve clients outside of the cluster. Minikube can provide access to HTTP servers running in the cluster, for other protocols you have to run a special protocol-agnostic proxy like you can with "`kubectl port-forward` _&lt;pod-name&gt;_ _&lt;port-number&gt;_". For non-development scenarios, we don't recommend using Minikube.
 
 Deployment requires the use of a YAML descriptor, defining a StatefulSet for Axon Server, with two Services to provide access to the HTTP and gRPC ports:
 
@@ -158,4 +157,5 @@ kind: Service
 ...
 ```
 
-Use "`axonserver`" (as that is the name of the Kubernetes service) if you're going to deploy the client next to the server in the cluster, which is what you'ld probably want. Running the client outside the cluster, with Axon Server *inside*, entails extra work to enable and secure this, and is definitely beyond the scope of this example.
+Use "`axonserver`" \(as that is the name of the Kubernetes service\) if you're going to deploy the client next to the server in the cluster, which is what you'ld probably want. Running the client outside the cluster, with Axon Server _inside_, entails extra work to enable and secure this, and is definitely beyond the scope of this example.
+
