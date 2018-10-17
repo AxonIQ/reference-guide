@@ -36,7 +36,7 @@ When runnning Axon Server in a licensed edition, you can set up a cluster of Axo
 
 You can set the following properties in the axonserver.properties configuration file:
 
-* `axoniq.axonserver.name` - logical name of the node in the cluster. _This must be unique within the cluster_.
+* `axoniq.axonserver.name` - logical name of the node in the cluster. This must be unique within the cluster.
 * `axoniq.axonserver.hostname` - sets the hostname as this node advertises it to clients
 * `axoniq.axonserver.domain` - sets the domain as used in returning the server address to clients
 * `axoniq.axonserver.internal-hostname` - hostname to be used by other nodes in the server cluster
@@ -55,13 +55,13 @@ axoniq.axonserver.name=messaging1
 Connecting the nodes of a cluster is done using the command line interface. Send the register-node command to one node, specifying the address of another node in the cluster, e.g.
 
 ```text
-# {CliCmd} register-node -S http://node-to-add:port -h node-in-cluster -p internal-port-of-node-in-cluster
+# java -jar axoniq-cli.jar register-node -S http://node-to-add:port -h node-in-cluster -p internal-port-of-node-in-cluster
 ```
 
 When you have a default setup with all nodes using the default port you can omit a number of parameters from this request. To connect node2 to with node1 run the following command on node2:
 
 ```text
-# {CliCmd} register-node -h node1
+# java -jar axoniq-cli.jar register-node -h node1
 ```
 
 Default value for `-S` option is [http://localhost:8024](http://localhost:8024) and for -p is 8224 \(default internal communication port\).
@@ -102,7 +102,8 @@ To enable access control add the following property to the `axonserver.propertie
 To register an application and get an access token use the following command:
 
 ```text
-{CliCmd} register-application -S http://messaging:8080 -a applicationname -d description -r READ,WRITE,ADMIN
+$ java -jar axoniq-cli.jar register-application -S 
+       http://messaging:8080 -a applicationname -d description -r READ,WRITE,ADMIN
 ```
 
 The address of the server specified in this command is the address of the current master node. The master will distribute the applications to all the replicas.
@@ -110,7 +111,8 @@ The address of the server specified in this command is the address of the curren
 This command returns the generated token to use. Note that this token is only generated once, if you loose it you must delete the application and register it again to get a new token. If you want to define the token yourself, you can provide one in the command line command using the `-T` flag, e.g.:
 
 ```text
-{CliCmd} register-application -a applicationname -d description -r READ,WRITE -T this-is-my-token
+$ java -jar axoniq-cli.jar register-application -a 
+       applicationname -d description -r READ,WRITE -T this-is-my-token
 ```
 
 The minimum length for a token is 8 characters.
@@ -124,7 +126,8 @@ In the Free Edition it is not possible to create applications. If you want to us
 You can access the Axon webpages when access control is enabled by providing a username and password. Users are created through the command line using the following command:
 
 ```text
-{CliCmd} register-user -S http://axonserver:8024 -u USERNAME -r USER,ADMIN
+$ java -jar axoniq-cli.jar register-user -S http://axonserver:8024 
+     -u USERNAME -r USER,ADMIN
 ```
 
 The command will prompt for a password. If you want to set the password directly you can use the `-p` option.
@@ -153,7 +156,7 @@ axoniq.axonserver.ssl.private-key-file=./resources/axoniq-private.pem
 For HTTPs configuration the certificate and key need to be installed in a p12 keystore. To install the keys use the following command:
 
 ```text
-openssl pkcs12 -export -in [public-cert-file] -inkey [private-key-file] -out [keystore-file] -name [alias]
+$ openssl pkcs12 -export -in [public-cert-file] -inkey [private-key-file] -out [keystore-file] -name [alias]
 ```
 
 Configure the Messaging Platform server to use HTTPs by adding the following properties to the axonserver.properties file:
@@ -173,7 +176,7 @@ You can use a single Axon Server \(cluster\) to store events for multiple bounde
 Creating a new context is done using the command line interface:
 
 ```text
-{CliCmd} register-context -S http://axonserver:8024 -c context-name
+$ java -jar axoniq-cli.jar register-context -S http://axonserver:8024 -c context-name
 ```
 
 The server address here is the address of the master for the `default` context. It is not possible to delete the `default` context.
