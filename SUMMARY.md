@@ -10,9 +10,9 @@
 
 ## 1.1 Concepts
 
-* [1.1.1 Architecture overview](1.-concepts/architecture-overview.md)
-* [1.1.2 Messaging concepts](1.-concepts/messaging-concepts.md)
-* [1.1.3 Configuration API](1.-concepts/configuration-api.md)
+* [1.1.1 Architecture overview](1.1-concepts/architecture-overview.md)
+* [1.1.2 Messaging concepts](1.1-concepts/messaging-concepts.md)
+* [1.1.3 Configuration API](1.1-concepts/configuration-api.md)
 
 ## 1.2 Domain Logic
 
