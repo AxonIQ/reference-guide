@@ -144,7 +144,7 @@ Counts the number of events with aggregateSequenceNumber bigger than 100.
 ### Examples
 
 ```text
-select( xpath(payloadData, "//customerId") as customerId)
+select(xpath(payloadData, "//customerId") as customerId)
 ```
 
 Gets the first customerId in the payloadData.
