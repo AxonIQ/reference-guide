@@ -51,9 +51,9 @@ The following table gives a complete list of all the configuration properties av
 | axon.axonserver.token |  | String | Authentication token sent with each request. Only if Axon Server is running in Authentication mode. |
 | axon.axonserver.client-name |  | String | Client name as communicated to Axon Server. If not set, defaults to hostname:processId. |
 | axon.axonserver.component-name |  | String | Component name, all instances of the same application must have the same component name. Defaults to Spring application name. |
-| axon.axonserver.initial-nr-of-permits | 100000 | Long | Initial number of permits granted in communication with Axon Server. |
-| axon.axonserver.new-permits-threshold | 1000 | Long | Threshold at which the node client send another grant of newPermits to the connected platform node. |
-| axon.axonserver.nr-of-new-permits | 90000 | Long | Additional number of permits granted in communication with Axon Server nodes. |
+| axon.axonserver.initial-nr-of-permits | 1000 | Long | Initial number of permits granted in communication with Axon Server. |
+| axon.axonserver.new-permits-threshold | 500 | Long | Threshold at which the node client send another grant of newPermits to the connected platform node. |
+| axon.axonserver.nr-of-new-permits | 500 | Long | Additional number of permits granted in communication with Axon Server nodes. |
 | axon.axonserver.command-threads | 10 | Integer | Number of threads processing commands |
 | axon.axonserver.query-threads | 10 | Integer | Number of threads processing queries |
 | axon.axonserver.context |  | String | Axon Server context used by the application \(Enterprise Edition only\) |
