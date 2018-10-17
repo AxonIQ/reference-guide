@@ -1,4 +1,4 @@
-# 1.3.1 Command Dispatching
+# 1.3.1 Command dispatching
 
 ## Command Dispatching
 

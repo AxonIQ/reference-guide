@@ -1,4 +1,4 @@
-# 1.2.3 Query Handling
+# 1.2.3 Query handling
 
 ## Query Handling
 
