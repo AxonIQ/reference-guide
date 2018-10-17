@@ -2,7 +2,7 @@
 
 This section will explain how you can obtain the binaries for Axon to get started. There are currently two ways: either download the binaries from our [website](https://axoniq.io/product-overview/axon-framework) or configure a repository for your build system \([Maven](https://mvnrepository.com/artifact/org.axonframework/axon), Gradle, etc\).
 
-### Download Axon
+## Download Axon
 
 You can download the Axon Framework from our downloads page: [https://axoniq.io/product-overview/axon-framework](https://axoniq.io/product-overview/axon-framework)
 
