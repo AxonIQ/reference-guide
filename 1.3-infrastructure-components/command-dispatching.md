@@ -274,25 +274,26 @@ Since JGroups handles both discovery of nodes and the communication between them
 >
 > You can find the JGroups specific components for the `DistributedCommandBus` in the `axon-distributed-commandbus-jgroups` module.
 
-The JGroupsConnector has four mandatory configuration elements:
+The `JGroupsConnector` has four mandatory configuration elements:
 
-* The first is a JChannel, which defines the JGroups protocol stack. Generally, a JChannel is constructed with a reference to a JGroups configuration file. JGroups comes with a number of default configurations which can be used as a basis for your own configuration. Do keep in mind that IP Multicast generally doesn't work in Cloud Services, like Amazon. TCP Gossip is generally a good start in such type of environment.
-* The Cluster Name defines the name of the Cluster that each segment should register to. Segments with the same Cluster Name will eventually detect each other and dispatch Commands among each other.
-* A "local segment" is the Command Bus implementation that dispatches Commands destined for the local JVM. These commands may have been dispatched by instances on other JVMs or from the local one.
-* Finally, the Serializer is used to serialize command messages before they are sent over the wire.
+* `channel` - which defines the JGroups protocol stack. Generally, a JChannel is constructed with a reference to a JGroups configuration file. JGroups comes with a number of default configurations which can be used as a basis for your own configuration. Do keep in mind that IP Multicast generally doesn't work in Cloud Services, like Amazon. TCP Gossip is generally a good start in such type of environment.
+* `clusterName` - defines the name of the cluster that each segment should register to. Segments with the same cluster name will eventually detect each other and dispatch commands among each other.
+* `localSegment` - the Command Bus implementation that dispatches Commands destined for the local JVM. These commands may have been dispatched by instances on other JVMs or from the local one.
+* `serializer`- used to serialize command messages before they are sent over the wire.
 
 > **Note**
 >
-> When using a Cache, it should be cleared out when the `ConsistentHash` changes to avoid potential data corruption \(e.g. when commands don't specify a `@TargetAggregateVersion` and a new member quickly joins and leaves the JGroup, modifying the aggregate while it's still cached elsewhere.\)
+> When using a cache, it should be cleared out when the `ConsistentHash` changes to avoid potential data corruption \(e.g. when commands do not specify a `@TargetAggregateVersion` and a new member quickly joins and leaves the JGroup, modifying the aggregate while it is still cached elsewhere.\)
 
-Ultimately, the JGroupsConnector needs to actually connect, in order to dispatch Messages to other segments. To do so, call the `connect()` method.
+Ultimately, the `JGroupsConnector` needs to actually connect, in order to dispatch messages to other segments. To do so, call the `connect()` method.
 
 ```java
 JChannel channel = new JChannel("path/to/channel/config.xml");
 CommandBus localSegment = new SimpleCommandBus();
 Serializer serializer = new XStreamSerializer();
 
-JGroupsConnector connector = new JGroupsConnector(channel, "myCommandBus", localSegment, serializer);
+JGroupsConnector connector = new JGroupsConnector(channel, "myCommandBus", 
+                                                  localSegment, serializer);
 DistributedCommandBus commandBus = new DistributedCommandBus(connector, connector);
 
 // on one node:
@@ -310,13 +311,13 @@ connector.connect();
 
 > **Note**
 >
-> Note that it is not required that all segments have Command Handlers for the same type of Commands. You may use different segments for different Command Types altogether. The Distributed Command Bus will always choose a node to dispatch a Command to that has support for that specific type of Command.
+> Note that it is not required that all segments have command handlers for the same type of commands. You may use different segments for different command types altogether. The distributed command bus will always choose a node to dispatch a command to that has support for that specific type of command.
 
-If you use Spring, you may want to consider using the `JGroupsConnectorFactoryBean`. It automatically connects the Connector when the ApplicationContext is started, and does a proper disconnect when the `ApplicationContext` is shut down. Furthermore, it uses sensible defaults for a testing environment \(but should not be considered production ready\) and autowiring for the configuration.
+If you use Spring, you may want to consider using the `JGroupsConnectorFactoryBean`. It automatically connects the Connector when the `ApplicationContext` is started, and does a proper disconnect when the `ApplicationContext` is shut down. Furthermore, it uses sensible defaults for a testing environment \(but should not be considered production ready\) and autowiring for the configuration.
 
-### Spring Cloud Connector
+### Spring Cloud connector
 
-The Spring Cloud Connector setup uses the service registration and discovery mechanism described by [Spring Cloud](http://projects.spring.io/spring-cloud/) for distributing the Command Bus. You are thus left free to choose which Spring Cloud implementation to use to distribute your commands. An example implementations is the Eureka Discovery/Eureka Server combination.
+The Spring Cloud connector setup uses the service registration and discovery mechanism described by [Spring Cloud](http://projects.spring.io/spring-cloud/) for distributing the command bus. You are thus left free to choose which Spring Cloud implementation to use to distribute your commands. An example implementations is the Eureka Discovery/Eureka Server combination.
 
 > **Note**
 >
@@ -324,7 +325,7 @@ The Spring Cloud Connector setup uses the service registration and discovery mec
 
 Giving a description of every Spring Cloud implementation would push this reference guide to far. Hence we refer to their respective documentations for further information.
 
-The Spring Cloud Connector setup is a combination of the `SpringCloudCommandRouter` and a `SpringHttpCommandBusConnector`, which respectively fill the place of the `CommandRouter` and the `CommandBusConnector` for the `DistributedCommandBus`.
+The Spring Cloud connector setup is a combination of the `SpringCloudCommandRouter` and a `SpringHttpCommandBusConnector`, which respectively fill the place of the `CommandRouter` and the `CommandBusConnector` for the `DistributedCommandBus`.
 
 > **Note**
 >
@@ -332,25 +333,25 @@ The Spring Cloud Connector setup is a combination of the `SpringCloudCommandRout
 
 The `SpringCloudCommandRouter` has to be created by providing the following:
 
-* A "discovery client" of type `DiscoveryClient`. This can be provided by annotating your Spring Boot application with `@EnableDiscoveryClient`, which will look for a Spring Cloud implementation on your classpath.
-* A "routing strategy" of type `RoutingStrategy`. The `axon-core` module currently provides several implementations, but a function call can suffice as well. If you want to route the Commands based on the 'aggregate identifier' for example, you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
+* A "discovery client" of type `DiscoveryClient` - This can be provided by annotating your Spring Boot application with `@EnableDiscoveryClient`, which will look for a Spring Cloud implementation on your classpath.
+* A "routing strategy" of type `RoutingStrategy` - The `axon-core` module currently provides several implementations, but a function call can suffice as well. If you want to route the Commands based on the 'aggregate identifier' for example, you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
 
 Other optional parameters for the `SpringCloudCommandRouter` are:
 
-* A "service instance filter" of type `Predicate<ServiceInstance>`. This predicate is used to filter out `ServiceInstances` which the `DiscoveryClient` might encounter which by forehand you know will not handle any command messages. This might be useful if you've got several services within the Spring Cloud Discovery Service set up which you do not want to take into account for command handling, ever.
-* A "consistent hash change listener" of type `ConsistentHashChangeListener`. Adding a consistent hash change listener provides you the opportunity to perform a specific task if new members have been added to the known command handlers set.
+* A "service instance filter" of type `Predicate<ServiceInstance>` - This predicate is used to filter out `ServiceInstances` which the `DiscoveryClient` might encounter which by forehand you know will not handle any command messages. This might be useful if you've got several services within the Spring Cloud Discovery Service set up which you do not want to take into account for command handling, ever.
+* A "consistent hash change listener" of type `ConsistentHashChangeListener` - Adding a consistent hash change listener provides you the opportunity to perform a specific task if new members have been added to the known command handlers set.
 
 The `SpringHttpCommandBusConnector` requires three parameters for creation:
 
-* A "local command bus" of type `CommandBus`. This is the Command Bus implementation that dispatches Commands to the local JVM. These commands may have been dispatched by instances on other JVMs or from the local one.
-* A `RestOperations` object to perform the posting of a Command Message to another instance.
-* Lastly a "serializer" of type `Serializer`. The serializer is used to serialize the command messages before they are sent over the wire.
+* A "local command bus" of type `CommandBus` - This is the command bus implementation that dispatches commands to the local JVM. These commands may have been dispatched by instances on other JVMs or from the local one.
+* A `RestOperations` object to perform the posting of a command message to another instance.
+* Lastly a "serializer" of type `Serializer` - The serializer is used to serialize the command messages before they are sent over the wire.
 
 > **Note**
 >
-> The Spring Cloud Connector specific components for the `DistributedCommandBus` can be found in the `axon-distributed-commandbus-springcloud` module.
+> The Spring Cloud connector specific components for the `DistributedCommandBus` can be found in the `axon-distributed-commandbus-springcloud` module.
 
-The `SpringCloudCommandRouter` and `SpringHttpCommandBusConnector` should then both be used for creating the `DistributedCommandsBus`. In Spring Java config, that would look as follows:
+The `SpringCloudCommandRouter` and `SpringHttpCommandBusConnector` should then both be used for creating the `DistributedCommandBus`. In Spring Java config, that would look as follows:
 
 ```java
 // Simple Spring Boot App providing the `DiscoveryClient` bean
@@ -365,20 +366,24 @@ public class MyApplication {
     // Example function providing a Spring Cloud Connector
     @Bean
     public CommandRouter springCloudCommandRouter(DiscoveryClient discoveryClient) {
-        return new SpringCloudCommandRouter(discoveryClient, new AnnotationRoutingStrategy());
+        return new SpringCloudCommandRouter(discoveryClient, 
+                        new AnnotationRoutingStrategy());
     }
 
     @Bean
-    public CommandBusConnector springHttpCommandBusConnector(@Qualifier("localSegment") CommandBus localSegment,
-                                                             RestOperations restOperations,
-                                                             Serializer serializer) {
-        return new SpringHttpCommandBusConnector(localSegment, restOperations, serializer);
+    public CommandBusConnector springHttpCommandBusConnector(
+                        @Qualifier("localSegment") CommandBus localSegment,
+                        RestOperations restOperations,
+                        Serializer serializer) {
+        return new SpringHttpCommandBusConnector(localSegment, restOperations, 
+                                                 serializer);
     }
 
     @Primary // to make sure this CommandBus implementation is used for autowiring
     @Bean
-    public DistributedCommandBus springCloudDistributedCommandBus(CommandRouter commandRouter, 
-                                                                  CommandBusConnector commandBusConnector) {
+    public DistributedCommandBus springCloudDistributedCommandBus(
+                         CommandRouter commandRouter, 
+                         CommandBusConnector commandBusConnector) {
         return new DistributedCommandBus(commandRouter, commandBusConnector);
     }
 
@@ -396,7 +401,7 @@ public CommandBus localSegment() {
 
 > **Note**
 >
-> Note that it is not required that all segments have Command Handlers for the same type of Commands. You may use different segments for different Command Types altogether. The Distributed Command Bus will always choose a node to dispatch a Command to that has support for that specific type of Command.
+> Note that it is not required that all segments have command handlers for the same type of commands. You may use different segments for different command types altogether. The Distributed Command Bus will always choose a node to dispatch a Command to that has support for that specific type of Command.
 
 **Spring Cloud Http Back Up Command Router**
 
@@ -410,10 +415,16 @@ To use the `SpringCloudHttpBackupCommandRouter` instead of the `SpringCloudComma
 @Configuration
 public class MyApplicationConfiguration {
     @Bean
-    public CommandRouter springCloudHttpBackupCommandRouter(DiscoveryClient discoveryClient, 
-                                                            RestTemplate restTemplate, 
-                                                            @Value("${axon.distributed.spring-cloud.fallback-url}") String messageRoutingInformationEndpoint) {
-        return new SpringCloudHttpBackupCommandRouter(discoveryClient, new AnnotationRoutingStrategy(), restTemplate, messageRoutingInformationEndpoint);
+    public CommandRouter springCloudHttpBackupCommandRouter(
+                             DiscoveryClient discoveryClient, 
+                             RestTemplate restTemplate, 
+                             @Value("${axon.distributed.spring-cloud.fallback-url}") 
+                                         String messageRoutingInformationEndpoint) {
+        return new SpringCloudHttpBackupCommandRouter(
+                             discoveryClient, 
+                             new AnnotationRoutingStrategy(), 
+                             restTemplate, 
+                             messageRoutingInformationEndpoint);
     }
 }
 ```
