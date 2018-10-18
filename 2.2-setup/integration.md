@@ -6,7 +6,7 @@ Axon Server is configured by default when you use the `axon-spring-boot-starter`
 <dependency>
   <groupId>org.axonframework</groupId>
   <artifactId>axon-spring-boot-starter</artifactId>
-  <version>{clientrevnumber}</version>
+  <version>{version}</version>
 </dependency>
 ```
 
@@ -16,7 +16,7 @@ The same configuration can also be done manually, when you are not using Spring 
 <dependency>
   <groupId>org.axonframework</groupId>
   <artifactId>axonserver-connector</artifactId>
-  <version>{clientrevnumber}</version>
+  <version>{version}</version>
 </dependency>
 ```
 
