@@ -9,11 +9,11 @@ In Axon, an object may declare a number of event handler methods, by annotating 
 Axon provides out-of-the-box support for the following parameter types:
 
 * The first parameter is always the payload of the event message. In the case the event handlers does not need access to the payload of the message, you can specify the expected payload type on the `@EventHandler` annotation. When specified, the first parameter is resolved using the rules specified below. Do not configure the payload type on the annotation if you want the payload to be passed as a parameter.
-* Parameters annotated with `@MetaDataValue` will resolve to the metadata value with the key as indicated on the annotation. If `required` is `false` \(default\), `null` is passed when the metadata value is not present. If `required` is `true`, the resolver will not match and prevent the method from being invoked when the meta data value is not present.
+* Parameters annotated with `@MetaDataValue` will resolve to the metadata value with the key as indicated on the annotation. If `required` is `false` \(default\), `null` is passed when the metadata value is not present. If `required` is `true`, the resolver will not match and prevent the method from being invoked when the metadata value is not present.
 * Parameters of type `MetaData` will have the entire `MetaData` of an `EventMessage` injected.
 * Parameters annotated with `@Timestamp` and of type `java.time.Instant` \(or `java.time.temporal.Temporal`\) will resolve to the timestamp of the `EventMessage`. This is the time at which the event was generated.
-* Parameters annotated with `@SequenceNumber` and of type `java.lang.Long` or `long` will resolve to the `sequenceNumber` of a `DomainEventMessage`. This provides the order in which the event was generated \(within the scope of the Aggregate it originated from\).
-* Parameters assignable to message will have the entire `EventMessage` injected \(if the message is assignable to that parameter\). If the first parameter is of type message, it effectively matches an Event of any type, even if generic parameters would suggest otherwise. Due to type erasure, Axon cannot detect what parameter is expected. In such case, it is best to declare a parameter of the payload type, followed by a parameter of type Message.
+* Parameters annotated with `@SequenceNumber` and of type `java.lang.Long` or `long` will resolve to the `sequenceNumber` of a `DomainEventMessage`. This provides the order in which the event was generated \(within the scope of the aggregate it originated from\).
+* Parameters assignable to message will have the entire `EventMessage` injected \(if the message is assignable to that parameter\). If the first parameter is of type message, it effectively matches an event of any type, even if generic parameters would suggest otherwise. Due to type erasure, Axon cannot detect what parameter is expected. In such case, it is best to declare a parameter of the payload type, followed by a parameter of type message.
 * When using Spring and the Axon Configuration is activated \(either by including the Axon Spring Boot Starter module, or by specifying `@EnableAxon` on your `@Configuration` file\), any other parameters will resolve to autowired beans, if exactly one injectable candidate is available in the application context. This allows you to inject resources directly into `@EventHandler` annotated methods.
 
 You can configure additional `ParameterResolver`s by implementing the `ParameterResolverFactory` interface and creating a file named `/META-INF/service/org.axonframework.common.annotation.ParameterResolverFactory` containing the fully qualified name of the implementing class. See [Advanced Customizations](../1.4-advanced-tuning/advanced-customizations.md) for details.
@@ -39,6 +39,7 @@ public class TopListener {
     @EventHandler
     public void handle(EventC event) {
     }
+    
 }
 
 public class SubListener extends TopListener {
@@ -46,6 +47,7 @@ public class SubListener extends TopListener {
     @EventHandler
     public void handle(EventB event) {
     }
+    
 }
 ```
 
