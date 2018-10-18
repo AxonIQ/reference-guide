@@ -17,7 +17,7 @@
 
 ## 1.2 Domain Logic
 
-* [1.2.1 Command model](1.2-domain-logic/command-model.md)
+* [1.2.1 Command handling](1.2-domain-logic/command-model.md)
 * [1.2.2 Event handling](1.2-domain-logic/event-handling.md)
 * [1.2.3 Query handling](1.2-domain-logic/query-handling.md)
 * [1.2.4 Sagas](1.2-domain-logic/sagas.md)

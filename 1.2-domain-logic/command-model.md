@@ -1,4 +1,4 @@
-# 1.2.1 Command model
+# 1.2.1 Command handling
 
 In a CQRS-based application, a Domain Model \(as defined by Eric Evans and [Martin Fowler](https://martinfowler.com/bliki/CQRS.html)\) can be a very powerful mechanism to harness the complexity involved in the validation and execution of state changes. Although a typical domain model has a great number of building blocks, one of them plays a dominant role when applied to command processing in CQRS: the Aggregate.
 
