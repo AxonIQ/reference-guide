@@ -1,7 +1,5 @@
 # 1.2.5 Testing
 
-## Testing
-
 One of the biggest benefits of CQRS, and especially that of event sourcing is that it is possible to express tests purely in terms of events and commands. Both being functional components, events and commands have clear meaning to the domain expert or business owner. Not only does this mean that tests expressed in terms of events and commands have a clear functional meaning, it also means that they hardly depend on any implementation choices.
 
 The features described in this chapter require the `axon-test` module, which can be obtained by configuring a maven dependency \(use `<artifactId>axon-test</artifactId>` and `<scope>test</scope>`\) or from the full package download.
@@ -73,9 +71,9 @@ The execution phase allows you to provide a Command to be executed against the c
 
 > **Note**
 >
-> During the execution of the test, Axon attempts to detect any illegal state changes in the Aggregate under test. It does so by comparing the state of the Aggregate after the command execution to the state of the Aggregate if it sourced from all "given" and stored events. If that state is not identical, this means that a state change has occurred outside of an Aggregate's Event Handler method. Static and transient fields are ignored in the comparison, as they typically contain references to resources.
+> During the execution of the test, Axon attempts to detect any illegal state changes in the aggregate under test. It does so by comparing the state of the aggregate after the command execution to the state of the aggregate if it sourced from all "given" and stored events. If that state is not identical, this means that a state change has occurred outside of an aggregate its event handler method. Static and transient fields are ignored in the comparison, as they typically contain references to resources.
 >
-> You can switch detection in the configuration of the fixture with the `setReportIllegalStateChange` method.
+> You can switch detection in the configuration of the fixture with the `setReportIllegalStateChange()` method.
 
 The last phase is the validation phase, and allows you to check on the activities of the command handling component. This is done purely in terms of return values and events.
 
@@ -83,51 +81,51 @@ The test fixture allows you to validate return values of your command handlers. 
 
 The other component is validation of published events. There are two ways of matching expected events.
 
-The first is to pass in Event instances that need to be literally compared with the actual events. All properties of the expected Events are compared \(using `equals()`\) with their counterparts in the actual Events. If one of the properties is not equal, the test fails and an extensive error report is generated.
+The first is to pass in event instances that need to be literally compared with the actual events. All properties of the expected events are compared \(using `equals()`\) with their counterparts in the actual Events. If one of the properties is not equal, the test fails and an extensive error report is generated.
 
-The other way of expressing expectancies is using Matchers \(provided by the Hamcrest library\). `Matcher` is an interface prescribing two methods: `matches(Object)` and `describeTo(Description)`. The first returns a boolean to indicate whether the matcher matches or not. The second allows you to express your expectation. For example, a "GreaterThanTwoMatcher" could append "any event with value greater than two" to the description. Descriptions allow expressive error messages to be created about why a test case fails.
+The other way of expressing expectancies is using "Matchers" \(provided by the Hamcrest library\). `Matcher` is an interface prescribing two methods: `matches(Object)` and `describeTo(Description)`. The first returns a boolean to indicate whether the matcher matches or not. The second allows you to express your expectation. For example, a "GreaterThanTwoMatcher" could append "any event with value greater than two" to the description. Descriptions allow expressive error messages to be created about why a test case fails.
 
 Creating matchers for a list of events can be tedious and error-prone work. To simplify things, Axon provides a set of matchers that allow you to provide a set of event specific matchers and tell Axon how they should match against the list.
 
-Below is an overview of the available Event List matchers and their purpose:
+Below is an overview of the available event list matchers and their purpose:
 
 * **List with all of**: `Matchers.listWithAllOf(event matchers...)`
 
-  This matcher will succeed if all of the provided Event Matchers match against at least one event in the list of actual events. It does not matter whether multiple matchers match against the same event, nor if an event in the list does not match against any of the matchers.
+  This matcher will succeed if all of the provided event matchers match against at least one event in the list of actual events. It does not matter whether multiple matchers match against the same event, nor if an event in the list does not match against any of the matchers.
 
 * **List with any of**: `Matchers.listWithAnyOf(event matchers...)`
 
-  This matcher will succeed if one or more of the provided Event Matchers matches against one or more of the events in the actual list of events. Some matchers may not even match at all, while another matches against multiple others.
+  This matcher will succeed if one or more of the provided event matchers matches against one or more of the events in the actual list of events. Some matchers may not even match at all, while another matches against multiple others.
 
 * **Sequence of Events**: `Matchers.sequenceOf(event matchers...)`
 
-  Use this matcher to verify that the actual Events are match in the same order as the provided Event Matchers. It will succeed if each Matcher matches against an Event that comes after the Event that the previous matcher matched against. This means that "gaps" with unmatched events may appear.
+  Use this matcher to verify that the actual events are match in the same order as the provided event matchers. It will succeed if each matcher matches against an event that comes after the event that the previous matcher matched against. This means that "gaps" with unmatched events may appear.
 
-  If, after evaluating the events, more matchers are available, they are all matched against "`null`". It is up to the Event Matchers to decide whether they accept that or not.
+  If, after evaluating the events, more matchers are available, they are all matched against "`null`". It is up to the event matchers to decide whether they accept that or not.
 
 * **Exact sequence of Events**: `Matchers.exactSequenceOf(event matchers...)`
 
-  Variation of the "Sequence of Events" matcher where gaps of unmatched events are not allowed. This means each matcher must match against the Event directly following the Event the previous matcher matched against.
+  Variation of the "Sequence of Events" matcher where gaps of unmatched events are not allowed. This means each matcher must match against the event directly following the event the previous matcher matched against.
 
-For convenience, a few commonly required Event Matchers are provided. They match against a single Event instance:
+For convenience, a few commonly required event matchers are provided. They match against a single event instance:
 
-* **Equal Event**: `Matchers.equalTo(instance...)`
+* **Equal event**: `Matchers.equalTo(instance...)`
 
-  Verifies that the given object is semantically equal to the given event. This matcher will compare all values in the fields of both actual and expected objects using a null-safe equals method. This means that events can be compared, even if they don't implement the equals method. The objects stored in fields of the given parameter _are_ compared using equals, requiring them to implement one correctly.
+  Verifies that the given object is semantically equal to the given event. This matcher will compare all values in the fields of both actual and expected objects using a null-safe equals method. This means that events can be compared, even if they do not implement the equals method. The objects stored in fields of the given parameter _are_ compared using equals, requiring them to implement one correctly.
 
-* **No More Events**: `Matchers.andNoMore()` or `Matchers.nothing()`
+* **No more events**: `Matchers.andNoMore()` or `Matchers.nothing()`
 
-  Only matches against a `null` value. This matcher can be added as last matcher to the Exact Sequence of Events matchers to ensure that no unmatched events remain.
+  Only matches against a `null` value. This matcher can be added as last matcher to the _exact_ sequence of events matchers to ensure that no unmatched events remain.
 
-Since the matchers are passed a list of Event Messages, you sometimes only want to verify the payload of the message. There are matchers to help you out:
+Since the matchers are passed a list of event messages, you sometimes only want to verify the payload of the message. There are matchers to help you out:
 
-* **Payload Matching**: `Matchers.messageWithPayload(payload matcher)`
+* **Payload matching**: `Matchers.messageWithPayload(payload matcher)`
 
-  Verifies that the payload of a Message matches the given payload matcher.
+  Verifies that the payload of a message matches the given payload matcher.
 
-* **Payloads Matching**: `Matchers.payloadsMatching(list matcher)`
+* **Payloads matching**: `Matchers.payloadsMatching(list matcher)`
 
-  Verifies that the payloads of the Messages matches the given matcher. The given matcher must match against a list containing each of the Messages payload. The Payloads Matching matcher is typically used as the outer matcher to prevent repetition of payload matchers.
+  Verifies that the payloads of the messages matches the given matcher. The given matcher must match against a list containing each of the messages payload. The payloads matching matcher is typically used as the outer matcher to prevent repetition of payload matchers.
 
 Below is a small code sample displaying the usage of these matchers. In this example, we expect two events to be published. The first event must be a "ThirdEvent", and the second "aFourthEventWithSomeSpecialThings". There may be no third event, as that will fail against the "andNoMore" matcher.
 
@@ -156,19 +154,19 @@ fixture.given(new FirstEvent(), new SecondEvent())
        ));
 ```
 
-## Testing Annotated Sagas
+## Testing annotated sagas
 
-Similar to Command Handling components, Sagas have a clearly defined interface: they only respond to Events. On the other hand, Saga's often have a notion of time and may interact with other components as part of their event handling process. Axon Framework's test support module contains fixtures that help you writing tests for sagas.
+Similar to command handling components, sagas have a clearly defined interface: they only respond to events. On the other hand, sagas often have a notion of time and may interact with other components as part of their event handling process. Axon Framework its test support module contains fixtures that help you writing tests for sagas.
 
-Each test fixture contains three phases, similar to those of the Command Handling component fixture described in the previous section.
+Each test fixture contains three phases, similar to those of the command handling component fixture described in the previous section.
 
-* given certain events \(from certain aggregates\),
+* Given certain events \(from certain aggregates\),
 * when an event arrives or time elapses,
-* expect certain behavior or state.
+* Expect certain behavior or state.
 
-Both the "given" and the "when" phases accept events as part of their interaction. During the "given" phase, all side effects, such as generated commands are ignored, when possible. During the "when" phase, on the other hand, events and commands generated from the Saga are recorded and can be verified.
+Both the "given" and the "when" phases accept events as part of their interaction. During the "given" phase, all side effects, such as generated commands are ignored, when possible. During the "when" phase, on the other hand, events and commands generated from the saga are recorded and can be verified.
 
-The following code sample shows an example of how the fixtures can be used to test a saga that sends a notification if an invoice isn't paid within 30 days:
+The following code sample shows an example of how the fixtures can be used to test a saga that sends a notification if an invoice is not paid within 30 days:
 
 ```java
 FixtureConfiguration<InvoicingSaga> fixture = new SagaTestFixture<>(InvoicingSaga.class);
@@ -179,17 +177,17 @@ fixture.givenAggregate(invoiceId).published(new InvoiceCreatedEvent())
        .expectDispatchedCommandsMatching(Matchers.payloadsMatching(Matchers.listWithAllOf(aMarkAsOverdueCommand())));
 ```
 
-Sagas can dispatch commands using a callback to be notified of Command processing results. Since there is no actual Command Handling done in tests, the behavior is defined using a `CallbackBehavior` object. This object is registered using `setCallbackBehavior()` on the fixture and defines if and how the callback must be invoked when a command is dispatched.
+Sagas can dispatch commands using a callback to be notified of command processing results. Since there is no actual command handling done in tests, the behavior is defined using a `CallbackBehavior` object. This object is registered using `setCallbackBehavior()` on the fixture and defines if and how the callback must be invoked when a command is dispatched.
 
-Instead of using a `CommandBus` directly, you can also use Command Gateways. See below on how to specify their behavior.
+Instead of using a `CommandBus` directly, you can also use command gateways. See below on how to specify their behavior.
 
-Often, Sagas will interact with resources. These resources aren't part of the Saga's state, but are injected after a Saga is loaded or created. The test fixtures allow you to register resources that need to be injected in the Saga. To register a resource, simply invoke the `fixture.registerResource(Object)` method with the resource as parameter. The fixture will detect appropriate setter methods or fields \(annotated with `@Inject`\) on the Saga and invoke it with an available resource.
+Often, sagas will interact with resources. These resources aren't part of the saga its state, but are injected after a saga is loaded or created. The test fixtures allow you to register resources that need to be injected in the saga. To register a resource, simply invoke the `fixture.registerResource(Object)` method with the resource as parameter. The fixture will detect appropriate setter methods or fields \(annotated with `@Inject`\) on the saga and invoke it with an available resource.
 
 > **Tip**
 >
 > It can be very useful to inject mock objects \(e.g. Mockito or Easymock\) into your Saga. It allows you to verify that the saga interacts correctly with your external resources.
 
-Command Gateways provide Saga's with an easier way to dispatch Commands. Using a custom command gateway also makes it easier to create a mock or stub to define its behavior in tests. When providing a mock or stub, however, the actual command might not be dispatched, making it impossible to verify the sent commands in the test fixture.
+Command gateways provide sagas with an easier way to dispatch Commands. Using a custom command gateway also makes it easier to create a mock or stub to define its behavior in tests. When providing a mock or stub, however, the actual command might not be dispatched, making it impossible to verify the sent commands in the test fixture.
 
 Therefore, the fixture provides two methods that allow you to register Command Gateways and optionally a mock defining its behavior: `registerCommandGateway(Class)` and `registerCommandGateway(Class, Object)`. Both methods return an instance of the given class that represents the gateway to use. This instance is also registered as a resource, to make it eligible for resource injection.
 
@@ -203,7 +201,7 @@ Having the time stopped during the test makes it easier to predict at what time 
 
 > **Note**
 >
-> The Fixture uses a `StubScheduler` for time based activity, such as scheduling events and advancing time. Fixtures will set the timestamp of any events sent to the Saga instance to the time of this scheduler. This means time is 'stopped' as soon as the fixture starts, and may be advanced deterministically using the `whenTimeAdvanceTo` and `whenTimeElapses` methods.
+> The fixture uses a `StubScheduler` for time based activity, such as scheduling events and advancing time. Fixtures will set the timestamp of any events sent to the Saga instance to the time of this scheduler. This means time is 'stopped' as soon as the fixture starts, and may be advanced deterministically using the `whenTimeAdvanceTo` and `whenTimeElapses` methods.
 
 You can also use the `StubEventScheduler` independently of the test fixtures if you need to test scheduling of events. This `EventScheduler` implementation allows you to verify which events are scheduled for which time and gives you options to manipulate the progress of time. You can either advance time with a specific `Duration`, move the clock to a specific date and time or advance time to the next scheduled event. All these operations will return the events scheduled within the progressed interval.
 

@@ -16,13 +16,13 @@ In Axon, sagas are classes that define one or more `@SagaEventHandler` methods. 
 
 ### Life cycle
 
-A single Saga instance is responsible for managing a single transaction. That means you need to be able to indicate the start and end of a saga's life cycle.
+A single Saga instance is responsible for managing a single transaction. That means you need to be able to indicate the start and end of a saga its life cycle.
 
 In a saga, event handlers are annotated with `@SagaEventHandler`. If a specific event signifies the start of a transaction, add another annotation to that same method: `@StartSaga`. This annotation will create a new saga and invoke its event handler method when a matching event is published.
 
 By default, a new saga is only started if no suitable existing saga \(of the same type\) can be found. You can also force the creation of a new saga instance by setting the `forceNew` property on the `@StartSaga` annotation to `true`.
 
-Ending a saga can be done in two ways. If a certain event always indicates the end of a saga its life cycle, annotate that event handler on the saga with `@EndSaga`. The saga's life cycle will be ended after the invocation of the handler. Alternatively, you can call `SagaLifecycle.end()` from inside the saga to end the life cycle. This allows you to conditionally end the saga.
+Ending a saga can be done in two ways. If a certain event always indicates the end of a saga its life cycle, annotate that event handler on the saga with `@EndSaga`. The saga its life cycle will be ended after the invocation of the handler. Alternatively, you can call `SagaLifecycle.end()` from inside the saga to end the life cycle. This allows you to conditionally end the saga.
 
 ### Event handling
 
@@ -116,7 +116,7 @@ One or more components will be listening for scheduled Events. These components 
 
 ### Injecting Resources
 
-Sagas generally do more than just maintaining state based on events. They interact with external components. To do so, they need access to the Resources necessary to address to components. Usually, these resources aren't really part of the Saga's state and should not be persisted as such. But once a saga is reconstructed, these resources must be injected before an Event is routed to that instance.
+Sagas generally do more than just maintaining state based on events. They interact with external components. To do so, they need access to the resources necessary to address to components. Usually, these resources aren't really part of the saga its state and should not be persisted as such. But once a saga is reconstructed, these resources must be injected before an event is routed to that instance.
 
 For that purpose, there is the `ResourceInjector`. It is used by the `SagaRepository` to inject resources into a saga. Axon provides a `SpringResourceInjector`, which injects annotated fields and methods with resources from the Application Context, and a `SimpleResourceInjector`, which injects resources that have been registered with it into `@Inject` annotated methods and fields.
 
@@ -136,7 +136,7 @@ Events need to be redirected to the appropriate saga instances. To do so, some i
 
 ### Saga Manager
 
-Like any component that handles events, the processing is done by an event processor. However, since sagas are not singleton instances handling Events, but have individual life cycles, they need to be managed.
+Like any component that handles events, the processing is done by an event processor. However, since sagas are not singleton instances handling events, but have individual life cycles, they need to be managed.
 
 Axon supports life cycle management through the `AnnotatedSagaManager`, which is provided to an event processor to perform the actual invocation of handlers. It is initialized using the type of the saga to manage, as well as a `SagaRepository` where sagas of that type can be stored and retrieved. A single `AnnotatedSagaManager` can only manage a single saga type.
 
