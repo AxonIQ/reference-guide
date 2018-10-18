@@ -13,9 +13,9 @@ Configuration config = DefaultConfigurer.defaultConfiguration()
                                         .buildConfiguration();
 ```
 
-This configuration provides the building blocks for dispatching Messages using implementations that handle messages on the threads that dispatch them.
+This configuration provides the building blocks for dispatching messages using implementations that handle messages on the threads that dispatch them.
 
-Obviously, this configuration would not be very useful. You would have to register your Command Model objects and Event Handlers to this configuration to be useful.
+Obviously, this configuration would not be very useful. You would have to register your command model objects and event handlers to this configuration to be useful.
 
 To do so, use the `Configurer` instance returned by the `.defaultConfiguration()` method.
 
@@ -34,7 +34,7 @@ configurer.registerCommandHandler(c -> doCreateComponent());
 
 Note the lambda expression in the `registerCommandBus` invocation. The `c` parameter of this expression is the configuration object that described the complete configuration. If your component requires any other components to function properly, it can use this configuration to retrieve them.
 
-For example, to register a Command Handler that requires a serializer:
+For example, to register a `CommandHandler` that requires a serializer:
 
 ```java
 configurer.registerCommandHandler(c -> new MyCommandHandler(c.serializer());
@@ -46,7 +46,7 @@ Not all components have their explicit accessor method. To retrieve a component 
 configurer.registerCommandHandler(c -> new MyCommandHandler(c.getComponent(MyOtherComponent.class));
 ```
 
-This component must be registered with the Configurer, using `configurer.registerComponent(componentType, builderFunction)`. The builder function will receive the `Configuration` object as input parameter.
+This component must be registered with the `Configurer`, using `configurer.registerComponent(componentType, builderFunction)`. The builder function will receive the `Configuration` object as input parameter.
 
 ## Setting up a configuration using Spring
 
