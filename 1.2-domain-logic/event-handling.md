@@ -67,5 +67,5 @@ Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     .registerModule(ehConfiguration);
 ```
 
-See [Event Handling Configuration](../1.3-infrastructure-components/spring-boot-autoconfiguration.md#event-handling-configuration) for details on registering event handlers using Spring AutoConfiguration.
+See [Event handling configuration](../1.3-infrastructure-components/spring-boot-autoconfiguration.md#event-handling-configuration) for details on registering event handlers using Spring AutoConfiguration.
 

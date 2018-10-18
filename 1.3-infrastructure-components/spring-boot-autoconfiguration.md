@@ -4,7 +4,7 @@ Axon's support for Spring Boot AutoConfiguration is by far the easiest option to
 
 Depending on other components available in the application context, Axon will define certain components, if they aren't already explicitly defined in the application context. This means that you only need to configure components that you want different from the default.
 
-## Event Bus and Event Store Configuration
+## Event bus and Event store configuration
 
 If JPA is available, an Event Store with a JPA Event Storage Engine is used by default. This allow storage of Aggregates using Event Sourcing without any explicit configuration.
 
