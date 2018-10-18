@@ -2,29 +2,29 @@
 
 ## Testing
 
-One of the biggest benefits of CQRS, and especially that of event sourcing is that it is possible to express tests purely in terms of Events and Commands. Both being functional components, Events and Commands have clear meaning to the domain expert or business owner. Not only does this mean that tests expressed in terms of Events and Commands have a clear functional meaning, it also means that they hardly depend on any implementation choices.
+One of the biggest benefits of CQRS, and especially that of event sourcing is that it is possible to express tests purely in terms of events and commands. Both being functional components, events and commands have clear meaning to the domain expert or business owner. Not only does this mean that tests expressed in terms of events and commands have a clear functional meaning, it also means that they hardly depend on any implementation choices.
 
 The features described in this chapter require the `axon-test` module, which can be obtained by configuring a maven dependency \(use `<artifactId>axon-test</artifactId>` and `<scope>test</scope>`\) or from the full package download.
 
 The fixtures described in this chapter work with any testing framework, such as JUnit and TestNG.
 
-### Command Component Testing
+### Command component testing
 
 The command handling component is typically the component in any CQRS based architecture that contains the most complexity. Being more complex than the others, this also means that there are extra test related requirements for this component.
 
 Although being more complex, the API of a command handling component is fairly easy. It has a command coming in, and events going out. In some cases, there might be a query as part of command execution. Other than that, commands and events are the only part of the API. This means that it is possible to completely define a test scenario in terms of events and commands. Typically, in the shape of:
 
-* given certain events in the past,
-* when executing this command,
-* expect these events to be published and/or stored.
+* Given certain events in the past
+* When executing this command
+* Expect these events to be published and/or stored
 
-Axon Framework provides a test fixture that allows you to do exactly that. The `AggregateTestFixture` allows you to configure a certain infrastructure, composed of the necessary command handler and repository, and express your scenario in terms of given-when-then events and commands.
+Axon Framework provides a test fixture that allows you to do exactly that. The `AggregateTestFixture` allows you to configure a certain infrastructure, composed of the necessary command handler and repository, and express your scenario in terms of "given-when-then" events and commands.
 
 > **Note**
 >
-> Since a unit of testing here is the Aggregate, `AggregateTestFixture` is meant to test one Aggregate only. So, all commands in `when` \(or `given`\) clause are meant to target the Aggregate under test fixture. Also, all `given` and `expected` events are meant to be triggered from the Aggregate under test fixture.
+> Since the unit of testing here is the aggregate, `AggregateTestFixture` is meant to test one aggregate only. So, all commands in the `when` \(or `given`\) clause are meant to target the aggregate under test fixture. Also, all `given` and `expected` events are meant to be triggered from the aggregate under test fixture.
 
-The following example shows the usage of the given-when-then test fixture with JUnit 4:
+The following example shows the usage of the "given-when-then" test fixture with JUnit 4:
 
 ```java
 public class MyCommandComponentTest {
