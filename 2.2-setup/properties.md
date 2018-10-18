@@ -24,8 +24,8 @@ The following table gives a complete list of all the configuration properties av
 | `axoniq.axonserver.cluster.rebalance-delay` | 7 | Long | Delay before the first run of the rebalancer \(in seconds\) \[Enterprise edition only\] |
 | `axoniq.axonserver.cluster.rebalance-interval` | 15 | Long | Interval between each run of the rebalancer \(in seconds\) \[Enterprise edition only\] |
 | `axoniq.axonserver.command-flow-control.initial-permits` | 10000 | Long | Initial number of permits granted in communication between Axon Server nodes. |
-| `axoniq.axonserver.command-flow-control.new-permits` | 10000 | Long | Additional number of permits granted in communication between Axon Server nodes. |
-| `axoniq.axonserver.command-flow-control.threshold` | 1000 | Long | Threshold at which the node will send another grant of newPermits to the connected platform node. |
+| `axoniq.axonserver.command-flow-control.new-permits` | 5000 | Long | Additional number of permits granted in communication between Axon Server nodes. |
+| `axoniq.axonserver.command-flow-control.threshold` | 5000 | Long | Threshold at which the node will send another grant of newPermits to the connected platform node. |
 | `axoniq.axonserver.query-flow-control.initial-permits` | 10000 | Long | Initial number of permits granted in communication between Axon Server nodes. |
 | `axoniq.axonserver.query-flow-control.new-permits` | 5000 | Long | Additional number of permits granted in communication between Axon Server nodes. |
 | `axoniq.axonserver.query-flow-control.threshold` | 5000 | Long | Threshold at which the node will send another grant of newPermits to the connected platform node. |
