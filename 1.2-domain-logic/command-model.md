@@ -301,5 +301,5 @@ One exception is the `@CommandHandler` on an aggregate's constructor. In this ca
 
 > **Note**
 >
-> While it is possible to return results from commands, it should be used sparsely. The intent of the command should never be in getting a value, as that would be an indication the message should be designed as a Query Message instead. A typical example for a Command result is the identifier of a newly created entity.
+> While it is possible to return results from commands, it should be used sparsely. The intent of the command should never be in getting a value, as that would be an indication the message should be designed as a [Query Message ](https://docs.axoniq.io/reference-guide/1.2-domain-logic/query-handling)instead. A typical example for a Command result is the identifier of a newly created entity.
 
