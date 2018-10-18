@@ -252,17 +252,17 @@ That is where the `DistributedCommandBus` comes in. Unlike the other `CommandBus
 
 > **Note**
 >
-> While the distributed command bus itself is part of the Axon Framework Core module, it requires components that you can find in one of the _axon-distributed-commandbus-..._ modules. If you use Maven, make sure you have the appropriate dependencies set. The groupId and version are identical to those of the Core module.
+> While the distributed command bus itself is part of the Axon Framework core module, it requires components that you can find in one of the `axon-distributed-commandbus-...` modules. If you use Maven, make sure you have the appropriate dependencies set. The `groupId` and `version`are identical to those of the `axon-core` module.
 
-The `DistributedCommandBus` relies on two components: a `CommandBusConnector`, which implements the communication protocol between the JVM's, and the `CommandRouter`, which chooses a destination for each incoming Command. This Router defines which segment of the Distributed Command Bus should be given a Command, based on a Routing Key calculated by a Routing Strategy. Two commands with the same Routing Key will always be routed to the same segment, as long as there is no change in the number and configuration of the segments. Generally, the identifier of the targeted aggregate is used as a routing key.
+The `DistributedCommandBus` relies on two components: a `CommandBusConnector`, which implements the communication protocol between the JVM's, and the `CommandRouter`, which chooses a destination for each incoming command. This router defines which segment of the `DistributedCommandBus` should be given a \`command, based on a routing key calculated by a routing strategy. Two commands with the same routing key will always be routed to the same segment, as long as there is no change in the number and configuration of the segments. Generally, the identifier of the targeted aggregate is used as a routing key.
 
-Two implementations of the `RoutingStrategy` are provided: the `MetaDataRoutingStrategy`, which uses a metadata property in the Command Message to find the routing key, and the `AnnotationRoutingStrategy`, which uses the `@TargetAggregateIdentifier` annotation on the Command Messages payload to extract the Routing Key. Obviously, you can also provide your own implementation.
+Two implementations of the `RoutingStrategy` are provided: the `MetaDataRoutingStrategy`, which uses a metadata property in the command message to find the routing key, and the `AnnotationRoutingStrategy`, which uses the `@TargetAggregateIdentifier` annotation on the Command Messages payload to extract the routing key. Obviously, you can also provide your own implementation.
 
-By default, the RoutingStrategy implementations will throw an exception when no key can be resolved from a Command Message. This behavior can be altered by providing a UnresolvedRoutingKeyPolicy in the constructor of the MetaDataRoutingStrategy or AnnotationRoutingStrategy. There are three possible policies:
+By default, the `RoutingStrategy` implementations will throw an exception when no key can be resolved from a command message. This behavior can be altered by providing a `UnresolvedRoutingKeyPolicy` in the constructor of the `MetaDataRoutingStrategy` or `AnnotationRoutingStrategy`. There are three possible policies:
 
-* ERROR: This is the default, and will cause an exception to be thrown when a Routing Key is not available
-* RANDOM\_KEY: Will return a random value when a Routing Key cannot be resolved from the Command Message. This effectively means that those commands will be routed to a random segment of the Command Bus.
-* STATIC\_KEY: Will return a static key \(being "unresolved"\) for unresolved Routing Keys. This effectively means that all those commands will be routed to the same segment, as long as the configuration of segments does not change.
+* `ERROR` - the default, and will cause an exception to be thrown when a Routing Key is not available
+* `RANDOM_KEY` - will return a random value when a \`routing key cannot be resolved from the command message. This effectively means that those commands will be routed to a random segment of the command bus.
+* `STATIC_KEY` - Will return a static key \(being "unresolved"\) for unresolved routing keys. This effectively means that all those commands will be routed to the same segment, as long as the configuration of segments does not change.
 
 ### JGroupsConnector
 
