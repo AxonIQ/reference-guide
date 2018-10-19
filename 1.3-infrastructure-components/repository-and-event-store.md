@@ -322,12 +322,12 @@ The definition of when snapshots should be created, is provided by the `Snapshot
 
 The `EventCountSnapshotTriggerDefinition` provides the mechanism to trigger snapshot creation when the number of events needed to load an aggregate exceeds a certain threshold. If the number of events needed to load an aggregate exceeds a certain configurable threshold, the trigger tells a `Snapshotter` to create a snapshot for the aggregate.
 
-The snapshot trigger is configured on an Event Sourcing Repository and has a number of properties that allow you to tweak triggering:
+The snapshot trigger is configured on an event sourcing repository and has a number of properties that allow you to tweak triggering:
 
 * `Snapshotter` sets the actual snapshotter instance, responsible for creating and storing the actual snapshot event;
 * `Trigger` sets the threshold at which to trigger snapshot creation;
 
-A Snapshotter is responsible for the actual creation of a snapshot. Typically, snapshotting is a process that should disturb the operational processes as little as possible. Therefore, it is recommended to run the snapshotter in a different thread. The `Snapshotter` interface declares a single method: `scheduleSnapshot()`, which takes the aggregate's type and identifier as parameters.
+A `Snapshotter` is responsible for the actual creation of a snapshot. Typically, snapshotting is a process that should disturb the operational processes as little as possible. Therefore, it is recommended to run the snapshotter in a different thread. The `Snapshotter` interface declares a single method: `scheduleSnapshot()`, which takes the aggregate's type and identifier as parameters.
 
 Axon provides the `AggregateSnapshotter`, which creates and stores `AggregateSnapshot` instances. This is a special type of snapshot, since it contains the actual aggregate instance within it. The repositories provided by Axon are aware of this type of snapshot, and will extract the aggregate from it, instead of instantiating a new one. All events loaded after the snapshot events are streamed to the extracted aggregate instance.
 
@@ -342,23 +342,23 @@ The `AbstractSnapshotter` provides a basic set of properties that allow you to t
 
 The `AggregateSnapshotter` provides one more property:
 
-* `AggregateFactories` is the property that allows you to set the factories that will create instances of your aggregates. Configuring multiple aggregate factories allows you to use a single Snapshotter to create snapshots for a variety of aggregate types. The `EventSourcingRepository` implementations provide access to the `AggregateFactory` they use. This can be used to configure the same aggregate factories in the Snapshotter as the ones used in the repositories.
+* `AggregateFactories` is the property that allows you to set the factories that will create instances of your aggregates. Configuring multiple aggregate factories allows you to use a single `Snapshotter` to create snapshots for a variety of aggregate types. The `EventSourcingRepository` implementations provide access to the `AggregateFactory` they use. This can be used to configure the same aggregate factories in the Snapshotter as the ones used in the repositories.
 
 > **Note**
 >
 > If you use an executor that executes snapshot creation in another thread, make sure you configure the correct transaction management for your underlying event store, if necessary.
 >
-> Spring users can use the `SpringAggregateSnapshotter`, which will automatically look up the right `AggregateFactory` from the Application Context when a snapshot needs to be created.
+> Spring users can use the `SpringAggregateSnapshotter`, which will automatically look up the right `AggregateFactory` from the application context when a snapshot needs to be created.
 
 ### Storing Snapshot Events
 
-When a snapshot is stored in the Event Store, it will automatically use that snapshot to summarize all prior events and return it in their place. All event store implementations allow for concurrent creation of snapshots. This means they allow snapshots to be stored while another process is adding Events for the same aggregate. This allows the snapshotting process to run as a separate process altogether.
+When a snapshot is stored in the event store, it will automatically use that snapshot to summarize all prior events and return it in their place. All event store implementations allow for concurrent creation of snapshots. This means they allow snapshots to be stored while another process is adding events for the same aggregate. This allows the snapshotting process to run as a separate process altogether.
 
 > **Note**
 >
-> Normally, you can archive all events once they are part of a snapshot event. Snapshotted events will never be read in again by the event store in regular operational scenario's. However, if you want to be able to reconstruct aggregate state prior to the moment the snapshot was created, you must keep the events up to that date.
+> Normally, you can archive all events once they are part of a snapshot event. Snapshotted events will never be read in again by the event store in regular operational scenarios. However, if you want to be able to reconstruct aggregate state prior to the moment the snapshot was created, you must keep the events up to that date.
 
-Axon provides a special type of snapshot event: the `AggregateSnapshot`, which stores an entire aggregate as a snapshot. The motivation is simple: your aggregate should only contain the state relevant to take business decisions. This is exactly the information you want captured in a snapshot. All Event Sourcing Repositories provided by Axon recognize the `AggregateSnapshot`, and will extract the aggregate from it. Beware that using this snapshot event requires that the event serialization mechanism needs to be able to serialize the aggregate.
+Axon provides a special type of snapshot event: the `AggregateSnapshot`, which stores an entire aggregate as a snapshot. The motivation is simple: your aggregate should only contain the state relevant to take business decisions. This is exactly the information you want captured in a snapshot. All event sourcing repositories provided by Axon recognize the `AggregateSnapshot`, and will extract the aggregate from it. Beware that using this snapshot event requires that the event serialization mechanism needs to be able to serialize the aggregate.
 
 ### Initializing an Aggregate based on a Snapshot Event
 
@@ -367,8 +367,8 @@ A snapshot event is an event like any other. That means a snapshot event is hand
 ```java
 public class MyAggregate extends AbstractAnnotatedAggregateRoot {
 
-    // ... code omitted for brevity
-
+    // ... 
+    
     @EventHandler
     protected void handleSomeStateChangeEvent(MyDomainEvent event) {
         // ...
