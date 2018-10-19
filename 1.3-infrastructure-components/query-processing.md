@@ -1,8 +1,6 @@
 # 1.3.3 Query processing
 
-## Query Dispatching
-
-Axon Framework also offers components for the Query handling. Although, creating such a layer is fairly straight-forward, using Axon Framework for this part of the application has a number of benefits, such as the reuse of features such as interceptors and message monitoring.
+Axon Framework also offers components for the query handling. Although, creating such a layer is fairly straight-forward, using Axon Framework for this part of the application has a number of benefits, such as the reuse of features such as interceptors and message monitoring.
 
 The next sections provide an overview of the tasks related to setting up a query dispatching infrastructure with the Axon Framework.
 
