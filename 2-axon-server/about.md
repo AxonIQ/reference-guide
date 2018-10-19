@@ -1,6 +1,6 @@
 # Introduction
 
-Axon Server is a messaging platform specifically built to support distributed Axon Framework applications. It is a drop in replacement for the other CommandBus, EventBus and QueryBus implementations.
+Axon Server is a messaging platform specifically built to support distributed Axon Framework applications. It is a drop in replacement for the other `CommandBus`, `EventBus` and `QueryBus` implementations.
 
 The key characteristics for Axon Server are:
 
