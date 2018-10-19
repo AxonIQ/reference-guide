@@ -1,38 +1,38 @@
 # 1.3.5 Spring Boot Auto-configuration
 
-Axon's support for Spring Boot AutoConfiguration is by far the easiest option to get started configuring your Axon infrastructure components. By simply adding the `axon-spring-boot-starter` dependency, Axon will automatically configure the basic infrastructure components \(Command Bus, Event Bus\), as well as any component required to run and store Aggregates and Sagas.
+Axon's support for Spring Boot Auto-configuration is by far the easiest option to get started configuring your Axon infrastructure components. By simply adding the `axon-spring-boot-starter` dependency, Axon will automatically configure the basic infrastructure components \(command bus, event bus\), as well as any component required to run and store aggregates and sagas.
 
 Depending on other components available in the application context, Axon will define certain components, if they aren't already explicitly defined in the application context. This means that you only need to configure components that you want different from the default.
 
 ## Event bus and Event store configuration
 
-If JPA is available, an Event Store with a JPA Event Storage Engine is used by default. This allow storage of Aggregates using Event Sourcing without any explicit configuration.
+If JPA is available, an event store with a `JpaEventStorageEngine` is used by default. This allow storage of Aggregates using Event Sourcing without any explicit configuration.
 
-If JPA is not available, Axon defaults to a `SimpleEventBus`, which means that you need to specify a non-event sourcing repository for each Aggregate, or configure an `EventStorageEngine` in your Spring Configuration.
+If JPA is not available, Axon defaults to a `SimpleEventBus`, which means that you need to specify a non-event sourcing repository for each aggregate, or configure an `EventStorageEngine` in your Spring configuration.
 
-To configure a different Event Storage Engine, even if JPA is on the class path, simply define a bean of type `EventStorageEngine` \(to use Event Sourcing\) or `EventBus` \(if Event Sourcing isn't required\).
+To configure a different event storage engine, even if JPA is on the class path, simply define a bean of type `EventStorageEngine` \(to use event sourcing\) or `EventBus` \(if event sourcing is not required\).
 
-## Command Bus Configuration
+## Command bus configuration
 
 Axon will configure a `SimpleCommandBus` if no `CommandBus` implementation is explicitly defined in the Application Context. This `CommandBus` will use the `TransactionManager` to manage transactions.
 
-If the only `CommandBus` bean defined is a `DistributedCommandBus` implementation, Axon will still configure a CommandBus implementation to serve as the local segment for the DistributedCommandBus. This bean will get a Qualifier "localSegment". It is recommended to define the `DistributedCommandBus` as a `@Primary`, so that it gets priority for dependency injection.
+If the only `CommandBus` bean defined is a `DistributedCommandBus` implementation, Axon will still configure a `CommandBus` implementation to serve as the local segment for the `DistributedCommandBus`. This bean will get a Qualifier `"localSegment"`. It is recommended to define the `DistributedCommandBus` as a `@Primary`, so that it gets priority for dependency injection.
 
-## Query Bus Configuration
+## Query bus configuration
 
 Axon will configure a `SimpleQueryBus` if no `QueryBus` implementation is explicitly defined in the Application Context. This `QueryBus` will use the `TransactionManager` to manage transactions.
 
-## Transaction Manager Configuration
+## Transaction manager configuration
 
-If no `TransactionManager` implementation is explicitly defined in the Application Content, Axon will look for the Spring `PlatformTransactionManager` bean and wrap that in a `TransactionManager`. If the Spring bean is not available, the `NoOpTransactionManager` will be used.
+If no `TransactionManager` implementation is explicitly defined in the application context, Axon will look for the Spring `PlatformTransactionManager` bean and wrap that in a `TransactionManager`. If the Spring bean is not available, the `NoOpTransactionManager` will be used.
 
-## Serializer Configuration
+## Serializer configuration
 
 By default, Axon uses an XStream based serializer to serialize objects, as is described in further detail in the [Advanced Customizations](../1.4-advanced-tuning/advanced-customizations.md#serializers) section. This can be changed by defining a bean of type `Serializer` in the application context.
 
-While the default Serializer provides an arguably ugly xml based format, it is capable of serializing and deserializing virtually anything, making it a very sensible default. However, for events, which needs to be stored for a long time and perhaps shared across application boundaries, it is desirable to customize the format.
+While the default Serializer provides an, arguably ugly, XML based format, it is capable of serializing and deserializing virtually anything, making it a very sensible default. However, for events, which needs to be stored for a long time and perhaps shared across application boundaries, it is desirable to customize the format.
 
-You can define a separate Serializer to be used to serialize events, by assigning it the `eventSerializer` qualifier. Axon will consider a bean with this qualifier to be the event serializer. If no other bean is defined, Axon will use the default serializer for all other objects to serialize.
+You can define a separate `Serializer` to be used to serialize events, by assigning it the `eventSerializer` qualifier. Axon will consider a bean with this qualifier to be the event serializer. If no other bean is defined, Axon will use the default serializer for all other objects to serialize.
 
 Example:
 
@@ -47,7 +47,7 @@ class SerializerConfiguration {
 }
 ```
 
-Equal to events, you can also customize the Message `Serializer` used by your application. The Message `Serializer` comes into play when your Command and Query message are sent from one node to another in a distributed environment. To set a custom `Serializer` for you message you can simply define a `messageSerializer` bean like so:
+Equal to events, you can also customize the Message `Serializer` used by your application. The Message `Serializer` comes into play when your command and query message are sent from one node to another in a distributed environment. To set a custom `Serializer` for you message you can simply define a `messageSerializer` bean like so:
 
 ```java
 class SerializerConfiguration {
@@ -65,7 +65,8 @@ When overriding both the default serializer and defining an event serializer, we
 ```java
 class SerializerConfiguration {
 
-    @Primary // Marking it primary means this is the one to use, if no specific Qualifier is requested
+    @Primary // marking it primary means this is the one to use, 
+             // if no specific Qualifier is requested
     @Bean
     public Serializer serializer() {
         return new MyCustomSerializer();
@@ -79,27 +80,30 @@ class SerializerConfiguration {
 }
 ```
 
-## Aggregate Configuration
+## Aggregate configuration
 
-The `@Aggregate` annotation \(in package `org.axonframework.spring.stereotype`\) triggers AutoConfiguration to set up the necessary components to use the annotated type as an Aggregate. Note that only the Aggregate Root needs to be annotated.
+The `@Aggregate` annotation \(in package `org.axonframework.spring.stereotype`\) triggers auto configuration to set up the necessary components to use the annotated type as an aggregate. Note that only the aggregate root needs to be annotated.
 
-Axon will automatically register all the `@CommandHandler` annotated methods with the Command Bus and set up a repository if none is present.
+Axon will automatically register all the `@CommandHandler` annotated methods with the command bus and set up a repository if none is present.
 
-It is possible to define a custom [`SnapshotTriggerDefinition`](repository-and-event-store.md#creating-a-snapshot) for an aggregate as a spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows how to define a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot on each 500th event.
+It is possible to define a custom [`SnapshotTriggerDefinition`](repository-and-event-store.md#creating-a-snapshot) for an aggregate as a spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows how to define a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot on each five hundredths event.
 
-Note that a `Snapshotter` instance, if not explicitly defined as a Bean already, will be automatically configured for you. This means you can simply pass the `Snapshotter` as a parameter to your `SnapshotTriggerDefinition`.
+Note that a `Snapshotter` instance, if not explicitly defined as a bean already, will be automatically configured for you. This means you can simply pass the `Snapshotter` as a parameter to your `SnapshotTriggerDefinition`.
 
 ```java
 @Bean
-public SnapshotTriggerDefinition mySnapshotTriggerDefinition(Snapshotter snapshotter) {
+public SnapshotTriggerDefinition mySnapshotTriggerDefinition(
+                                                  Snapshotter snapshotter) {
     return new EventCountSnapshotTriggerDefinition(snapshotter, 500);
 }
+
 ...
+
 @Aggregate(snapshotTriggerDefinition = "mySnapshotTriggerDefinition")
 public class MyAggregate {...}
 ```
 
-Defining a [`CommandTargetResolver`](../1.2-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring Application context will cause that resolver to be used for all aggregate definitions. However, you can also define multiple beans and specify the instance to use with the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in meta-data is listed below together with assignment to the aggregate.
+Defining a [`CommandTargetResolver`](../1.2-domain-logic/command-model.md#handling-commands-in-an-aggregate) as a bean in the Spring application context will cause that resolver to be used for all aggregate definitions. However, you can also define multiple beans and specify the instance to use with the `commandTargetResolver` attribute on `@Aggregate` annotation will override this behavior. You can for example define a `MetaDataCommandTargetResolver` which will look for `myAggregateId` key in metadata is listed below together with assignment to the aggregate.
 
 ```java
 @Bean
@@ -111,7 +115,7 @@ public CommandTargetResolver myCommandTargetResolver() {
 public class MyAggregate {...}
 ```
 
-To fully customize the repository used, you can define one in the Application Context. For Axon Framework to use this repository for the intended Aggregate, define the bean name of the repository in the `repository` attribute on `@Aggregate` Annotation. Alternatively, specify the bean name of the Repository to be the aggregate's name, \(first character lowercase\), suffixed with `Repository`. So on a class of type `MyAggregate`, the default Repository name is `myAggregateRepository`. If no bean with that name is found, Axon will define an `EventSourcingRepository` \(which fails if no `EventStore` is available\).
+To fully customize the repository used, you can define one in the application context. For Axon Framework to use this repository for the intended aggregate, define the bean name of the repository in the `repository` attribute on `@Aggregate` Annotation. Alternatively, specify the bean name of the repository to be the aggregate's name, \(first character lowercase\), suffixed with `Repository`. So on a class of type `MyAggregate`, the default repository name is `myAggregateRepository`. If no bean with that name is found, Axon will define an `EventSourcingRepository` \(which fails if no `EventStore` is available\).
 
 ```java
 @Bean
