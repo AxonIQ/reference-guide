@@ -266,27 +266,30 @@ Prior to Axon release 3.3, you could only reset a `TrackingEventProcessor` to th
 
 * From the head of event stream: `createHeadToken()`. 
 * From the tail of event stream: `createTailToken()`. 
-* From some point in time: `createTokenAt(Instant)` and `createTokenSince(Duration)` - Creates a token that tracks all events after given time. If there is an event exactly at the given time, it will be taken into account too.
+* From some point in time: `createTokenAt(Instant)` and `createTokenSince(duration)` - Creates a token that tracks all events after given time. If there is an event exactly at the given time, it will be taken into account too.
 
 Of course, you can completely disregard the `StreamableMessageSource` input parameter and create a token by yourself.
 
 Below we can see an example of creating a `TrackingEventProcessorConfiguration` with an initial token on `"2007-12-03T10:15:30.00Z"`:
 
 ```java
-TrackingEventProcessorConfiguration.forSingleThreadedProcessing()
-                                   .andInitialTrackingToken(streamableMessageSource -> streamableMessageSource.createTokenAt("2007-12-03T10:15:30.00Z"));
+TrackingEventProcessorConfiguration
+            .forSingleThreadedProcessing()
+            .andInitialTrackingToken(
+                streamableMessageSource -> 
+                    streamableMessageSource.createTokenAt("2007-12-03T10:15:30.00Z"));
 ```
 
 ## Event Interceptors
 
 Similarly as with [command messages](command-dispatching.md#command-interceptors), event messages can also be intercepted prior to publishing and handling to perform additional actions on all events. This thus boils down to same two types of interceptors for messages: the Dispatch- and the Handler Interceptor.
 
-Dispatch Interceptors are invoked before a Event \(Message\) is published on the Event Bus.  
-Handler Interceptors on the other hand are invoked just before the Event Handler is invoked with a given Event \(Message\) in the Event Processor. Examples of operations performed in an interceptor are logging or authentication, which you might want to do regardless of the type of Event.
+Dispatch interceptors are invoked before a event \(message\) is published on the event bus.  
+Handler interceptors on the other hand are invoked just before the event handler is invoked with a given event \(message\) in the event processor. Examples of operations performed in an interceptor are logging or authentication, which you might want to do regardless of the type of event.
 
 ### Dispatch Interceptors
 
-Any message dispatch interceptors registered to an event bus will be invoked when an event is published. They have the ability to alter the event message, by adding metadata for example, or they can provide you with overall logging capabilities for when an event is published. These interceptors are always invoked on the thread that published the Event.
+Any message dispatch interceptors registered to an event bus will be invoked when an event is published. They have the ability to alter the event message, by adding metadata for example, or they can provide you with overall logging capabilities for when an event is published. These interceptors are always invoked on the thread that published the event.
 
 Let's create an event message dispatch interceptor which logs each event message being published on an `EventBus`.
 
@@ -322,21 +325,23 @@ public class EventBusConfiguration {
 }
 ```
 
-### Handler Interceptors
+### Handler interceptors
 
 Message handler interceptors can take action both before and after event processing. Interceptors can even block event processing altogether, for example for security reasons.
 
-Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle()`, that takes three parameters: the \(event\) message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process, whereas the `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(event\) message handling \(see [UnitOfWork](https://github.com/AxonIQ/reference-guide/tree/c489e77c7107990f9e44b930d612af3f8a33da36/part-i-getting-started/messaging-concepts.md#unit-of-work) for more information about the phases\).
+Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle()`, that takes three parameters: the \(event\) message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process, whereas the `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(event\) message handling \(see [Unit Of Work](https://docs.axoniq.io/reference-guide/~/drafts/-LPBDQcY9g-yt0Ea97Ea/primary/1.1-concepts/messaging-concepts#unit-of-work) for more information about the phases\).
 
-Unlike dispatch interceptors, handler interceptors are invoked in the context of the event handler. That means they can attach correlation data based on the message being handled to the Unit of Work, for example. This correlation data will then be attached to Event Messages being created in the context of that Unit of Work.
+Unlike dispatch interceptors, handler interceptors are invoked in the context of the event handler. That means they can attach correlation data based on the message being handled to the unit of work, for example. This correlation data will then be attached to event messages being created in the context of that unit of work.
 
-Let's create a Message Handler Interceptor which will only allow the handling of Events that contain `axonUser` as a value for the `userId` field in the `MetaData`. If the `userId` is not present in the meta-data, an exception will be thrown which will prevent the Event from being handled. And if the `userId`'s value does not match `axonUser`, we will also not proceed up the chain. Authenticating the Event Message like shown in this example is a regular use case of the `MessageHandlerInterceptor`.
+Let's create a message handler Interceptor which will only allow the handling of events that contain `axonUser` as a value for the `userId` field in the `MetaData`. If the `userId` is not present in the metadata, an exception will be thrown which will prevent the Event from being handled. And if the `userId`'s value does not match `axonUser`, we will also not proceed up the chain. Authenticating the event message like shown in this example is a regular use case of the `MessageHandlerInterceptor`.
 
 ```java
-public class MyEventHandlerInterceptor implements MessageHandlerInterceptor<EventMessage<?>> {
+public class MyEventHandlerInterceptor 
+        implements MessageHandlerInterceptor<EventMessage<?>> {
 
     @Override
-    public Object handle(UnitOfWork<? extends EventMessage<?>> unitOfWork, InterceptorChain interceptorChain) throws Exception {
+    public Object handle(UnitOfWork<? extends EventMessage<?>> unitOfWork, 
+                         InterceptorChain interceptorChain) throws Exception {
         EventMessage<?> event = unitOfWork.getMessage();
         String userId = Optional.ofNullable(event.getMetaData().get("userId"))
                                 .map(uId -> (String) uId)
@@ -357,12 +362,13 @@ public class EventProcessorConfiguration {
     public EventProcessingConfiguration eventProcessingConfiguration() {
         return new EventProcessingConfiguration()
                 .registerTrackingEventProcessor("my-tracking-processor")
-                .registerHandlerInterceptor("my-tracking-processor", configuration -> new MyEventHandlerInterceptor());
+                .registerHandlerInterceptor("my-tracking-processor", 
+                            configuration -> new MyEventHandlerInterceptor());
     }
 }
 ```
 
 > **Note**
 >
-> Different from the `CommandBus` and `QueryBus`, which both can have Handler and Dispatch Interceptors, the `EventBus` can only have registered Dispatch Interceptors. This is the case because the Event publishing part, so the place which is in control of Event Message dispatching, is the sole purpose of the Event Bus. The `EventProcessor`s are in charge of handling the Event Messages, thus are the spot where the Handler Interceptors are registered.
+> Different from the `CommandBus` and `QueryBus`, which both can have handler interceptors and dispatch interceptors, the `EventBus` can only have registered dispatch Interceptors. This is the case because the event publishing part, so the place which is in control of event message dispatching, is the sole purpose of the event bus. The `EventProcessor`s are in charge of handling the event messages, thus are the spot where the handler Interceptors are registered.
 
