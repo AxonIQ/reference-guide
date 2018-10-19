@@ -129,17 +129,17 @@ public class MyAggregate {...}
 
 Note that this requires full configuration of the Repository, including any `SnapshotTriggerDefinition` or `AggregateFactory` that may otherwise have been configured automatically.
 
-## Saga Configuration
+## Saga configuration
 
-The configuration of infrastructure components to operate Sagas is triggered by the `@Saga` annotation \(in package `org.axonframework.spring.stereotype`\). Axon will configure a `SagaManager` and `SagaRepository`. The SagaRepository will use a `SagaStore` available in the context \(defaulting to `JPASagaStore` if JPA is found\) for the actual storage of Sagas.
+The configuration of infrastructure components to operate sagas is triggered by the `@Saga` annotation \(in package `org.axonframework.spring.stereotype`\). Axon will configure a `SagaManager` and `SagaRepository`. The `SagaRepository` will use a `SagaStore` available in the context \(defaulting to `JPASagaStore` if JPA is found\) for the actual storage of sagas.
 
-To use different `SagaStore`s for Sagas, provide the bean name of the `SagaStore` to use in the `sagaStore` attribute of each `@Saga` annotation.
+To use different `SagaStore`s for sagas, provide the bean name of the `SagaStore` to use in the `sagaStore` attribute of each `@Saga` annotation.
 
-Sagas will have resources injected from the application context. Note that this doesn't mean Spring-injecting is used to inject these resources. The `@Autowired` and `@javax.inject.Inject` annotation can be used to demarcate dependencies, but they are injected by Axon by looking for these annotations on Fields and Methods. Constructor injection is not \(yet\) supported.
+Sagas will have resources injected from the application context. Note that this does not mean Spring-injecting is used to inject these resources. The `@Autowired` and `@javax.inject.Inject` annotation can be used to demarcate dependencies, but they are injected by Axon by looking for these annotations on fields and methods. Constructor injection is not \(yet\) supported.
 
-To tune the configuration of Sagas, it is possible to define a custom SagaConfiguration bean. For an annotated Saga class, Axon will attempt to find a configuration for that Saga. It does so by checking for a bean of type `SagaConfiguration` with a specific name. For a Saga class called `MySaga`, the bean that Axon looks for is `mySagaConfiguration`. If no such bean is found, it creates a Configuration based on available components.
+To tune the configuration of sagas, it is possible to define a custom `SagaConfiguration` bean. For an annotated saga class, Axon will attempt to find a configuration for that saga. It does so by checking for a bean of type `SagaConfiguration` with a specific name. For a saga class called `MySaga`, the bean that Axon looks for is `mySagaConfiguration`. If no such bean is found, it creates a configuration based on available components.
 
-If a `SagaConfiguration` instance is present for an annotated Saga, that configuration is used to retrieve and register the components for this type of Saga. If the SagaConfiguration bean is not named as described above, it is possible that the Saga is registered twice, and receives events in duplicate. To prevent this, you can specify the bean name of the `SagaConfiguration` using the @Saga annotation:
+If a `SagaConfiguration` instance is present for an annotated saga, that configuration is used to retrieve and register the components for this type of saga. If the `SagaConfiguration` bean is not named as described above, it is possible that the saga is registered twice, and receives events in duplicate. To prevent this, you can specify the bean name of the `SagaConfiguration` using the `@Saga` annotation:
 
 ```java
 @Saga(configurationBean = "mySagaConfigBean")
@@ -149,18 +149,18 @@ public class MySaga {
 
 // in the Spring configuration:
 @Bean 
-public SagaConfiguration<MySaga> mySagaConfigBean() {
+public SagaConfiguration<MySaga> mySagaConfigurationBean() {
     // create and return SagaConfiguration instance
 }
 ```
 
-## Event Handling Configuration
+## Event handling configuration
 
-By default, all singleton Spring beans components containing `@EventHandler` annotated methods will be subscribed to an Event Processor to receive Event Messages published to the Event Bus.
+By default, all singleton Spring beans components containing `@EventHandler` annotated methods will be subscribed to an event processor to receive event messages published to the event bus.
 
-The `EventHandlingConfiguration` bean, available in the Application Context, has methods to tweak the configuration of the Event Handlers. See [Configuration API](../1.1-concepts/configuration-api.md) for details on configuring Event Handlers and Event Processors.
+The `EventHandlingConfiguration` bean, available in the application context, has methods to tweak the configuration of the event handlers. See [Configuration API](../1.1-concepts/configuration-api.md) for details on configuring event handlers and event processors.
 
-To update the Event Handling Configuration, create an autowired method that set the configuration you desire:
+To update the event handling configuration, create an autowired method that set the configuration you desire:
 
 ```java
 @Autowired
@@ -169,7 +169,7 @@ public void configure(EventHandlingConfiguration config) {
 }
 ```
 
-Certain aspect of Event Processors can also be configured in `application.properties`.
+Certain aspect of event processors can also be configured in `application.properties`.
 
 ```text
 axon.eventhandling.processors.name.mode=tracking
@@ -194,15 +194,15 @@ axon:
                 source: eventBus
 ```
 
-The source attribute refers to the name of a bean implementing `SubscribableMessageSource` or `StreamableMessageSource` that should be used as the source of events for the mentioned processor. The source default to the Event Bus or Event Store defined in the application context.
+The source attribute refers to the name of a bean implementing `SubscribableMessageSource` or `StreamableMessageSource` that should be used as the source of events for the mentioned processor. The source default to the event bus or event store defined in the application context.
 
-## Query Handling Configuration
+## Query handling configuration
 
 All singleton Spring beans are scanned for methods that have the `@QueryHandler` annotation. For each method that is found, a new query handler is registered with the query bus.
 
 ### Parallel processing
 
-Tracking Processors can use multiple threads to process events in parallel. Not all threads need to run on the same node.
+Tracking event processors can use multiple threads to process events in parallel. Not all threads need to run on the same node.
 
 One can configure the number of threads \(on this instance\) as well as the initial number of segments that a processor should define, if non are yet available.
 
@@ -218,7 +218,7 @@ axon.eventhandling.processors.name.initialSegmentCount=4
 
 To enable AMQP support, ensure that the `axon-amqp` module is on the classpath and an AMQP `ConnectionFactory` is available in the application context \(e.g. by including the `spring-boot-starter-amqp`\).
 
-To forward Events generated in the application to an AMQP Channel, a single line of `application.properties` configuration is sufficient:
+To forward events generated in the application to an AMQP Channel, a single line of `application.properties` configuration is sufficient:
 
 ```text
 axon.amqp.exchange=ExchangeName
@@ -252,9 +252,9 @@ axon.eventhandling.processors.name.source=myQueueMessageSource
 
 ## Distributing commands
 
-Configuring a distributed command bus can \(mostly\) be done without any modifications in Configuration files.
+Configuring a distributed command bus can \(mostly\) be done without any modifications in configuration files.
 
-First of all, the starters for one of the Axon Distributed Command Bus modules needs to be included \(e.g. JGroups or SpringCloud\).
+First of all, the starters for one of the Axon distributed command bus modules needs to be included \(e.g. JGroups or Spring Cloud\).
 
 Once that is present, a single property needs to be added to the application context, to enable the distributed command bus:
 
@@ -268,11 +268,11 @@ There in one setting that is independent of the type of connector used:
 axon.distributed.load-factor=100
 ```
 
-Axon will automatically configure a DistributedCommandBus when a `CommandRouter` as well as a `CommandBusConnector` are present in the application context. In such case, specifying `axon.distributed.enabled` isn't even necessary. The latter merely enables autoconfiguration of these routers and connectors.
+Axon will automatically configure a `DistributedCommandBus` when a `CommandRouter` as well as a `CommandBusConnector` are present in the application context. In such case, specifying `axon.distributed.enabled` isn't even necessary. The latter merely enables autoconfiguration of these routers and connectors.
 
 ### Using JGroups
 
-This module uses JGroups to detect and communicate with other nodes. The AutoConfiguration will set up the JGroupsConnector using default settings, that may need to be adapted to suit your environment.
+This module uses JGroups to detect and communicate with other nodes. The Auto-configuration will set up the JGroupsConnector using default settings, that may need to be adapted to suit your environment.
 
 By default, the JGroupsConnector will attempt to locate a GossipRouter on the localhost, port 12001.
 
@@ -296,15 +296,15 @@ axon.distributed.jgroups.gossip.hosts=localhost[12001]
 axon.distributed.jgroups.gossip.auto-start=false
 ```
 
-The JGroups Configuration file can be use for much more fine-grained control of the Connector's behavior. Check out JGroups's Reference Guide for more information.
+The JGroups configuration file can be use for much more fine-grained control of the connector's behavior. Check out JGroups's reference guide for more information.
 
 ### Using Spring Cloud
 
-Spring Cloud comes with nice abstractions on top of discovery. Axon can use these abstractions to report its availability and find other Command Bus nodes. For communication with these nodes, Axon uses Spring HTTP, by default.
+Spring Cloud comes with nice abstractions on top of discovery. Axon can use these abstractions to report its availability and find other command bus nodes. For communication with these nodes, Axon uses Spring HTTP, by default.
 
-The Spring Cloud AutoConfiguration doesn't have much to configure. It uses an existing Spring Cloud Discovery Client \(so make sure `@EnableDiscoveryClient` is used and the necessary client is on the classpath\).
+The Spring Cloud Auto-configuration doesn't have much to configure. It uses an existing Spring Cloud Discovery Client \(so make sure `@EnableDiscoveryClient` is used and the necessary client is on the classpath\).
 
-However, some discovery clients aren't able to update instance metadata dynamically on the server. If Axon detects this, it will automatically fall back to querying that node using HTTP. This is done once on each discovery heartbeat \(usually 30 seconds\).
+However, some discovery clients are not able to update instance metadata dynamically on the server. If Axon detects this, it will automatically fall back to querying that node using HTTP. This is done once on each discovery heartbeat \(usually 30 seconds\).
 
 This behavior can be configured or disabled, using the following settings in `appplication.properties`:
 
