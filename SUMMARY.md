@@ -29,7 +29,7 @@
 * [1.3.2 Event processing](1.3-infrastructure-components/event-processing.md)
 * [1.3.3 Query processing](1.3-infrastructure-components/query-processing.md)
 * [1.3.4 Repository and event store](1.3-infrastructure-components/repository-and-event-store.md)
-* [1.3.5 Spring Boot AutoConfiguration](1.3-infrastructure-components/spring-boot-autoconfiguration.md)
+* [1.3.5 Spring Boot Auto-configuration](1.3-infrastructure-components/spring-boot-autoconfiguration.md)
 
 ## 1.4 Advanced tuning
 
