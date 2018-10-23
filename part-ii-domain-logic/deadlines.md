@@ -1,6 +1,6 @@
 # Deadlines
 
-The 'Deadline concept' in the Axon Framework is a mechanism which enables certain actions (in our case a `@DeadlineHandler` annotated method) to be executed after certain amount of time. The context of this execution is an Aggregate or a Saga in which the Deadline was scheduled. If the Deadline becomes obsolete there is the possibility to cancel it as well.  
+The 'Deadline concept' in the Axon Framework is a mechanism which enables certain actions (in our case a `@DeadlineHandler` annotated method) to be executed after a certain amount of time. The context of this execution is an Aggregate or a Saga in which the Deadline was scheduled. If the Deadline becomes obsolete there is the possibility to cancel it as well.  
 
 Deadlines can be scheduled from Sagas and Aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`s when the deadline is met. The `DeadlineManager` can be injected as a resource. It has two flavors: `SimpleDeadlineManager` and `QuartzDeadlineManager`, just like the [Event Scheduling](sagas.md#keeping-track-of-deadlines) mechanism for Sagas. 
 
