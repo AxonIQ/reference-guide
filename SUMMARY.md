@@ -35,6 +35,7 @@
 
 * [1.4.1 Advanced customizations](1.4-advanced-tuning/advanced-customizations.md)
 * [1.4.2 Performance tuning](1.4-advanced-tuning/performance-tuning.md)
+* [1.4.3 Metrics and Monitoring](1.4-advanced-tuning/metrics-and-monitoring.md)
 
 ## 2 Axon Server
 
