@@ -24,6 +24,8 @@ There is an implicit ordering between the configurable serializer. If no Event `
 
 See the following example on how to configure each serializer specifically, were we use `XStreamSerializer` as the default and `JacksonSerializer` for all our messages:
 
+{% tabs %}
+{% tab title="Axon Configuration API" %}
 ```java
 public class SerializerConfiguration {
 
@@ -39,6 +41,28 @@ public class SerializerConfiguration {
     }
 }
 ```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Properties file" %}
+```text
+# Possible values for these keys are `default`, `xstream`, `java`, and `jackson`.
+axon.serializer.general
+axon.serializer.events
+axon.serializer.messages
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - YML file" %}
+```yaml
+# Possible values for these keys are `default`, `xstream`, `java`, and `jackson`.
+axon:
+    serializer:
+        general: 
+        events: 
+        messages:
+```
+{% endtab %}
+{% endtabs %}
 
 ## Meta Annotations
 
@@ -126,6 +150,27 @@ public class MethodCommandHandlerDefinition implements HandlerEnhancerDefinition
 5. If you would like to skip handling just return the original that was passed into the `wrapHandler` method.
 
 To skip all handling of the handler then just throw an exception.
+
+It is possible to configure `HandlerDefinition` with Axon `Configuration`. If you are using Spring Boot defining `HandlerDefintion`s and `HandlerEnhancerDefinition`s as beans is sufficient \(Axon autoconfiguration will pick them up and configure within Axon `Configuration`\).
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration();
+configurer.registerHandlerDefinition(c -> new MethodCommandHandlerDefinition());
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+// somewhere in configuration
+@Bean
+public HandlerDefinition eventStorageEngine() {
+    return new MethodCommandHandlerDefinition(); 
+}
+```
+{% endtab %}
+{% endtabs %}
 
 ## Filtering Event Storage Engine
 

@@ -154,7 +154,7 @@ One of the advantages of using a command bus is the ability to undertake action 
 
 There are different types of interceptors: Dispatch Interceptors and Handler Interceptors. Dispatch Interceptors are invoked before a command is dispatched to a Command Handler. At that point, it may not even be sure that any handler exists for that command. Handler Interceptors are invoked just before the Command Handler is invoked.
 
-### Message Dispatch Interceptors
+### Dispatch Interceptors
 
 Message Dispatch Interceptors are invoked when a command is dispatched on a Command Bus. They have the ability to alter the Command Message, by adding Meta Data, for example, or block the command by throwing an Exception. These interceptors are always invoked on the thread that dispatches the Command.
 
@@ -200,11 +200,11 @@ Axon Framework has support for JSR 303 Bean Validation based validation. This al
 
 The BeanValidationInterceptor also implements `MessageHandlerInterceptor`, allowing you to configure it as a Handler Interceptor as well.
 
-### Message Handler Interceptors
+### Handler Interceptors
 
 Message Handler Interceptors can take action both before and after command processing. Interceptors can even block command processing altogether, for example for security reasons.
 
-Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle`, that takes three parameters: the command message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process.
+Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle`, that takes three parameters: the command message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process, whereas the `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(command\) message handling \(see [UnitOfWork](../part-i-getting-started/messaging-concepts.md#unit-of-work) for more information about the phases\).
 
 Unlike Dispatch Interceptors, Handler Interceptors are invoked in the context of the Command Handler. That means they can attach correlation data based on the Message being handled to the Unit of Work, for example. This correlation data will then be attached to messages being created in the context of that Unit of Work.
 
@@ -242,13 +242,40 @@ public class CommandBusConfiguration {
 }
 ```
 
+### `@CommandHandlerInterceptor` Annotation
+
+The framework has the possibility to add a Handler Interceptor as an `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. The difference between a method on an Aggregate and a "[regular](command-dispatching.md#handler-interceptors)" Command Handler Interceptor, is that with the annotation approach you can make decisions based on the current state of the given Aggregate. Some properties of an annotated Command Handler Interceptor are:
+
+* The annotation can be put on entities within the Aggregate. 
+* It is possible to intercept a command on Aggregate Root level, whilst the command handler is in a child entity.
+* Command execution can be prevented by firing an exception from annotated command handler interceptor.
+* It is possible to define an `InterceptorChain` as a parameter of the command handler interceptor method and use it to control command execution.
+* By using the `commandNamePattern` attribute of the `@CommandHandlerInterceptor` annotation we can intercept all commands matching provided regular expression.
+* Events can be applied from annotated command handler interceptor.
+
+In the listing below we can see a `@CommandHandlerInterceptor` method which prevents command execution if a command's `state` field does not match the Aggregate's `state` field:
+
+```java
+public class MyAggregate {
+    ...
+    private String state;
+    ...
+    @CommandHandlerInterceptor
+    public void intercept(MyCommand myCommand, InterceptorChain interceptorChain) {
+        if (this.state.equals(myCommand.getState()) {
+            interceptorChain.proceed();
+        }
+    }
+}
+```
+
 ## Distributing the Command Bus
 
 The CommandBus implementations described in earlier only allow Command Messages to be dispatched within a single JVM. Sometimes, you want multiple instances of Command Buses in different JVMs to act as one. Commands dispatched on one JVM's Command Bus should be seamlessly transported to a Command Handler in another JVM while sending back any results.
 
 That's where the `DistributedCommandBus` comes in. Unlike the other `CommandBus` implementations, the `DistributedCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between Command Bus implementations on different JVM's. Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
 
-![Structure of the Distributed Command Bus](../.gitbook/assets/distributed-command-bus.png)
+![Structure of the Distributed Command Bus](../.gitbook/assets/distributed-command-bus%20%281%29.png)
 
 > **Note**
 >

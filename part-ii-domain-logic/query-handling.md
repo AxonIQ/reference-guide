@@ -61,14 +61,8 @@ In the example above, the handler method of `SubHandler` will be invoked for que
 
 It is possible to register multiple query handlers for the same query name and type of response. When dispatching queries, the client can indicate whether he wants a result from one or from all available query handlers.
 
-### Using Spring
-
-When using Spring AutoConfiguration, all singleton Spring beans are scanned for methods that have the `@QueryHandler` annotation. For each method that is found, a new query handler is registered with the query bus.
-
-### Using Configuration API
-
-It is also possible to use the Configuration API to register query handlers. To do so, use the `registerQueryHandler` method on the `Configurer` class:
-
+{% tabs %}
+{% tab title="Axon Configuration API" %}
 ```java
 // Sample query handler
 public class MyQueryHandler {
@@ -84,4 +78,19 @@ public class MyQueryHandler {
 Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     .registerQueryHandler(conf -> new MyQueryHandler);
 ```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+// Sample query handler
+@Component
+public class MyQueryHandler {
+    @QueryHandler
+    public String echo(String echo) {
+        return echo;
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
 

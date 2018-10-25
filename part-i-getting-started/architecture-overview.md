@@ -4,7 +4,7 @@ CQRS on itself is a very simple pattern. It only prescribes that the component o
 
 The diagram below shows an example of an extended layout of a CQRS-based event driven architecture. The UI component, displayed on the left, interacts with the rest of the application in two ways: it sends commands to the application \(shown in the top section\), and it queries the application for information \(shown in the bottom section\).
 
-![Architecture overview of a CQRS application](../.gitbook/assets/detailed-architecture-overview.png)
+![Architecture overview of a CQRS application](../.gitbook/assets/detailed-architecture-overview%20%281%29.png)
 
 Commands are typically represented by simple and straightforward objects that contain all data necessary for a command handler to execute it. A command expresses its intent by its name. In Java terms, that means the class name is used to figure out what needs to be done, and the fields of the command provide the information required to do it.
 

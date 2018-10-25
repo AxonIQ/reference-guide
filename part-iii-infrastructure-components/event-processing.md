@@ -12,10 +12,26 @@ The `EventBus` is the mechanism that dispatches events to the subscribed event h
 
 When using the Configuration API, the `SimpleEventBus` is used by default. To configure the `EmbeddedEventStore` instead, you need to supply an implementation of a StorageEngine, which does the actual storage of Events.
 
+{% tabs %}
+{% tab title="Axon Configuration API" %}
 ```java
-    Configurer configurer = DefaultConfigurer.defaultConfiguration();
-    configurer.configureEmbeddedEventStore(c -> new InMemoryEventStorageEngine());
+Configurer configurer = DefaultConfigurer.defaultConfiguration();
+configurer.configureEmbeddedEventStore(c -> new InMemoryEventStorageEngine());
 ```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+// somewhere in configuration
+@Bean
+public EventStorageEngine eventStorageEngine() {
+    return new InMemoryEventStorageEngine(); 
+}
+// When a EventStorageEngine is provided, the EmbeddedEventStore is configured as the EventStore.
+// And if JPA configuration is detected JpaEventStorageEngine is configured as EventStorageEngine.
+```
+{% endtab %}
+{% endtabs %}
 
 ## Event Processors
 
@@ -100,6 +116,19 @@ SagaConfiguration.trackingSagaManager(MySaga.class)
 
 The `TrackingProcessingConfiguration` has a few methods allowing you to specify how many segments will be created and which ThreadFactory should be used to create Processor threads. See [Parallel Processing](event-processing.md#parallel-processing) for more details.
 
+If you are using Spring, you can configure your saga like this:
+
+```java
+@Saga(configurationBean = "mySagaConfiguration")
+public class Saga {...}
+...
+// somewhere in configuration
+@Bean
+public SagaConfiguration<Saga> mySagaConfiguration() {
+    return SagaConfiguration.subscribingSagaManager(Saga.class);
+}
+```
+
 Check out the API documentation \(JavaDoc\) of the `SagaConfiguration` class for full details on how to configure event handling for a Saga.
 
 ### Token Store
@@ -111,6 +140,10 @@ The Configuration API takes the Token Store, as well as most other components Pr
 To configure a different Token Store, use `Configurer.registerComponent(TokenStore.class, conf -> ... create token store ...)`
 
 Note that you can override the TokenStore to use with Tracking Processors in the respective `EventHandlingConfiguration` or `SagaConfiguration` that defines that Processor. Where possible, it is recommended to use a Token Store that stores tokens in the same database as where the Event Handlers update the view models. This way, changes to the view model can be stored atomically with the changed tokens, guaranteeing exactly once processing semantics.
+
+### Event Tracker Status
+
+In some cases it might be useful to know the state of a Tracking Event Processor for each of its segment. One of those cases could be when we want to rebuild our view model and we want to check when the Processor is caught up with all the events. For cases like these, the `TrackingEventProcessor` exposes `processingStatus()` method, which returns a map where the key is the segment identifier, and the value is the event processing status. Based on this status we can determine whether the Processor is caught up and/or is replaying, and we can verify the Tracking Token of its segments.
 
 ### Parallel Processing
 
@@ -134,7 +167,9 @@ The `TokenStore` instance will use the JVM's name \(usually a combination of the
 
 ## Distributing Events
 
-In some cases, it is necessary to publish events to an external system, such as a message broker.
+In some cases, it is necessary to publish events to an external system, such as a message broker. Axon uses `Publisher`s to publish events to third-party messaging systems, and `MessageSource`s to read events from these systems into your Axon based application.
+
+At the moment, there is support for publishing \(and reading\) events via Spring AMQP and Kafka.
 
 ### Spring AMQP
 
@@ -186,6 +221,96 @@ public void configure(EventHandlingConfiguration ehConfig, SpringAmqpMessageSour
 ```
 
 Note that Tracking Processors are not compatible with the SpringAMQPMessageSource.
+
+### Apache Kafka
+
+Kafka is a very popular system for publishing and consuming events. It's architecture is fundamentally different from most messaging systems, and combines speed with reliability.
+
+To use the Kafka components from Axon, make sure the `axon-kafka` module is available on the classpath.
+
+{% hint style="info" %}
+The `axon-kafka` module is a new addition to the framework. Minor releases of the framework could include breaking changes to the APIs.
+{% endhint %}
+
+#### Publishing Events to a Kafka topic
+
+When Event Messages are published to an Event Bus \(or Event Store\), they can be forwarded to a Kafka topic using the `KafkaPublisher`. Publication of the messages to Kafka will happen in the same thread \(and Unit of Work\) that published the events to the Event Bus.
+
+The `KafkaPublisher` takes a `KafkaPublisherConfiguration` instance, which provides the different values and settings required to publish events to Kafka.
+
+```java
+KafkaPublisherConfiguration configuration = KafkaPublisherConfiguration.<String, byte[]>builder()
+        .withProducerFactory(factory) // the factory for creating the actual client instances for sending events to kafka
+        .withTopic("topic") // the topic to send the events to. Defaults to 'Axon.Events'
+        .build();
+
+KafkaPublisher<String, byte[]> publisher = new KafkaPublisher<>(configuration); // create the publisher itself
+
+publisher.start(); // to start publishing all events
+```
+
+Axon provides a `DefaultProducerFactory`, which attempts to reuse created instances to avoid continuous creation of new ones. It's creation uses a similar builder pattern. The builder requires a `configs` Map, which are the settings to use for the Kafka client, such as the Kafka instance locations. Please check the Kafka guide for the possible settings and their values.
+
+```java
+DefaultProducerFactory.builder(configs)
+        .withConfirmationMode(ConfirmationMode.WAIT_FOR_ACK) // either TRANSACTIONAL, WAIT_FOR_ACK or NONE (default)
+        .build();
+
+// or, to create a transactional ProducerFactory
+DefaultProducerFactory.builder(configs)
+        .withTransactionalIdPrefix("myTxPrefix") // this will also set ConfirmationMode to TRANSACTIONAL
+        .build();
+```
+
+Note that the `DefaultProducerFactory` needs to be `shutDown` properly, to ensure all producer instances are properly closed.
+
+#### Consuming Events from a Kafka topic
+
+Messages can be consumed by Tracking Event Processors by configuring a `KafkaMessageSource`. This message source uses a `Fetcher` to retrieve the actual messages from Kafka. You can either use the `AsyncFetcher`, or provide your own.
+
+The `AsyncFetcher` is initialized using a builder, which requires the Kafka Configuration to initialize the client. Please check the Kafka guide for the possible settings and their values.
+
+```java
+// the fetcher only requires Kafka Client Configuration properties:
+AsyncFetcher.builder(configs).build();
+
+// but customization is possible:
+AsyncFetcher.builder(configs)
+        .withTopic("myTopic") // the Kafka topic to read from. Defaults to 'Axon.Events'
+        .withPool(customThreadPool) // defaults to a cached thread pool
+        .withPollTimeout(customTimeout, timeUnit) // defaults to 5 seconds
+        .onRecordPublished(callback) // register behavior to execute on every incoming message
+        .withBufferFactory(bufferFactory) // to customize the implementation of the buffers used to hold messages before they are consumed
+        .build();
+```
+
+The `AsyncFetcher` doesn't need to be explicitly started, as it will start when the first processors connect to it. It does need to be shut down, to ensure any thread pool or active connections are properly closed.
+
+#### Customizing message format
+
+By default, Axon uses the `DefaultKafkaMessageConverter` to convert an `EventMessage` to a Kafka `ProducerRecord` and an `ConsumerRecord` back into an `EventMessage`. This implementation already allows for some customization, such as how the `Message`'s `MetaData` is mapped to Kafka headers. You can also choose which serializer should be used to fill the payload of the `ProducerRecord`.
+
+For further customization, you can implement your own `KafkaMessageConverter`, and wire it into the `KafkaPublisherConfiguration` and `AsyncFetcher`:
+
+```java
+KafkaPublisherConfiguration.<String, byte[]>builder() // the <String, byte[]> defines the type of key and payload, respectively
+        .withMessageConverter(customConverter) // the converter needs to match the expected key and payload type
+        .build();
+
+AsyncFetcher.builder(configs)
+        .withMessageConverter(customConverter)
+        .build();
+```
+
+#### Configuration in Spring Boot
+
+Axon will automatically provide certain Kafka related components based on the availability of beans and/or properties.
+
+To enable a KafkaPublisher, either provide a bean of type `ProducerFactory`, or set `axon.kafka.producer.transaction-id-prefix` in `application.properties` to have auto configuration configure a ProducerFactory with Transactional semantics. In either case, `application.properties` should provide the necessary Kafka Client properties, available under the `axon.kafka` prefix. If none are provided, default settings are used, and `localhost:9092` is used as the bootstrap server.
+
+To enable a `KafkaMessageSource`, either provide a bean of type `ConsumerFactory`, or provide the `axon.kafka.consumer.group-id` setting in `application.properties`. Also make sure all necessary Kafka Client Configuration properties are available under the `axon.kafka` prefix.
+
+Alternatively, you may provide your own `KafkaMessageSource` bean\(s\), in which case Axon will not create the default KafkaMessageSource.
 
 ## Asynchronous Event Processing
 
