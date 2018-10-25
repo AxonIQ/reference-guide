@@ -148,11 +148,11 @@ When using the Configuration API, Axon will use sensible defaults for most compo
 {% tab title="Axon Configuration API" %}
 ```java
 Configurer configurer = DefaultConfigurer.defaultConfiguration();
-configurer.registerModule(
-        SagaConfiguration.subscribingSagaManager(MySaga.class)
-                         // Axon defaults to an in-memory SagaStore,
-                         // defining another is recommended
-                         .configureSagaStore(c -> new JpaSagaStore(...)));
+        configurer.eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer
+                .registerSaga(MySaga.class,
+                              // Axon defaults to an in-memory SagaStore,
+                              // defining another is recommended
+                              sagaConfigurer -> sagaConfigurer.configureSagaStore(c -> new JpaSagaStore(...))));
 
 // alternatively, it is possible to register a single SagaStore for all Saga types:
 configurer.registerComponent(SagaStore.class, c -> new JpaSagaStore(...));
