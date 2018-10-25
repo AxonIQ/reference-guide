@@ -72,62 +72,29 @@ Processors take care of the technical aspects of handling an event, regardless o
 
 #### Event Handlers
 
-By default, Axon will use Subscribing Event Processors. It is possible to change how Handlers are assigned and how processors are configured using the `EventHandlingConfiguration` class of the Configuration API.
+By default, Axon will use Tracking Event Processors. It is possible to change how Handlers are assigned and how processors are configured using the `EventProcessingConfigurer` class of the Configuration API.
 
-The `EventHandlingConfiguration` class defines a number of methods that can be used to define how processors need to be configured.
+The `EventProcessingConfigurer` class defines a number of methods that can be used to define how processors need to be configured.
 
 * `registerEventProcessorFactory` allows you to define a default factory method that creates Event Processors for which no explicit factories have been defined.
 * `registerEventProcessor(String name, EventProcessorBuilder builder)` defines the factory method to use to create a Processor with given `name`. Note that such Processor is only created if `name` is chosen as the processor for any of the available Event Handler beans.
-* `registerTrackingProcessor(String name)` defines that a processor with given name should be configured as a Tracking Event Processor, using default settings. It is configured with a TransactionManager and a TokenStore, both taken from the main configuration by default.
-* `registerTrackingProcessor(String name, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration, Function<Configuration, SequencingPolicy<? super EventMessage<?>>> sequencingPolicy)` defines that a processor with given name should be configured as a Tracking Processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading. The `SequencingPolicy` defines which expectations the processor has on sequential processing of events. See [parallel processing](event-processing.md#parallel-processing) below for more details.
-* `usingTrackingProcessors()` sets the default to tracking event processors instead of subscribing ones.
+* `registerTrackingEventProcessor(String name)` defines that a processor with given name should be configured as a Tracking Event Processor, using default settings. It is configured with a TransactionManager and a TokenStore, both taken from the main configuration by default.
+* `registerTrackingProcessor(String name, Function<Configuration, StreamableMessageSource<TrackedEventMessage<?>>> source, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration)` defines that a processor with given name should be configured as a Tracking Processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading. The `StreamableMessageSource` defines an event source from which this processor should pull for events.
+* `usingSubscribingEventProcessors()` sets the default to subscribing event processors instead of tracking ones.
 
 #### Sagas
 
-Sagas are configured using the `SagaConfiguration` class. It provides static methods to initialize an instance either for tracking processing, or subscribing.
+Sagas are configured using the `SagaConfigurer` class. It provides convenient methods for configuring saga repository, saga manager and saga store.
 
-To configure a saga to run in subscribing mode, simply do:
-
-```java
-SagaConfiguration<MySaga> sagaConfig = SagaConfiguration.subscribingSagaManager(MySaga.class);
-```
-
-If you do not want to use the default event bus or event store as source for this saga to get its messages from, you can define another source of messages as well:
+Let's configure custom saga repository, saga manager and saga store:
 
 ```java
-SagaConfiguration.subscribingSagaManager(MySaga.class, c -> /* define source here */);
-```
-
-Another variant of the `subscribingSagaManager()` method allows you to pass a \(builder for an\) `EventProcessingStrategy`. By default, sagas are invoked in synchronously. This can be made asynchronous using this method. However, using tracking processors is the preferred way for asynchronous invocation.
-
-To configure a saga to use a tracking event processor, simply do:
-
-```java
-SagaConfiguration.trackingSagaManager(MySaga.class);
-```
-
-This will set the default properties, meaning a single thread is used to process events. To change this:
-
-```java
-SagaConfiguration.trackingSagaManager(MySaga.class)
-                 // configure 4 threads
-                 .configureTrackingProcessor(
-                     c -> TrackingProcessingConfiguration.forParallelProcessing(4))
-```
-
-The `TrackingProcessingConfiguration` has a few methods allowing you to specify how many segments will be created and which ThreadFactory should be used to create Processor threads. See [Parallel processing](event-processing.md#parallel-processing) below for more details.
-
-If you are using Spring, you can configure your saga like this:
-
-```java
-@Saga(configurationBean = "mySagaConfiguration")
-public class Saga {...}
-...
-// somewhere in configuration
-@Bean
-public SagaConfiguration<Saga> mySagaConfiguration() {
-    return SagaConfiguration.subscribingSagaManager(Saga.class);
-}
+Configurer configurer = DefaultConfigurer.defaultConfiguration();
+configurer.eventProcessing(eventProcessingConfigurer -> 
+                                eventProcessingConfigurer.registerSaga(MySaga.class,
+                                                                       sagaConfigurer -> sagaConfigurer.configureSagaStore(c -> sagaStore)
+                                                                                                       .configureRepository(c -> repository)
+                                                                                                       .configureSagaManager(c -> manager)));
 ```
 
 Check out the API documentation \(JavaDoc\) of the `SagaConfiguration` class for full details on how to configure event handling for a saga.
@@ -216,8 +183,8 @@ To subscribe processors to this `MessageSource`, pass the correct `SpringAMQPMes
 ```java
 // in an @Configuration file
 @Autowired
-public void configure(EventHandlingConfiguration ehConfig, SpringAmqpMessageSource myMessageSource) {
-    ehConfig.registerSubscribingEventProcessor("myProcessor", c -> myMessageSource);
+public void configure(EventProcessingConfigurer epConfig, SpringAmqpMessageSource myMessageSource) {
+    epConfig.registerSubscribingEventProcessor("myProcessor", c -> myMessageSource);
 }
 ```
 
