@@ -78,5 +78,5 @@ public class MyEventHandlerClass {
 {% endtab %}
 {% endtabs %}
 
-See [Event handling configuration](../1.3-infrastructure-components/spring-boot-autoconfiguration.md#event-handling-configuration) for details on registering event handlers using Spring AutoConfiguration.
+See [Event handling configuration](../1.3-infrastructure-components/spring-boot-autoconfiguration.md#event-processing-configuration) for details on registering event handlers using Spring AutoConfiguration.
 

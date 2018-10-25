@@ -154,18 +154,18 @@ public SagaConfiguration<MySaga> mySagaConfigurationBean() {
 }
 ```
 
-## Event handling configuration
+## Event processing configuration
 
 By default, all singleton Spring beans components containing `@EventHandler` annotated methods will be subscribed to an event processor to receive event messages published to the event bus.
 
-The `EventHandlingConfiguration` bean, available in the application context, has methods to tweak the configuration of the event handlers. See [Configuration API](../1.1-concepts/configuration-api.md) for details on configuring event handlers and event processors.
+The `EventProcessingConfigurer` bean, available in the application context, has methods to tweak the configuration of the event handlers. See `EventProcessingConfigurer` JavaDoc for details on configuring event handlers and event processors.
 
-To update the event handling configuration, create an autowired method that set the configuration you desire:
+To update the event processing configuration, create an autowired method that set the configuration you desire:
 
 ```java
 @Autowired
-public void configure(EventHandlingConfiguration config) {
-    config.usingTrackingProcessors(); // default all processors to tracking mode.
+public void configure(EventProcessingConfigurer config) {
+    config.usingSubscribingEventProcessors(); // default all processors to subscribing mode.
 }
 ```
 
