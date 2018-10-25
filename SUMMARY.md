@@ -21,7 +21,8 @@
 * [1.2.2 Event handling](1.2-domain-logic/event-handling.md)
 * [1.2.3 Query handling](1.2-domain-logic/query-handling.md)
 * [1.2.4 Sagas](1.2-domain-logic/sagas.md)
-* [1.2.5 Testing](1.2-domain-logic/testing.md)
+* [1.2.5 Deadlines](1.2-domain-logic/deadlines.md)
+* [1.2.6 Testing](1.2-domain-logic/testing.md)
 
 ## 1.3 Infrastructure components
 
