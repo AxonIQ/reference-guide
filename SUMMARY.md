@@ -16,6 +16,7 @@
 * [Event Handling](part-ii-domain-logic/event-handling.md)
 * [Query Handling](part-ii-domain-logic/query-handling.md)
 * [Sagas](part-ii-domain-logic/sagas.md)
+* [Deadlines](part-ii-domain-logic/deadlines.md)
 * [Testing](part-ii-domain-logic/testing.md)
 
 ## Part III - Infrastructure components

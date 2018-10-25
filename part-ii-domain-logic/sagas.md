@@ -114,6 +114,8 @@ One or more components will be listening for scheduled Events. These components 
 >
 > Spring users can use the `QuartzEventSchedulerFactoryBean` or `SimpleEventSchedulerFactoryBean` for easier configuration. It allows you to set the PlatformTransactionManager directly.
 
+If you need more fine grained control when scheduling deadlines and in which contexts this should be handled, check out the [Deadline section](deadlines.md).
+
 ### Injecting Resources
 
 Sagas generally do more than just maintaining state based on Events. They interact with external components. To do so, they need access to the Resources necessary to address to components. Usually, these resources aren't really part of the Saga's state and shouldn't be persisted as such. But once a Saga is reconstructed, these resources must be injected before an Event is routed to that instance.
