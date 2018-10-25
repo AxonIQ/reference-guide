@@ -55,20 +55,16 @@ In the example above, the handler methods of `SubListener` will be invoked for a
 
 ## Registering event handlers
 
-Event handling components are defined using an `EventHandlingConfiguration` class, which is registered as a module with the global Axon `Configurer`. Typically, an application will have a single `EventHandlingConfiguration` defined, but larger more modular applications may choose to define one per module.
+Event handling components are defined using an `EventProcessingConfigurer` class, which can be accessed from the global Axon `Configurer`. `EventProcessingConfigurer` is used to configure `EventProcessingConfiguration`. Typically, an application will have a single `EventProcessingConfiguration` defined, but larger more modular applications may choose to define one per module.
 
-To register objects with `@EventHandler` methods, use the `registerEventHandler()` method on the `EventHandlingConfiguration`:
+To register objects with `@EventHandler` methods, use the `registerEventHandler()` method on the `EventProcessingConfigurer`:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-// define an EventHandlingConfiguration
-EventHandlingConfiguration ehConfiguration = new EventHandlingConfiguration()
-    .registerEventHandler(conf -> new MyEventHandlerClass());
-
-// the module needs to be registered with the Axon Configuration
-Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
-    .registerModule(ehConfiguration);
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+                                         .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer
+                                             .registerEventHandler(conf -> new MyEventHandlerClass()));
 ```
 {% endtab %}
 
