@@ -1,4 +1,4 @@
-# Deadlines
+# 1.2.5 Deadlines
 
 The 'Deadline concept' in the Axon Framework is a mechanism which enables certain actions (in our case a `@DeadlineHandler` annotated method) to be executed after a certain amount of time. The context of this execution is an Aggregate or a Saga in which the Deadline was scheduled. If the Deadline becomes obsolete there is the possibility to cancel it as well.  
 
