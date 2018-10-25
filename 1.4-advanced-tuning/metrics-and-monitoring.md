@@ -5,7 +5,7 @@ Important in any application is the ability to monitor and measure what is going
 ## Metrics
 
 Interesting metrics in a message centric system come in several forms and flavors, like count, capacity and latency for example.  
-The Axon Framework allows you to retrieve such measurements through the use of the `axon-metrics` module. With this module you can register a number of `MessageMonitor` implementations to your messaging components, like the [`CommandBus`](../part-iii-infrastructure-components/command-dispatching.md#the-command-bus), [`EventBus`](../part-iii-infrastructure-components/event-processing.md#event-bus), [`QueryBus`](../part-iii-infrastructure-components/query-processing.md#query-bus) and [`EventProcessors`](../part-iii-infrastructure-components/event-processing.md#event-processors).
+The Axon Framework allows you to retrieve such measurements through the use of the `axon-metrics` module. With this module you can register a number of `MessageMonitor` implementations to your messaging components, like the [`CommandBus`](../1.3-infrastructure-components/command-dispatching.md#the-command-bus), [`EventBus`](../1.3-infrastructure-components/event-processing.md#event-bus), [`QueryBus`](../1.3-infrastructure-components/query-processing.md#query-bus) and [`EventProcessors`](../1.3-infrastructure-components/event-processing.md#event-processors).
 
 Internally, the `axon-metrics` module uses [Dropwizard Metrics](https://metrics.dropwizard.io/) for registering the measurements correctly. That thus means that `MessageMonitors` are registered against the Dropwizard `MetricRegistry`. The following monitor implementations are currently provided:
 
@@ -15,7 +15,7 @@ Internally, the `axon-metrics` module uses [Dropwizard Metrics](https://metrics.
 4. `MessageTimerMonitor` - Keeps a timer for all successful, failed and ignored messages, as well as an overall timer for all three combined.
 5. `PayloadTypeMessageMonitorWrapper` - A special `MessageMonitor` implementation which allows setting a monitor per message type instead of per message publishing/handling component. 
 
-You are free to configure any combination of `MessageMonitors` through constructors on your messaging components, and even simpler by using the [Configuration API](../part-i-getting-started/configuration-api.md). The `GlobalMetricRegistry` contained in the `axon-metrics` module provides a set of sensible defaults per type of messaging component. The following example shows you how to configure default metrics for your message handling components:
+You are free to configure any combination of `MessageMonitors` through constructors on your messaging components, and even simpler by using the [Configuration API](../1.1-concepts/configuration-api.md). The `GlobalMetricRegistry` contained in the `axon-metrics` module provides a set of sensible defaults per type of messaging component. The following example shows you how to configure default metrics for your message handling components:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -81,7 +81,7 @@ Monitoring a message centric application will require you to be able to see wher
 
 ### Correlation Data
 
-One import aspect in regards to this is tracing a given message. To that end the framework provides the `CorrelationDataProvider`, as described briefly [here](../part-i-getting-started/messaging-concepts.md#correlation-data-provider). This interface and its implementations provide you the means to populate the meta-data of your messages with specific fields, like a 'trace-id', 'correlation-id' or any other field you might be interested in.
+One import aspect in regards to this is tracing a given message. To that end the framework provides the `CorrelationDataProvider`, as described briefly [here](../1.1-concepts/messaging-concepts.md#correlation-data-provider). This interface and its implementations provide you the means to populate the meta-data of your messages with specific fields, like a 'trace-id', 'correlation-id' or any other field you might be interested in.
 
 For configuring the `MessageOriginProvider` you can do the following:
 
@@ -123,5 +123,5 @@ public class MonitoringConfiguration {
 ### Interceptor Logging
 
 Another good approach to track the flow of messages throughout an Axon application is by setting up the right interceptors in your application.  
-There are two flavors of interceptors, the Dispatch and Handler Interceptors \(like discussed [here](../part-iii-infrastructure-components/command-dispatching.md#command-interceptors) for commands, [here](../part-iii-infrastructure-components/event-processing.md#event-interceptors) for events and [here](../part-iii-infrastructure-components/query-processing.md#handler-interceptors) for queries\), which intercept a message prior to publishing \(Dispatch Interceptor\) or whilst it is being handled \(Handler Interceptor\). The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled. The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J, but also provides a simple overridable template to set up your own desired logging format. We refer to the command, event and query sections for the specifics on how to configure message interceptors.
+There are two flavors of interceptors, the Dispatch and Handler Interceptors \(like discussed [here](../1.3-infrastructure-components/command-dispatching.md#command-interceptors) for commands, [here](../part-iii-infrastructure-components/event-processing.md#event-interceptors) for events and [here](../part-iii-infrastructure-components/query-processing.md#handler-interceptors) for queries\), which intercept a message prior to publishing \(Dispatch Interceptor\) or whilst it is being handled \(Handler Interceptor\). The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled. The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J, but also provides a simple overridable template to set up your own desired logging format. We refer to the command, event and query sections for the specifics on how to configure message interceptors.
 
