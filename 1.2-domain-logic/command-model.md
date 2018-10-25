@@ -119,6 +119,39 @@ It is possible to `apply()` new events inside an event sourcing handler method. 
 
 You can also use the static `AggregateLifecycle.isLive()` method to check whether the aggregate is 'live'. Basically, an aggregate is considered live if it has finished replaying historic events. While replaying these events, `isLive()` will return false. Using this `isLive()` method, you can perform activity that should only be done when handling newly generated events.
 
+## Spawning a new Aggregate
+
+Instantiating new Aggregates is done by issuing a creation command, which for example might originate from an Event Handling Component \(Saga or Event Processor\). But in some cases it might be beneficial to create an Aggregate from another Aggregate. Prior to version 3.3, instantiating an Aggregate as a follow up form another Aggregate had to be orchestrated via an Event Handling Component. Version 3.3 introduces functionality to create a new Aggregate from another Aggregate. To this end, the `AggregateLifecycle` introduces the static method `createNew()`.
+
+Consider a case where you have `AggregateA` defined like this:
+
+```java
+public class AggregateA {
+    ...            
+    public AggregateA(String id) {
+        // apply the creation event
+    }
+    ...
+}
+```
+
+We would like to create this Aggregate as a consequence of handling a command in `AggregateB`, like so:
+
+```java
+public class AggregateB {
+    ...
+    @CommandHandler
+    public void AggregateB(SomeAggregateBCommand command) {
+        AggregateLifecycle.createNew(AggregateA.class, () -> new AggregateA(/* provide the id for AggregateA */)); // (1)
+    }
+    ...
+}
+```
+
+\(1\) The first parameter of the `AggregateLifecycle#createNew()` method is the type of Aggregate to be created. The second parameter is the factory method - the method to be used in order to instantiate the desired Aggregate.
+
+> **Note** Creation of a new Aggregate should be done in a Command Handling function rather than in an Event Handling function \(given the usage of Event Sourced Aggregate\). Rationale: we do not want to create new Aggregates when we are sourcing a given Aggregate - previously created aggregate will be Event Sourced based on its events. However, if you try to create a new Aggregate while Axon is replaying events, an `UnsupportedOperationException` will be thrown.
+
 ## Complex aggregate structures
 
 Complex business logic often requires more than what an aggregate with only an aggregate root can provide. In that case, it is important that the complexity is spread over a number of entities within the aggregate. When using event sourcing, not only the aggregate root needs to use events to trigger state transitions, but so does each of the entities within that aggregate.
@@ -130,6 +163,45 @@ Complex business logic often requires more than what an aggregate with only an a
 Axon provides support for event sourcing in complex aggregate structures. Entities are, just like the aggregate root, simple objects. The field that declares the child entity must be annotated with `@AggregateMember`. This annotation tells Axon that the annotated field contains a class that should be inspected for command and event handlers.
 
 When an entity \(including the aggregate root\) applies an event, it is handled by the aggregate root first, and then bubbles down through all `@AggregateMember` annotated fields to its child entities.
+
+> **Note** There is a way to filter the entities which would handle an event applied by the Aggregate Root. This can be achieved by using `eventForwardingMode` attribute of `@AggregateMember` annotation. By default, an event is propagated to **all** child entities. An event can be blocked using `ForwardNone` event forwarding mode \(see listing below\).
+>
+> ```java
+> public class MyAggregate {
+>    ...
+>    @AggregateMember(eventForwardingMode = ForwardNone.class)
+>    private MyEntity myEntity;
+>    ...
+> }
+> ```
+>
+> If you want to forward an event to the entity only in a case when an event message has matching entity identifier use `ForwardMatchingInstances` event forwarding mode. Entity identifier matching will be done based on specified `routingKey` on `@AggregateMember` annotation. If `routingKey` is not specified on `@AggregateMember` annotation, matching will be done based on `routingKey` attribute on `@EntityId` annotation. If `routingKey` is not specified on `@EntityId` annotation matching will be done based on field name of entity identifier. Let's take a look at example on how to define `ForwardMatchingInstances` event forwarding mode with specifying a routing key for the entity identifier:
+>
+> ```java
+> public class MyAggregate {
+>    ...
+>    @AggregateMember(eventForwardingMode = ForwardMatchingInstances.class)
+>    private MyEntity myEntity;
+>    ...
+> }
+> ...
+> public class MyEntity {
+>    ...
+>    @EntityId(routingKey = "myEntityId")
+>    private String id;
+>    ...
+>    @EventSourcingHandler
+>    public void on(MyEvent event) {
+>        // handle event
+>    }
+> }
+> ...
+> public class MyEvent {
+>    ...
+>    private String myEntityId;
+>    ...
+> }
+> ```
 
 Fields that \(may\) contain child entities must be annotated with `@AggregateMember`. This annotation may be used on a number of field types:
 
@@ -198,9 +270,11 @@ public class DoSomethingCommand {
 }
 ```
 
-The Axon Configuration API can be used configure the Aggregate. For example:
+Let's see how we can configure an Aggregate:
 
-```text
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
 Configurer configurer = ...
 // to use defaults:
 configurer.configureAggreate(MyAggregate.class);
@@ -211,6 +285,21 @@ configurer.configureAggregate(
                            .configureCommandTargetResolver(c -> new CustomCommandTargetResolver())
 );
 ```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Aggregate(commandTargetResolver = "customCommandTargetResolver")
+public class MyAggregate {...}
+...
+// somewhere in configuration
+@Bean
+public CommandTargetResolver customCommandTargetResolver() {
+    return new CustomCommandTargetResolver();
+}
+```
+{% endtab %}
+{% endtabs %}
 
 `@CommandHandler` annotations are not limited to the aggregate root. Placing all command handlers in the root will sometimes lead to a large number of methods on the aggregate root, while many of them simply forward the invocation to one of the underlying entities. If that is the case, you may place the `@CommandHandler` annotation on one of the underlying entities' methods. For Axon to find these annotated methods, the field declaring the entity in the aggregate root must be marked with `@AggregateMember`. Note that only the declared type of the annotated field is inspected for command handlers. If a field value is null at the time an incoming command arrives for that entity, an exception is thrown.
 

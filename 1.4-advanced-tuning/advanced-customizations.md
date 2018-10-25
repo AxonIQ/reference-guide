@@ -1,6 +1,6 @@
 # 1.4.1 Advanced customizations
 
-## Parameter resolvers
+## Parameter Resolvers
 
 You can configure additional `ParameterResolver`s by extending the `ParameterResolverFactory` class and creating a file named `/META-INF/service/org.axonframework.common.annotation.ParameterResolverFactory` containing the fully qualified name of the implementing class.
 
@@ -20,10 +20,12 @@ As there are several objects to be serialized, it is typically desired to tune w
 
 By default all three `Serializer` flavors are set to use the `XStreamSerializer`, which internally uses [XStream](http://x-stream.github.io/) to serialize objects to an XML format. XML is a verbose format to serialize to, but XStream has the major benefit of being able to serialize virtually anything. This verbosity is typically fine when storing tokens, sagas or snapshots, but for messages \(and specifically events\) XML might prove to cost too much due to its serialized size. Thus for optimization reasons you can configure different serializers for your messages. Another very valid reason for customizing Serializers is to achieve interoperability between different \(Axon\) applications, where the receiving end potentially enforces a specific serialized format.
 
-There is an implicit ordering between the configurable serializer. If no event `Serializer` is configured, the Event de-/serialization will be performed by the `MessageSerializer`. In turn, if no `MessageSerializer` is configured, the default`Serializer` will take that role.
+There is an implicit ordering between the configurable serializer. If no `EventSerializer` is configured, the Event de-/serialization will be performed by the `MessageSerializer`. In turn, if no `MessageSerializer` is configured, the default `Serializer` will take that role.
 
 See the following example on how to configure each serializer specifically, were we use `XStreamSerializer` as the default and `JacksonSerializer` for all our messages:
 
+{% tabs %}
+{% tab title="Axon Configuration API" %}
 ```java
 public class SerializerConfiguration {
 
@@ -39,8 +41,30 @@ public class SerializerConfiguration {
     }
 }
 ```
+{% endtab %}
 
-## Meta annotations
+{% tab title="Spring Boot AutoConfiguration - Properties file" %}
+```text
+# Possible values for these keys are `default`, `xstream`, `java`, and `jackson`.
+axon.serializer.general
+axon.serializer.events
+axon.serializer.messages
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - YML file" %}
+```yaml
+# Possible values for these keys are `default`, `xstream`, `java`, and `jackson`.
+axon:
+    serializer:
+        general: 
+        events: 
+        messages:
+```
+{% endtab %}
+{% endtabs %}
+
+## Meta Annotations
 
 Most annotations in Axon can be placed on other annotations, as so-called meta-annotation. When Axon scans for annotations, it will automatically scan meta-annotations as well. Annotations can override the properties defined on the meta-annotations, if desired.
 
@@ -58,23 +82,23 @@ public @interface JsonCommandHandler {
 }
 ```
 
-By specifying the `payloadType` on the `@CommandHandler` meta-annotation, this becomes the value used for all command handlers annotated with `JsonCommandHandler`. These command handlers may \(and should\) still provide a parameter for the payload, but Axon will complain if it is not a subclass of `JsonNode`.
+By specifying the `payloadType` on the `@CommandHandler` meta-annotation, this becomes the value used for all Command Handlers annotated with `JsonCommandHandler`. These command handlers may \(and should\) still provide a parameter for the payload, but Axon will complain if it isn't a subclass of `JsonNode`.
 
 The `commandName` attribute on the `JsonCommandHandler` annotation does not have a default value, and will therefore force developers to specify the name of the command. Note that, to override values, the attribute name must identical to the name on the `@CommandHandler` meta-annotation.
 
-Lastly, the `routingKey` property is defined exactly as in the `@CommandHandler` annotation's specification to still allow developers to choose to provide a routing key when using the `JsonCommandHandler`.
+Lastly, the `routingKey` property is defined exactly as in the `@CommandHandler` annotation's specification to still allow developers to choose to provide a Routing Key when using the `JsonCommandHandler`.
 
 When writing custom logic to access properties of annotation that may be meta-annotated, be sure to use the `AnnotationUtils#findAnnotationAttributes(AnnotatedElement, String)` method, or the `annotationAttributes` on the `MessageHandlingMember`. Using Java's annotation API will not take meta-annotations into consideration.
 
-## Customizing message handler behavior
+## Customizing Message Handler behavior
 
 Overriding annotations is very useful to implement best practices that you have established in your team, providing defaults or restrictions of how annotations may be used. However, they can also be very useful when special behavior needs to be added to message handlers based on the presence of an annotation.
 
-### Handler enhancers
+### Handler Enhancers
 
-Handler enhancers allow you to wrap handlers and add custom logic to the execution, or eligibility of handlers for a certain message. This differs from `HandlerInterceptor`s in that you have access to the Aggregate member at the time of resolving, and it allows for more fine-grained control . You can use handler enhancers to intercept and perform checks on groups of `@CommandHandler`s or `@EventHandler`s.
+Handler Enhancers allow you to wrap handlers and add custom logic to the execution, or eligibility of handlers for a certain message. This differs from `HandlerInterceptor`s in that you have access to the Aggregate member at the time of resolving, and it allows for more fine-grained control. You can use Handler Enhancers to intercept and perform checks on groups of `@CommandHandler`s or `@EventHandler`s.
 
-To create a handler enhancer you start by implementing `HandlerEnhancerDefinition` and overriding the `wrapHandler()` method. All this method does is give you access to the `MessageHandlingMember<T>` which is an object representing any handler that is specified in the system.
+To create a Handler Enhancer you start by implementing `HandlerEnhancerDefinition` and overriding the `wrapHandler()` method. All this method does is give you access to the `MessageHandlingMember<T>` which is an object representing any handler that is specified in the system.
 
 You can then sort these handlers based on their annotations by using the `annotationAttributes(Annotation annotation)` method. This will filter out only those handlers that use that `Annotation`.
 
@@ -132,9 +156,30 @@ public class MethodCommandHandlerDefinition implements HandlerEnhancerDefinition
 
 To skip all handling of the handler then just throw an exception.
 
+It is possible to configure `HandlerDefinition` with Axon `Configuration`. If you are using Spring Boot defining `HandlerDefintion`s and `HandlerEnhancerDefinition`s as beans is sufficient \(Axon autoconfiguration will pick them up and configure within Axon `Configuration`\).
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration();
+configurer.registerHandlerDefinition(c -> new MethodCommandHandlerDefinition());
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+// somewhere in configuration
+@Bean
+public HandlerDefinition eventStorageEngine() {
+    return new MethodCommandHandlerDefinition(); 
+}
+```
+{% endtab %}
+{% endtabs %}
+
 ## Filtering Event Storage Engine
 
-In some scenarios you might want to chose which events to store. For this you can use the `FilteringEventStorageEngine`. One imaginable use case could be that we don't want to store non-domain events. `FilteringEventStorageEngine` uses a `Predicate<? super EventMessage<?>>` in order to filter events which get stored in the delegated engine. Let's try to configure a `FilteringEventStorageEngine` with the `Configurer` \(if you are using Spring, it's enough to have a bean of type `EventStorageEngine` in your application context\). The next example will only store domain events:
+In some scenarios you might want to chose which events to store. For this you can use the `FilteringEventStorageEngine`. One imaginable use case could be that we don't want to store non-domain events. `FilteringEventStorageEngine` uses a `Predicate<? super EventMessage<?>>` in order to filter events which get stored in the delegated engine. Let's try to configure a `FilteringEventStorageEngine` with the `Configurer` \(if you are using Spring, it's enough to have a bean of type `EventStorageEngine` in your `ApplicationContext`\). The next example will only store domain events:
 
 ```java
 public class EventStorageEngineConfiguration {
