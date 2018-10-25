@@ -32,8 +32,6 @@ If you need some contextual data about the Deadline during the Deadline Handling
 String deadlineId = deadlineManager.schedule(Duration.ofMillis(500), "myDeadline", new MyDeadlinePayload(...));
 ```
 
-Lastly, you could also provide the Deadline Identifier to the `DeadlineManager` instead of letting the `DeadlineManager` generate an identifier automatically.
-
 ## Handling a Deadline
 
 We have now seen how to schedule a Deadline. When the scheduled time is met, the corresponding `@DeadlineHandler` is invoked. A `@DeadlineHandler` is a Message Handler as any other in Axon - it is possible to inject parameters for which the `ParameterResolver`s exist. 
