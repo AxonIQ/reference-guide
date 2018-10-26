@@ -279,7 +279,7 @@ That is where the `DistributedCommandBus` comes in. Unlike the other `CommandBus
 
 > **Note**
 >
-> While the distributed command bus itself is part of the Axon Framework core module, it requires components that you can find in one of the `axon-distributed-commandbus-...` modules. If you use Maven, make sure you have the appropriate dependencies set. The `groupId` and `version`are identical to those of the `axon-core` module.
+> While the distributed command bus itself is part of the Axon Framework main modules, it requires components that you can find in one of the extension modules (SpringCloud or JGroups). If you use Maven, make sure you have the appropriate dependencies set.
 
 The `DistributedCommandBus` relies on two components: a `CommandBusConnector`, which implements the communication protocol between the JVM's, and the `CommandRouter`, which chooses a destination for each incoming command. This router defines which segment of the `DistributedCommandBus` should be given a \`command, based on a routing key calculated by a routing strategy. Two commands with the same routing key will always be routed to the same segment, as long as there is no change in the number and configuration of the segments. Generally, the identifier of the targeted aggregate is used as a routing key.
 
@@ -361,7 +361,7 @@ The Spring Cloud connector setup is a combination of the `SpringCloudCommandRout
 The `SpringCloudCommandRouter` has to be created by providing the following:
 
 * A "discovery client" of type `DiscoveryClient` - This can be provided by annotating your Spring Boot application with `@EnableDiscoveryClient`, which will look for a Spring Cloud implementation on your classpath.
-* A "routing strategy" of type `RoutingStrategy` - The `axon-core` module currently provides several implementations, but a function call can suffice as well. If you want to route the Commands based on the 'aggregate identifier' for example, you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
+* A "routing strategy" of type `RoutingStrategy` - The `axon-messaging` module currently provides several implementations, but a function call can suffice as well. If you want to route the Commands based on the 'aggregate identifier' for example, you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
 
 Other optional parameters for the `SpringCloudCommandRouter` are:
 
