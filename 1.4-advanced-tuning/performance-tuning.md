@@ -123,18 +123,11 @@ See [using snapshot events](../1.3-infrastructure-components/repository-and-even
 Sometimes a snapshot becomes obsolete \(the Aggregate structure has changed since it was snapshotted\). In those cases it is convenient to filter snapshots. This is where `snapshotFilter` comes in place. It is a Java `Predicate` which decides based on `DomainEventData` whether a snapshot should be taken into account for processing. If none provided, an implementation which returns always `true` is used. `snapshotFilter` has to be provided to the `EventStorageEngine`:
 
 ```java
-JdbcEventStorageEngine storageEngine = new JdbcEventStorageEngine(serializer, 
-                                                                  upcasterChain, 
-                                                                  persistenceExceptionResolver, 
-                                                                  serializer, 
-                                                                  snapshotFilter, // <-- 
-                                                                  batchSize, 
-                                                                  connectionProvider, 
-                                                                  transactionManager, 
-                                                                  dataType, 
-                                                                  eventSchema, 
-                                                                  maxGapOffset, 
-                                                                  lowestGlobalSequence);
+JdbcEventStorageEngine storageEngine = JdbcEventStorageEngine.builder()
+                                                             .snapshotFilter(snapshotFilter) // <--
+                                                             .connectionProvider(connectionProvider)
+                                                             .transactionManager(transactionManager)
+                                                             .build();
 ```
 
 ## Event serializer tuning
