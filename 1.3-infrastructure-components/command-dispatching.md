@@ -77,7 +77,9 @@ public interface MyGateway {
 }
 
 // To configure a gateway:
-CommandGatewayFactory factory = new CommandGatewayFactory(commandBus);
+CommandGatewayFactory factory = CommandGatewayFactory.builder()
+                                                     .commandBus(commandBus)
+                                                     .build();
 // note that the commandBus can be obtained from the Configuration
 // object returned on `configurer.initialize()`.
 MyGateway myGateway = factory.createGateway(MyGateway.class);
@@ -180,7 +182,7 @@ We can register this dispatch interceptor with a `CommandBus` by doing the follo
 public class CommandBusConfiguration {
 
     public CommandBus configureCommandBus() {
-        CommandBus commandBus = new SimpleCommandBus();
+        CommandBus commandBus = SimpleCommandBus.builder().build();
         commandBus.registerDispatchInterceptor(new MyCommandDispatchInterceptor());
         return commandBus;
     }
@@ -234,7 +236,7 @@ We can register the handler interceptor with a `CommandBus` like so:
 public class CommandBusConfiguration {
 
     public CommandBus configureCommandBus() {
-        CommandBus commandBus = new SimpleCommandBus();
+        CommandBus commandBus = SimpleCommandBus.builder().build();
         commandBus.registerHandlerInterceptor(new MyCommandHandlerInterceptor());
         return commandBus;
     }
@@ -316,12 +318,19 @@ Ultimately, the `JGroupsConnector` needs to actually connect, in order to dispat
 
 ```java
 JChannel channel = new JChannel("path/to/channel/config.xml");
-CommandBus localSegment = new SimpleCommandBus();
-Serializer serializer = new XStreamSerializer();
+CommandBus localSegment = SimpleCommandBus.builder().build();
+Serializer serializer = XStreamSerializer.builder().build();
 
-JGroupsConnector connector = new JGroupsConnector(channel, "myCommandBus", 
-                                                  localSegment, serializer);
-DistributedCommandBus commandBus = new DistributedCommandBus(connector, connector);
+JGroupsConnector connector = JGroupsConnector.builder()
+                                             .channel(channel)
+                                             .clusterName("myCommandBus")
+                                             .localSegment(localSegment)
+                                             .serializer(serializer)
+                                             .build();
+DistributedCommandBus commandBus = DistributedCommandBus.builder()
+                                                        .connector(connector)
+                                                        .commandRouter(connector)
+                                                        .build();
 
 // on one node:
 commandBus.subscribe(CommandType.class.getName(), handler);
@@ -393,8 +402,10 @@ public class MyApplication {
     // Example function providing a Spring Cloud Connector
     @Bean
     public CommandRouter springCloudCommandRouter(DiscoveryClient discoveryClient) {
-        return new SpringCloudCommandRouter(discoveryClient, 
-                        new AnnotationRoutingStrategy());
+        return SpringCloudCommandRouter.builder()
+                                       .discoveryClient(discoveryClient)
+                                       .routingStrategy(new AnnotationRoutingStrategy())
+                                       .build();
     }
 
     @Bean
@@ -402,8 +413,11 @@ public class MyApplication {
                         @Qualifier("localSegment") CommandBus localSegment,
                         RestOperations restOperations,
                         Serializer serializer) {
-        return new SpringHttpCommandBusConnector(localSegment, restOperations, 
-                                                 serializer);
+        return SpringHttpCommandBusConnector.builder()
+                                            .localCommandBus(localSegment)
+                                            .restOperations(restOperations)
+                                            .serializer(serializer)
+                                            .build();
     }
 
     @Primary // to make sure this CommandBus implementation is used for autowiring
@@ -411,7 +425,10 @@ public class MyApplication {
     public DistributedCommandBus springCloudDistributedCommandBus(
                          CommandRouter commandRouter, 
                          CommandBusConnector commandBusConnector) {
-        return new DistributedCommandBus(commandRouter, commandBusConnector);
+        return DistributedCommandBus.builder()
+                                    .commandRouter(commandRouter)
+                                    .connector(commandBusConnector)
+                                    .build();
     }
 
 }
@@ -422,7 +439,7 @@ public class MyApplication {
 @Bean
 @Qualifier("localSegment")
 public CommandBus localSegment() {
-    return new SimpleCommandBus();
+    return SimpleCommandBus.builder().build();
 }
 ```
 
@@ -447,11 +464,12 @@ public class MyApplicationConfiguration {
                              RestTemplate restTemplate, 
                              @Value("${axon.distributed.spring-cloud.fallback-url}") 
                                          String messageRoutingInformationEndpoint) {
-        return new SpringCloudHttpBackupCommandRouter(
-                             discoveryClient, 
-                             new AnnotationRoutingStrategy(), 
-                             restTemplate, 
-                             messageRoutingInformationEndpoint);
+        return SpringCloudHttpBackupCommandRouter.builder()
+                                                 .discoveryClient(discoveryClient)
+                                                 .routingStrategy(new AnnotationRoutingStrategy())
+                                                 .restTemplate(restTemplate)
+                                                 .messageRoutingInformationEndpoint(messageRoutingInformationEndpoint)
+                                                 .build();
     }
 }
 ```
