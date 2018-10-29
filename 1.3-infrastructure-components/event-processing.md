@@ -443,7 +443,9 @@ public class EventBusConfiguration {
 
     public EventBus configureEventBus(EventStorageEngine eventStorageEngine) {
         // note that an EventStore is a more specific implementation of an EventBus
-        EventBus eventBus = new EmbeddedEventStore(eventStorageEngine);
+        EventBus eventBus = EmbeddedEventStore.builder()
+                                              .storageEngine(eventStorageEngine)
+                                              .build();
         eventBus.registerDispatchInterceptor(new EventLoggingDispatchInterceptor());
         return eventBus;
     }
