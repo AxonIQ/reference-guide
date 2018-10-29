@@ -88,6 +88,10 @@ try {
 }
 ```
 
+> **Note**
+>
+> Unit of Work works with messages. It is always started with a message to be processed. As a result of Unit of Work execution (`executeWithResult(...)`) we always get a `ResultMessage`. As a payload of `ResultMessage` we get the actual execution result. If there were problems during message processing, we get an exceptional `ResultMessage` - `isExceptional()` will return `true` and `exceptionResult()` will get us the actual `Throwable` indicating what went wrong.
+
 A `UnitOfWork` knows several phases. Each time it progresses to another phase, the listeners are notified.
 
 * Active phase - this is where the Unit of Work is started. The unit of work is generally registered with the current thread in this phase \(through `CurrentUnitOfWork.set(UnitOfWork)`\). Subsequently, the message is typically handled by a message handler in this phase.
