@@ -28,7 +28,7 @@ It is possible to register multiple query handlers for the same type of query an
 
 ## Axon Module Structure
 
-Axon Framework consists of a number of modules that target specific problem areas of CQRS. Depending on the exact needs of your project, you will need to include one or more of these modules.
+Axon Framework consists of a number of modules that target specific problem areas of CQRS and Event Sourcing. Depending on the exact needs of your project, you will need to include one or more of these modules.
 
 All modules are OSGi compatible bundles. This means they contain the required headers in the manifest file and declare the packages they import and export. At the moment, only the Slf4J bundle \(1.7.0 &lt;= version &lt; 2.0.0\) is required. All other imports are marked as optional, although you're very likely to need others.
 
@@ -36,19 +36,37 @@ All modules are OSGi compatible bundles. This means they contain the required he
 
 Axon its main modules are the modules that have been thoroughly tested and are robust enough to use in demanding production environments. The maven groupId of all these modules is `org.axonframework`.
 
-The `axon-core` module contains, as the name suggests, the Core components of Axon. If you use a single-node setup, this module is likely to provide all the components you need. All other Axon modules depend on this module, so it must always be available on the classpath.
+The `axon-messaging` module contains all necessary components and building blocks to support command, event and query messaging.
 
-The `axon-test`module contains test fixtures that you can use to test Axon based components, such as your Command Handlers, Aggregates and Sagas. You typically do not need this module at runtime and will only need to be added to the classpath for running tests.
+The `axon-disruptor` module contains a specific `CommandBus` and Command Handling solution based on the [Disruptor](https://lmax-exchange.github.io/disruptor/) paradigm.
 
-The `axon-distributed-commandbus` module contain implementations that can be used to distribute commands over multiple nodes. It comes with JGroups and Spring Cloud Connectors that are used to connect these nodes.
+The `axon-modelling` module contains the necessary components to create domain models, like Aggregates and Sagas.
 
-The `axon-amqp` module provides components that allow you to build up an event bus using an AMQP-based message broker as distribution mechanism. This allows for guaranteed-delivery, even when the event handler node is temporarily unavailable.
+The `axon-eventsourcing` module contains all necessary infrastructure components to support Event Sourcing Command and Query models.
+
+The `axon-configuration` module contains all the necessary components to configure an Axon application.
+
+The `axon-server-connector` module provides infrastructure components that connect to AxonServer.
+
+The `axon-test` module contains test fixtures that you can use to test Axon based components, such as your Command Handlers, Aggregates and Sagas. You typically do not need this module at runtime and will only need to be added to the classpath for running tests.
 
 The `axon-spring` module allows Axon Framework components to be configured in the Spring Application context. It also provides a number of building block implementations specific to Spring Framework, such as an adapter for publishing and retrieving Axon Events on a Spring Messaging Channel.
 
-MongoDB is a document based NoSQL database. The `axon-mongo` module provides event and saga store implementations that store event streams and sagas in a MongoDB database.
+Several Axon Framework components provide monitoring information. The `axon-metrics` module provides basic implementations based on [Codehale ](https://metrics.dropwizard.io/4.0.0/) to collect the monitoring information.
 
-Several Axon Framework components provide monitoring information. The `axon-metrics` module provides basic implementations based on [Codehale ](https://metrics.dropwizard.io/4.0.0/)to collect the monitoring information.
+### Extension modules
+
+Besides main modules, there are several extension modules which complement Axon Framework. They address distribution concerns of Axon Framework towards non-Axon Server solutions. The maven groupId of all these extensions is `org.axonframework.extensions`. All of these extensions come with their respective spring/spring boot modules.
+
+The `axon-amqp` module provides components that allow you to build up an event bus using an [AMQP](https://www.amqp.org/)-based message broker as distribution mechanism. This allows for guaranteed-delivery, even when the event handler node is temporarily unavailable.
+
+The `axon-kafka` module provides integration with [Kafka](https://kafka.apache.org/) for event distribution (do note that events are not stored in this scenario).
+
+The `axon-jgroups` module provides integration with [JGroups](http://www.jgroups.org/) for command distribution.
+
+The `axon-springcloud` module provides integration with [Spring Cloud](http://projects.spring.io/spring-cloud/) for command distribution.
+
+[MongoDB](https://www.mongodb.com/) is a document based NoSQL database. The `axon-mongo` module provides event and saga store implementations that store event streams and sagas in a MongoDB database.
 
 ## Working with Axon Framework APIs
 
