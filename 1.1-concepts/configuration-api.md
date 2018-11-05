@@ -13,7 +13,8 @@ Configuration config = DefaultConfigurer.defaultConfiguration()
                                         .buildConfiguration();
 ```
 
-This configuration provides the building blocks for dispatching commands and queries using implementations that handle them on the threads that dispatch them. Events are handled in separate threads.
+This configuration provides the building blocks for dispatching commands and queries using implementations that handle 
+them on the threads that dispatch them. Events are (by default) handled in separate threads.
 
 Obviously, this configuration would not be very useful. You would have to register your command model objects, query models, and event handlers to this configuration to be useful.
 

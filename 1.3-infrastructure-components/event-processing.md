@@ -84,7 +84,8 @@ The `EventProcessingConfigurer` class defines a number of methods that can be us
 
 #### Sagas
 
-Sagas are configured using the `SagaConfigurer` class. It provides convenient methods for configuring saga repository, saga manager and saga store.
+Sagas are configured using the `SagaConfigurer` class. 
+It provides convenient methods for configuring a saga repository, a saga manager and a saga store.
 
 Let's configure custom saga repository, saga manager and saga store:
 
