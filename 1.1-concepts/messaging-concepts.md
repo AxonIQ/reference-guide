@@ -90,7 +90,11 @@ try {
 
 > **Note**
 >
-> Unit of Work works with messages. It is always started with a message to be processed. As a result of Unit of Work execution (`executeWithResult(...)`) we always get a `ResultMessage`. As a payload of `ResultMessage` we get the actual execution result. If there were problems during message processing, we get an exceptional `ResultMessage` - `isExceptional()` will return `true` and `exceptionResult()` will get us the actual `Throwable` indicating what went wrong.
+> The Unit of Work revolves around messages. It is always started with a message to be processed. 
+> As a result of a Unit-of-Work's execution (`executeWithResult(...)`) a `ResultMessage` will be returned and the actual 
+execution result will be the payload of that `ResultMessage`. 
+> If problems arose during message processing, we get an exceptional `ResultMessage` - `isExceptional()` will 
+return `true` and `exceptionResult()` will get us the actual `Throwable` indicating what went wrong.
 
 A `UnitOfWork` knows several phases. Each time it progresses to another phase, the listeners are notified.
 
