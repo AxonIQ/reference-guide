@@ -162,7 +162,7 @@ There are different types of interceptors: Dispatch interceptors and handler int
 
 ### Dispatch interceptors
 
-Message dispatch interceptors are invoked when a query is dispatched on a query bus. They have the ability to alter the query message, by adding metadata, for example, or block the query by throwing an exception. These interceptors are always invoked on the thread that dispatches the query. Message dispatch interceptors are invoked when a query is dispatched on a query bus. They have the ability to alter the query message, by adding metadata, for example, or block the query by throwing an exception. These interceptors are always invoked on the thread that dispatches the query.
+Message dispatch interceptors are invoked when a query is dispatched on a query bus or when a subscription update to a query message is dispatched on a query update emitter. They have the ability to alter the message, by adding metadata, for example, or block the handler execution by throwing an exception. These interceptors are always invoked on the thread that dispatches the message. 
 
 #### Structural validation
 

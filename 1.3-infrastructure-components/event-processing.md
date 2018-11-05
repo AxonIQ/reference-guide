@@ -409,7 +409,7 @@ TrackingEventProcessorConfiguration
 
 Similarly as with [command messages](command-dispatching.md#command-interceptors), event messages can also be intercepted prior to publishing and handling to perform additional actions on all events. This thus boils down to same two types of interceptors for messages: the Dispatch- and the Handler Interceptor.
 
-Dispatch interceptors are invoked before a event \(message\) is published on the event bus.  
+Dispatch interceptors are invoked before an event \(message\) is published on the event bus.  
 Handler interceptors on the other hand are invoked just before the event handler is invoked with a given event \(message\) in the event processor. Examples of operations performed in an interceptor are logging or authentication, which you might want to do regardless of the type of event.
 
 ### Dispatch Interceptors
@@ -484,11 +484,11 @@ We can register the handler interceptor with an `EventProcessor` like so:
 ```java
 public class EventProcessorConfiguration {
 
-    public EventProcessingConfiguration eventProcessingConfiguration() {
-        return new EventProcessingConfiguration()
-                .registerTrackingEventProcessor("my-tracking-processor")
-                .registerHandlerInterceptor("my-tracking-processor", 
-                            configuration -> new MyEventHandlerInterceptor());
+    public void configureEventProcessing(Configurer configurer) {
+        configurer.eventProcessing()
+                  .registerTrackingEventProcessor("my-tracking-processor")
+                  .registerHandlerInterceptor("my-tracking-processor",
+                                              configuration -> new MyEventHandlerInterceptor());
     }
 }
 ```
