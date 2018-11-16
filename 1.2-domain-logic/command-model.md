@@ -213,7 +213,10 @@ Fields that \(may\) contain child entities must be annotated with `@AggregateMem
 
 It is recommended to define the command handlers directly in the aggregate that contains the state to process this command, as it is not unlikely that a command handler needs the state of that aggregate to do its job.
 
-To define a command handler in an aggregate, simply annotate the command handling method with `@CommandHandler`. The rules for an `@CommandHandler` annotated method are the same as for any handler method. However, commands are not only routed by their payload. command nessages carry a name, which defaults to the fully qualified class name of the command object.
+To define a command handler in an aggregate, simply annotate the command handling method with `@CommandHandler`. 
+The rules for an `@CommandHandler` annotated method are the same as for any handler method. 
+However, commands are not only routed by their payload. 
+Command messages carry a name, which defaults to the fully qualified class name of the command object.
 
 By default, `@CommandHandler` annotated methods allow the following parameter types:
 
