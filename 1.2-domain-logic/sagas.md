@@ -144,9 +144,8 @@ Axon supports life cycle management through the `AnnotatedSagaManager`, which is
 
 When using the Configuration API, Axon will use sensible defaults for most components. However, it is highly recommended to define a `SagaStore` implementation to use. The `SagaStore` is the mechanism that 'physically' stores the saga instances somewhere. The `AnnotatedSagaRepository` \(the default\) uses the `SagaStore` to store and retrieve Saga instances as they are required.
 
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-```java
+{% codetabs name="Axon Configuration API", type="java" -%}
+
 Configurer configurer = DefaultConfigurer.defaultConfiguration();
 configurer.registerModule(
         SagaConfiguration.subscribingSagaManager(MySaga.class)
@@ -156,11 +155,9 @@ configurer.registerModule(
 
 // alternatively, it is possible to register a single SagaStore for all Saga types:
 configurer.registerComponent(SagaStore.class, c -> new JpaSagaStore(...));
-```
-{% endtab %}
 
-{% tab title="Spring Boot AutoConfiguration" %}
-```java
+{%- language name="Spring Boot AutoConfiguration", type="java" -%}
+
 @Saga(sagaStore = "mySagaStore")
 public class MySaga {...}
 ...
@@ -169,9 +166,8 @@ public class MySaga {...}
 public SagaStore mySagaStore() {
     return new MongoSagaStore(...); // default is JpaSagaStore
 }
-```
-{% endtab %}
-{% endtabs %}
+
+{%- endcodetabs %}
 
 ### Saga repository and saga store
 

@@ -1,5 +1,5 @@
 {
-  "plugins": ["ga", "anchors", "codetabs"],
+  "plugins": ["ga", "anchors", "codetabs", "hints"],
   "pluginsConfig": {
     "ga": {
       "token": "UA-180286-13"
