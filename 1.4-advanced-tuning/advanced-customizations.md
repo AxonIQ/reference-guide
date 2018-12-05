@@ -24,9 +24,8 @@ There is an implicit ordering between the configurable serializer. If no `EventS
 
 See the following example on how to configure each serializer specifically, were we use `XStreamSerializer` as the default and `JacksonSerializer` for all our messages:
 
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-```java
+{% codetabs name="Axon Configuration API", type="java" -%}
+
 public class SerializerConfiguration {
 
     public void serializerConfiguration(Configurer configurer) {
@@ -40,29 +39,24 @@ public class SerializerConfiguration {
                   .configureEventSerializer(configuration -> messageSerializer);
     }
 }
-```
-{% endtab %}
 
-{% tab title="Spring Boot AutoConfiguration - Properties file" %}
-```text
+{%- language name="Spring Boot - Properties", type="txt" -%}
+
 # Possible values for these keys are `default`, `xstream`, `java`, and `jackson`.
 axon.serializer.general
 axon.serializer.events
 axon.serializer.messages
-```
-{% endtab %}
 
-{% tab title="Spring Boot AutoConfiguration - YML file" %}
-```yaml
+{%- language name="Spring Boot - YML", type="txt" -%}
+
 # Possible values for these keys are `default`, `xstream`, `java`, and `jackson`.
 axon:
     serializer:
         general: 
         events: 
         messages:
-```
-{% endtab %}
-{% endtabs %}
+
+{%- endcodetabs %}
 
 ## Meta Annotations
 
@@ -158,24 +152,21 @@ To skip all handling of the handler then just throw an exception.
 
 It is possible to configure `HandlerDefinition` with Axon `Configuration`. If you are using Spring Boot defining `HandlerDefintion`s and `HandlerEnhancerDefinition`s as beans is sufficient \(Axon autoconfiguration will pick them up and configure within Axon `Configuration`\).
 
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-```java
+{% codetabs name="Axon Configuration API", type="java" -%}
+
 Configurer configurer = DefaultConfigurer.defaultConfiguration();
 configurer.registerHandlerDefinition(c -> new MethodCommandHandlerDefinition());
-```
-{% endtab %}
 
-{% tab title="Spring Boot AutoConfiguration" %}
-```java
+
+{%- language name="Spring Boot AutoConfiguration", type="java" -%}
+
 // somewhere in configuration
 @Bean
 public HandlerDefinition eventStorageEngine() {
     return new MethodCommandHandlerDefinition(); 
 }
-```
-{% endtab %}
-{% endtabs %}
+
+{%- endcodetabs %}
 
 ## Filtering Event Storage Engine
 

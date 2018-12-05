@@ -17,9 +17,8 @@ Internally, the `axon-metrics` module uses [Dropwizard Metrics](https://metrics.
 
 You are free to configure any combination of `MessageMonitors` through constructors on your messaging components, and even simpler by using the [Configuration API](../1.1-concepts/configuration-api.md). The `GlobalMetricRegistry` contained in the `axon-metrics` module provides a set of sensible defaults per type of messaging component. The following example shows you how to configure default metrics for your message handling components:
 
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-```java
+{% codetabs name="Axon Configuration API", type="java" -%}
+
 public class MetricsConfiguration {
 
     public Configurer buildConfigurer() {
@@ -33,16 +32,13 @@ public class MetricsConfiguration {
         globalMetricRegistry.registerWithConfigurer(configurer);
     }
 }
-```
-{% endtab %}
 
-{% tab title="Spring Boot AutoConfiguration" %}
-```text
+{%- language name="Spring Boot AutoConfiguration", type="txt" -%}
+
 # The default value is `true`. Thus you will have Metrics configured if axon-metrics and io.dropwizard.metrics are on your classpath.
 axon.metrics.auto-configuration.enabled=true
-```
-{% endtab %}
-{% endtabs %}
+
+{%- endcodetabs %}
 
 If you want to have more specific metrics on a message handling component like the `EventBus`, you can do the following:
 
@@ -85,9 +81,8 @@ One import aspect in regards to this is tracing a given message. To that end the
 
 For configuring the `MessageOriginProvider` you can do the following:
 
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-```java
+{% codetabs name="Axon Configuration API", type="java" -%}
+
 public class MonitoringConfiguration {
 
     public Configurer buildConfigurer() {
@@ -103,11 +98,9 @@ public class MonitoringConfiguration {
     }
 
 }
-```
-{% endtab %}
 
-{% tab title="Spring Boot AutoConfiguration" %}
-```java
+{%- language name="Spring Boot AutoConfiguration", type="java" -%}
+
 public class MonitoringConfiguration {
 
     // When using Spring Boot, simply defining a CorrelationDataProvider bean is sufficient
@@ -116,9 +109,8 @@ public class MonitoringConfiguration {
     }
 
 }
-```
-{% endtab %}
-{% endtabs %}
+
+{%- endcodetabs %}
 
 ### Interceptor Logging
 

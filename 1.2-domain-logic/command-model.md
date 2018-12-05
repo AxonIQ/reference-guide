@@ -272,9 +272,9 @@ public class DoSomethingCommand {
 
 Let's see how we can configure an Aggregate:
 
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-```java
+
+{% codetabs name="Axon Configuration API", type="java" -%}
+
 Configurer configurer = ...
 // to use defaults:
 configurer.configureAggreate(MyAggregate.class);
@@ -284,11 +284,9 @@ configurer.configureAggregate(
         AggregateConfigurer.defaultConfiguration(MyAggregate.class)
                            .configureCommandTargetResolver(c -> new CustomCommandTargetResolver())
 );
-```
-{% endtab %}
 
-{% tab title="Spring Boot AutoConfiguration" %}
-```java
+{%- language name="Spring Boot AutoConfiguration", type="java" -%}
+
 @Aggregate(commandTargetResolver = "customCommandTargetResolver")
 public class MyAggregate {...}
 ...
@@ -297,9 +295,8 @@ public class MyAggregate {...}
 public CommandTargetResolver customCommandTargetResolver() {
     return new CustomCommandTargetResolver();
 }
-```
-{% endtab %}
-{% endtabs %}
+
+{%- endcodetabs %}
 
 `@CommandHandler` annotations are not limited to the aggregate root. Placing all command handlers in the root will sometimes lead to a large number of methods on the aggregate root, while many of them simply forward the invocation to one of the underlying entities. If that is the case, you may place the `@CommandHandler` annotation on one of the underlying entities' methods. For Axon to find these annotated methods, the field declaring the entity in the aggregate root must be marked with `@AggregateMember`. Note that only the declared type of the annotated field is inspected for command handlers. If a field value is null at the time an incoming command arrives for that entity, an exception is thrown.
 
