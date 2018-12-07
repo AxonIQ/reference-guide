@@ -49,7 +49,8 @@
 
 * [2.1.1 Starting AxonServer](2.1-setup/starting-axonserver.md)
 * [2.1.2 Advanced configuration](2.1-setup/configuration.md)
-* [2.1.3 Properties](2.1-setup/properties.md)
+* [2.1.3 Clutering](2.1-setup/clustering.md)
+* [2.1.4 Properties Overview](2.1-setup/properties.md)
 
 ## 2.3 Query Reference
 
