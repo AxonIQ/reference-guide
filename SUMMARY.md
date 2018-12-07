@@ -1,63 +1,93 @@
 # Table of contents
 
-* [About 4.0](README.md)
-* [Architecture overview](architecture-overview.md)
-* [License](license.md)
+* [Quick start](introduction/_quick-start.md)
+* [Architecture overview](introduction/architecture-overview.md)
+* [Event driven design](introduction/_event-driven-design.md)
 
-## 1 Axon Framework
+## Setting up
 
-* [Introduction](1-axon-framework/introduction.md)
-* [Getting started](1-axon-framework/getting-started.md)
+* [Prerequisites](setting-up/_prerequisites.md)
+* [Starting the Axon server](setting-up/starting-the-axon-server.md)
+* [Maven/Gradle dependencies](setting-up/maven-dependencies.md)
+* [Spring boot solution](setting-up/spring-boot.md)
+* [Java CDI solution](setting-up/_java-cdi.md)
+* [Code structure considerations](setting-up/_code-structure.md)
 
-## 1.1 Concepts
+## Implementing domain logic
 
-* [1.1.1 Architecture overview](1.1-concepts/architecture-overview.md)
-* [1.1.2 Messaging concepts](1.1-concepts/messaging-concepts.md)
-* [1.1.3 Configuration API](1.1-concepts/configuration-api.md)
+* [Command model](implementing-domain-logic/command-model/index.md)
+    * [Aggregate](implementing-domain-logic/command-model/aggregate.md)
+    * [External command handler](implementing-domain-logic/command-model/external-command-handler.md)
+    * [Multi-entity aggregates](implementing-domain-logic/command-model/multi-entity-aggregates.md)
+    * [State-stored aggregates](implementing-domain-logic/command-model/state-stored-aggregates.md)
+    * [Dispatching commands](implementing-domain-logic/command-model/dispatching-commands.md)
+    * [Testing](implementing-domain-logic/command-model/testing.md)
+* [Event handling](implementing-domain-logic/event-handling/index.md)
+    * [Handling events](implementing-domain-logic/event-handling/handling-events.md)
+    * [Updating view model](implementing-domain-logic/event-handling/updating-view-model.md)
+* [Query handling](implementing-domain-logic/query-handling/index.md)
+    * [Handling queries](implementing-domain-logic/query-handling/handling-queries.md)
+    * [Dispatching queries](implementing-domain-logic/query-handling/dispatching-queries.md)
+* [Complex business transactions](implementing-domain-logic/complex-business-transactions/index.md)
+    * [Deciding when to use a Saga](implementing-domain-logic/complex-business-transactions/when-to-use-saga.md)
+    * [Implementing a Saga](implementing-domain-logic/complex-business-transactions/implementing-saga.md)
+    * [Dealing with errors](implementing-domain-logic/complex-business-transactions/_dealing-with-errors.md)
+    * [Deadline handling](implementing-domain-logic/complex-business-transactions/deadline-handling.md)
+    * [Managing associations](implementing-domain-logic/complex-business-transactions/managing_associations.md)
+    * [Testing a Saga](implementing-domain-logic/complex-business-transactions/testing.md)
+* [Connecting the UI](implementing-domain-logic/connecting-the-ui/_index.md)
+    * [Command publishing use cases](implementing-domain-logic/connecting-the-ui/_command-publishing-use-cases.md)
+    * [Dealing with eventual consistency](implementing-domain-logic/connecting-the-ui/_dealing-with-eventual-consistency.md)
+    * [Query publishing use cases](implementing-domain-logic/connecting-the-ui/_query-publishing-use-cases.md)
 
-## 1.2 Domain Logic
+## Configuring Infrastructure components
 
-* [1.2.1 Command handling](1.2-domain-logic/command-model.md)
-* [1.2.2 Event handling](1.2-domain-logic/event-handling.md)
-* [1.2.3 Query handling](1.2-domain-logic/query-handling.md)
-* [1.2.4 Sagas](1.2-domain-logic/sagas.md)
-* [1.2.5 Deadlines](1.2-domain-logic/deadlines.md)
-* [1.2.6 Testing](1.2-domain-logic/testing.md)
+* [Messaging concepts](configuring-infrastructure-components/_messaging-concepts.md)
+* [Command handling/publishing](configuring-infrastructure-components/command-handling-publishing/index.md)
+    * [Command dispatching](configuring-infrastructure-components/command-handling-publishing/command-dispatching.md)
+    * [Command Model Repositories](configuring-infrastructure-components/command-handling-publishing/command_model_repositories.md)
+    * [Optimizing aggregate loading](configuring-infrastructure-components/command-handling-publishing/optimizing_aggregate_loading.md)
+* [Event processing](configuring-infrastructure-components/event-processing/index.md)
+    * [Event bus & Event store](configuring-infrastructure-components/event-processing/event-bus-and-event-store.md)
+    * [Event processors](configuring-infrastructure-components/event-processing/event-processors.md)
+* [Query bus](configuring-infrastructure-components/query-bus.md)
+* [Scheduling deadlines](configuring-infrastructure-components/scheduling-deadlines.md)
+* [Message Intercepting](configuring-infrastructure-components/message-intercepting.md)
+* [Supported Parameters for annotated handlers](configuring-infrastructure-components/supported-parameters-for-annotated-handlers.md)
+* [UnitOfWork](configuring-infrastructure-components/unit-of-work.md)
 
-## 1.3 Infrastructure components
+## Production considerations
 
-* [1.3.1 Command dispatching](1.3-infrastructure-components/command-dispatching.md)
-* [1.3.2 Event processing](1.3-infrastructure-components/event-processing.md)
-* [1.3.3 Query processing](1.3-infrastructure-components/query-processing.md)
-* [1.3.4 Repository and event store](1.3-infrastructure-components/repository-and-event-store.md)
-* [1.3.5 Spring Boot Auto-configuration](1.3-infrastructure-components/spring-boot-autoconfiguration.md)
+* [Application versioning](production-considerations/application-versioning/index.md)
+    * [Versioning events](production-considerations/application-versioning/versioning-events.md)
+    * [Blue-green deployment approaches](production-considerations/application-versioning/_blue-green-deployment.md)
+* [Serializers](production-considerations/serializers.md)
 
-## 1.4 Advanced tuning
+## Operations Guide 
 
-* [1.4.1 Advanced customizations](1.4-advanced-tuning/advanced-customizations.md)
-* [1.4.2 Performance tuning](1.4-advanced-tuning/performance-tuning.md)
-* [1.4.3 Metrics and Monitoring](1.4-advanced-tuning/metrics-and-monitoring.md)
+* [Setting up Axon Server](operations-guide/setting-up-axon-server/_index.md)
+    * [Launch](operations-guide/setting-up-axon-server/_launch.md)
+    * [Tuning](operations-guide/setting-up-axon-server/_tuning.md)
+    * [Clustering](operations-guide/setting-up-axon-server/_clustering.md)
+* [Alternative event storage options](operations-guide/_alternative-event-storage-options.md)
+* [Scaling out](operations-guide/scaling-out/_index.md)
+    * [Considerations when scaling](operations-guide/scaling-out/_considerations-when-scaling.md)
+    * [Scaling event processors](operations-guide/scaling-out/_scaling-event-processors.md)
+* [Axon Server clustering](operations-guide/_axon-server-clustering.md)
+* [Multi-context](operations-guide/_multi-context.md)
+* [Field-level encryption (GDPR module)](operations-guide/_field-level-encryption.md)
+* [Big data & Fast data](operations-guide/_big-data-fast-data.md)
 
-## 2 Axon Server
+## Advanced configuration
 
-* [Introduction](2-axon-server/about.md)
-* [Getting started](2-axon-server/getting-started.md)
+* [Handler definition](advanced-configuration/_handler-definition.md)
+* [Handler enhancers](advanced-configuration/_handler-enhancers.md)
+* [Content type converters](advanced-configuration/_content-type-converters.md)
 
-## 2.1 Architecture
+## Extensions
 
-* [2.1.1 Architecture](2.1-architecture/architecture.md)
-
-## 2.2 Setup
-
-* [2.2.1 Integration](2.2-setup/integration.md)
-* [2.2.2 Advanced configuration](2.2-setup/configuration.md)
-* [2.2.3 Properties](2.2-setup/properties.md)
-
-## 2.3 Query Reference
-
-* [2.3.1 Query reference](2.3-query-reference/query-reference.md)
-
-## 3 Migration
-
-* [Migration guide](3-migration/migration-guide.md)
-
+* [Spring AMQP](extensions/spring-amqp.md)
+* [Kafka](extensions/kafka.md)
+* [JGroups](extensions/jgroups.md)
+* [Spring Cloud](extensions/spring-cloud.md)
+* [Mongo](extensions/mongo.md)

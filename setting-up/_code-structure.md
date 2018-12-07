@@ -1,0 +1,1 @@
+# Code structure considerations (TODO)
