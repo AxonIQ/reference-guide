@@ -7,9 +7,19 @@
 * `axoniq.axonserver.port` - gRPC port for clients to connect is set to 8124 by default
 * `server.port` - HTTP port for REST clients to connect is set to 8024 by default
 
-## Database
+## Data directory
 
-By default each Axon Server node will create its own H2 database in a file axonserver-controldb in the working directory. To change this, set the property:
+### Events and Snapshot Events
+
+AxonServer stores all Events and Snapshot Events in segmented files on disk. By default, these files are stored in the ./data directory.
+
+The following settings define an alternative storage location:
+* `axoniq.axonserver.event.storage` - path where (regular) events are stored
+* `axoniq.axonserver.snapshot.storage` - path where Snapshot Events are stored
+
+### Control database
+
+By default each Axon Server node will create its own H2 database in a file axonserver-controldb in the data directory. To change this, set the property:
 
 * `axoniq.axonserver.controldb-path` - path to controlDB
 
