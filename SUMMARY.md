@@ -42,16 +42,14 @@
 
 * [Introduction](2-axon-server/about.md)
 * [Getting started](2-axon-server/getting-started.md)
+* [Architecture](2-axon-server/architecture.md)
+* [Connecting Axon Applications](2-axon-server/connecting-axon-apps.md)
 
-## 2.1 Architecture
+## 2.1 Setup
 
-* [2.1.1 Architecture](2.1-architecture/architecture.md)
-
-## 2.2 Setup
-
-* [2.2.1 Integration](2.2-setup/integration.md)
-* [2.2.2 Advanced configuration](2.2-setup/configuration.md)
-* [2.2.3 Properties](2.2-setup/properties.md)
+* [2.1.1 Starting AxonServer](2.1-setup/starting-axonserver.md)
+* [2.1.2 Advanced configuration](2.1-setup/configuration.md)
+* [2.1.3 Properties](2.1-setup/properties.md)
 
 ## 2.3 Query Reference
 

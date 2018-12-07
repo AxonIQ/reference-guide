@@ -1,4 +1,4 @@
-# 2.2.2 Advanced configuration
+# 2.1.2 AxonServer Configuration
 
 ## Names and ports
 
@@ -30,7 +30,7 @@ logging.file=messaging.log
 logging.path=/var/log
 ```
 
-## Cluster \[Enterprise edition only\]
+## Clustering \[Enterprise edition only\]
 
 When runnning Axon Server in a licensed edition, you can set up a cluster of Axon servers. The servers run in active/active mode, so each node can receive and handle requests.
 
