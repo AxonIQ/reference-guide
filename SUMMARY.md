@@ -58,7 +58,7 @@
 
 ## Production considerations
 
-* [Application versioning](production-considerations/application-versioning/index.md)
+* [Application versioning](production-considerations/application-versioning/application-versioning.md)
     * [Versioning events](production-considerations/application-versioning/versioning-events.md)
     * [Blue-green deployment approaches](production-considerations/application-versioning/_blue-green-deployment.md)
 * [Serializers](production-considerations/serializers.md)
