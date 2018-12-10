@@ -1,7 +1,10 @@
 # Table of contents
 
 * [Quick start](introduction/_quick-start.md)
-* [Architecture overview](introduction/architecture-overview.md)
+* [Architecture overview](introduction/architecture-overview/architecture-overview.md)
+    * [Application structure](introduction/architecture-overview/_application-structure.md)
+    * [Bounded contexts](introduction/architecture-overview/_bounded-contexts.md)
+    * [Axon server](introduction/architecture-overview/axon-server.md)
 * [Event driven design](introduction/_event-driven-design.md)
 
 ## Setting up
@@ -9,8 +12,8 @@
 * [Prerequisites](setting-up/_prerequisites.md)
 * [Starting the Axon server](setting-up/starting-the-axon-server.md)
 * [Maven/Gradle dependencies](setting-up/maven-dependencies.md)
-* [Spring boot solution](setting-up/spring-boot.md)
-* [Java CDI solution](setting-up/_java-cdi.md)
+* [Spring boot](setting-up/spring-boot.md)
+* [Java CDI](setting-up/_java-cdi.md)
 * [Code structure considerations](setting-up/_code-structure.md)
 
 ## Implementing domain logic
