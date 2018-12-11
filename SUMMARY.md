@@ -2,10 +2,9 @@
 
 * [Quick start](introduction/_quick-start.md)
 * [Architecture overview](introduction/architecture-overview/architecture-overview.md)
-    * [Application structure](introduction/architecture-overview/_application-structure.md)
-    * [Bounded contexts](introduction/architecture-overview/_bounded-contexts.md)
-    * [Axon server](introduction/architecture-overview/axon-server.md)
-* [Event driven design](introduction/_event-driven-design.md)
+    * [Strategic patterns](introduction/architecture-overview/strategic-patterns.md)
+    * [Tactical patterns](introduction/architecture-overview/_application-structure.md)
+* [Axon server](introduction/axon-server.md)
 
 ## Setting up
 

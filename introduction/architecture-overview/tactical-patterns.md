@@ -1,6 +1,10 @@
-# Application structure (TODO)
+# Tactial Patterns and Concepts
 
-  To better understand concepts and patterns we intorduce 'giftcard' domain where customers can issue, redeem or cancel giftcards. Let's quickly visualize potential code structure of this domain model:
+Inside Bounded Context live tactical paterns and concepts: entities, aggregates, value objects, sagas and others.
+
+## Application Structure
+
+To better understand this concepts we intorduce 'giftcard' domain where customers can issue, redeem or cancel giftcards. Let's quickly visualize potential code structure of this domain model:
 
  - com.example.giftcard
    - api
@@ -38,7 +42,7 @@ An Aggregate is an entity or group of entities that is always kept in a consiste
 >
 > “A cluster of associated objects that are treated as a unit for the purpose of data changes. External references are restricted to one member of the Aggregate, designated as the root. A set of consistency rules applies within the Aggregate's boundaries.”
 
-For example, a `GiftCard` aggregate could contain other entities: `List<GiftCardTransaction>`. To keep the entire aggregate in a consistent state, adding a transaction to a gift card should be done via the `GiftCard` entity. In this case, the `GiftCard` entity is the appointed aggregate root.
+For example, a `GiftCard` aggregate could contain other entities: `List<GiftCardTransaction>`. To keep the entire aggregate in a consistent state, adding a transaction (`GiftCardTransaction`) to a gift card should be done via the `GiftCard` entity. In this case, the `GiftCard` entity is the appointed aggregate root.
 
 In Axon, aggregates are identified by an Aggregate Identifier. This may be any object, but there are a few guidelines for good implementations of identifiers. Identifiers must:
 
@@ -62,10 +66,10 @@ While ACID transactions are not necessary or even impossible in some cases, some
 
 In CQRS, Sagas can be used to manage these BASE transactions. They respond on events and may dispatch commands, invoke external applications, etc. In the context of Domain-Driven Design, it is common for Sagas to be used as coordination mechanism between different aggregates (or aggregate instances) in order to eventually achieve consistency.
 
-## Event sourcing
+## Eventsourcing
 
 TODO
 
-## View models 
+## View Models 
 
 TODO

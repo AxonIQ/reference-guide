@@ -1,1 +1,0 @@
-# Bounded contexts (TODO)
