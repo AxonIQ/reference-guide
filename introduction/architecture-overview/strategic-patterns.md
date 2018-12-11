@@ -12,6 +12,8 @@ On a high level view you want to converge to Microservices architectural style, 
 
 ## Bounded Context
 
+Rather than writing concrete definition of what Bounded Context really is, we prefer to follow particular set of rules:
+
  - Explicitly define the context within which a model applies.
  - Explicitly set boundaries in terms of team organization, usage within specific parts of the application, and physical manifestations such as code bases and database schemas.
  - Keep the model strictly consistent within these bounds, but don’t be distracted or confused by issues outside.
