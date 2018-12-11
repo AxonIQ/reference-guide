@@ -4,39 +4,9 @@ An aggregate is always accessed through a single entity, called the Aggregate Ro
 
 An aggregate is a regular object, which contains state and methods to alter that state. Although, not entirely correct according to CQRS principles, it is also possible to expose the state of the aggregate through accessor methods.
 
-An aggregate root must declare a field that contains the aggregate identifier. This identifier must be initialized at the latest when the first event is published. This identifier field must be annotated by the `@AggregateIdentifier` annotation. If you use JPA and have JPA annotations on the aggregate, Axon can also use the `@Id` annotation provided by JPA.
-
-Aggregates may use the `AggregateLifecycle.apply()` method to register events for publication. Unlike the `EventBus`, where messages need to be wrapped in an `EventMessage`, `apply()` allows you to pass in the payload object directly.
-
-```java
-import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
-
-@Entity // Mark this aggregate as a JPA Entity
-public class MyAggregate {
-
-    @Id // When annotating with JPA @Id, the @AggregateIdentifier annotation 
-        // is not necessary
-    private String id;
-
-    // fields containing state...
-
-    @CommandHandler
-    public MyAggregate(CreateMyAggregateCommand command) {
-        // ... update state
-        apply(new MyAggregateCreatedEvent(...));
-    }
-
-    // constructor needed by JPA
-    protected MyAggregate() {
-    }
-}
-```
-
-Entities within an Aggregate can listen to the events the Aggregate publishes, by defining an `@EventHandler` annotated method. These methods will be invoked when an EventMessage is published \(before any external handlers are published\).
-
 ## Event sourced aggregates
 
-Besides storing the current state of an aggregate, it is also possible to rebuild the state of an aggregate based on the events that it has published in the past. For this to work, all state changes must be represented by an event.
+It is common for CQRS systems to rebuild the state of an aggregate based on the events that it has published in the past. For this to work, all state changes must be represented by an event.
 
 For the major part, event sourced aggregates are similar to 'regular' aggregates: they must declare an identifier and can use the `apply()` method to publish Events. However, state changes in event sourced aggregates \(i.e. any change of a Field value\) must be _exclusively_ performed in an `@EventSourcingHandler` annotated method. This includes setting the aggregate Identifier.
 
@@ -119,3 +89,150 @@ public class AggregateB {
 \(1\) The first parameter of the `AggregateLifecycle#createNew()` method is the type of Aggregate to be created. The second parameter is the factory method - the method to be used in order to instantiate the desired Aggregate.
 
 > **Note** Creation of a new Aggregate should be done in a Command Handling function rather than in an Event Handling function \(given the usage of Event Sourced Aggregate\). Rationale: we do not want to create new Aggregates when we are sourcing a given Aggregate - previously created aggregate will be Event Sourced based on its events. However, if you try to create a new Aggregate while Axon is replaying events, an `UnsupportedOperationException` will be thrown.
+
+## Handling commands in an Aggregate
+
+It is recommended to define the command handlers directly in the aggregate that contains the state to process this command, as it is not unlikely that a command handler needs the state of that aggregate to do its job.
+
+To define a command handler in an aggregate, simply annotate the command handling method with `@CommandHandler`. The rules for an `@CommandHandler` annotated method are the same as for any handler method. However, commands are not only routed by their payload. command nessages carry a name, which defaults to the fully qualified class name of the command object.
+
+By default, `@CommandHandler` annotated methods allow the following parameter types:
+
+* The first parameter is the payload of the command message. It may also be of type `Message` or `CommandMessage`, if the `@CommandHandler` annotation explicitly defined the name of the command the handler can process. By default, a command name is the fully qualified class name of the command its payload.
+* Parameters annotated with `@MetaDataValue` will resolve to the metadata value with the key as indicated on the annotation. If `required` is `false` \(default\), `null` is passed when the metadata value is not present. If `required` is `true`, the resolver will not match and prevent the method from being invoked when the metadata value is not present.
+* Parameters of type `MetaData` will have the entire `MetaData` of a `CommandMessage` injected.
+* Parameters of type `UnitOfWork` get the current unit of work injected. This allows command handlers to register actions to be performed at specific stages of the Unit of Work, or gain access to the resources registered with it.
+* Parameters of type `Message`, or `CommandMessage` will get the complete message, with both the payload and the metadata. This is useful if a method needs several metadata fields, or other properties of the wrapping Message.
+
+In order for Axon to know which instance of an aggregate type should handle the command message, the property carrying the aggregate identifier in the command object must be annotated with `@TargetAggregateIdentifier`. The annotation may be placed on either the field or an accessor method \(e.g. a getter\).
+
+Commands that create an aggregate instance do not need to identify the target aggregate identifier, although it is recommended to annotate the aggregate identifier on them as well.
+
+If you prefer to use another mechanism for routing commands, the behavior can be overridden by supplying a custom `CommandTargetResolver`. This class should return the aggregate identifier and expected version \(if any\) based on a given command.
+
+> **Note**
+>
+> When the `@CommandHandler` annotation is placed on an aggregate's constructor, the respective command will create a new instance of that aggregate and add it to the repository. Those commands do not require to target a specific aggregate instance. Therefore, those commands do not require any `@TargetAggregateIdentifier` or `@TargetAggregateVersion` annotations, nor will a custom `CommandTargetResolver` be invoked for these commands.
+>
+> When a command creates an aggregate instance, the callback for that command will receive the aggregate identifier when the command executed successfully.
+
+```java
+import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
+
+public class MyAggregate {
+
+    @AggregateIdentifier
+    private String id;
+
+    @CommandHandler
+    public MyAggregate(CreateMyAggregateCommand command) {
+        apply(new MyAggregateCreatedEvent(IdentifierFactory.getInstance().generateIdentifier()));
+    }
+
+    // no-arg constructor for Axon
+    MyAggregate() {
+    }
+
+    @CommandHandler
+    public void doSomething(DoSomethingCommand command) {
+        // do something...
+    }
+
+    // code omitted for brevity. The event handler for MyAggregateCreatedEvent must set the id field
+}
+
+public class DoSomethingCommand {
+
+    @TargetAggregateIdentifier
+    private String aggregateId;
+
+    // code omitted for brevity
+
+}
+```
+
+Let's see how we can configure an Aggregate:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+Configurer configurer = ...
+// to use defaults:
+configurer.configureAggreate(MyAggregate.class);
+
+// allowing customizations:
+configurer.configureAggregate(
+        AggregateConfigurer.defaultConfiguration(MyAggregate.class)
+                           .configureCommandTargetResolver(c -> new CustomCommandTargetResolver())
+);
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Aggregate(commandTargetResolver = "customCommandTargetResolver")
+public class MyAggregate {...}
+...
+// somewhere in configuration
+@Bean
+public CommandTargetResolver customCommandTargetResolver() {
+    return new CustomCommandTargetResolver();
+}
+```
+{% endtab %}
+{% endtabs %}
+
+`@CommandHandler` annotations are not limited to the aggregate root. Placing all command handlers in the root will sometimes lead to a large number of methods on the aggregate root, while many of them simply forward the invocation to one of the underlying entities. If that is the case, you may place the `@CommandHandler` annotation on one of the underlying entities' methods. For Axon to find these annotated methods, the field declaring the entity in the aggregate root must be marked with `@AggregateMember`. Note that only the declared type of the annotated field is inspected for command handlers. If a field value is null at the time an incoming command arrives for that entity, an exception is thrown.
+
+```java
+public class MyAggregate {
+
+    @AggregateIdentifier
+    private String id;
+
+    @AggregateMember
+    private MyEntity entity;
+
+    @CommandHandler
+    public MyAggregate(CreateMyAggregateCommand command) {
+        apply(new MyAggregateCreatedEvent(...);
+    }
+
+    // no-arg constructor for Axon
+    MyAggregate() {
+    }
+
+    @CommandHandler
+    public void doSomething(DoSomethingCommand command) {
+        // do something...
+    }
+
+    // code omitted for brevity. The event handler for MyAggregateCreatedEvent must set the id field
+    // and somewhere in the lifecycle, a value for "entity" must be assigned to be able to accept
+    // DoSomethingInEntityCommand commands.
+}
+
+public class MyEntity {
+
+    @CommandHandler
+    public void handleSomeCommand(DoSomethingInEntityCommand command) {
+        // do something
+    }
+}
+```
+
+> **Note**
+>
+> Note that each command must have exactly one handler in the aggregate. This means that you cannot annotate multiple entities \(either root nor not\) with `@CommandHandler`, that handle the same command type. In case you need to conditionally route a command to an entity, the parent of these entities should handle the command, and forward it based on the conditions that apply.
+>
+> The runtime type of the field does not have to be exactly the declared type. However, only the declared type of the `@AggregateMember` annotated field is inspected for `@CommandHandler` methods.
+
+It is also possible to annotate collections and maps containing entities with `@AggregateMember`. In the latter case, the values of the map are expected to contain the entities, while the key contains a value that is used as their reference.
+
+As a command needs to be routed to the correct instance, these instances must be properly identified. Their "id" field must be annotated with `@EntityId`. The property on the command that will be used to find the Entity that the message should be routed to, defaults to the name of the field that was annotated. For example, when annotating the field "myEntityId", the command must define a property with that same name. This means either a `getMyEntityId` or a `myEntityId()` method must be present. If the name of the field and the routing property differ, you may provide a value explicitly using `@EntityId(routingKey = "customRoutingProperty")`.
+
+If no entity can be found in the annotated `Collection` or `Map`, Axon throws an `IllegalStateException` apparently, the aggregate is not capable of processing that command at that point in time.
+
+> **Note**
+>
+> The field declaration for both the `Collection` or `Map`should contain proper generics to allow Axon to identify the type of Entity contained in the collection or map. If it is not possible to add the generics in the declaration \(e.g. because you're using a custom implementation which already defines generic types\), you must specify the type of entity used in the `entityType` property on the `@AggregateMember` annotation.
