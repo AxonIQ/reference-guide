@@ -34,7 +34,7 @@ Simply, include dependencies you need, eg:
 
 ## Main modules
 
-[Axon main modules](https://mvnrepository.com/artifact/org.axonframework) are the modules that have been thoroughly tested and are robust enough to use in demanding production environments. The maven groupId of all these modules is `org.axonframework`.
+Axon main modules are the modules that have been thoroughly tested and are robust enough to use in demanding production environments. The maven groupId of all these modules is `org.axonframework`.
 
 ## Extension modules
 

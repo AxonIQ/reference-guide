@@ -53,23 +53,31 @@ By include this dependencies you will be on the way of creating web application 
 
 Axon Spring Boot auto-configuration is not intrusive. It will define only Spring components that you aren't already explicitly defined in the application context. This means that you only need to explicitly configure components that you want different from the default/convention. As you make progress and implement your components you will probably find a reason to do that, in that case refer to this section to find out how.
 
-### Event bus and event store configuration (TODO rewrite-axon server default)
+### Event bus and event store configuration
 
-If JPA is available, an event store with a `JpaEventStorageEngine` is used by default. This allow storage of Aggregates using Event Sourcing without any explicit configuration.
+`axon-spring-boot-starter` depends on `axon-server-connector` which will configure "Axon Server event store" and "event bus" spring beans by default, so you can use Axon server to store domain events and to distribute them out of the box.
 
-If JPA is not available, Axon defaults to a `SimpleEventBus`, which means that you need to specify a non-event sourcing repository for each aggregate, or configure an `EventStorageEngine` in your Spring configuration.
+Axon Server configuration is not intrusive:
 
-To configure a different event storage engine, even if JPA is on the class path, simply define a bean of type `EventStorageEngine` \(to use event sourcing\) or `EventBus` \(if event sourcing is not required\).
+ - You can explicitly configure JPA event storage (`JpaEventStorageEngine`) to use SQL database and still benefit from message distribution mechanisms (command bus, event bus, query bus) that Axon server provides. You need JPA available, please make sure you have correct dependency included (eg. `spring-boot-starter-data-jpa`)
+ - You can exclude the `axon-server-connector` from `axon-spring-boot-starter` totally and fallback spring configuration to:
+   - if JPA is available, an event store with a `JpaEventStorageEngine`. This allow storage of Aggregates using Event Sourcing without any explicit configuration.
+   - if JPA is not available, Axon defaults to a `SimpleEventBus`, which means that you need to specify a non-event sourcing repository for each aggregate, or configure an `EventStorageEngine` in your Spring configuration.
+   - to configure a different event storage engine, even if JPA is on the class path, simply define a bean of type `EventStorageEngine` \(to use event sourcing\) or `EventBus` \(if event sourcing is not required\).
 
-### Command bus configuration (TODO rewrite-axon server default)
+### Command bus configuration
 
-Axon will configure a `SimpleCommandBus` if no `CommandBus` implementation is explicitly defined in the Application Context. This `CommandBus` will use the `TransactionManager` to manage transactions.
+Axon Server command bus is configured by default. As we explained in "Event bus and event store configuration" section, you can choose to exclude `axon-server-connector` and fallback to:
 
-If the only `CommandBus` bean defined is a `DistributedCommandBus` implementation, Axon will still configure a `CommandBus` implementation to serve as the local segment for the `DistributedCommandBus`. This bean will get a Qualifier `"localSegment"`. It is recommended to define the `DistributedCommandBus` as a `@Primary`, so that it gets priority for dependency injection.
+ -  `SimpleCommandBus` if no `CommandBus` implementation is explicitly defined in the Application Context. This `CommandBus` will use the `TransactionManager` to manage transactions.
 
-### Query bus configuration (TODO rewrite-axon server default)
+ - if the only `CommandBus` bean defined is a `DistributedCommandBus` implementation, Axon will still configure a `CommandBus` implementation to serve as the local segment for the `DistributedCommandBus`. This bean will get a Qualifier `"localSegment"`. It is recommended to define the `DistributedCommandBus` as a `@Primary`, so that it gets priority for dependency injection.
 
-Axon will configure a `SimpleQueryBus` if no `QueryBus` implementation is explicitly defined in the Application Context. This `QueryBus` will use the `TransactionManager` to manage transactions.
+### Query bus configuration
+
+Axon Server query bus is configured by default. If you choose to exclude `axon-server-connector` you will fallback to:
+
+ - a `SimpleQueryBus` if no `QueryBus` implementation is explicitly defined in the Application Context. This `QueryBus` will use the `TransactionManager` to manage transactions.
 
 ### Transaction manager configuration
 
@@ -178,7 +186,7 @@ public class MyAggregate {...}
 
 Note that this requires full configuration of the Repository, including any `SnapshotTriggerDefinition` or `AggregateFactory` that may otherwise have been configured automatically.
 
-## Saga configuration
+### Saga configuration
 
 The configuration of infrastructure components to operate sagas is triggered by the `@Saga` annotation \(in package `org.axonframework.spring.stereotype`\). Axon will configure a `SagaManager` and `SagaRepository`. The `SagaRepository` will use a `SagaStore` available in the context \(defaulting to `JPASagaStore` if JPA is found\) for the actual storage of sagas.
 
