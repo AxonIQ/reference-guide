@@ -38,7 +38,7 @@ An Aggregate is an entity or group of entities that is always kept in a consiste
 >
 > “A cluster of associated objects that are treated as a unit for the purpose of data changes. External references are restricted to one member of the Aggregate, designated as the root. A set of consistency rules applies within the Aggregate's boundaries.”
 
-For example, a "`GiftCard` aggregate could contain other entities: `List<GiftCardTransaction>`. To keep the entire aggregate in a consistent state, adding a transaction to a gift card should be done via the `GiftCard` entity. In this case, the `GiftCard` entity is the appointed aggregate root.
+For example, a `GiftCard` aggregate could contain other entities: `List<GiftCardTransaction>`. To keep the entire aggregate in a consistent state, adding a transaction to a gift card should be done via the `GiftCard` entity. In this case, the `GiftCard` entity is the appointed aggregate root.
 
 In Axon, aggregates are identified by an Aggregate Identifier. This may be any object, but there are a few guidelines for good implementations of identifiers. Identifiers must:
 
