@@ -3,7 +3,7 @@
 * [Quick start](introduction/_quick-start.md)
 * [Architecture overview](introduction/architecture-overview/architecture-overview.md)
     * [Strategic patterns](introduction/architecture-overview/strategic-patterns.md)
-    * [Tactical patterns](introduction/architecture-overview/_application-structure.md)
+    * [Tactical patterns](introduction/architecture-overview/tactical-patterns.md)
 * [Axon server](introduction/axon-server.md)
 
 ## Setting up
