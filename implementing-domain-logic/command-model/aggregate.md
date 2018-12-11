@@ -236,3 +236,13 @@ If no entity can be found in the annotated `Collection` or `Map`, Axon throws an
 > **Note**
 >
 > The field declaration for both the `Collection` or `Map`should contain proper generics to allow Axon to identify the type of Entity contained in the collection or map. If it is not possible to add the generics in the declaration \(e.g. because you're using a custom implementation which already defines generic types\), you must specify the type of entity used in the `entityType` property on the `@AggregateMember` annotation.
+
+### Returning results from command handlers
+
+In some cases, the component dispatching a command needs information about the processing results of a command. A command handler method can return a value from its method. That value will be provided to the sender as the result of the command.
+
+One exception is the `@CommandHandler` on an aggregate's constructor. In this case, instead of returning the return value of the method \(which is the Aggregate itself\), the value of the `@AggregateIdentifier` annotated field is returned instead
+
+> **Note**
+>
+> While it is possible to return results from commands, it should be used sparsely. The intent of the command should never be in getting a value, as that would be an indication the message should be designed as a [Query Message ](https://docs.axoniq.io/reference-guide/1.2-domain-logic/query-handling)instead. A typical example for a Command result is the identifier of a newly created entity.
