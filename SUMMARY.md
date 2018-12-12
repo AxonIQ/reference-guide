@@ -45,14 +45,14 @@
 ## Configuring Infrastructure components
 
 * [Messaging concepts](configuring-infrastructure-components/_messaging-concepts.md)
-* [Command handling/publishing](configuring-infrastructure-components/command-handling-publishing/command-handling-publishing.md)
+* [Command processing](configuring-infrastructure-components/command-handling-publishing/command-handling-publishing.md)
     * [Command dispatching](configuring-infrastructure-components/command-handling-publishing/command-dispatching.md)
     * [Command Model Repositories](configuring-infrastructure-components/command-handling-publishing/command_model_repositories.md)
     * [Optimizing aggregate loading](configuring-infrastructure-components/command-handling-publishing/optimizing_aggregate_loading.md)
 * [Event processing](configuring-infrastructure-components/event-processing/event-processing.md)
     * [Event bus & Event store](configuring-infrastructure-components/event-processing/event-bus-and-event-store.md)
     * [Event processors](configuring-infrastructure-components/event-processing/event-processors.md)
-* [Query bus](configuring-infrastructure-components/query-bus.md)
+* [Query processing](configuring-infrastructure-components/query-processing.md)
 * [Scheduling deadlines](configuring-infrastructure-components/scheduling-deadlines.md)
 * [Message Intercepting](configuring-infrastructure-components/message-intercepting.md)
 * [Supported Parameters for annotated handlers](configuring-infrastructure-components/supported-parameters-for-annotated-handlers.md)

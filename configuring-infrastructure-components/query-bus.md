@@ -1,1 +1,0 @@
-# Query bus / Query gateway

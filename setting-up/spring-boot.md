@@ -1,4 +1,4 @@
-# Spring (boot)
+# Spring boot
 
 Axon Framework provides extensive support for Spring, but does not require you to use Spring in order to use Axon. All components can be configured programmatically and do not require Spring on the classpath. However, if you do use Spring, much of the configuration is made easier with the use of Spring's annotation support. Axon provides Spring Boot starters on top of that, so you can benefit from auto-configuration as well.
 
@@ -6,7 +6,7 @@ Axon Framework provides extensive support for Spring, but does not require you t
 
 Axon's Spring Boot auto-configuration is by far the easiest option to get started configuring your Axon components. By simply adding the `axon-spring-boot-starter` dependency, Axon will automatically configure the basic infrastructure components \(command bus, event bus, query bus\), as well as any component required to run and store aggregates and sagas.
 
-By include this dependencies you will be on the way of creating web application very quickly:
+By including this dependencies you will be on the way of creating a web application very quickly:
 
 ```
 <properties>
