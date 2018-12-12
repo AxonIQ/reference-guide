@@ -53,7 +53,7 @@
     * [Event bus & Event store](configuring-infrastructure-components/event-processing/event-bus-and-event-store.md)
     * [Event processors](configuring-infrastructure-components/event-processing/event-processors.md)
 * [Query processing](configuring-infrastructure-components/query-processing.md)
-* [Scheduling deadlines](configuring-infrastructure-components/scheduling-deadlines.md)
+* [Deadlines](configuring-infrastructure-components/deadlines.md)
 * [Message Intercepting](configuring-infrastructure-components/message-intercepting.md)
 * [Supported Parameters for annotated handlers](configuring-infrastructure-components/supported-parameters-for-annotated-handlers.md)
 * [UnitOfWork](configuring-infrastructure-components/unit-of-work.md)

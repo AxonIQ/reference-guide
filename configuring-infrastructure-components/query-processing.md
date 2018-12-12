@@ -153,34 +153,3 @@ commandGateway.sendAndWait(new RedeemCmd("gc1", amount));
 ### SimpleQueryBus
 
 The `SimpleQueryBus` does straightforward processing of queries in the thread that dispatches them. The `SimpleQueryBus` allows interceptors to be configured.
-
-## Query Interceptors
-
-One of the advantages of using a query bus is the ability to undertake action based on all incoming queries. Examples are logging or authentication, which you might want to do regardless of the type of query. This is done using interceptors.
-
-There are different types of interceptors: Dispatch interceptors and handler interceptors. Dispatch interceptors are invoked before a query is dispatched to a query handler. At that point, it may not even be sure that any handler exists for that query. Handler Interceptors are invoked just before a query handler is invoked.
-
-### Dispatch interceptors
-
-Message dispatch interceptors are invoked when a query is dispatched on a query bus or when a subscription update to a query message is dispatched on a query update emitter. They have the ability to alter the message, by adding metadata, for example, or block the handler execution by throwing an exception. These interceptors are always invoked on the thread that dispatches the message. 
-
-#### Structural validation
-
-There is no point in processing a query if it does not contain all required information in the correct format. In fact, a query that lacks information should be blocked as early as possible. Therefore, an interceptor should check all incoming queries for the availability of such information. This is called structural validation.
-
-Axon Framework has support for JSR 303 Bean Validation based validation. This allows you to annotate the fields on queries with annotations like `@NotEmpty` and `@Pattern`. You need to include a JSR 303 implementation \(such as Hibernate-Validator\) on your classpath. Then, configure a `BeanValidationInterceptor` on your query bus, and it will automatically find and configure your validator implementation. While it uses sensible defaults, you can fine-tune it to your specific needs.
-
-> **Tip**
->
-> You want to spend as few resources on an invalid queries as possible. Therefore, this interceptor is generally placed in the very front of the interceptor chain. In some cases, a logging or auditing interceptor might need to be placed in front, with the validating interceptor immediately following it.
-
-The `BeanValidationInterceptor` also implements `MessageHandlerInterceptor`, allowing you to configure it as a handler interceptor as well.
-
-### Handler interceptors
-
-Message handler interceptors can take action both before and after query processing. Interceptors can even block query processing altogether, for example for security reasons.
-
-Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle`, that takes three parameters: the query message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process, whereas the `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(query\) message handling \(see [UnitOfWork](../1.1-concepts/messaging-concepts.md#unit-of-work) for more information about the phases\).
-
-Unlike dispatch interceptors, handler interceptors are invoked in the context of the query handler. That means they can attach correlation data based on the message being handled to the unit of work, for example. This correlation data will then be attached to messages being created in the context of that unit of work.
-
