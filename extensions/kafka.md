@@ -4,7 +4,7 @@ Kafka is an alternative approach to distributing events, besides Axon Server whi
 
 Kafka is a very popular system for publishing and consuming events. It's architecture is fundamentally different from most messaging systems, and combines speed with reliability.
 
-To use the Kafka components from Axon, make sure the `axon-kafka` module is available on the classpath. Do note that Kafka module does not provide an event bus or store. So it _must_ run alongside another bus implementation. It just forwards published messages to Kafka.
+To use the Kafka components from Axon, make sure the `axon-kafka` module is available on the classpath.
 
 {% hint style="info" %}
 The `axon-kafka` module is a new addition to the framework. Minor releases of the framework could include breaking changes to the APIs.

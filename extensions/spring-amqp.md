@@ -4,7 +4,7 @@ Spring AMQP is an alternative approach to distributing events, besides Axon Serv
 
 Axon provides out-of-the-box support to transfer events to and from an AMQP message broker, such as [RabbitMQ](https://www.rabbitmq.com/).
 
-To use the Spring AMQP components from Axon, make sure the `axon-amqp` module is available on the classpath. Do note that AMQP module does not provide an event bus or store. So it _must_ run alongside another bus implementation. It just forwards published messages to an AMQP exchange.
+To use the Spring AMQP components from Axon, make sure the `axon-amqp` module is available on the classpath.
 
 ## Forwarding events to an AMQP Exchange
 
