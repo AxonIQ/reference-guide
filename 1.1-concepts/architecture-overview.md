@@ -52,7 +52,7 @@ The `axon-test` module contains test fixtures that you can use to test Axon base
 
 The `axon-spring` module allows Axon Framework components to be configured in the Spring Application context. It also provides a number of building block implementations specific to Spring Framework, such as an adapter for publishing and retrieving Axon Events on a Spring Messaging Channel.
 
-Several Axon Framework components provide monitoring information. The `axon-metrics` module provides basic implementations based on [Codehale ](https://metrics.dropwizard.io/4.0.0/) to collect the monitoring information.
+Several Axon Framework components provide monitoring information. The `axon-metrics` module provides basic implementations based on [Coda Hale](https://metrics.dropwizard.io/4.0.0/) to collect the monitoring information.
 
 ### Extension modules
 

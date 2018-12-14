@@ -13,9 +13,10 @@ Configuration config = DefaultConfigurer.defaultConfiguration()
                                         .buildConfiguration();
 ```
 
-This configuration provides the building blocks for dispatching messages using implementations that handle messages on the threads that dispatch them.
+This configuration provides the building blocks for dispatching commands and queries using implementations that handle 
+them on the threads that dispatch them. Events are (by default) handled in separate threads.
 
-Obviously, this configuration would not be very useful. You would have to register your command model objects and event handlers to this configuration to be useful.
+Obviously, this configuration would not be very useful. You would have to register your command model objects, query models, and event handlers to this configuration to be useful.
 
 To do so, use the `Configurer` instance returned by the `.defaultConfiguration()` method.
 
