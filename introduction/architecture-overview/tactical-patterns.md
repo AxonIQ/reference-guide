@@ -4,7 +4,7 @@ Inside Bounded Context live tactical paterns and concepts: entities, aggregates,
 
 ## Application Structure
 
-To better understand this concepts we intorduce 'giftcard' domain where customers can issue, redeem or cancel giftcards. Let's quickly visualize potential code structure of this domain model:
+To better understand this concepts we intorduce 'giftcard' domain where customers can issue, redeem or cancel giftcards. Let's quickly visualize potential code structure:
 
  - com.example.giftcard
    - api

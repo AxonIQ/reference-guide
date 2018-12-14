@@ -6,7 +6,7 @@ Strategic design is used like broad brushstrokes prior to getting into the detai
 
 You can segregate your domain model using the strategic design pattern called Bounded Contexts, and you should develop a Ubiquitous Language as your domain model within an explicitly Bounded Context.
 
-CQRS and Evensourcing architectural patterns are used inside Bounded Context to implement domain model. 
+CQRS and Evensourcing architectural patterns are used inside Bounded Context. 
 
 On a high level view you want to converge to Microservices architectural style, mapping multiple Bounded Contexts into one solution.
 
