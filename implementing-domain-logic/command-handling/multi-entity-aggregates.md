@@ -10,17 +10,6 @@ Axon provides support for event sourcing in complex aggregate structures. Entiti
 
 When an entity \(including the aggregate root\) applies an event, it is handled by the aggregate root first, and then bubbles down through all `@AggregateMember` annotated fields to its child entities.
 
-> **Note** There is a way to filter the entities which would handle an event applied by the Aggregate Root. This can be achieved by using `eventForwardingMode` attribute of `@AggregateMember` annotation. By default, an event is propagated to **all** child entities. An event can be blocked using `ForwardNone` event forwarding mode \(see listing below\).
->
-> ```java
-> public class MyAggregate {
->    ...
->    @AggregateMember(eventForwardingMode = ForwardNone.class)
->    private MyEntity myEntity;
->    ...
-> }
-> ```
->
 > If you want to forward an event to the entity only in a case when an event message has matching entity identifier use `ForwardMatchingInstances` event forwarding mode. Entity identifier matching will be done based on specified `routingKey` on `@AggregateMember` annotation. If `routingKey` is not specified on `@AggregateMember` annotation, matching will be done based on `routingKey` attribute on `@EntityId` annotation. If `routingKey` is not specified on `@EntityId` annotation matching will be done based on field name of entity identifier. Let's take a look at example on how to define `ForwardMatchingInstances` event forwarding mode with specifying a routing key for the entity identifier:
 >
 > ```java
@@ -54,3 +43,15 @@ Fields that \(may\) contain child entities must be annotated with `@AggregateMem
 * the entity type, directly referenced in a field
 * inside fields containing an `Iterable` \(which includes all collections, such as `Set`, `List`, etc\)
 * inside the values of fields containing a `java.util.Map`
+
+> **Note** There is a way to filter the entities which would handle an event applied by the Aggregate Root. This can be achieved by using `eventForwardingMode` attribute of `@AggregateMember` annotation. By default, an event is propagated to **all** child entities. An event can be blocked using `ForwardNone` event forwarding mode \(see listing below\).
+>
+> ```java
+> public class MyAggregate {
+>    ...
+>    @AggregateMember(eventForwardingMode = ForwardNone.class)
+>    private MyEntity myEntity;
+>    ...
+> }
+> ```
+>

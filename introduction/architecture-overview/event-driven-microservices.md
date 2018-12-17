@@ -1,4 +1,4 @@
-# Tactial Patterns and Concepts
+# Tactical Patterns and Concepts
 
 Inside Bounded Context live tactical paterns and concepts: entities, aggregates, value objects, sagas and others.
 
