@@ -1,1 +1,0 @@
-# Java CDI solution (TODO)
