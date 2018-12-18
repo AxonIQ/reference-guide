@@ -1,5 +1,13 @@
 # Architecture overview
 
+-DRAFT version 1.0.0-
+
+ - Focus on message-driven style first (commands, events and queries)
+ - CQRS
+ - location transparency
+ - replace the arch image with the latest
+
+
 **C**ommand **Q**uery **R**esponsibility **S**egregation \(CQRS\) on itself is a very simple pattern. It only prescribes that the component of an application that processes commands should be separated from the component that processes queries. Although this separation is very simple on itself, it provides a number of very powerful features when combined with other patterns. Axon provides the building blocks that make it easier to implement the different patterns that can be used in combination with CQRS.
 
 The diagram below shows an example of an extended layout of a CQRS-based event driven architecture. The UI component, displayed on the left, interacts with the rest of the application in two ways: it sends commands to the application \(shown in the top section\), and it queries the application for information \(shown in the bottom section\).
@@ -25,55 +33,3 @@ In some cases, event processing requires new commands to be sent to the applicat
 The framework provides components to handle queries. The query bus receives queries and routes them to the query handlers. A query handler is registered at the query bus with both the type of query it handles as well as the type of response it providers. Both the query and the result type are typically simple, read-only DTO objects. The contents of these DTOs are typically driven by the needs of the user interface. In most cases, they map directly to a specific view in the UI \(also referred to as table-per-view\).
 
 It is possible to register multiple query handlers for the same type of query and type of response. When dispatching queries, the client can indicate whether he wants a result from one or from all available query handlers.
-
-## Axon Module Structure
-
-Axon Framework consists of a number of modules that target specific problem areas of CQRS and Event Sourcing. Depending on the exact needs of your project, you will need to include one or more of these modules.
-
-All modules are OSGi compatible bundles. This means they contain the required headers in the manifest file and declare the packages they import and export. At the moment, only the Slf4J bundle \(1.7.0 &lt;= version &lt; 2.0.0\) is required. All other imports are marked as optional, although you're very likely to need others.
-
-### Main modules
-
-Axon its main modules are the modules that have been thoroughly tested and are robust enough to use in demanding production environments. The maven groupId of all these modules is `org.axonframework`.
-
-The `axon-messaging` module contains all necessary components and building blocks to support command, event and query messaging.
-
-The `axon-disruptor` module contains a specific `CommandBus` and Command Handling solution based on the [Disruptor](https://lmax-exchange.github.io/disruptor/) paradigm.
-
-The `axon-modelling` module contains the necessary components to create domain models, like Aggregates and Sagas.
-
-The `axon-eventsourcing` module contains all necessary infrastructure components to support Event Sourcing Command and Query models.
-
-The `axon-configuration` module contains all the necessary components to configure an Axon application.
-
-The `axon-server-connector` module provides infrastructure components that connect to AxonServer.
-
-The `axon-test` module contains test fixtures that you can use to test Axon based components, such as your Command Handlers, Aggregates and Sagas. You typically do not need this module at runtime and will only need to be added to the classpath for running tests.
-
-The `axon-spring` module allows Axon Framework components to be configured in the Spring Application context. It also provides a number of building block implementations specific to Spring Framework, such as an adapter for publishing and retrieving Axon Events on a Spring Messaging Channel.
-
-Several Axon Framework components provide monitoring information. The `axon-metrics` module provides basic implementations based on [Coda Hale](https://metrics.dropwizard.io/4.0.0/) to collect the monitoring information.
-
-### Extension modules
-
-Besides main modules, there are several extension modules which complement Axon Framework. They address distribution concerns of Axon Framework towards non-Axon Server solutions. The maven groupId of all these extensions is `org.axonframework.extensions`. All of these extensions come with their respective spring/spring boot modules.
-
-The `axon-amqp` module provides components that allow you to build up an event bus using an [AMQP](https://www.amqp.org/)-based message broker as distribution mechanism. This allows for guaranteed-delivery, even when the event handler node is temporarily unavailable.
-
-The `axon-kafka` module provides integration with [Kafka](https://kafka.apache.org/) for event distribution (do note that events are not stored in this scenario).
-
-The `axon-jgroups` module provides integration with [JGroups](http://www.jgroups.org/) for command distribution.
-
-The `axon-springcloud` module provides integration with [Spring Cloud](http://projects.spring.io/spring-cloud/) for command distribution.
-
-[MongoDB](https://www.mongodb.com/) is a document based NoSQL database. The `axon-mongo` module provides event and saga store implementations that store event streams and sagas in a MongoDB database.
-
-## Working with Axon Framework APIs
-
-CQRS is an architectural pattern, making it impossible to provide a single solution that fits all projects. Axon Framework does not try to provide that one solution, obviously. Instead, Axon provides implementations that follow best practices and the means to tweak each of those implementations to your specific requirements.
-
-Almost all infrastructure building blocks will provide hook points \(such as Interceptors, Resolvers, etc.\) that allow you to add application-specific behavior to those building blocks. In many cases, the framework will provide implementations for those hook points that fit most use cases. If required, you can simply implement your own.
-
-Non-infrastructural objects, such as messages, are generally immutable. This ensures that these objects are safe to use in a multi-threaded environment, without side-effects.
-
-To ensure maximum customization, all Axon Framework components are defined using interfaces. Abstract and concrete implementations are provided to help you on your way, but will nowhere be required by the framework. It is always possible to build a completely custom implementation of any building block using that interface.

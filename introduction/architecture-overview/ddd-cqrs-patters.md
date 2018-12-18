@@ -1,5 +1,7 @@
 # Strategic Patterns and Concepts
 
+-DRAFT version 1.0.0-
+
 Domain Driven Design is a set of tools that assist you in designing and implementing software that delivers high value, both strategically and tactically. 
 
 Strategic design is used like broad brushstrokes prior to getting into the details of implementation.
