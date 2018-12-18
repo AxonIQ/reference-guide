@@ -1,4 +1,4 @@
-# 2.2.2 Advanced configuration
+# 2.1.2 AxonServer Configuration
 
 ## Names and ports
 
@@ -7,9 +7,19 @@
 * `axoniq.axonserver.port` - gRPC port for clients to connect is set to 8124 by default
 * `server.port` - HTTP port for REST clients to connect is set to 8024 by default
 
-## Database
+## Data directory
 
-By default each Axon Server node will create its own H2 database in a file axonserver-controldb in the working directory. To change this, set the property:
+### Events and Snapshot Events
+
+AxonServer stores all Events and Snapshot Events in segmented files on disk. By default, these files are stored in the ./data directory.
+
+The following settings define an alternative storage location:
+* `axoniq.axonserver.event.storage` - path where (regular) events are stored
+* `axoniq.axonserver.snapshot.storage` - path where Snapshot Events are stored
+
+### Control database
+
+By default each Axon Server node will create its own H2 database in a file axonserver-controldb in the data directory. To change this, set the property:
 
 * `axoniq.axonserver.controldb-path` - path to controlDB
 
@@ -29,44 +39,6 @@ logging.file=messaging.log
 # create logfiles in directory /var/log
 logging.path=/var/log
 ```
-
-## Cluster \[Enterprise edition only\]
-
-When runnning Axon Server in a licensed edition, you can set up a cluster of Axon servers. The servers run in active/active mode, so each node can receive and handle requests.
-
-You can set the following properties in the axonserver.properties configuration file:
-
-* `axoniq.axonserver.name` - logical name of the node in the cluster. This must be unique within the cluster.
-* `axoniq.axonserver.hostname` - sets the hostname as this node advertises it to clients
-* `axoniq.axonserver.domain` - sets the domain as used in returning the server address to clients
-* `axoniq.axonserver.internal-hostname` - hostname to be used by other nodes in the server cluster
-* `axoniq.axonserver.internal-domain` - domain to be used by other nodes in the server cluster
-* `axoniq.axonserver.internal-port` - internal gRPC port number for communication to other nodes
-
-When there is no hostname specified it defaults to the hostname as returned by the _hostname_ command.
-
-Sample configuration:
-
-```bash
-axoniq.axonserver.hostname=messaging1.axoniq.io
-axoniq.axonserver.name=messaging1
-```
-
-Connecting the nodes of a cluster is done using the command line interface. Send the register-node command to one node, specifying the address of another node in the cluster, e.g.
-
-```text
-# java -jar axoniq-cli.jar register-node -S http://node-to-add:port -h node-in-cluster -p internal-port-of-node-in-cluster
-```
-
-When you have a default setup with all nodes using the default port you can omit a number of parameters from this request. To connect node2 to with node1 run the following command on node2:
-
-```text
-# java -jar axoniq-cli.jar register-node -h node1
-```
-
-Default value for `-S` option is [http://localhost:8024](http://localhost:8024) and for -p is 8224 \(default internal communication port\).
-
-This only has to be done once, each node maintains a list of all nodes in the cluster.
 
 ## Flow control
 

@@ -1,4 +1,4 @@
-# 2.2.3 Properties
+# 2.1.5 Properties overview
 
 ## Configuration Properties
 
@@ -18,7 +18,7 @@ The following table gives a complete list of all the configuration properties av
 | `axoniq.axonserver.accesscontrol.cache-ttl` | 30000 | Long | Milliseconds that authenticated tokens will be cached |
 | `axoniq.axonserver.accesscontrol.internal-token` |  | String | Token to add to Axon Server internal cluster message |
 | `axoniq.axonserver.accesscontrol.token` |  | String | Token expected from client requests \[Developer edition only\] |
-| `axoniq.axonserver.cluster.enabled` | false | Boolean | Cluster enabled |
+| `axoniq.axonserver.cluster.enabled` | false | Boolean | Whether clustering is enabled for this node |
 | `axoniq.axonserver.cluster.connection-check-delay` | 1000 | Long | Delay before the first run of the connection checker \(in ms.\) |
 | `axoniq.axonserver.cluster.connection-check-interval` | 1000 | Long | Interval between each run of the connection checker \(in ms.\) |
 | `axoniq.axonserver.cluster.rebalance-delay` | 7 | Long | Delay before the first run of the rebalancer \(in seconds\) \[Enterprise edition only\] |
