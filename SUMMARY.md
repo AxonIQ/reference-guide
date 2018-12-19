@@ -47,6 +47,7 @@
 ## Configuring Infrastructure components
 
 * [Messaging concepts](configuring-infrastructure-components/messaging-concepts/messaging-concepts.md)
+    * [Anatomy of a message](configuring-infrastructure-components/messaging-concepts/message-anatomy.md)
     * [Message Intercepting](configuring-infrastructure-components/messaging-concepts/message-intercepting.md)
     * [Supported Parameters for annotated handlers](configuring-infrastructure-components/messaging-concepts/supported-parameters-for-annotated-handlers.md)
     * [Unit of Work](configuring-infrastructure-components/messaging-concepts/unit-of-work.md)
