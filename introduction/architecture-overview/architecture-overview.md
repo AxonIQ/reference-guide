@@ -1,35 +1,139 @@
 # Architecture overview
 
--DRAFT version 1.0.0-
+Axon based application follow an architectural pattern which is based on the principles of Domain Driven Design (DDD), 
+Command-Query Responsibility Segregation (CQRS) and Event-Driven Architecture (EDA). The combination of these principles
+make Axon based application more robust and adaptable to accommodate change required by the changes in our business domain. 
 
- - Focus on message-driven style first (commands, events and queries)
- - CQRS
- - location transparency
- - replace the arch image with the latest
+Axon finds its use in both large monolithic application, wherein internal structure is essential to keep the monolith
+adaptable, as well as microservices, where the distributed nature of the system adds complexity.
 
+The following sections describe how the different principles relate and how Axon uses these principles to help you build
+more maintainable, performant and reliable software.
 
-**C**ommand **Q**uery **R**esponsibility **S**egregation \(CQRS\) on itself is a very simple pattern. It only prescribes that the component of an application that processes commands should be separated from the component that processes queries. Although this separation is very simple on itself, it provides a number of very powerful features when combined with other patterns. Axon provides the building blocks that make it easier to implement the different patterns that can be used in combination with CQRS.
+## Dealing with complexity
 
-The diagram below shows an example of an extended layout of a CQRS-based event driven architecture. The UI component, displayed on the left, interacts with the rest of the application in two ways: it sends commands to the application \(shown in the top section\), and it queries the application for information \(shown in the bottom section\).
+Axon originated in an attempt to find a solution to the ever increasing accidental [^1] complexity. Applying concepts
+from Domain Driven Design will help to a very large degree, even the most well-designed model will not run by itself in
+production.
 
-![Architecture overview of a CQRS application](/.gitbook/assets/detailed-architecture-overview.png)
+While Axon has is opinionated on how the interaction with a domain model should take place, it tries to avoid any 
+restrictions on the modelling freedom that one has. Even when your opinion differs from that of Axon, there are enough
+hooks, configuration options and triggers to change certain aspects of Axon's behavior. You will find those throughout 
+the reference guide.
 
-Commands are typically represented by simple and straightforward objects that contain all data necessary for a command handler to execute it. A command expresses its intent by its name. In Java terms, that means the class name is used to figure out what needs to be done, and the fields of the command provide the information required to do it.
+### DDD & CQRS
 
-The Command Bus receives commands and routes them to the command handlers. Each command handler responds to a specific type of command and executes logic based on the contents of the command. In some cases, however, you would also want to execute logic regardless of the actual type of command, such as validation, logging or authorization.
+Domain Driven Design (DDD) describes an approach to building software that puts a lot of emphasis on the design of a
+model, stimulating the use of a ubiquitous language [^2]. The domain model is the heart of the software, and should
+correctly capture and deal with the essential complexity of the domain.
 
-The command handler retrieves domain objects \(Aggregates\) from a repository and executes methods on them to change their state. These aggregates typically contain the actual business logic and are therefore responsible for guarding their own invariants. The state changes of aggregates result in the generation of Domain Events. Both the Domain Events and the Aggregates form the domain model.
+Command-Query Responsibility Segregation is an architectural pattern that describes a distinction between the parts of
+an application that deals with Commands (requests to change an application's state) and those that answer Queries 
+(requests for information about the application's state).
 
-Repositories are responsible for providing access to aggregates. Typically, these repositories are optimized for lookup of an aggregate by its unique identifier only. Some repositories will store the state of the aggregate itself \(using Object Relational Mapping, for example\), while others store the state changes that the aggregate has gone through in an event store. The repository is also responsible for persisting the changes made to aggregates in its backing storage.
+When combining DDD and CQRS, one divides an application into components, where each components either provides information about the application's state,
+or that changes the state. Each of these component has a model that focuses on this responsibility.
 
-Axon provides support for both the direct way of persisting aggregates \(using Object Relational Mapping, for example\) and for event sourcing.
+The image below shows a typical architecture of an Axon based application.
 
-The event bus dispatches events to all interested event listeners. This can either be done synchronously or asynchronously. Asynchronous event dispatching allows the command execution to return and hand over control to the user, while the events are being dispatched and processed in the background. Not having to wait for event processing to complete makes an application more responsive. Synchronous event processing, on the other hand, is simpler and is a sensible default. By default, synchronous processing will process event listeners in the same transaction that also processed the command.
+![Architecture overview of a CQRS based Axon application](/.gitbook/assets/architecture-overview.png)
 
-Event listeners receive events and handle them. Some handlers will update data sources used for querying while others send messages to external systems. As you might notice, the command handlers are completely unaware of the components that are interested in the changes they make. This means that it is very non-intrusive to extend the application with new functionality. All you need to do is add another event listener. The events loosely couple all components in your application together.
+In such an architecture, a UI (or API) can send commands to change an application's state. These Commands are handled
+by a Command Handling component, which uses a model to validate the command and make decisions on which side-effects
+to trigger. 
 
-In some cases, event processing requires new commands to be sent to the application. An example of this is when an order is received. This could mean the customer's account should be debited with the amount of the purchase, and shipping must be told to prepare a shipment of the purchased goods. In many applications, logic will become more complicated than this: what if the customer didn't pay in time? Will you send the shipment right away, or await payment first? The saga is the CQRS concept responsible for managing these complex business transactions.
+The side-effects caused by Commands are published using Events. These Events are picked up by one or more Event Handling 
+components, that take appropriate action. A typical action is updating the view models, which allow the UI to render
+the application's state. Other actions could be sending messages to external components, or even triggering other 
+side-effects through new commands. 
 
-The framework provides components to handle queries. The query bus receives queries and routes them to the query handlers. A query handler is registered at the query bus with both the type of query it handles as well as the type of response it providers. Both the query and the result type are typically simple, read-only DTO objects. The contents of these DTOs are typically driven by the needs of the user interface. In most cases, they map directly to a specific view in the UI \(also referred to as table-per-view\).
+The separation of the Command Model and the Query Models (also called View Models or Projections) allows these models
+to only focus on that specific aspect of the application. This makes each individual model easier to comprehend, and
+therefore more maintainable on the long term.
 
-It is possible to register multiple query handlers for the same type of query and type of response. When dispatching queries, the client can indicate whether he wants a result from one or from all available query handlers.
+### Separation of business logic and infrastructure
+
+An increase of accidental complexity is often caused by leaky abstractions where infrastructure concerns are mixed with 
+business logic. Axon makes it a top priority to keep the two strictly separated. Everywhere in Axon's design, it makes
+a clear distinction between _what_ you want to do (e.g. publish an event) and _how_ that is actually done (e.g. event 
+publication implementation).
+
+On one end, this makes Axon extremely configurable and adaptable to your specific situation. More importantly, is keeps
+accidental complexity at a minimum. For example, while Axon makes it easy to implement Event Sourced Aggregates, in no
+means does it enforce aggregate to be Event Sourced. The Repository interface abstracts this decision entirely. Also,
+a component that decides to send a Command via a Command Bus, is in no way responsible for deciding how that message
+is transported to the handler.
+
+Axon doesn't only make this separation by providing clear interfaces to components, it also combines the infrastructural
+choices in the Configuration API, there business logic components are configured separately from the infrastructural
+aspects of your application.
+
+## Explicit Messaging
+
+Axon strongly stimulates the use of explicit message objects. This means that each Message in an Axon based application
+will generally be represented by a specific Java Class in that application. While this does create a little overhead in
+writing an Axon based application, it does come with a few advantages:
+
+ * The use of explicit messages makes it easier to transparently distribute message to remote components;
+ * The use of explicit messages puts an emphasis on message design, which has proven important in the long-term
+   maintainability of an application;
+ * Explicit messages can be easily stored for later processing
+
+While Messaging is a core concept in Axon, not all Message are created equal. Different intents require different routing
+patterns. For example, for certain message, one would expect a result, while others are inherently fire-and-forget. 
+
+Axon separates Messages in roughly three categories:
+ * **Commands**; express the intent to change the application's state. Commands are routed to a single destination and may provide a response.
+ * **Queries**; express the desire for information. Depending on the dispatch strategy, Queries may be routed to one or more destinations simultaneously.
+ * **Events**; represent a notification that something relevant has happened. Events are published to any component interested and do not provide any form or return value.
+
+### Location transparency
+
+The biggest benefit of using explicit Messages, is that components that interact with each other don't need to know the
+location of their counterpart. In fact, in most cases, the sending components isn't even interested in the actual 
+destination of a message. We call this "Location Transparency".
+
+Axon takes location transparency further than placing services behind a logical URL. In Axon, a component that send a
+message does not need to specify a destination for that message. Messages are routed based on their stereotype (Command, Query 
+or Event) and the type of payload that they carry. Axon uses an application's capabilities to find a suitable destination
+for a message automatically. 
+
+A system build up of Location Transparent components makes that system highly adaptable. For example, a monolithic system
+built out of well-separated components that communicate solely using Commands, Events and Queries, can be easily split
+into separately deployed units, without any impact on functionality. 
+
+![Microservices Evolution through Location Transparency](/.gitbook/assets/location-transparency.png)
+
+This makes Axon highly suitable for Microservices environments. Logic can be easily moved from, to and in-between deployed 
+components without impact of the functional aspects of the system as a whole. The location of logic can then be primarily
+decided upon based on the non-functional requirements of each individual component of that system. Components that have
+clearly different performance characteristics, or components that require a different release cycle, could, for example,
+be split out of a monolithic application to reduce impact of changes to this component.
+
+### Event Sourcing
+
+In many systems, events are given a lot of extra attention. While Axon clearly acknowledges that not every message is an
+Event (there are also Commands and Queries), there is something special about events:
+
+Events retain value. Where the value of Commands and Queries reduce significantly when they have triggered their 
+side-effects or provided their results, Event represent something that has happened, which may be useful to know for a 
+long time after the occurrence of the event.
+
+For one, Event provide a very good level of granularity for an audit trail. However, for an audit trail to be 100% reliable.
+it should not only be generated as a side-effect, one must also be able to ensure any decisions are correctly reflected
+by the audit trail.
+
+Event Sourcing is the process where Events aren't only generated as a side-effects of a Command, they also form the source
+of the state, based on which the Command handling component makes its decision. In practice, this means the state is not
+event stored at all. It is generated ad-hoc, based on the events generated as a result of earlier commands.
+
+Event Sourcing can be immensely complex to implement yourself. Axon provides the APIs necessary to make it very easy and
+even a more natural approach to building a command model. Axon's Test Fixtures help ensure that certain guidelines and
+requirements are properly followed.
+
+Having a reliable audit trail has not only proven useful for auditability of a system, it also provides the information
+necessary to build new view models, do data analysis and provide a solid basis for machine learning algorithms.
+
+[^1]: Accidental complexity is a type of complexity that isn't natural to the domain, but is a result of technology and/or design choices. Unlike essential complexity, one should attempt to avoid accidental complexity as much as possible.
+
+[^2]: "Ubiquitous language" in Domain Driven Design refers to the concept that the same language should be used in different areas of a domain. For example, software must reflect the language used by the business, to ensure concepts align properly.
