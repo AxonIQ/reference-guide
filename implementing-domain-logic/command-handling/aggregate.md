@@ -57,39 +57,6 @@ It is possible to `apply()` new events inside an event sourcing handler method. 
 
 You can also use the static `AggregateLifecycle.isLive()` method to check whether the aggregate is 'live'. Basically, an aggregate is considered live if it has finished replaying historic events. While replaying these events, `isLive()` will return false. Using this `isLive()` method, you can perform activity that should only be done when handling newly generated events.
 
-## Spawning a new Aggregate
-
-Instantiating new Aggregates is done by issuing a creation command, which for example might originate from an Event Handling Component \(Saga or Event Processor\). But in some cases it might be beneficial to create an Aggregate from another Aggregate. Prior to version 3.3, instantiating an Aggregate as a follow up form another Aggregate had to be orchestrated via an Event Handling Component. Version 3.3 introduces functionality to create a new Aggregate from another Aggregate. To this end, the `AggregateLifecycle` introduces the static method `createNew()`.
-
-Consider a case where you have `AggregateA` defined like this:
-
-```java
-public class AggregateA {
-    ...            
-    public AggregateA(String id) {
-        // apply the creation event
-    }
-    ...
-}
-```
-
-We would like to create this Aggregate as a consequence of handling a command in `AggregateB`, like so:
-
-```java
-public class AggregateB {
-    ...
-    @CommandHandler
-    public void AggregateB(SomeAggregateBCommand command) {
-        AggregateLifecycle.createNew(AggregateA.class, () -> new AggregateA(/* provide the id for AggregateA */)); // (1)
-    }
-    ...
-}
-```
-
-\(1\) The first parameter of the `AggregateLifecycle#createNew()` method is the type of Aggregate to be created. The second parameter is the factory method - the method to be used in order to instantiate the desired Aggregate.
-
-> **Note** Creation of a new Aggregate should be done in a Command Handling function rather than in an Event Handling function \(given the usage of Event Sourced Aggregate\). Rationale: we do not want to create new Aggregates when we are sourcing a given Aggregate - previously created aggregate will be Event Sourced based on its events. However, if you try to create a new Aggregate while Axon is replaying events, an `UnsupportedOperationException` will be thrown.
-
 ## Handling commands in an Aggregate
 
 It is recommended to define the command handlers directly in the aggregate that contains the state to process this command, as it is not unlikely that a command handler needs the state of that aggregate to do its job.

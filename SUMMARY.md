@@ -22,6 +22,7 @@
     * [State-stored aggregates](implementing-domain-logic/command-handling/state-stored-aggregates.md)
     * [Dispatching commands](implementing-domain-logic/command-handling/dispatching-commands.md)
     * [Testing](implementing-domain-logic/command-handling/testing.md)
+    * [Aggregate creation from another Aggregate](implementing-domain-logic/command-handling/aggregate-creation-from-aggregate.md)
 * [Event handling](implementing-domain-logic/event-handling/event-handling.md)
     * [Handling events](implementing-domain-logic/event-handling/handling-events.md)
     * [Dispatching events](implementing-domain-logic/event-handling/dispatching-events.md)
