@@ -26,8 +26,19 @@ Axon main modules are the modules that have been thoroughly tested and are robus
 | Axon Legacy                   | axon-legacy              | org.axonframework | [available](https://search.maven.org/search?q=a:axon-legacy)              |
 
 
-
-
 ## Extension modules
 
 Besides main modules, there are several extension modules which complement Axon Framework. They address distribution concerns of Axon Framework towards non-Axon Server solutions. The maven `groupId` of all these extensions starts with `org.axonframework.extensions.*`. Visit [Maven Central Repository](https://search.maven.org/search?q=axonframework%20extensions) to copy coordinates for the version you neeed.
+
+| Module                                | Artifact Id                          | Group Id                                 | Maven Central                                                                         |
+| ------------------------------------- | ------------------------------------ | ---------------------------------------- |:-------------------------------------------------------------------------------------:|
+| Axon AMQP                             | axon-amqp                            | org.axonframework.extensions.amqp        | [available](https://search.maven.org/search?q=a:axon-amqp)                            |
+| Axon AMQP Spring Boot Starter         | axon-amqp-spring-boot-starter        | org.axonframework.extensions.amqp        | [available](https://search.maven.org/search?q=a:axon-amqp-spring-boot-starter)        |
+| Axon Kafka                            | axon-kafka                           | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka)                           |
+| Axon Kafka Spring Boot Starter        | axon-kafka-spring-boot-starter       | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka-spring-boot-starter)       |
+| Axon Spring Cloud                     | axon-springcloud                     | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud)                     |
+| Axon Spring Cloud Spring Boot Starter | axon-springcloud-spring-boot-starter | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud-spring-boot-starter) |
+| Axon JGroups                          | axon-jgroups                         | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups)                         |
+| Axon JGroups Spring Boot Starter      | axon-jgroups-spring-boot-starter     | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups-spring-boot-starter)     |
+| Axon Mongo                            | axon-mongo                           | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo)                           |
+| Axon Mongo Spring Boot Starter        | axon-mongo-spring-boot-starter       | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo-spring-boot-starter)       |
