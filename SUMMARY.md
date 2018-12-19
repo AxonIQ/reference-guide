@@ -2,7 +2,7 @@
 
 * [Quick start](introduction/quick-start.md)
 * [Architecture overview](introduction/architecture-overview/architecture-overview.md)
-    * [DDD & CQRS concepts](introduction/architecture-overview/ddd-cqrs-patters.md)
+    * [DDD & CQRS concepts](introduction/architecture-overview/ddd-cqrs-concepts.md)
     * [Event-Driven Microservices](introduction/architecture-overview/event-driven-microservices.md)
 * [Axon server](introduction/axon-server.md)
 
