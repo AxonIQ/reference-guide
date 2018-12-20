@@ -82,25 +82,25 @@ Besides main modules, there are several extension modules which complement Axon 
 This module provides components that allow you to build up an event bus using an AMQP-based message broker as distribution mechanism. This allows for guaranteed-delivery, even when the event handler node is temporarily unavailable.
 
 ### Axon AMQP Spring Boot Starter
-This module provides components provides Spring auto-configuration on top of the `axon-amqp` module.
+This module provides Spring auto-configuration on top of the `axon-amqp` module.
 
 ### Axon Kafka
 This module provides integration with Kafka for event distribution (do note that events are not stored in this scenario).
 
 ### Axon Kafka Spring Boot Starter
-This module provides components provides Spring auto-configuration on top of the `axon-kafka` module.
+This module provides Spring auto-configuration on top of the `axon-kafka` module.
 
 ### Axon Spring Cloud
 This module provides integration with Spring Cloud for command distribution.
 
 ### Axon Spring Cloud Spring Boot Starter
-This module provides components provides Spring auto-configuration on top of the `axon-jgroups` module
+This module provides Spring auto-configuration on top of the `axon-jgroups` module
 
 ### Axon JGroups 
 This module provides integration with JGroups for command distribution.
 
 ### Axon JGroups Spring Boot Starter
-This module provides components provides Spring auto-configuration on top of the `axon-jgroups` module
+This module provides Spring auto-configuration on top of the `axon-jgroups` module
 
 ### Axon Mongo
 This module provides event and saga store implementations that store event streams and sagas in a MongoDB database. [MongoDB](https://www.mongodb.com/) is a document based NoSQL database. 
