@@ -41,4 +41,3 @@ Besides main modules, there are several extension modules which complement Axon 
 | Axon JGroups                          | axon-jgroups                         | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups)                         |
 | Axon JGroups Spring Boot Starter      | axon-jgroups-spring-boot-starter     | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups-spring-boot-starter)     |
 | Axon Mongo                            | axon-mongo                           | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo)                           |
-| Axon Mongo Spring Boot Starter        | axon-mongo-spring-boot-starter       | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo-spring-boot-starter)       |
