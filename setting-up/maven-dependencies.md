@@ -1,6 +1,6 @@
 # Maven/Gradle dependencies
 
-Axon Framework consists of a number of modules that target specific problem areas. Depending on the exact needs of your project, you will need to include one or more of these modules.
+Axon Framework consists of a number of modules that provide specific capabilities. Depending on the exact needs of your project, you will need to include one or more of these modules.
 
 There are currently two ways of obtaining the module binaries: either download the binaries from our website or preferably configure a repository for your build system ([Maven](http://maven.apache.org/), [Gradle](https://gradle.org/)).
 
@@ -9,6 +9,12 @@ Axon modules are available on [Maven Central](https://search.maven.org/search?q=
 ## Main modules
 
 Axon main modules are the modules that have been thoroughly tested and are robust enough to use in demanding production environments. The maven `groupId` of all these modules is `org.axonframework`. Visit [Maven Central Repository](https://search.maven.org/search?q=g:org.axonframework) to copy coordinates for the version you neeed.
+
+> **Note**
+>
+> [Axon Spring Boot Starter module](#axon-spring-boot-starter) is the easiest start, it will get all required modules/dependencies transitively.
+> Alternatively, you can manually select individual modules for a customized config.
+>
 
 | Module                                                | Artifact Id              | Group Id          | Maven Central                                                             |
 | ----------------------------------------------------- | ------------------------ | ----------------- |:-------------------------------------------------------------------------:|
@@ -38,7 +44,7 @@ This module contains all the necessary components to configure an Axon applicati
 This module allows Axon Framework components to be configured in the Spring Application context. It also provides a number of building block implementations specific to Spring Framework, such as an adapter for publishing and retrieving Axon Events on a Spring Messaging Channel.
 
 ### Axon Spring Boot Starter
-This module provides Spring Boot starters on top of the `axon-spring` module, so you can benefit from Spring auto-configuration.
+This module provides Spring Boot auto-configuration for your project. It is by far the easiest option to get started configuring all Axon components, and it is thoroughly explained in [Spring Boot](spring-boot.md)
 
 ### Axon Messaging 
 This module contains all necessary components and building blocks to support command, event and query messaging.
