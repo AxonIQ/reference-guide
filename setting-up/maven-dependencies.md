@@ -94,7 +94,7 @@ This module provides Spring auto-configuration on top of the `axon-kafka` module
 This module provides integration with Spring Cloud for command distribution.
 
 ### Axon Spring Cloud Spring Boot Starter
-This module provides Spring auto-configuration on top of the `axon-jgroups` module
+This module provides Spring auto-configuration on top of the `axon-springcloud` module
 
 ### Axon JGroups 
 This module provides integration with JGroups for command distribution.
