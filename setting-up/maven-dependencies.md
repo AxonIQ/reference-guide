@@ -8,43 +8,30 @@ Axon modules are available on [Maven Central](https://search.maven.org/search?q=
 
 ## Main modules
 
-Axon main modules are the modules that have been thoroughly tested and are robust enough to use in demanding production environments. The maven `groupId` of all these modules is `org.axonframework`. Visit [Maven Central Repository](https://search.maven.org/search?q=g:org.axonframework) to copy coordinates for the version you neeed.
+Axon 'Main Modules' are the modules that have been thoroughly tested and are robust enough to use in demanding production environments. 
+The maven `groupId` of all these modules is `org.axonframework`. 
+Visit [Maven Central Repository](https://search.maven.org/search?q=g:org.axonframework) to copy coordinates for the version you need.
 
 > **Note**
 >
-> [Axon Spring Boot Starter](#axon-spring-boot-starter) module is the easiest start, it will get all required modules/dependencies transitively.
-> Alternatively, you can manually select individual modules for a customized config.
+> The [Axon Spring Boot Starter](#axon-spring-boot-starter) module is the quickest start in to an Axon project as it will retrieve all the required modules/dependencies transitively.
+> Alternatively, you can manually select individual modules for a customized configuration.
 >
 
 | Module                                                | Artifact Id              | Group Id          | Maven Central                                                             |
 | ----------------------------------------------------- | ------------------------ | ----------------- |:-------------------------------------------------------------------------:|
-| [Axon Test](#axon-test)                               | axon-test                | org.axonframework | [available](https://search.maven.org/search?q=a:axon-test)                |
-| [Axon Server Connector](#axon-server-connector)       | axon-server-connector    | org.axonframework | [available](https://search.maven.org/search?q=a:axon-server-connector)    |
-| [Axon Configuration](#axon-configuration)             | axon-configuration       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-configuration)       |
-| [Axon Spring](#axon-spring)                           | axon-spring              | org.axonframework | [available](https://search.maven.org/search?q=a:axon-spring)              |
-| [Axon Spring Boot Starter](#axon-spring-boot-starter) | axon-spring-boot-starter | org.axonframework | [available](https://search.maven.org/search?q=a:axon-spring-boot-starter) |
 | [Axon Messaging](#axon-messaging)                     | axon-messaging           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-messaging)           |
 | [Axon Modeling](#axon-modeling)                       | axon-modelling           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-modelling)           |
-| [Axon Eventsourcing](#axon-eventsourcing)             | axon-eventsourcing       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
+| [Axon Event Sourcing](#axon-eventsourcing)            | axon-eventsourcing       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
+| [Axon Configuration](#axon-configuration)             | axon-configuration       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-configuration)       |
+| [Axon Test](#axon-test)                               | axon-test                | org.axonframework | [available](https://search.maven.org/search?q=a:axon-test)                |
+| [Axon Server Connector](#axon-server-connector)       | axon-server-connector    | org.axonframework | [available](https://search.maven.org/search?q=a:axon-server-connector)    |
+| [Axon Spring](#axon-spring)                           | axon-spring              | org.axonframework | [available](https://search.maven.org/search?q=a:axon-spring)              |
+| [Axon Spring Boot Starter](#axon-spring-boot-starter) | axon-spring-boot-starter | org.axonframework | [available](https://search.maven.org/search?q=a:axon-spring-boot-starter) |
 | [Axon Disruptor](#axon-disruptor)                     | axon-disruptor           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-disruptor)           |
 | [Axon Metrics](#axon-metrics)                         | axon-metrics             | org.axonframework | [available](https://search.maven.org/search?q=a:axon-metrics)             |
 | [Axon CDI](#axon-cdi)                                 | axon-cdi                 | org.axonframework | [available](https://search.maven.org/search?q=a:axon-cdi)                 |
 | [Axon Legacy](#axon-legacy)                           | axon-legacy              | org.axonframework | [available](https://search.maven.org/search?q=a:axon-legacy)              |
-
-### Axon Test
-This module contains test fixtures that you can use to test Axon based components, such as your Command Handlers, Aggregates and Sagas. You typically do not need this module at runtime and will only need to be added to the classpath for running tests.
-
-### Axon Server Connector 
-This module provides infrastructure components that connect to AxonServer.
-
-### Axon Configuration
-This module contains all the necessary components to configure an Axon application.
-
-### Axon Spring 
-This module allows Axon Framework components to be configured in the Spring Application context. It also provides a number of building block implementations specific to Spring Framework, such as an adapter for publishing and retrieving Axon Events on a Spring Messaging Channel.
-
-### Axon Spring Boot Starter
-This module provides Spring Boot auto-configuration for your project. It is by far the easiest option to get started configuring all Axon components, and it is thoroughly explained in [Spring Boot](spring-boot.md)
 
 ### Axon Messaging 
 This module contains all necessary components and building blocks to support command, event and query messaging.
@@ -52,8 +39,27 @@ This module contains all necessary components and building blocks to support com
 ### Axon Modeling
 This module contains the necessary components to create domain models, like Aggregates and Sagas.
 
-### Axon Eventsourcing 
-This module contains all necessary infrastructure components to support Event Sourcing Command and Query models.
+### Axon Event Sourcing 
+This module contains all necessary infrastructure components to support Event Sourcing Command and Query Models.
+
+### Axon Test
+This module contains test fixtures that you can use to test Axon based components, such as your Command Handlers, Aggregates and Sagas. 
+You typically do not need this module at runtime and will only need to be added to the classpath for running tests.
+
+### Axon Configuration
+This module contains all the necessary components to configure an Axon application.
+
+### Axon Server Connector 
+This module provides infrastructure components that connect to Axon Server.
+
+### Axon Spring 
+This module allows Axon Framework components to be configured in the Spring Application context. 
+It also provides a number of building block implementations specific to Spring Framework, such as an adapter for publishing and retrieving Axon Events on a Spring Messaging Channel.
+
+### Axon Spring Boot Starter
+This module provides Spring Boot auto-configuration for your project. 
+It is by far the easiest option to get started as it automatically configures all Axon components. 
+It explained in more detail [here](spring-boot.md).
 
 ### Axon Disruptor
 This module contains a specific CommandBus and Command Handling solution based on the Disruptor paradigm.
@@ -69,7 +75,10 @@ This module contains components that enable migration of older Axon projects to 
 
 ## Extension modules
 
-Besides main modules, there are several extension modules which complement Axon Framework. They address distribution concerns of Axon Framework towards non-Axon Server solutions. The maven `groupId` of all these extensions starts with `org.axonframework.extensions.*`. Visit [Maven Central Repository](https://search.maven.org/search?q=axonframework%20extensions) to copy coordinates for the version you neeed.
+Besides main modules, there are several extension modules which complement Axon Framework. 
+They address distribution concerns of Axon Framework towards non-Axon Server solutions. 
+The maven `groupId` of all these extensions starts with `org.axonframework.extensions.*`. 
+Visit [Maven Central Repository](https://search.maven.org/search?q=axonframework%20extensions) to copy coordinates for the version you need.
 
 | Module                                                                     | Artifact Id                          | Group Id                                 | Maven Central                                                                         |
 | -------------------------------------------------------------------------- | ------------------------------------ | ---------------------------------------- |:-------------------------------------------------------------------------------------:|
@@ -85,7 +94,8 @@ Besides main modules, there are several extension modules which complement Axon 
 
 
 ### Axon AMQP
-This module provides components that allow you to build up an event bus using an AMQP-based message broker as distribution mechanism. This allows for guaranteed-delivery, even when the event handler node is temporarily unavailable.
+This module provides components that allow you leverage an AMQP-based message broker as an Event Message distribution mechanism. 
+This allows for guaranteed-delivery, even when the Event Handler node is temporarily unavailable.
 
 ### Axon AMQP Spring Boot Starter
 This module provides Spring auto-configuration on top of the `axon-amqp` module.
