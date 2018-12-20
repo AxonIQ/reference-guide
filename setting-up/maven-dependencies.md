@@ -22,7 +22,7 @@ Visit [Maven Central Repository](https://search.maven.org/search?q=g:org.axonfra
 | ----------------------------------------------------- | ------------------------ | ----------------- |:-------------------------------------------------------------------------:|
 | [Axon Messaging](#axon-messaging)                     | axon-messaging           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-messaging)           |
 | [Axon Modeling](#axon-modeling)                       | axon-modelling           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-modelling)           |
-| [Axon Event Sourcing](#axon-eventsourcing)            | axon-eventsourcing       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
+| [Axon Event Sourcing](#axon-event sourcing)            | axon-eventsourcing       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
 | [Axon Configuration](#axon-configuration)             | axon-configuration       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-configuration)       |
 | [Axon Test](#axon-test)                               | axon-test                | org.axonframework | [available](https://search.maven.org/search?q=a:axon-test)                |
 | [Axon Server Connector](#axon-server-connector)       | axon-server-connector    | org.axonframework | [available](https://search.maven.org/search?q=a:axon-server-connector)    |
@@ -86,11 +86,11 @@ Visit [Maven Central Repository](https://search.maven.org/search?q=axonframework
 | [Axon AMQP Spring Boot Starter](#axon-amqp-spring-boot-starter)            | axon-amqp-spring-boot-starter        | org.axonframework.extensions.amqp        | [available](https://search.maven.org/search?q=a:axon-amqp-spring-boot-starter)        |
 | [Axon Kafka](#axon-kafka)                                                  | axon-kafka                           | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka)                           |
 | [Axon Kafka Spring Boot Starter](#axon-kafka-spring-boot-starter)          | axon-kafka-spring-boot-starter       | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka-spring-boot-starter)       |
-| [Axon Spring Cloud](#axon-springcloud)                                     | axon-springcloud                     | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud)                     |
+| [Axon Spring Cloud](#axon-spring cloud)                                    | axon-springcloud                     | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud)                     |
 | [Axon Spring Cloud Spring Boot Starter](#axon-jgroups-spring-boot-starter) | axon-springcloud-spring-boot-starter | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud-spring-boot-starter) |
 | [Axon JGroups](#axon-jgroups)                                              | axon-jgroups                         | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups)                         |
 | [Axon JGroups Spring Boot Starter](#axon-jgroups-spring-boot-starter)      | axon-jgroups-spring-boot-starter     | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups-spring-boot-starter)     |
-| [Axon Mongo](#axon-mongo)                                                   | axon-mongo                           | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo)                           |
+| [Axon Mongo](#axon-mongo)                                                  | axon-mongo                           | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo)                           |
 
 
 ### Axon AMQP
