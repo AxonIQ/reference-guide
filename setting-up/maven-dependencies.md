@@ -12,7 +12,7 @@ Axon main modules are the modules that have been thoroughly tested and are robus
 
 > **Note**
 >
-> [Axon Spring Boot Starter module](#axon-spring-boot-starter) is the easiest start, it will get all required modules/dependencies transitively.
+> [Axon Spring Boot Starter](#axon-spring-boot-starter) module is the easiest start, it will get all required modules/dependencies transitively.
 > Alternatively, you can manually select individual modules for a customized config.
 >
 
