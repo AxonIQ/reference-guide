@@ -49,7 +49,7 @@ Next for each subsequent node, run the following command to add the node to the 
 When you have a default setup with all nodes using the default port you can omit a number of parameters from this request. To connect node2 to with node1 run the following command on node2:
 
 ```text
-# java -jar axoniq-cli.jar register-node -h node1
+# java -jar axonserver-cli.jar register-node -h node1
 ```
 
 Default value for `-S` option is [http://localhost:8024](http://localhost:8024) and for -p is 8224 \(default internal communication port\).
