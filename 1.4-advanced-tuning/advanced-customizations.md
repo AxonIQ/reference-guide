@@ -2,7 +2,7 @@
 
 ## Parameter Resolvers
 
-You can configure additional `ParameterResolver`s by extending the `ParameterResolverFactory` class and creating a file named `/META-INF/service/org.axonframework.common.annotation.ParameterResolverFactory` containing the fully qualified name of the implementing class.
+You can configure additional `ParameterResolver`s by extending the `ParameterResolverFactory` class and creating a file named `/META-INF/service/org.axonframework.messaging.annotation.ParameterResolverFactory` containing the fully qualified name of the implementing class.
 
 > **Caution**
 >
