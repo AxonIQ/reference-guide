@@ -59,7 +59,7 @@ It also provides a number of building block implementations specific to Spring F
 ### Axon Spring Boot Starter
 This module provides Spring Boot auto-configuration for your project. 
 It is by far the easiest option to get started as it automatically configures all Axon components. 
-It explained in more detail [here](spring-boot.md).
+It is explained in more details [here](spring-boot.md).
 
 ### Axon Disruptor
 This module contains a specific CommandBus and Command Handling solution based on the Disruptor paradigm.
@@ -77,7 +77,7 @@ This module contains components that enable migration of older Axon projects to 
 
 Besides main modules, there are several extension modules which complement Axon Framework. 
 They address distribution concerns of Axon Framework towards non-Axon Server solutions. 
-The maven `groupId` of all these extensions starts with `org.axonframework.extensions.*`. 
+The maven `groupId` of these extensions starts with `org.axonframework.extensions.*`. 
 Visit [Maven Central Repository](https://search.maven.org/search?q=axonframework%20extensions) to copy coordinates for the version you need.
 
 | Module                                                                     | Artifact Id                          | Group Id                                 | Maven Central                                                                         |
