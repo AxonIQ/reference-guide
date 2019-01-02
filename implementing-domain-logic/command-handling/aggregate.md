@@ -185,7 +185,20 @@ If more events need to be published, based on the state of an entity after apply
 
 ## Aggregate Lifecycle Operations
 
-You can also use the static `AggregateLifecycle.isLive()` method to check whether the aggregate is 'live'. 
-Basically, an aggregate is considered live if it has finished replaying historic events. 
-While replaying these events, `isLive()` will return false. 
-Using this `isLive()` method, you can perform activity that should only be done when handling newly generated events.
+There are a couple of operations which are desirable to be performed whilst in the life cycle of an Aggregate.
+To that end, the `AggregateLifecycle` class in Axon provides a couple of static functions:
+
+1. `apply(Object)` and `apply(Object, MetaData)`: The `AggregateLifecycle#apply` will publish an Event message on an 
+`EventBus` such that it is known to have originated from the Aggregate executing the operation. 
+There is the possibility to provide just the Event `Object` or both the Event and some specific [MetaData](../../configuring-infrastructure-components/messaging-concepts/message-anatomy.md#metadata).  
+2. `createNew(Class, Callable)`: Instantiate a new Aggregate as a result of handling a Command. 
+Read [this](aggregate-creation-from-aggregate.md) for more details on this.
+3. `isLive()`: Check to verify whether the Aggregate is in a 'live' state. 
+An Aggregate is regarded to be 'live' if it has finished replaying historic events to recreate it's state. 
+If the Aggregate is thus in the process of being event sourced, an `AggregateLifecycle.isLive()` call would return `false`.
+Using this `isLive()` method, you can perform activity that should only be done when handling newly generated events.  
+4. `markDeleted()`: Will mark the Aggregate instance calling the function as being 'deleted'.
+Useful if the domain specifies a given Aggregate can be removed/deleted/closed, 
+ after which it should no longer be allowed to handle any Commands.
+This function should be called from an `@EventSourcingHandler` annotated function to ensure that _being marked deleted_ 
+is part of that Aggregate's state.
