@@ -69,56 +69,106 @@ Failure to provide this constructor will result in an exception when loading the
 
 ## Handling Commands in an Aggregate
 
-It is recommended to define the command handlers directly in the aggregate that contains the state to process this command, as it is not unlikely that a command handler needs the state of that aggregate to do its job.
+Although Command Handlers can be placed in regular components (as will be discussed [here](external-command-handler.md), 
+it is recommended to define the Command Handlers directly on the Aggregate that contains the state to process this command.
 
-To define a command handler in an aggregate, simply annotate the command handling method with `@CommandHandler`. The rules for an `@CommandHandler` annotated method are the same as for any handler method. However, commands are not only routed by their payload. command nessages carry a name, which defaults to the fully qualified class name of the command object.
+To define a Command Handler in an Aggregate, simply annotate the method which should handle the command with `@CommandHandler`.
+The `@CommandHandler` annotated method will become a Command Handler for Command Messages where the _command name_ 
+matches fully qualified class name of the first parameter of that method. 
+Thus, a method signature of `void handle(RedeemCardCommand cmd)` annotated with `@CommandHandler`, 
+will be the Command Handler of the `RedeemCardCommand` Command Messages.
 
-In order for Axon to know which instance of an aggregate type should handle the command message, the property carrying the aggregate identifier in the command object must be annotated with `@TargetAggregateIdentifier`. The annotation may be placed on either the field or an accessor method \(e.g. a getter\).
+Command Messages can also be [dispatched](dispatching-commands.md) with different _command names_.
+To be able to handle those correctly, the `String commandName` value can be specified in the `@CommandHandler` annotation.  
 
-Commands that create an aggregate instance do not need to identify the target aggregate identifier, although it is recommended to annotate the aggregate identifier on them as well.
+In order for Axon to know which instance of an Aggregate type should handle the Command Message, 
+the property carrying the Aggregate Identifier in the command object __must__ be annotated with `@TargetAggregateIdentifier`. 
+The annotation may be placed on either the field or an accessor method \(e.g. a getter\) in the Command object.
 
-If you prefer to use another mechanism for routing commands, the behavior can be overridden by supplying a custom `CommandTargetResolver`. This class should return the aggregate identifier and expected version \(if any\) based on a given command.
-
-> **Note**
->
-> When the `@CommandHandler` annotation is placed on an aggregate's constructor, the respective command will create a new instance of that aggregate and add it to the repository. Those commands do not require to target a specific aggregate instance. Therefore, those commands do not require any `@TargetAggregateIdentifier` or `@TargetAggregateVersion` annotations, nor will a custom `CommandTargetResolver` be invoked for these commands.
->
-> When a command creates an aggregate instance, the callback for that command will receive the aggregate identifier when the command executed successfully.
+Taking the `GiftCard` Aggregate as an example, we can identify two Command Handlers on the Aggregate:
 
 ```java
-import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
+import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.modelling.command.AggregateIdentifier;
 
-public class MyAggregate {
+import static org.axonframework.modelling.command.AggregateLifecycle.apply;
+
+public class GiftCard {
 
     @AggregateIdentifier
     private String id;
+    private int remainingValue;
 
     @CommandHandler
-    public MyAggregate(CreateMyAggregateCommand command) {
-        apply(new MyAggregateCreatedEvent(IdentifierFactory.getInstance().generateIdentifier()));
-    }
-
-    // no-arg constructor for Axon
-    MyAggregate() {
+    public GiftCard(IssueCardCommand cmd) {
+        apply(new CardIssuedEvent(cmd.getCardId(), cmd.getAmount()));
     }
 
     @CommandHandler
-    public void doSomething(DoSomethingCommand command) {
-        // do something...
+    public void handle(RedeemCardCommand cmd) {
+        if (cmd.getAmount() <= 0) {
+            throw new IllegalArgumentException("amount <= 0");
+        }
+        if (cmd.getAmount() > remainingValue) {
+            throw new IllegalStateException("amount > remaining value");
+        }
+        apply(new CardRedeemedEvent(id, cmd.getTransactionId(), cmd.getAmount()));
     }
-
-    // code omitted for brevity. The event handler for MyAggregateCreatedEvent must set the id field
-}
-
-public class DoSomethingCommand {
-
-    @TargetAggregateIdentifier
-    private String aggregateId;
-
-    // code omitted for brevity
-
+    // omitted event sourcing handlers
 }
 ```
+
+And the Command objects, the `IssueCardCommand` and `RedeemCardCommand` will have the following format:
+
+```java
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
+
+public class IssueCardCommand {
+    
+    @TargetAggregateIdentifier
+    private final String cardId;
+    private final Integer amount;
+
+    public IssueCardCommand(String cardId, Integer amount) {
+        this.cardId = cardId;
+        this.amount = amount;
+    }
+    // omitted getters, equals/hashCode, toString functions
+}
+
+public class RedeemCardCommand {
+
+    @TargetAggregateIdentifier
+    private final String cardId;
+    private final String transactionId;
+    private final Integer amount;
+
+    public RedeemCardCommand(String cardId, String transactionId, Integer amount) {
+        this.cardId = cardId;
+        this.transactionId = transactionId;
+        this.amount = amount;
+    }
+    // omitted getters, equals/hashCode, toString functions
+}
+```
+
+The `cardId` present in both commands is the reference to a `GiftCard` instance 
+and thus is annotated withe the `@TargetAggregateIdentifier` annotation. 
+Commands that create an Aggregate instance do not need to identify the target aggregate identifier, 
+as there is no Aggregate in existence yet.
+It is nonetheless recommended for consistency to annotate the Aggregate Identifier on them as well.
+
+If you prefer to use another mechanism for routing commands, 
+the behavior can be overridden by supplying a custom `CommandTargetResolver`. 
+This class should return the Aggregate Identifier and expected version \(if any\) based on a given command.
+
+> **Note**
+>
+> When the `@CommandHandler` annotation is placed on an aggregate's constructor, 
+> the respective command will create a new instance of that aggregate and add it to the repository. 
+> Those commands do not require to target a specific aggregate instance. 
+> Therefore, those commands do not require any `@TargetAggregateIdentifier` or `@TargetAggregateVersion` annotations, 
+> nor will a custom `CommandTargetResolver` be invoked for these commands.
 
 ## Applying Events from Event Sourcing Handlers
 
