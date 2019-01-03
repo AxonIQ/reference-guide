@@ -58,7 +58,7 @@ business logic. Axon makes it a top priority to keep the two strictly separated.
 a clear distinction between _what_ you want to do (e.g. publish an event) and _how_ that is actually done (e.g. event 
 publication implementation).
 
-On one end, this makes Axon extremely configurable and adaptable to your specific situation. More importantly, is keeps
+On one end, this makes Axon extremely configurable and adaptable to your specific situation. More importantly, it keeps
 accidental complexity at a minimum. For example, while Axon makes it easy to implement Event Sourced Aggregates, in no
 means does it enforce aggregate to be Event Sourced. The Repository interface abstracts this decision entirely. Also,
 a component that decides to send a Command via a Command Bus, is in no way responsible for deciding how that message
