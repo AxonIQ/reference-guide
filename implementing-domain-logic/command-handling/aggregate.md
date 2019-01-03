@@ -1,8 +1,7 @@
 # Aggregate
 
 This chapter will cover the basics on how to implement an ['Aggregate'](../../introduction/architecture-overview/ddd-cqrs-concepts.md#aggregates). 
-For more details on what an Aggregate is,
- it's beneficial to first read the [DDD and CQRS Patterns](../../introduction/architecture-overview/ddd-cqrs-concepts.md) page.
+For more details on what an Aggregate is read the [DDD and CQRS Patterns](../../introduction/architecture-overview/ddd-cqrs-concepts.md) page.
 
 ## Basic Aggregate Structure
 
