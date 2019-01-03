@@ -19,16 +19,16 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 public class GiftCard {
-
+    
     @AggregateIdentifier // 1.
     private String id;
-
+    
     @CommandHandler // 2.
     public GiftCard(IssueCardCommand cmd) {
         // 3.
        apply(new CardIssuedEvent(cmd.getCardId(), cmd.getAmount()));
     }
-
+    
     @EventSourcingHandler // 4.
     public void on(CardIssuedEvent evt) {
         id = evt.getCardId();
@@ -37,19 +37,22 @@ public class GiftCard {
     // 5.
     protected GiftCard() {
     }
+    // omitted command handlers and event sourcing handlers
 }
 ```
 
-There are a couple of noteworthy concepts from the given code snippets, marked with numbered Java comments referring to the following bullets: 
+There are a couple of noteworthy concepts from the given code snippets,
+ marked with numbered Java comments referring to the following bullets: 
 
 1. The `@AggregateIdentifier` is the external reference point to into the `GiftCard` Aggregate. 
 This field is a hard requirement, as with out it Axon will not know to which Aggregate a given Command is targeted.
 2. A `@CommandHandler` annotated constructor, or differently put the 'command handling constructor'. 
 This annotation tells the framework that the given constructor is capable of handling the `IssueCardCommand`.
-The `@CommandHandler` annotated functions are the place where you would put your decision-making/business logic. 
+The `@CommandHandler` annotated functions are the place where you would put your _decision-making/business logic_. 
 3. The static `AggregateLifecycle#apply(Object...)` is what is used when an Event Message should be published. 
 Upon calling this function the provided `Object`s will be published as `EventMessage`s within the scope of the Aggregate they are applied in.
 4. Using the `@EventSourcingHandler` is what tells the framework that the annotated function should be called when the Aggregate is 'sourced from its events'.
+As all the Event Sourcing Handlers combined will form the Aggregate, this is where all the _state changes_ happen.
 Note that the Aggregate Identifier **must** be set in the `@EventSourcingHandler` of the very first Event published by the aggregate. 
 This is usually the creation event.
 Lastly, `@EventSourcingHandler` annotated functions are resolved using specific rules.
@@ -60,8 +63,10 @@ Failure to provide this constructor will result in an exception when loading the
 
 > **Note**
 >
-> Event Handler methods may be private, as long as the security settings of the JVM allow the Axon Framework to change the accessibility of the method. 
-> This allows you to clearly separate the public API of your Aggregate, which exposes the methods that generate events, from the internal logic, which processes the events.
+> Event Handler methods may be private,
+>  as long as the security settings of the JVM allow the Axon Framework to change the accessibility of the method. 
+> This allows you to clearly separate the public API of your Aggregate, which exposes the methods that generate events,
+>  from the internal logic, which processes the events.
 >
 > Most IDE's have an option to ignore "unused private method" warnings for methods with a specific annotation. 
 > Alternatively, you can add an `@SuppressWarnings("UnusedDeclaration")` annotation to the method to make sure you do not accidentally delete an event handler method.
@@ -93,16 +98,16 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 public class GiftCard {
-
+    
     @AggregateIdentifier
     private String id;
     private int remainingValue;
-
+    
     @CommandHandler
     public GiftCard(IssueCardCommand cmd) {
         apply(new CardIssuedEvent(cmd.getCardId(), cmd.getAmount()));
     }
-
+    
     @CommandHandler
     public void handle(RedeemCardCommand cmd) {
         if (cmd.getAmount() <= 0) {
@@ -117,7 +122,7 @@ public class GiftCard {
 }
 ```
 
-And the Command objects, the `IssueCardCommand` and `RedeemCardCommand` will have the following format:
+The Command objects, `IssueCardCommand` and `RedeemCardCommand`, which `GiftCard` handles have the following format:
 
 ```java
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
@@ -127,7 +132,7 @@ public class IssueCardCommand {
     @TargetAggregateIdentifier
     private final String cardId;
     private final Integer amount;
-
+    
     public IssueCardCommand(String cardId, Integer amount) {
         this.cardId = cardId;
         this.amount = amount;
@@ -136,12 +141,12 @@ public class IssueCardCommand {
 }
 
 public class RedeemCardCommand {
-
+    
     @TargetAggregateIdentifier
     private final String cardId;
     private final String transactionId;
     private final Integer amount;
-
+    
     public RedeemCardCommand(String cardId, String transactionId, Integer amount) {
         this.cardId = cardId;
         this.transactionId = transactionId;
@@ -169,6 +174,25 @@ This class should return the Aggregate Identifier and expected version \(if any\
 > Therefore, those commands do not require any `@TargetAggregateIdentifier` or `@TargetAggregateVersion` annotations, 
 > nor will a custom `CommandTargetResolver` be invoked for these commands.
 
+## Business Logic and State Changes
+
+Within an Aggregate there is a specific location to perform business logic validation and Aggregate state changes.
+The Command Handlers should _decide_ whether the Aggregate is in the correct state.
+If yes, an Event is published.
+If not, the Command might be ignored or an exception could be thrown, depending on the needs of the domain.
+
+State changes should __not__ occur in _any_ Command Handling function.
+The Event Sourcing Handlers should be the only methods where the Aggregate's state is updated.
+Failing to do so means the Aggregate would miss state changes when it is being sourced from it's events.
+
+The [Aggregate Test Fixture](testing.md) will guard from unintentional state changes in Command Handling functions.
+It is thus advised to provide thorough test cases for _any_ Aggregate implementation.
+
+> **Note**
+>
+> The only state an Aggregate requires is the state it needs to make a decision.
+> Handling an Event published by the Aggregate is thus only required if the state change the Event resembles is needed to drive future validation. 
+
 ## Applying Events from Event Sourcing Handlers
 
 In some cases, especially when the Aggregate structures grows beyond just a couple of Entities,
@@ -180,7 +204,16 @@ This makes it possible for an Entity 'B' to apply an event in reaction to Entity
 Axon will ignore the `apply()`invocation when replaying historic events upon sourcing the given Aggregate. 
 Do note that in the scenario where Event Messages are published from an Event Sourcing Handler,
  the Event of the inner `apply()` invocation is only published to the entities after all entities have received the first event. 
-If more events need to be published, based on the state of an entity after applying an inner event, use `apply(...).andThenApply(...)`
+If more events need to be published, based on the state of an entity after applying an inner event, use `apply(...).andThenApply(...)`.
+
+> **Note**
+>
+> An Aggregate __cannot__ handle events from other sources then itself.
+> This is intentional as the Event Sourcing Handlers are used to recreate the state of the Aggregate.
+> For this it only needs it's own events as those represent it's state changes.
+> 
+> To make an Aggregate react on events from other Aggregate instances,
+ [Sagas](../complex-business-transactions/complex-business-transactions.md) or [Eveht Handling Components](../event-handling/event-handling.md) should be leveraged.
 
 ## Aggregate Lifecycle Operations
 
