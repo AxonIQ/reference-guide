@@ -17,8 +17,8 @@
 
 * [Command Handling](implementing-domain-logic/command-handling/command-handling.md)
     * [Aggregate](implementing-domain-logic/command-handling/aggregate.md)
-    * [External command handler](implementing-domain-logic/command-handling/external-command-handler.md)
     * [Multi-entity aggregates](implementing-domain-logic/command-handling/multi-entity-aggregates.md)
+    * [External command handler](implementing-domain-logic/command-handling/external-command-handler.md)
     * [State-stored aggregates](implementing-domain-logic/command-handling/state-stored-aggregates.md)
     * [Dispatching commands](implementing-domain-logic/command-handling/dispatching-commands.md)
     * [Testing](implementing-domain-logic/command-handling/testing.md)
