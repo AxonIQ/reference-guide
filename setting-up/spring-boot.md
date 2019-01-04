@@ -1,59 +1,46 @@
-# Spring boot
+# Spring Boot
 
-Axon Framework provides extensive support for Spring, but does not require you to use Spring in order to use Axon. All components can be configured programmatically and do not require Spring on the classpath. However, if you do use Spring, much of the configuration is made easier with the use of Spring's annotation support. Axon provides Spring Boot starters on top of that, so you can benefit from auto-configuration as well.
+Axon Framework provides extensive support for Spring, but does not require you to use Spring in order to use Axon. All components can be configured programmatically and do not require Spring on the classpath. However, if you do use Spring, much of the configuration is made easier with the use of Spring's annotation support. Axon provides Spring Boot starters on the top of that, so you can benefit from auto-configuration as well.
 
 ## Auto-configuration
 
-Axon's Spring Boot auto-configuration is by far the easiest option to get started configuring your Axon components. By simply adding the `axon-spring-boot-starter` dependency, Axon will automatically configure the basic infrastructure components \(command bus, event bus, query bus\), as well as any component required to run and store aggregates and sagas.
+Axon's Spring Boot auto-configuration is by far the easiest option to get started configuring your Axon components. By simply declaring dependency to `axon-spring-boot-starter`, Axon will automatically configure the infrastructure components \(command bus, event bus, query bus\), as well as any component required to run and store aggregates and sagas.
 
-By including this dependencies you will be on the way of creating a web application very quickly:
+## Demystifying Axon Spring Boot Starter
+
+With a lot of things happening in the background, it sometimes becomes difficult to understand how an annotation or just including a dependency enables so many features. 
+
+`axon-spring-boot-starter` follows general Spring boot convention in structuring the starter. It depends on `axon-spring-boot-autoconfigure` which holds concrete implementation of Axon auto-configuration. When Axon Spring Boot application starts up, it looks for a file named `spring.factories` in the `classpath`. This file is located in the `META-INF` directory of `axon-spring-boot-autoconfigure` module:
 
 ```
-<properties>
-        <axon.version>4.0.3</axon.version>
-</properties>
-<dependencies>
-    ...
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.axonframework</groupId>
-        <artifactId>axon-spring-boot-starter</artifactId>
-        <version>${axon.version}</version>
-    </dependency>
-
-    <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-        <scope>runtime</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.axonframework</groupId>
-        <artifactId>axon-test</artifactId>
-        <version>${axon.version}</version>
-        <scope>test</scope>
-    </dependency>
-    ...
-</dependencies>
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    org.axonframework.springboot.autoconfig.MetricsAutoConfiguration,\
+    org.axonframework.springboot.autoconfig.EventProcessingAutoConfiguration,\
+    org.axonframework.springboot.autoconfig.AxonAutoConfiguration,\
+    org.axonframework.springboot.autoconfig.JpaAutoConfiguration,\
+    org.axonframework.springboot.autoconfig.JpaEventStoreAutoConfiguration,\
+    org.axonframework.springboot.autoconfig.JdbcAutoConfiguration,\
+    org.axonframework.springboot.autoconfig.TransactionAutoConfiguration,\
+    org.axonframework.springboot.autoconfig.NoOpTransactionAutoConfiguration,\
+    org.axonframework.springboot.autoconfig.InfraConfiguration,\
+    org.axonframework.springboot.autoconfig.ObjectMapperAutoConfiguration,\
+    org.axonframework.springboot.autoconfig.AxonServerAutoConfiguration
 ```
 
+This file maps different configuration classes which Axon Spring boot application will try to apply. So, as per this snippet, Spring Boot will try to apply all the configuration classes for `AxonServerAutoConfiguration`, `AxonAutoConfiguration`, ...
 
-## Advanced Spring configuration
+Whether these configuration classes will be applied or not, it will depend on conditions defined on this classes:
 
-Axon Spring Boot auto-configuration is not intrusive. It will define only Spring components that you aren't already explicitly defined in the application context. This means that you only need to explicitly configure components that you want different from the default/convention. As you make progress and implement your components you will probably find a reason to do that, in that case refer to this section to find out how.
+ - `AxonServerAutoConfiguration` configures Axon Server as implementation for the CommandBus, QueryBus and EventStore. It will be applied before `AxonAutoConfiguration` , and it will be applied only if the `org.axonframework.axonserver.connector.AxonServerConfiguration` class is available in the classpath.
 
-### Event bus and event store configuration
+ - `AxonAutoConfiguration` configures 'non-axon-server' implementation of CommandBus, QueryBus, EventStore/EventBus and other Axon components. This components will be initialized only if they are not in the Spring Application context already, eg. `@ConditionalOnMissingBean(EventBus.class)`. As `AxonAutoConfiguration` will be applied after `AxonServerAutoConfiguration` this Axon components will be in the Spring Application Context already, so Axon Server implementation of CommandBus, QueryBus and EventStore/EventBus will win.
+
+
+Axon Spring Boot auto-configuration is not intrusive. It will define only Spring components that you aren't already explicitly defined in the application context. This allow you to completely override the auto-configured beans by defining your own in one of the `@Configuration` classes. 
+
+Specific Axon (Spring) component configurations will be explained in detail in the following sections of this guide.
+
+<!-- ### Event bus and event store configuration
 
 `axon-spring-boot-starter` depends on `axon-server-connector` which will configure "Axon Server event store" and "event bus" spring beans by default, so you can use Axon server to store domain events and to distribute them out of the box.
 
@@ -380,7 +367,7 @@ On each heartbeat the memberships of all the nodes in the cluster are updated. I
 
 > **Note**
 >
-> It is regarded as good practice to assign a random value to every service instance name. In doing so, if a given service instance is restarted, it will receive a different name which will mitigate unnecessary blacklisting of nodes.
+> It is regarded as good practice to assign a random value to every service instance name. In doing so, if a given service instance is restarted, it will receive a different name which will mitigate unnecessary blacklisting of nodes. -->
 
 
 
