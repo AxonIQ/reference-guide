@@ -36,7 +36,8 @@ Configure your application:
 // Returns a Configurer instance with default components configured. `AxonServerEventStore` is configured as Event Store by default.
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
 ```
-> NOTE: If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' event store options by default: `SimpleEventBus` or `EmbeddedEventStore` (see [below](#embedded-event-store))
+> NOTE: If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' event store options: `SimpleEventBus` or `EmbeddedEventStore` (see [below](#embedded-event-store))
+
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
@@ -51,7 +52,6 @@ By simply declaring dependency to `axon-spring-boot-starter`, Axon will automati
 </dependency>
 
 ```
-
 {% endtab %}
 {% endtabs %}
 
