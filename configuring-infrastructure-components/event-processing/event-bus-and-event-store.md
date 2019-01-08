@@ -161,6 +161,9 @@ public JdbcEventStorageEngine eventStorageEngine(ConnectionProvider connectionPr
 ```
 > NOTE: If you exclude `axon-server-connector` transiant dependency from `axon-spring-boot-starter` you will have `EmbeddedEventStore` component auto-configured and loaded into Spring Application Context (if concrete implementation of `EventStorageEngine` is available in Spring Application Context). You only need to configure `EventStorageEngine / JdbcEventStorageEngine` Spring bean in your configuraion.
 
+{% endtab %}
+{% endtabs %}
+
 ### MongoEventStorageEngine
 
 [MongoDB](https://www.mongodb.com/) is a document based NoSQL store. Its scalability characteristics make it suitable for use as an event store. Axon provides the `MongoEventStorageEngine`, which uses MongoDB as backing database. It is contained in the Axon Mongo module \(Maven artifactId `axon-mongo`\).
