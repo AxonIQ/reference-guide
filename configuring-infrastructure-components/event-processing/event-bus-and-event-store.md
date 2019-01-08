@@ -14,6 +14,47 @@ Event sourcing repositories need an event store to store and load events from ag
 
 Axon provides an event store out of the box, the `AxonServerEventStore`. It connects to the [AxonIQ AxonServer Server](/introduction/axon-server.md) to store and retrieve Events.
 
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
+Declare dependencies:
+```
+<!--somewhere in the POM file-->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-server-connector</artifactId>
+    <version>${axon.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-configuration</artifactId>
+    <version>${axon.version}</version>
+</dependency>
+```
+Configure your application:
+```java
+// Returns a Configurer instance with default components configured. `AxonServerEventStore` is configured as Event Store by default.
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+```
+> NOTE: If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' event store options by default: `SimpleEventBus` or `EmbeddedEventStore` (see [below](#embedded-event-store))
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+
+By simply declaring dependency to `axon-spring-boot-starter`, Axon will automatically configure the event bus/event store, as well as any other component required to run and store aggregates and sagas:
+```
+<!--somewhere in the POM file-->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-spring-boot-starter</artifactId>
+    <version>${axon.version}</version>
+</dependency>
+
+```
+
+{% endtab %}
+{% endtabs %}
+
 ### Embedded event store
 
 Alternatively, Axon provides non-axon-server option, the `EmbeddedEventStore`. It delegates actual storage and retrieval of events to an `EventStorageEngine`.
