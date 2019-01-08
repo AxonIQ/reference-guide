@@ -10,11 +10,17 @@ The `EventBus` is the mechanism that dispatches events to the subscribed event h
 
 Event sourcing repositories need an event store to store and load events from aggregates. An event store offers the functionality of an event bus, with the addition that it persists published events, and is able to retrieve events based on an aggregate identifier.
 
-Axon provides an event store out of the box, the `EmbeddedEventStore`. It delegates actual storage and retrieval of events to an `EventStorageEngine`.
+### Axon Server as an event store
+
+Axon provides an event store out of the box, the `AxonServerEventStore`. It connects to the [AxonIQ AxonServer Server](/introduction/axon-server.md) to store and retrieve Events.
+
+### Embedded event store
+
+Alternatively, Axon provides non-axon-server option, the `EmbeddedEventStore`. It delegates actual storage and retrieval of events to an `EventStorageEngine`.
 
 There are multiple `EventStorageEngine` implementations available:
 
-### `JpaEventStorageEngine`
+#### `JpaEventStorageEngine`
 
 The `JpaEventStorageEngine` stores events in a JPA-compatible data source. The JPA event store stores events in so called entries. These entries contain the serialized form of an event, as well as some fields where metadata is stored for fast lookup of these entries. To use the `JpaEventStorageEngine`, you must have the JPA \(`javax.persistence`\) annotations on your classpath.
 
@@ -74,7 +80,7 @@ If that is the case, you can extend the `JpaEventStorageEngine`. It contains a n
 >
 > To work around this issue, make sure to exclusively query for non-entity objects. You can use JPA's `"SELECT new SomeClass(parameters) FROM ..."` style queries to work around this issue. Alternatively, call `EntityManager.flush()` and `EntityManager.clear()` after fetching a batch of events. Failure to do so might result in `OutOfMemoryException`s when loading large streams of events.
 
-#### Configuration
+##### Configuration
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
@@ -112,12 +118,12 @@ public EventStorageEngine storageEngine(Serializer defaultSerializer,
             .build();
 }
 ```
-> NOTE: If you exclude `axon-server-connector` transiant dependency from `axon-spring-boot-starter` you will have `EmbeddedEventStore` component auto-configured and loaded into Spring Application Context (if concrete implementation of `EventStorageEngine` is available in Spring Application Context). If JPA is detected on the classpath `JpaEventStorageEngine` will be auto-configured as `EventStorageEngine` and you don't need to explicitly define this Spring beans in your configuration.
+> NOTE: If you exclude `axon-server-connector` dependency from `axon-spring-boot-starter` you will have `EmbeddedEventStore` component auto-configured and loaded into Spring Application Context (if concrete implementation of `EventStorageEngine` is available in Spring Application Context). If JPA is detected on the classpath `JpaEventStorageEngine` will be auto-configured as `EventStorageEngine` and you don't need to explicitly define this Spring beans in your configuration.
 
 {% endtab %}
 {% endtabs %}
 
-### JdbcEventStorageEngine
+#### JdbcEventStorageEngine
 
 The JDBC event storage engine uses a JDBC Connection to store events in a JDBC compatible data storage. Typically, these are relational databases. Theoretically, anything that has a JDBC driver could be used to back the `JdbcEventStorageEngine`.
 
@@ -129,7 +135,7 @@ The `JdbcEventStorageEngine` uses a `ConnectionProvider` to obtain connections. 
 >
 > Spring users are recommended to use the `SpringDataSourceConnectionProvider` to attach a connection from a `DataSource` to an existing transaction.
 
-#### Configuration
+##### Configuration
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
@@ -159,12 +165,12 @@ public JdbcEventStorageEngine eventStorageEngine(ConnectionProvider connectionPr
             .build();
 
 ```
-> NOTE: If you exclude `axon-server-connector` transiant dependency from `axon-spring-boot-starter` you will have `EmbeddedEventStore` component auto-configured and loaded into Spring Application Context (if concrete implementation of `EventStorageEngine` is available in Spring Application Context). You only need to configure `EventStorageEngine / JdbcEventStorageEngine` Spring bean in your configuration in this case.
+> NOTE: If you exclude `axon-server-connector` dependency from `axon-spring-boot-starter` you will have `EmbeddedEventStore` component auto-configured and loaded into Spring Application Context (if concrete implementation of `EventStorageEngine` is available in Spring Application Context). You only need to configure `EventStorageEngine / JdbcEventStorageEngine` Spring bean in your configuration in this case.
 
 {% endtab %}
 {% endtabs %}
 
-### MongoEventStorageEngine
+#### MongoEventStorageEngine
 
 [MongoDB](https://www.mongodb.com/) is a document based NoSQL store. Its scalability characteristics make it suitable for use as an event store. Axon provides the `MongoEventStorageEngine`, which uses MongoDB as backing database. It is contained in the Axon Mongo module \(Maven artifactId `axon-mongo`\).
 
@@ -176,7 +182,7 @@ Storing an entire commit in a single document has the advantage that a commit is
 
 The MongoDB does not take a lot of configuration. All it needs is a reference to the collections to store the events in, and you're set to go. For production environments, you may want to double check the indexes on your collections.
 
-#### Configuration
+##### Configuration
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
@@ -203,21 +209,19 @@ public EventStorageEngine storageEngine(MongoClient client) {
     return MongoEventStorageEngine.builder().mongoTemplate(DefaultMongoTemplate.builder().mongoDatabase(client).build()).build();
 }
 ```
-> NOTE: If you exclude `axon-server-connector` transiant dependency from `axon-spring-boot-starter` you will have `EmbeddedEventStore` component auto-configured and loaded into Spring Application Context (if concrete implementation of `EventStorageEngine` is available in Spring Application Context). You only need to configure `EventStorageEngine / MongoEventStorageEngine` Spring bean in your configuration in this case.
+> NOTE: If you exclude `axon-server-connector` dependency from `axon-spring-boot-starter` you will have `EmbeddedEventStore` component auto-configured and loaded into Spring Application Context (if concrete implementation of `EventStorageEngine` is available in Spring Application Context). You only need to configure `EventStorageEngine / MongoEventStorageEngine` Spring bean in your configuration in this case.
 
 {% endtab %}
 {% endtabs %}
 
 
-### Event store utilities
+#### Event store utilities
 
 Axon provides a number of Event Storage Engines that may be useful in certain circumstances.
 
-#### In-Memory Event Storage
+##### In-Memory Event Storage
 
 The `InMemoryEventStorageEngine` keeps the stored events in memory. While it probably outperforms any other event store out there, it is not really meant for long-term production use. However, it is very useful in short-lived tools or tests that require an event store.
-
-##### Configuration
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -245,16 +249,16 @@ public EventStorageEngine storageEngine() {
     return new InMemoryEventStorageEngine();
 }
 ```
-> NOTE: If you exclude `axon-server-connector` transiant dependency from `axon-spring-boot-starter` you will have `EmbeddedEventStore` component auto-configured and loaded into Spring Application Context (if concrete implementation of `EventStorageEngine` is available in Spring Application Context). You only need to configure `EventStorageEngine / InMemoryEventStorageEngine` Spring bean in your configuration in this case.
+> NOTE: If you exclude `axon-server-connector` dependency from `axon-spring-boot-starter` you will have `EmbeddedEventStore` component auto-configured and loaded into Spring Application Context (if concrete implementation of `EventStorageEngine` is available in Spring Application Context). You only need to configure `EventStorageEngine / InMemoryEventStorageEngine` Spring bean in your configuration in this case.
 
 {% endtab %}
 {% endtabs %}
 
-#### Combining multiple event stores into one
+##### Combining multiple event stores into one
 
 The `SequenceEventStorageEngine` is a wrapper around two other event storage engines. When reading, it returns the events from both event storage engines. Appended events are only appended to the second event storage engine. This is useful in cases where two different implementations of event storage are used for performance reasons, for example. The first would be a larger, but slower event store, while the second is optimized for quick reading and writing.
 
-#### Filtering Stored Events
+##### Filtering Stored Events
 
 The `FilteringEventStorageEngine` allows events to be filtered based on a predicate. Only events that match this predicate will be stored. Note that event processors that use the event store as a source of events, may not receive these events, as they are not being stored.
 
