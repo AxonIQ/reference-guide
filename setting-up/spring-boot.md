@@ -46,7 +46,7 @@ Specific Axon (Spring) component configurations will be explained in detail in t
 
 Axon Server configuration is not intrusive:
 
- - You can explicitly configure JPA event storage (`JpaEventStorageEngine`) to use SQL database and still benefit from message distribution mechanisms (command bus, event bus, query bus) that Axon server provides. You need JPA available, please make sure you have correct dependency included (eg. `spring-boot-starter-data-jpa`)
+ - You can explicitly configure JPA event storage (`JpaEventStorageEngine`) to use SQL database and still benefit from message distribution mechanisms (command bus, query bus) that Axon server provides. You need JPA available, please make sure you have correct dependency included (eg. `spring-boot-starter-data-jpa`)
  - You can exclude the `axon-server-connector` from `axon-spring-boot-starter` totally and fallback spring configuration to:
    - if JPA is available, an event store with a `JpaEventStorageEngine`. This allow storage of Aggregates using Event Sourcing without any explicit configuration.
    - if JPA is not available, Axon defaults to a `SimpleEventBus`, which means that you need to specify a non-event sourcing repository for each aggregate, or configure an `EventStorageEngine` in your Spring configuration.
