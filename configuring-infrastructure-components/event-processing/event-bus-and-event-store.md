@@ -2,7 +2,7 @@
 
 ## Event Bus
 
-The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides three implementations of the Event Bus: `AxonServerEventStore`, `EmbeddedEventStore` and `SimpleEventBus`. While all three implementations support subscribing and tracking processors \(see [Events Processors](event-processors)\), the `AxonServerEventStore` and `EmbeddedEventStore` persists events (see [Event Store](#event-store)), which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
+The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides three implementations of the Event Bus: `AxonServerEventStore`, `EmbeddedEventStore` and `SimpleEventBus`. While all three implementations support subscribing and tracking processors \(see [Events Processors](/configuring-infrastructure-components/event-processing/event-processors.md)\), the `AxonServerEventStore` and `EmbeddedEventStore` persists events (see [Event Store](#event-store)), which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
 
 `AxonServerEventStore` event bus/store is configured by default.
 
@@ -80,7 +80,6 @@ If that is the case, you can extend the `JpaEventStorageEngine`. It contains a n
 >
 > To work around this issue, make sure to exclusively query for non-entity objects. You can use JPA's `"SELECT new SomeClass(parameters) FROM ..."` style queries to work around this issue. Alternatively, call `EntityManager.flush()` and `EntityManager.clear()` after fetching a batch of events. Failure to do so might result in `OutOfMemoryException`s when loading large streams of events.
 
-##### Configuration
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
@@ -135,7 +134,6 @@ The `JdbcEventStorageEngine` uses a `ConnectionProvider` to obtain connections. 
 >
 > Spring users are recommended to use the `SpringDataSourceConnectionProvider` to attach a connection from a `DataSource` to an existing transaction.
 
-##### Configuration
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
@@ -182,7 +180,6 @@ Storing an entire commit in a single document has the advantage that a commit is
 
 The MongoDB does not take a lot of configuration. All it needs is a reference to the collections to store the events in, and you're set to go. For production environments, you may want to double check the indexes on your collections.
 
-##### Configuration
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
