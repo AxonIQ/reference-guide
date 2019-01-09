@@ -42,3 +42,5 @@ Because the control database contains a pointer to the last log entry that is kn
 (the commit index), the proper order of doing this is to first create the control database backup and then backing up 
 the log entry segments and the event stream segments. This will ensure that the log entry segments may have entries 
 beyond the commit index (which is ok) but there are not missing entries before the commit index (which would be bad).
+The log entries segments must be backed up within 30 minutes after the backup of the controlDB, to prevent the log 
+compaction procedure causes data inconsistencies.
