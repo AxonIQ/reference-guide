@@ -125,7 +125,7 @@ If that is the case, you can extend the `JpaEventStorageEngine`. It contains a n
 {% tab title="Axon Configuration API" %}
 ```java
 // Returns a Configurer instance which has JPA components configured, such as a JPA based Event Store `JpaEventStorageEngine`, a `JpaTokenStore` and `JpaSagaStore`.
-Configurer configurer = DefaultConfigurer.jpaConfiguration(entityManagerProvider, transactionManager)
+Configurer configurer = DefaultConfigurer.jpaConfiguration(entityManagerProvider, transactionManager);
 ```
 {% endtab %}
 
@@ -180,7 +180,7 @@ The `JdbcEventStorageEngine` uses a `ConnectionProvider` to obtain connections. 
 ```java
 // Returns a Configurer instance with default components configured. We explicitly set `JdbcEventStorageEngine` as desired engine for Embedded Event Store.
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
-      .configureEmbeddedEventStore(c -> JdbcEventStorageEngine.builder().connectionProvider(connectionProvider).transactionManager(NoTransactionManager.INSTANCE).build())
+      .configureEmbeddedEventStore(c -> JdbcEventStorageEngine.builder().connectionProvider(connectionProvider).transactionManager(NoTransactionManager.INSTANCE).build());
 ```
 {% endtab %}
 
@@ -226,7 +226,7 @@ The MongoDB does not take a lot of configuration. All it needs is a reference to
 ```java
 // Returns a Configurer instance with default components configured. We explicitly set `MongoEventStorageEngine` as desired engine for Embedded Event Store.
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
-      .configureEmbeddedEventStore(c -> MongoEventStorageEngine.builder().mongoTemplate(mongoTemplate).build())
+      .configureEmbeddedEventStore(c -> MongoEventStorageEngine.builder().mongoTemplate(mongoTemplate).build());
 ```
 {% endtab %}
 
@@ -266,7 +266,7 @@ The `InMemoryEventStorageEngine` keeps the stored events in memory. While it pro
 ```java
 // Returns a Configurer instance with default components configured. We explicitly set `InMemoryEventStorageEngine` as desired engine for Embedded Event Store.
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
-      .configureEmbeddedEventStore(c -> new InMemoryEventStorageEngine())
+      .configureEmbeddedEventStore(c -> new InMemoryEventStorageEngine());
 ```
 {% endtab %}
 
@@ -310,14 +310,13 @@ Alternatively, Axon also provides the `JacksonSerializer`, which uses [Jackson](
 
 You may also implement your own serializer, simply by creating a class that implements `Serializer`, and configuring the event store to use that implementation instead of the default.
 
-#### Configuration
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
 // Returns a Configurer instance with default components configured. We explicitly set `JacksonSerializer` as desired event serializer.
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
-      .configureEventSerializer(c -> JacksonSerializer.builder().build())
+      .configureEventSerializer(c -> JacksonSerializer.builder().build());
 ```
 {% endtab %}
 

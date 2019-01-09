@@ -37,7 +37,11 @@ Processors take care of the technical aspects of handling an event, regardless o
 
 ### Event Handlers
 
-By default, Axon will use Tracking Event Processors. It is possible to change how Handlers are assigned and how processors are configured using the `EventProcessingConfigurer` class of the Configuration API.
+By default, Axon will use Tracking Event Processors.
+It is possible to change how Handlers are assigned and how processors are configured.
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
 
 The `EventProcessingConfigurer` class defines a number of methods that can be used to define how processors need to be configured.
 
@@ -47,23 +51,90 @@ The `EventProcessingConfigurer` class defines a number of methods that can be us
 * `registerTrackingProcessor(String name, Function<Configuration, StreamableMessageSource<TrackedEventMessage<?>>> source, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration)` defines that a processor with given name should be configured as a Tracking Processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading. The `StreamableMessageSource` defines an event source from which this processor should pull for events.
 * `usingSubscribingEventProcessors()` sets the default to subscribing event processors instead of tracking ones.
 
-### Sagas
+```java
 
-Sagas are configured using the `SagaConfigurer` class. 
-It provides convenient methods for configuring a saga repository, a saga manager and a saga store.
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+                                .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.usingSubscribingEventProcessors())
+                                .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerEventHandler(c -> new MyEventHandler()));
+                
+  
+```
 
-Let's configure custom saga repository, saga manager and saga store:
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
 
 ```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration();
-configurer.eventProcessing(eventProcessingConfigurer -> 
-                                eventProcessingConfigurer.registerSaga(MySaga.class,
+
+ // Default all processors to tracking mode.
+@Autowired
+public void configure(EventHandlingConfiguration config) {
+    config.usingTrackingProcessors();
+}
+```
+
+Certain aspect of event processors can also be configured in `application.properties`.
+
+```text
+axon.eventhandling.processors.name.mode=tracking
+axon.eventhandling.processors.name.source=eventBus
+```
+
+If the name of a processor contains periods `.`, use the map notation:
+
+```text
+axon.eventhandling.processors[name].mode=tracking
+axon.eventhandling.processors[name].source=eventBus
+```
+{% endtab %}
+{% endtabs %}
+
+
+### Sagas
+
+It is possible to change how Sagas are configured.
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
+Sagas are configured using the `SagaConfigurer` class:
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+                                .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerSaga(MySaga.class,
                                                                        sagaConfigurer -> sagaConfigurer.configureSagaStore(c -> sagaStore)
                                                                                                        .configureRepository(c -> repository)
                                                                                                        .configureSagaManager(c -> manager)));
 ```
 
-Check out the API documentation \(JavaDoc\) of the `SagaConfiguration` class for full details on how to configure event handling for a saga.
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+
+The configuration of infrastructure components to operate sagas is triggered by the `@Saga` annotation \(in package `org.axonframework.spring.stereotype`\). Axon will configure a `SagaManager` and `SagaRepository`. The `SagaRepository` will use a `SagaStore` available in the context \(defaulting to `JPASagaStore` if JPA is found\) for the actual storage of sagas.
+
+To use different `SagaStore`s for sagas, provide the bean name of the `SagaStore` to use in the `sagaStore` attribute of each `@Saga` annotation.
+
+Sagas will have resources injected from the application context. Note that this does not mean Spring-injecting is used to inject these resources. The `@Autowired` and `@javax.inject.Inject` annotation can be used to demarcate dependencies, but they are injected by Axon by looking for these annotations on fields and methods. Constructor injection is not \(yet\) supported.
+
+To tune the configuration of sagas, it is possible to define a custom `SagaConfiguration` bean. For an annotated saga class, Axon will attempt to find a configuration for that saga. It does so by checking for a bean of type `SagaConfiguration` with a specific name. For a saga class called `MySaga`, the bean that Axon looks for is `mySagaConfiguration`. If no such bean is found, it creates a configuration based on available components.
+
+If a `SagaConfiguration` instance is present for an annotated saga, that configuration is used to retrieve and register the components for this type of saga. If the `SagaConfiguration` bean is not named as described above, it is possible that the saga is registered twice, and receives events in duplicate. To prevent this, you can specify the bean name of the `SagaConfiguration` using the `@Saga` annotation:
+
+```java
+@Saga(configurationBean = "mySagaConfigBean")
+public class MySaga {
+    // methods here 
+}
+
+// in the Spring configuration:
+@Bean 
+public SagaConfiguration<MySaga> mySagaConfigurationBean() {
+    // create and return SagaConfiguration instance
+}
+```
+{% endtab %}
+{% endtabs %}
+
 
 ## Token Store
 
@@ -92,6 +163,29 @@ A saga instance is never invoked concurrently by multiple threads. Therefore, a 
 > **Note**
 >
 > Note that subscribing processors don't manage their own threads. Therefore, it is not possible to configure how they should receive their events. Effectively, they will always work on a sequential-per-aggregate basis, as that is generally the level of concurrency in the Command Handling component.
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+ DefaultConfigurer.defaultConfiguration()
+         .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerTrackingEventProcessor("myProcessor", c -> c.eventStore(), c -> c.getComponent(TrackingEventProcessorConfiguration.class, () -> TrackingEventProcessorConfiguration.forParallelProcessing(3))));
+
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+
+You can configure the number of threads \(on this instance\) as well as the initial number of segments that a processor should define, if non are yet available.
+
+```text
+axon.eventhandling.processors.name.mode=tracking
+# Sets the number of maximum number threads to start on this node
+axon.eventhandling.processors.name.threadCount=2
+# Sets the initial number of segments (i.e. defines the maximum number of overall threads)
+axon.eventhandling.processors.name.initialSegmentCount=4
+```
+{% endtab %}
+{% endtabs %}
 
 ### Multi-node processing
 
