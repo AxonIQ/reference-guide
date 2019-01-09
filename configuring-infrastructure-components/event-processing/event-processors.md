@@ -66,24 +66,24 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration()
 
 ```java
 
- // Default all processors to tracking mode.
+ // Default all processors to subscribing mode.
 @Autowired
-public void configure(EventHandlingConfiguration config) {
-    config.usingTrackingProcessors();
+public void configure(EventProcessingConfigurer config) {
+    config.usingSubscribingEventProcessors();
 }
 ```
 
 Certain aspect of event processors can also be configured in `application.properties`.
 
 ```text
-axon.eventhandling.processors.name.mode=tracking
+axon.eventhandling.processors.name.mode=subscribing
 axon.eventhandling.processors.name.source=eventBus
 ```
 
 If the name of a processor contains periods `.`, use the map notation:
 
 ```text
-axon.eventhandling.processors[name].mode=tracking
+axon.eventhandling.processors[name].mode=subscribing
 axon.eventhandling.processors[name].source=eventBus
 ```
 {% endtab %}
