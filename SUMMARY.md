@@ -58,6 +58,7 @@
     * [Optimizing Aggregate loading](configuring-infrastructure-components/command-processing/optimizing-aggregate-loading.md)
 * [Event processing](configuring-infrastructure-components/event-processing/event-processing.md)
     * [Event Bus & Event Store](configuring-infrastructure-components/event-processing/event-bus-and-event-store.md)
+    * [Saga infrastructure](configuring-infrastructure-components/event-processing/saga-infrastructure.md)
     * [Event Processors](configuring-infrastructure-components/event-processing/event-processors.md)
 * [Query processing](configuring-infrastructure-components/query-processing.md)
 * [Deadlines](configuring-infrastructure-components/deadlines.md)
