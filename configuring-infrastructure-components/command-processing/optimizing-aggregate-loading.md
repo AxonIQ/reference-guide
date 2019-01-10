@@ -42,6 +42,41 @@ The `AggregateSnapshotter` provides one more property:
 >
 > Spring users can use the `SpringAggregateSnapshotter`, which will automatically look up the right `AggregateFactory` from the application context when a snapshot needs to be created.
 
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
+```java
+
+//...
+
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+                .configureAggregate(AggregateConfigurer.defaultConfiguration(GiftCard.class).configureSnapshotTrigger(c -> new EventCountSnapshotTriggerDefinition(AggregateSnapshotter.builder().eventStore(c.eventStore()).build(),300)));
+
+//...
+}
+
+```
+{% endtab %}
+{% tab title="Spring Boot AutoConfiguration" %}
+
+It is possible to define a custom `SnapshotTriggerDefinition` for an aggregate as a spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows how to define a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot on each five hundredths event.
+
+Note that a `Snapshotter` instance, if not explicitly defined as a bean already, will be automatically configured for you. This means you can simply pass the `Snapshotter` as a parameter to your `SnapshotTriggerDefinition`.
+
+```java
+@Bean
+public SnapshotTriggerDefinition mySnapshotTriggerDefinition(Snapshotter snapshotter) {
+    return new EventCountSnapshotTriggerDefinition(snapshotter, 500);
+}
+
+...
+
+@Aggregate(snapshotTriggerDefinition = "mySnapshotTriggerDefinition")
+public class MyAggregate {...}
+```
+{% endtab %}
+{% endtabs %}
+
 ### Storing Snapshot Events
 
 When a snapshot is stored in the event store, it will automatically use that snapshot to summarize all prior events and return it in their place. All event store implementations allow for concurrent creation of snapshots. This means they allow snapshots to be stored while another process is adding events for the same aggregate. This allows the snapshotting process to run as a separate process altogether.

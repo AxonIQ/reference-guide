@@ -1,6 +1,5 @@
 # Command Model Configuration
 
-The Configuration API allows several configurable option for the Command Model, more specifically so on the Aggregate.
 This chapter will deal with describing the suite of options for the Command Model.
 
 ## Aggregate Configuration
@@ -11,33 +10,35 @@ To instantiate a default Aggregate configuration you simply do the following:
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-//...
-import org.axonframework.config.AggregateConfigurer;
-import org.axonframework.config.Configurer;
+
 //...
 
-public class AxonConfig {
-    //... 
-    public void configureAggregate(Configurer configurer) {
-        configurer.configureAggregate(
-                AggregateConfigurer.defaultConfiguration(GiftCard.class)
-        );
-        // Or the shorthand notation...
-        configurer.configureAggreate(GiftCard.class);
-    }
-    //...
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+       .configureAggregate(GiftCard.class);
+//...
 }
 
 ```
 {% endtab %}
 {% tab title="Spring Boot AutoConfiguration" %}
+
+The `@Aggregate` annotation \(in package `org.axonframework.spring.stereotype`\) triggers auto configuration to set up the necessary components to use the annotated type as an aggregate. Note that only the aggregate root needs to be annotated.
+
+Axon will automatically register all the `@CommandHandler` annotated methods with the command bus and set up a repository if none is present.
+
 ```java
 // ...
 import org.axonframework.spring.stereotype.Aggregate;
 // ...
 @Aggregate
 public class GiftCard {
-    // Aggregate implementation...
+    @AggregateIdentifier
+    private String id;
+    
+    @CommandHandler
+    public GiftCard(IssueCardCommand cmd) {
+       apply(new CardIssuedEvent(cmd.getCardId(), cmd.getAmount()));
+    }
 }
 ```
 {% endtab %}
@@ -52,6 +53,39 @@ In the Axon Framework, all repositories must implement the `Repository` interfac
 Depending on your underlying persistence storage and auditing needs, there are a number of base implementations that provide basic functionality needed by most repositories. Axon Framework makes a distinction between repositories that save the current state of the aggregate \(see [Standard repositories](#standard-repositories)\), and those that store the events of an aggregate \(see [Event sourcing repositories](#event-sourcing-repositories)\).
 
 Note that the Repository interface does not prescribe a `delete(identifier)` method. Deleting aggregates is done by invoking the `AggregateLifecycle.markDeleted()` method from within an aggregate. Deleting an aggregate is a state migration like any other, with the only difference that it is irreversible in many cases. You should create your own meaningful method on your aggregate which sets the aggregate's state to "deleted". This also allows you to register any events that you would like to have published.
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+
+//...
+
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+        .configureAggregate(AggregateConfigurer.defaultConfiguration(GiftCard.class).configureRepository(c -> EventSourcingRepository.builder(GiftCard.class).eventStore(c.eventStore()).build()));
+
+//...
+}
+
+```
+{% endtab %}
+{% tab title="Spring Boot AutoConfiguration" %}
+
+To fully customize the repository used, you can define one in the application context. For Axon Framework to use this repository for the intended aggregate, define the bean name of the repository in the `repository` attribute on `@Aggregate` Annotation. Alternatively, specify the bean name of the repository to be the aggregate's name, \(first character lowercase\), suffixed with `Repository`. So on a class of type `MyAggregate`, the default repository name is `myAggregateRepository`. If no bean with that name is found, Axon will define an `EventSourcingRepository` \(which fails if no `EventStore` is available\).
+
+```java
+@Bean
+public Repository<MyAggregate> repositoryForMyAggregate(EventStore eventStore) {
+    return EventSourcingRepository.builder(GiftCard.class).eventStore(eventStore).build();
+}
+...
+@Aggregate(repository = "repositoryForMyAggregate")
+public class MyAggregate {...}
+```
+
+Note that this requires full configuration of the Repository, including any `SnapshotTriggerDefinition` or `AggregateFactory` that may otherwise have been configured automatically.
+
+{% endtab %}
+{% endtabs %}
 
 ### Standard repositories
 
@@ -90,5 +124,3 @@ In some cases, the `GenericAggregateFactory` just doesn't deliver what you need.
 The bulk of the work the aggregate factory does is creating uninitialized aggregate instances. It must do so using a given aggregate identifier and the first event from the stream. Usually, this event is a creation event which contains hints about the expected type of aggregate. You can use this information to choose an implementation and invoke its constructor. Make sure no events are applied by that constructor; the aggregate must be uninitialized.
 
 Initializing aggregates based on the events can be a time-consuming effort, compared to the direct aggregate loading of the simple repository implementations. The `CachingEventSourcingRepository` provides a cache from which aggregates can be loaded if available.
-
-##External Command Handler Configuration
