@@ -1,32 +1,68 @@
 # Command dispatching
 
-The use of an explicit command dispatching mechanism has a number of advantages. First of all, there is a single object that clearly describes the intent of the client. By logging the command, you store both the intent and related data for future reference. Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. Testing also becomes a lot easier, you could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing](../1.2-domain-logic/testing.md)\). The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
+Command dispatching, as exemplified in the [Dispatching Commands](../../implementing-domain-logic/command-handling/dispatching-commands.md) page,
+ has a number of advantages.
+First of all, there is a single object that clearly describes the intent of the client. 
+By logging the command, you store both the intent and related data for future reference. 
+Command handling also makes it easy to expose your command processing components to remote clients,
+ via web services for example. 
+Testing also becomes a lot easier, you could define test scripts by just defining the starting situation \(given\),
+ command to execute \(when\) and expected results \(then\) by listing a number of events and commands
+  \(see [Testing](../../implementing-domain-logic/command-handling/testing.md) for more on this\). 
+The last major advantage is that it is very easy to switch between synchronous
+ and asynchronous as well as local versus distributed command processing.
 
-This does not mean command dispatching using explicit command object is the only way to do it. The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way, while providing best practices as the default behavior. It is still possible to use a service layer that you can invoke to execute commands. The method will just need to start a unit of work \(see [Unit of Work](../1.1-concepts/messaging-concepts.md#unit-of-work)\) and perform a commit or rollback on it when the method is finished.
+This does not mean command dispatching using explicit command object is the only way to do it. 
+The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way,
+ while providing best practices as the default behavior. 
+It is still possible to use a service layer that you can invoke to execute commands. 
+The method will just need to start a unit of work \(see [Unit of Work](../messaging-concepts/unit-of-work.md)\)
+ and perform a commit or rollback on it when the method is finished.
 
 The next sections provide an overview of the tasks related to setting up a command dispatching infrastructure with the Axon Framework.
 
-## The command gateway
+## The Command Gateway
 
-The command gateway is a convenient interface towards the command dispatching mechanism. While you are not required to use a gateway to dispatch commands, it is generally the easiest option to do so.
+The command gateway is a convenient interface towards the command dispatching mechanism. 
+While you are not required to use a gateway to dispatch commands, it is generally the easiest option to do so.
 
-There are two ways to use a command gateway. The first is to use the `CommandGateway` interface and the `DefaultCommandGateway` implementation provided by Axon. The command gateway provides a number of methods that allow you to send a command and wait for a result either synchronously, with a timeout or asynchronously.
+There are two ways to use a command gateway. 
+The first is to use the `CommandGateway` interface and the `DefaultCommandGateway` implementation provided by Axon. 
+The command gateway provides a number of methods that allow you to send a command and wait for a result either synchronously,
+ with a timeout or asynchronously.
 
-The other option is perhaps the most flexible of all. You can turn almost any interface into a command gateway using the `CommandGatewayFactory`. This allows you to define your application's interface using strong typing and declaring your own \(checked\) business exceptions. Axon will automatically generate an implementation for that interface at runtime.
+The other option is perhaps the most flexible of all. 
+You can turn almost any interface into a command gateway using the `CommandGatewayFactory`. 
+This allows you to define your application's interface using strong typing and declaring your own \(checked\) business exceptions. 
+Axon will automatically generate an implementation for that interface at runtime.
 
 ### Configuring the command gateway
 
-Both your custom gateway and the one provided by Axon need to be configured with at least access to the command bus. In addition, the command gateway can be configured with a `RetryScheduler`, `CommandDispatchInterceptor`s, and `CommandCallback`s.
+Both your custom gateway and the one provided by Axon need to be configured with at least access to the command bus. 
+In addition, the command gateway can be configured with a `RetryScheduler`, `CommandDispatchInterceptor`s, and `CommandCallback`s.
 
-The `RetryScheduler` is capable of scheduling retries when command execution has failed. The `IntervalRetryScheduler` is an implementation that will retry a given command at set intervals until it succeeds, or a maximum number of retries is done. When a command fails due to an exception that is explicitly non-transient, no retries are done at all. Note that the retry scheduler is only invoked when a command fails due to a `RuntimeException`. Checked exceptions are regarded "business exception" and will never trigger a retry. Typical usage of a `RetryScheduler` is when dispatching commands on a `DistributedCommandBus`. If a node fails, the retry scheduler will cause a command to be dispatched to the next node capable of processing the command \(see [Distributing the command bus](command-dispatching.md#distributing-the-command-bus)\).
+The `RetryScheduler` is capable of scheduling retries when command execution has failed. 
+The `IntervalRetryScheduler` is an implementation that will retry a given command at set intervals until it succeeds,
+ or a maximum number of retries is done. 
+When a command fails due to an exception that is explicitly non-transient, no retries are done at all. 
+Note that the retry scheduler is only invoked when a command fails due to a `RuntimeException`. 
+Checked exceptions are regarded "business exception" and will never trigger a retry. 
+Typical usage of a `RetryScheduler` is when dispatching commands on a `DistributedCommandBus`. 
+If a node fails, the retry scheduler will cause a command to be dispatched to the next node capable of processing the command \(see [Distributing the command bus](command-dispatching.md#distributing-the-command-bus)\).
 
-`CommandDispatchInterceptor`s allow modification of `CommandMessage`s prior to dispatching them to the command bus. In contrast to `CommandDispatchInterceptor`s configured on the command bus, these interceptors are only invoked when messages are sent through this gateway. The interceptors can be used to attach metadata to a command or do validation, for example.
+`CommandDispatchInterceptor`s allow modification of `CommandMessage`s prior to dispatching them to the command bus. 
+In contrast to `CommandDispatchInterceptor`s configured on the command bus,
+ these interceptors are only invoked when messages are sent through this gateway. 
+The interceptors can be used to attach metadata to a command or do validation, for example.
 
-The `CommandCallback`s are invoked for each command sent. This allows for some generic behavior for all Commands sent through this gateway, regardless of their type.
+The `CommandCallback`s are invoked for each command sent. 
+This allows for some generic behavior for all Commands sent through this gateway, regardless of their type.
 
 ### Creating a custom command gateway
 
-Axon allows a custom interface to be used as a command gateway. The behavior of each method declared in the interface is based on the parameter types, return type and declared exception. Using this gateway is not only convenient, it makes testing a lot easier by allowing you to mock your interface where needed.
+Axon allows a custom interface to be used as a command gateway. 
+The behavior of each method declared in the interface is based on the parameter types, return type and declared exception. 
+Using this gateway is not only convenient, it makes testing a lot easier by allowing you to mock your interface where needed.
 
 This is how parameters affect the behavior of the command gateway:
 
@@ -85,41 +121,56 @@ CommandGatewayFactory factory = CommandGatewayFactory.builder()
 MyGateway myGateway = factory.createGateway(MyGateway.class);
 ```
 
-## The command bus
+## The Command Bus
 
-The command bus is the mechanism that dispatches commands to their respective command handlers. Each command is always sent to exactly one command handler. If no command handler is available for the dispatched command, a `NoHandlerForCommandException` exception is thrown. Subscribing multiple command handlers to the same command type will result in subscriptions replacing each other. In that case, the last subscription wins.
-
-### Dispatching commands
-
-The `CommandBus` provides two methods to dispatch commands to their respective handler: `dispatch(commandMessage, callback)` and `dispatch(commandMessage)`. The first parameter is a message containing the actual command to dispatch. The optional second parameter takes a callback that allows the dispatching component to be notified when command handling is completed. This callback has two methods: `onSuccess()` and `onFailure()`, which are called when command handling returned normally, or when it threw an exception, respectively.
-
-The calling component may not assume that the callback is invoked in the same thread that dispatched the command. If the calling thread depends on the result before continuing, you can use the `FutureCallback`. It is a combination of a `Future` \(as defined in the java.concurrent package\) and Axon's `CommandCallback`. Alternatively, consider using a `CommandGateway`.
-
-If an application isn't directly interested in the outcome of a command, the `dispatch(commandMessage)` method can be used.
+The Command Bus is the mechanism that dispatches commands to their respective command handlers within an Axon application.
+Suggestions on how to use the `CommandBus` can be found [here](../../implementing-domain-logic/command-handling/dispatching-commands.md#the-command-bus)
+Several flavors of the command bus, with differing characteristics, exist within the framework:
 
 ### SimpleCommandBus
 
-The `SimpleCommandBus` is, as the name suggests, the simplest implementation. It does straightforward processing of commands in the thread that dispatches them. After a command is processed, the modified aggregate\(s\) are saved and generated events are published in that same thread. In most scenarios, such as web applications, this implementation will suit your needs. The `SimpleCommandBus` is the implementation used by default in the [Configuration API](../1.1-concepts/configuration-api.md).
+The `SimpleCommandBus` is, as the name suggests, the simplest implementation. 
+It does straightforward processing of commands in the thread that dispatches them. 
+After a command is processed, the modified aggregate\(s\) are saved and generated events are published in that same thread. 
+In most scenarios, such as web applications, this implementation will suit your needs. 
+The `SimpleCommandBus` is the implementation used by default in the [Configuration API](../1.1-concepts/configuration-api.md).
 
-Like most `CommandBus` implementations, the `SimpleCommandBus` allows interceptors to be configured. `CommandDispatchInterceptor`s are invoked when a command is dispatched on the command bus. The `CommandHandlerInterceptor`s are invoked before the actual command handler method is, allowing you to do modify or block the command. See [Command interceptors](command-dispatching.md#command-interceptors) for more information.
+Like most `CommandBus` implementations, the `SimpleCommandBus` allows interceptors to be configured. 
+`CommandDispatchInterceptor`s are invoked when a command is dispatched on the command bus. 
+The `CommandHandlerInterceptor`s are invoked before the actual command handler method is,
+ allowing you to do modify or block the command. 
+See [Command interceptors](command-dispatching.md#command-interceptors) for more information.
 
-Since all command processing is done in the same thread, this implementation is limited to the JVM's boundaries. The performance of this implementation is good, but not extraordinary. To cross JVM boundaries, or to get the most out of your CPU cycles, check out the other `CommandBus` implementations.
+Since all command processing is done in the same thread, this implementation is limited to the JVM's boundaries. 
+The performance of this implementation is good, but not extraordinary. 
+To cross JVM boundaries, or to get the most out of your CPU cycles, check out the other `CommandBus` implementations.
 
 ### AsynchronousCommandBus
 
-As the name suggest, the `AsynchronousCommandBus` implementation executes commands asynchronously from the thread that dispatches them. It uses an `Executor` to perform the actual handling logic on a different Thread.
+As the name suggest, the `AsynchronousCommandBus` implementation executes commands asynchronously from the thread that dispatches them. 
+It uses an `Executor` to perform the actual handling logic on a different Thread.
 
-By default, the `AsynchronousCommandBus` uses an unbounded cached thread pool. This means a thread is created when a command is dispatched. Threads that have finished processing a command are reused for new commands. Threads are stopped if they have not processed a command for 60 seconds.
+By default, the `AsynchronousCommandBus` uses an unbounded cached thread pool. 
+This means a thread is created when a command is dispatched. 
+Threads that have finished processing a command are reused for new commands. 
+Threads are stopped if they have not processed a command for 60 seconds.
 
 Alternatively, an `Executor` instance may be provided to configure a different threading strategy.
 
-Note that the `AsynchronousCommandBus` should be shut down when stopping the application, to make sure any waiting threads are properly shut down. To shut down, call the `shutdown()` method. This will also shutdown any provided `Executor` instance, if it implements the `ExecutorService` interface.
+Note that the `AsynchronousCommandBus` should be shut down when stopping the application,
+ to make sure any waiting threads are properly shut down. To shut down, call the `shutdown()` method. 
+This will also shutdown any provided `Executor` instance, if it implements the `ExecutorService` interface.
 
 ### DisruptorCommandBus
 
-The `SimpleCommandBus` has reasonable performance characteristics, especially when you have gone through the performance tips in [Performance tuning](../1.4-advanced-tuning/performance-tuning.md#performance-tuning). The fact that the `SimpleCommandBus` needs locking to prevent multiple threads from concurrently accessing the same aggregate causes processing overhead and lock contention.
+The `SimpleCommandBus` has reasonable performance characteristics,
+ especially when you have gone through the performance tips in [Performance tuning](../1.4-advanced-tuning/performance-tuning.md#performance-tuning). 
+The fact that the `SimpleCommandBus` needs locking to prevent multiple threads from concurrently accessing the same aggregate causes processing overhead and lock contention.
 
-The `DisruptorCommandBus` takes a different approach to multithreaded processing. Instead of having multiple threads each doing the same process, there are multiple threads, each taking care of a piece of the process. The `DisruptorCommandBus` uses the [Disruptor](http://lmax-exchange.github.io/disruptor/), a small framework for concurrent programming, to achieve much better performance, by just taking a different approach to multi-threading. Instead of doing the processing in the calling thread, the tasks are handed off to two groups of threads, that each take care of a part of the processing. The first group of threads will execute the command handler, changing an aggregate's state. The second group will store and publish the events to the event store.
+The `DisruptorCommandBus` takes a different approach to multithreaded processing. 
+Instead of having multiple threads each doing the same process, there are multiple threads,
+ each taking care of a piece of the process. 
+The `DisruptorCommandBus` uses the [Disruptor](http://lmax-exchange.github.io/disruptor/), a small framework for concurrent programming, to achieve much better performance, by just taking a different approach to multi-threading. Instead of doing the processing in the calling thread, the tasks are handed off to two groups of threads, that each take care of a part of the processing. The first group of threads will execute the command handler, changing an aggregate's state. The second group will store and publish the events to the event store.
 
 While the `DisruptorCommandBus` easily outperforms the `SimpleCommandBus` by a factor of 4\(!\), there are a few limitations:
 
@@ -151,9 +202,14 @@ Optionally, you can provide a `DisruptorConfiguration` instance, which allows yo
 
 ## Distributing the command bus
 
-The command bus implementations described in earlier only allow command messages to be dispatched within a single JVM. Sometimes, you want multiple instances of command buses in different JVMs to act as one. Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM while sending back any results.
+The command bus implementations described in earlier only allow command messages to be dispatched within a single JVM. 
+Sometimes, you want multiple instances of command buses in different JVMs to act as one. 
+Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM while sending back any results.
 
-That is where the `DistributedCommandBus` comes in. Unlike the other `CommandBus` implementations, the `DistributedCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between command bus implementations on different JVM's. Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
+That is where the `DistributedCommandBus` comes in. 
+Unlike the other `CommandBus` implementations, the `DistributedCommandBus` does not invoke any handlers at all. 
+All it does is form a "bridge" between command bus implementations on different JVM's. 
+Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
 
 ![Structure of the Distributed Command Bus](../.gitbook/assets/distributed-command-bus%20%281%29.png)
 
@@ -161,11 +217,23 @@ That is where the `DistributedCommandBus` comes in. Unlike the other `CommandBus
 >
 > Distributed command bus is part of the Axon Framework main modules and it is supported out of the box with Axon Server. Alternatively, you can choose other components that you can find in one of the extension modules (SpringCloud or JGroups).
 
-The `DistributedCommandBus` relies on two components: a `CommandBusConnector`, which implements the communication protocol between the JVM's, and the `CommandRouter`, which chooses a destination for each incoming command. This router defines which segment of the `DistributedCommandBus` should be given a \`command, based on a routing key calculated by a routing strategy. Two commands with the same routing key will always be routed to the same segment, as long as there is no change in the number and configuration of the segments. Generally, the identifier of the targeted aggregate is used as a routing key.
+The `DistributedCommandBus` relies on two components: a `CommandBusConnector`,
+ which implements the communication protocol between the JVM's, and the `CommandRouter`,
+ which chooses a destination for each incoming command. 
+This router defines which segment of the `DistributedCommandBus` should be given a \`command,
+ based on a routing key calculated by a routing strategy. 
+Two commands with the same routing key will always be routed to the same segment,
+ as long as there is no change in the number and configuration of the segments. 
+Generally, the identifier of the targeted aggregate is used as a routing key.
 
-Two implementations of the `RoutingStrategy` are provided: the `MetaDataRoutingStrategy`, which uses a metadata property in the command message to find the routing key, and the `AnnotationRoutingStrategy`, which uses the `@TargetAggregateIdentifier` annotation on the Command Messages payload to extract the routing key. Obviously, you can also provide your own implementation.
+Two implementations of the `RoutingStrategy` are provided:
+ the `MetaDataRoutingStrategy`, which uses a metadata property in the command message to find the routing key,
+ and the `AnnotationRoutingStrategy`, which uses the `@TargetAggregateIdentifier` annotation on the Command Messages payload to extract the routing key. 
+Obviously, you can also provide your own implementation.
 
-By default, the `RoutingStrategy` implementations will throw an exception when no key can be resolved from a command message. This behavior can be altered by providing a `UnresolvedRoutingKeyPolicy` in the constructor of the `MetaDataRoutingStrategy` or `AnnotationRoutingStrategy`. There are three possible policies:
+By default, the `RoutingStrategy` implementations will throw an exception when no key can be resolved from a command message. 
+This behavior can be altered by providing a `UnresolvedRoutingKeyPolicy` in the constructor of the `MetaDataRoutingStrategy` or `AnnotationRoutingStrategy`. 
+There are three possible policies:
 
 * `ERROR` - the default, and will cause an exception to be thrown when a Routing Key is not available
 * `RANDOM_KEY` - will return a random value when a \`routing key cannot be resolved from the command message. This effectively means that those commands will be routed to a random segment of the command bus.
