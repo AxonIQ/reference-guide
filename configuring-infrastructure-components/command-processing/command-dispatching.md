@@ -372,7 +372,7 @@ There are three possible policies:
 * `STATIC_KEY` - Will return a static key \(being "unresolved"\) for unresolved routing keys. This effectively means that all those commands will be routed to the same segment, as long as the configuration of segments does not change.
 
 
-You can choose different flavor of this components that you can find in one of the extension modules:
+You can choose different flavor of this components that are available in one of the extension modules:
  - [SpringCloud](/extensions/spring-cloud.md) or 
  - [JGroups](/extensions/jgroups.md).
  
