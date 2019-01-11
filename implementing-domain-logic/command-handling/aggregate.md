@@ -213,7 +213,7 @@ If more events need to be published, based on the state of an entity after apply
 > For this it only needs it's own events as those represent it's state changes.
 > 
 > To make an Aggregate react on events from other Aggregate instances,
- [Sagas](../complex-business-transactions/complex-business-transactions.md) or [Eveht Handling Components](../event-handling/event-handling.md) should be leveraged.
+ [Sagas](../complex-business-transactions/complex-business-transactions.md) or [Event Handling Components](../event-handling/event-handling.md) should be leveraged.
 
 ## Aggregate Lifecycle Operations
 
@@ -232,5 +232,5 @@ Using this `isLive()` method, you can perform activity that should only be done 
 4. `markDeleted()`: Will mark the Aggregate instance calling the function as being 'deleted'.
 Useful if the domain specifies a given Aggregate can be removed/deleted/closed, 
  after which it should no longer be allowed to handle any Commands.
-This function should be called from an `@EventSourcingHandler` annotated function to ensure that _being marked deleted_ 
-is part of that Aggregate's state.
+This function should be called from an `@EventSourcingHandler` annotated function to ensure that 
+_being marked deleted_ is part of that Aggregate's state.
