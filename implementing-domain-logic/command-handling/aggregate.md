@@ -213,7 +213,7 @@ If more events need to be published, based on the state of an entity after apply
 > For this it only needs it's own events as those represent it's state changes.
 > 
 > To make an Aggregate react on events from other Aggregate instances,
- [Sagas](../complex-business-transactions/complex-business-transactions.md) or [Eveht Handling Components](../event-handling/event-handling.md) should be leveraged.
+ [Sagas](../complex-business-transactions/complex-business-transactions.md) or [Event Handling Components](../event-handling/event-handling.md) should be leveraged.
 
 ## Aggregate Lifecycle Operations
 
