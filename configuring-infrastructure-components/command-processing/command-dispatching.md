@@ -47,8 +47,6 @@ The `IntervalRetryScheduler` is an implementation that will retry a given comman
 When a command fails due to an exception that is explicitly non-transient, no retries are done at all. 
 Note that the retry scheduler is only invoked when a command fails due to a `RuntimeException`. 
 Checked exceptions are regarded "business exception" and will never trigger a retry. 
-Typical usage of a `RetryScheduler` is when dispatching commands on a `DistributedCommandBus`. 
-If a node fails, the retry scheduler will cause a command to be dispatched to the next node capable of processing the command \(see [Distributing the command bus](command-dispatching.md#distributing-the-command-bus)\).
 
 `CommandDispatchInterceptor`s allow modification of `CommandMessage`s prior to dispatching them to the command bus. 
 In contrast to `CommandDispatchInterceptor`s configured on the command bus,
@@ -238,6 +236,33 @@ Note that the `AsynchronousCommandBus` should be shut down when stopping the app
  to make sure any waiting threads are properly shut down. To shut down, call the `shutdown()` method. 
 This will also shutdown any provided `Executor` instance, if it implements the `ExecutorService` interface.
 
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+            .configureCommandBus(c -> AsynchronousCommandBus.builder().transactionManager(c.getComponent(TransactionManager.class)).messageMonitor(c.messageMonitor(AsynchronousCommandBus.class, "commandBus")).build());
+ ```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Bean
+public AsynchronousCommandBus commandBus(TransactionManager txManager, AxonConfiguration axonConfiguration) {
+    AsynchronousCommandBus commandBus =
+            AsynchronousCommandBus.builder()
+                            .transactionManager(txManager)
+                            .messageMonitor(axonConfiguration.messageMonitor(AsynchronousCommandBus.class, "commandBus"))
+                            .build();
+    commandBus.registerHandlerInterceptor(new CorrelationDataInterceptor<>(axonConfiguration.correlationDataProviders()));
+    return commandBus;
+}
+
+```
+{% endtab %}
+{% endtabs %}
+
+
 ### DisruptorCommandBus
 
 The `SimpleCommandBus` has reasonable performance characteristics,
@@ -277,21 +302,52 @@ Optionally, you can provide a `DisruptorConfiguration` instance, which allows yo
 * `SerializerThreadCount` - the number of threads to use to pre-serialize events. This defaults to `1`, but is ignored if no serializer is configured.
 * `Serializer` - the serializer to perform pre-serialization with. When a serializer is configured, the `DisruptorCommandBus` will wrap all generated events in a `SerializationAware` message. The serialized form of the payload and metadata is attached before they are published to the Event Store.
 
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+            .configureCommandBus(c -> DisruptorCommandBus.builder().transactionManager(c.getComponent(TransactionManager.class)).messageMonitor(c.messageMonitor(DisruptorCommandBus.class, "commandBus")).bufferSize(4096).build());
+ ```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Bean
+public DisruptorCommandBus commandBus(TransactionManager txManager, AxonConfiguration axonConfiguration) {
+    DisruptorCommandBus commandBus =
+            DisruptorCommandBus.builder()
+                            .transactionManager(txManager)
+                            .messageMonitor(axonConfiguration.messageMonitor(DisruptorCommandBus.class, "commandBus"))
+                            .build();
+    commandBus.registerHandlerInterceptor(new CorrelationDataInterceptor<>(axonConfiguration.correlationDataProviders()));
+    return commandBus;
+}
+
+```
+{% endtab %}
+{% endtabs %}
+
 ## Distributing the command bus
 
 Sometimes, you want multiple instances of command buses in different JVMs to act as one. 
 Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM while sending back any results.
 
-That is where the `DistributedCommandBus` comes in. 
-Unlike the other `CommandBus` implementations, the `DistributedCommandBus` does not invoke any handlers at all. 
+That is where the concept of 'distributing the command bus' comes in. Default implementation of a distributed command bus is `AxonServerCommandBus`.
+It connects to the [AxonIQ AxonServer Server](/introduction/axon-server.md) to submit and receive Commands.
+Unlike the other `CommandBus` implementations, the `AxonServerCommandBus` does not invoke any handlers at all. 
 All it does is form a "bridge" between command bus implementations on different JVM's. 
+By default, [`SimpleCommandBus`](command-dispatching.md#simplecommandbus) is configured to handle incoming commands on this different JVM's. You can configure `AxonServerCommandBus`
+to use other command bus implementations for this purposes: [`AsynchronousCommandBus`](command-dispatching.md#asynchronouscommandbus), [`DisruptorCommandBus`](command-dispatching.md#disruptorcommandbus).
+
+### DistributedCommandBus
+
+`DistributedCommandBus` is an alternative approach to distributing command bus (commands).
 Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
 
 ![Structure of the Distributed Command Bus](../../.gitbook/assets/distributed-command-bus%20%281%29.png)
 
-> **Note**
->
-> Distributed command bus is part of the Axon Framework main modules and it is supported out of the box with Axon Server. Alternatively, you can choose other components that you can find in one of the extension modules (SpringCloud or JGroups).
 
 The `DistributedCommandBus` relies on two components: a `CommandBusConnector`,
  which implements the communication protocol between the JVM's, and the `CommandRouter`,
@@ -314,3 +370,29 @@ There are three possible policies:
 * `ERROR` - the default, and will cause an exception to be thrown when a Routing Key is not available
 * `RANDOM_KEY` - will return a random value when a \`routing key cannot be resolved from the command message. This effectively means that those commands will be routed to a random segment of the command bus.
 * `STATIC_KEY` - Will return a static key \(being "unresolved"\) for unresolved routing keys. This effectively means that all those commands will be routed to the same segment, as long as the configuration of segments does not change.
+
+
+You can choose different flavor of this components that you can find in one of the extension modules:
+ - [SpringCloud](/extensions/spring-cloud.md) or 
+ - [JGroups](/extensions/jgroups.md).
+ 
+ 
+{% tabs %}
+{% tab title="Spring Boot AutoConfiguration" %}
+Configuring a distributed command bus can \(mostly\) be done without any modifications in configuration files.
+
+First of all, the starters for one of the Axon distributed command bus modules needs to be included \(e.g. [JGroups](/setting-up/maven-dependencies.md#axon-jgroups-spring-boot-starter) or [Spring Cloud](/setting-up/maven-dependencies.md#axon-spring-cloud-spring-boot-starter)\).
+
+Once that is present, a single property needs to be added to the application context, to enable the distributed command bus:
+
+```text
+axon.distributed.enabled=true
+```
+
+There in one setting that is independent of the type of connector used:
+
+```text
+axon.distributed.load-factor=100
+```
+{% endtab %}
+{% endtabs %}

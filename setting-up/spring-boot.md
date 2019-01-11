@@ -40,6 +40,9 @@ Axon Spring Boot auto-configuration is not intrusive. It will define only Spring
 
 Specific Axon (Spring) component configurations will be explained in detail in the following sections of this guide.
 
+
+
+
 <!-- ### Event bus and event store configuration
 
 `axon-spring-boot-starter` depends on `axon-server-connector` which will configure "Axon Server event store" and "event bus" spring beans by default, so you can use Axon server to store domain events and to distribute them out of the box.
