@@ -11,11 +11,8 @@ To instantiate a default Aggregate configuration you simply do the following:
 {% tab title="Axon Configuration API" %}
 ```java
 
-//...
-
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
        .configureAggregate(GiftCard.class);
-//...
 }
 
 ```
@@ -58,13 +55,8 @@ Note that the Repository interface does not prescribe a `delete(identifier)` met
 {% tab title="Axon Configuration API" %}
 ```java
 
-//...
-
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
         .configureAggregate(AggregateConfigurer.defaultConfiguration(GiftCard.class).configureRepository(c -> EventSourcingRepository.builder(GiftCard.class).eventStore(c.eventStore()).build()));
-
-//...
-}
 
 ```
 {% endtab %}

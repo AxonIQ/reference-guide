@@ -47,13 +47,8 @@ The `AggregateSnapshotter` provides one more property:
 
 ```java
 
-//...
-
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
                 .configureAggregate(AggregateConfigurer.defaultConfiguration(GiftCard.class).configureSnapshotTrigger(c -> new EventCountSnapshotTriggerDefinition(AggregateSnapshotter.builder().eventStore(c.eventStore()).build(),300)));
-
-//...
-}
 
 ```
 {% endtab %}

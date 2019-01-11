@@ -127,13 +127,60 @@ The Command Bus is the mechanism that dispatches commands to their respective co
 Suggestions on how to use the `CommandBus` can be found [here](../../implementing-domain-logic/command-handling/dispatching-commands.md#the-command-bus)
 Several flavors of the command bus, with differing characteristics, exist within the framework:
 
+### AxonServerCommandBus
+
+Axon provides a command bus out of the box, the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server](/introduction/axon-server.md) to submit and receive Commands.
+
+
+`AxonServerCommandBus` is a [distributed command bus](command-dispatching.md#distributing-the-command-bus). It is using [`SimpleCommandBus`](command-dispatching.md#simplecommandbus) to handle incoming commands on different JVM's by default.
+ 
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
+Declare dependencies:
+```
+<!--somewhere in the POM file-->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-server-connector</artifactId>
+    <version>${axon.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-configuration</artifactId>
+    <version>${axon.version}</version>
+</dependency>
+```
+Configure your application:
+```java
+// Returns a Configurer instance with default components configured. `AxonServerCommandBus` is configured as Command Bus by default.
+Configurer configurer = DefaultConfigurer.defaultConfiguration();
+```
+> NOTE: If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' command bus options: `SimpleCommandBus` (see [below](command-dispatching.md#simplecommandbus))
+
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+
+By simply declaring dependency to `axon-spring-boot-starter`, Axon will automatically configure the Axon Server Command Bus:
+```
+<!--somewhere in the POM file-->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-spring-boot-starter</artifactId>
+    <version>${axon.version}</version>
+</dependency>
+
+```
+{% endtab %}
+{% endtabs %}
+
 ### SimpleCommandBus
 
 The `SimpleCommandBus` is, as the name suggests, the simplest implementation. 
 It does straightforward processing of commands in the thread that dispatches them. 
 After a command is processed, the modified aggregate\(s\) are saved and generated events are published in that same thread. 
 In most scenarios, such as web applications, this implementation will suit your needs. 
-The `SimpleCommandBus` is the implementation used by default in the [Configuration API](../1.1-concepts/configuration-api.md).
 
 Like most `CommandBus` implementations, the `SimpleCommandBus` allows interceptors to be configured. 
 `CommandDispatchInterceptor`s are invoked when a command is dispatched on the command bus. 
@@ -144,6 +191,36 @@ See [Command interceptors](command-dispatching.md#command-interceptors) for more
 Since all command processing is done in the same thread, this implementation is limited to the JVM's boundaries. 
 The performance of this implementation is good, but not extraordinary. 
 To cross JVM boundaries, or to get the most out of your CPU cycles, check out the other `CommandBus` implementations.
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+            .configureCommandBus(c -> SimpleCommandBus.builder().transactionManager(c.getComponent(TransactionManager.class)).messageMonitor(c.messageMonitor(SimpleCommandBus.class, "commandBus")).build());
+ ```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Bean
+public SimpleCommandBus commandBus(TransactionManager txManager, AxonConfiguration axonConfiguration) {
+    SimpleCommandBus commandBus =
+            SimpleCommandBus.builder()
+                            .transactionManager(txManager)
+                            .messageMonitor(axonConfiguration.messageMonitor(CommandBus.class, "commandBus"))
+                            .build();
+    commandBus.registerHandlerInterceptor(
+            new CorrelationDataInterceptor<>(axonConfiguration.correlationDataProviders())
+    );
+    return commandBus;
+}
+
+```
+> NOTE: If you exclude `axon-server-connector` dependency from `axon-spring-boot-starter` you will have `SimpleCommandBus` component auto-configured and loaded into Spring Application Context by default, and you don't need to explicitly define this component in you Spring configuration.
+
+{% endtab %}
+{% endtabs %}
 
 ### AsynchronousCommandBus
 
@@ -202,7 +279,6 @@ Optionally, you can provide a `DisruptorConfiguration` instance, which allows yo
 
 ## Distributing the command bus
 
-The command bus implementations described in earlier only allow command messages to be dispatched within a single JVM. 
 Sometimes, you want multiple instances of command buses in different JVMs to act as one. 
 Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM while sending back any results.
 
@@ -211,7 +287,7 @@ Unlike the other `CommandBus` implementations, the `DistributedCommandBus` does 
 All it does is form a "bridge" between command bus implementations on different JVM's. 
 Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
 
-![Structure of the Distributed Command Bus](../.gitbook/assets/distributed-command-bus%20%281%29.png)
+![Structure of the Distributed Command Bus](../../.gitbook/assets/distributed-command-bus%20%281%29.png)
 
 > **Note**
 >

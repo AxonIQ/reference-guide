@@ -36,13 +36,13 @@ Configure your application:
 // Returns a Configurer instance with default components configured. `AxonServerEventStore` is configured as Event Store by default.
 Configurer configurer = DefaultConfigurer.defaultConfiguration();
 ```
-> NOTE: If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' event store options: `SimpleEventBus` or `EmbeddedEventStore` (see [below](#embedded-event-store))
+> NOTE: If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' event store options: `SimpleEventBus` or `EmbeddedEventStore` (see [below](event-bus-and-event-store.md#embedded-event-store))
 
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
 
-By simply declaring dependency to `axon-spring-boot-starter`, Axon will automatically configure the event bus/event store, as well as any other component required to run and store aggregates and sagas:
+By simply declaring dependency to `axon-spring-boot-starter`, Axon will automatically configure the event bus/event store:
 ```
 <!--somewhere in the POM file-->
 <dependency>
@@ -61,7 +61,7 @@ Alternatively, Axon provides non-axon-server option, the `EmbeddedEventStore`. I
 
 There are multiple `EventStorageEngine` implementations available:
 
-#### `JpaEventStorageEngine`
+### `JpaEventStorageEngine`
 
 The `JpaEventStorageEngine` stores events in a JPA-compatible data source. The JPA event store stores events in so called entries. These entries contain the serialized form of an event, as well as some fields where metadata is stored for fast lookup of these entries. To use the `JpaEventStorageEngine`, you must have the JPA \(`javax.persistence`\) annotations on your classpath.
 
@@ -163,7 +163,7 @@ public EventStorageEngine storageEngine(Serializer defaultSerializer,
 {% endtab %}
 {% endtabs %}
 
-#### JdbcEventStorageEngine
+### JdbcEventStorageEngine
 
 The JDBC event storage engine uses a JDBC Connection to store events in a JDBC compatible data storage. Typically, these are relational databases. Theoretically, anything that has a JDBC driver could be used to back the `JdbcEventStorageEngine`.
 
@@ -209,7 +209,7 @@ public JdbcEventStorageEngine eventStorageEngine(ConnectionProvider connectionPr
 {% endtab %}
 {% endtabs %}
 
-#### MongoEventStorageEngine
+### MongoEventStorageEngine
 
 [MongoDB](https://www.mongodb.com/) is a document based NoSQL store. Its scalability characteristics make it suitable for use as an event store. Axon provides the `MongoEventStorageEngine`, which uses MongoDB as backing database. It is contained in the Axon Mongo module \(Maven artifactId `axon-mongo`\).
 
@@ -253,11 +253,11 @@ public EventStorageEngine storageEngine(MongoClient client) {
 {% endtabs %}
 
 
-#### Event store utilities
+### Event store utilities
 
 Axon provides a number of Event Storage Engines that may be useful in certain circumstances.
 
-##### In-Memory Event Storage
+#### In-Memory Event Storage
 
 The `InMemoryEventStorageEngine` keeps the stored events in memory. While it probably outperforms any other event store out there, it is not really meant for long-term production use. However, it is very useful in short-lived tools or tests that require an event store.
 
@@ -292,11 +292,11 @@ public EventStorageEngine storageEngine() {
 {% endtab %}
 {% endtabs %}
 
-##### Combining multiple event stores into one
+#### Combining multiple event stores into one
 
 The `SequenceEventStorageEngine` is a wrapper around two other event storage engines. When reading, it returns the events from both event storage engines. Appended events are only appended to the second event storage engine. This is useful in cases where two different implementations of event storage are used for performance reasons, for example. The first would be a larger, but slower event store, while the second is optimized for quick reading and writing.
 
-##### Filtering Stored Events
+#### Filtering Stored Events
 
 The `FilteringEventStorageEngine` allows events to be filtered based on a predicate. Only events that match this predicate will be stored. Note that event processors that use the event store as a source of events, may not receive these events, as they are not being stored.
 
