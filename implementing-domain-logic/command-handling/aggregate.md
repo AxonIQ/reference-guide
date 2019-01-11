@@ -232,5 +232,5 @@ Using this `isLive()` method, you can perform activity that should only be done 
 4. `markDeleted()`: Will mark the Aggregate instance calling the function as being 'deleted'.
 Useful if the domain specifies a given Aggregate can be removed/deleted/closed, 
  after which it should no longer be allowed to handle any Commands.
-This function should be called from an `@EventSourcingHandler` annotated function to ensure that _being marked deleted_ 
-is part of that Aggregate's state.
+This function should be called from an `@EventSourcingHandler` annotated function to ensure that 
+_being marked deleted_ is part of that Aggregate's state.
