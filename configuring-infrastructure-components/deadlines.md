@@ -2,7 +2,7 @@
 
 The 'Deadline concept' in the Axon Framework is a mechanism which enables certain actions (in our case a `@DeadlineHandler` annotated method) to be executed after a certain amount of time. The context of this execution is an Aggregate or a Saga in which the Deadline was scheduled. If the Deadline becomes obsolete there is the possibility to cancel it as well.  
 
-Deadlines can be scheduled from Sagas and Aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`s when the deadline is met. The `DeadlineManager` can be injected as a resource. It has two flavors: `SimpleDeadlineManager` and `QuartzDeadlineManager`, just like the [Event Scheduling](sagas.md#keeping-track-of-deadlines) mechanism for Sagas. 
+Deadlines can be scheduled from Sagas and Aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`s when the deadline is met. The `DeadlineManager` can be injected as a resource. It has two flavors: `SimpleDeadlineManager` and `QuartzDeadlineManager`, just like the [Event Scheduling](/implementing-domain-logic/complex-business-transactions/deadline-handling.md) mechanism for Sagas. 
 
 ## Scheduling a Deadline
 
@@ -10,7 +10,7 @@ A deadline can be scheduled by providing a `Duration` after which it will be tri
 
 > **Note**
 >  
-> Unlike [Event Scheduling](sagas.md#keeping-track-of-deadlines), when a Deadline is triggered there will be no storing of the published Message. Scheduling/Triggering a deadline does not involve an EventBus (or EventStore), hence the Message is not stored.
+> Unlike [Event Scheduling](/implementing-domain-logic/complex-business-transactions/deadline-handling.md), when a Deadline is triggered there will be no storing of the published Message. Scheduling/Triggering a deadline does not involve an EventBus (or EventStore), hence the Message is not stored.
 
 ```java
 String deadlineId = deadlineManager.schedule(Duration.ofMillis(500), "myDeadline");
