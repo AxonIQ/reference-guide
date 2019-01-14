@@ -24,50 +24,28 @@ The `CommandBus` provides two methods to dispatch commands to their respective h
  being the `dispatch(CommandMessage)` and `dispatch(CommandMessage, CommandCallback)` methods:
 
 ```java
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.commandhandling.CommandCallback;
-import org.axonframework.commandhandling.CommandMessage;
-import org.axonframework.commandhandling.CommandResultMessage;
-import org.axonframework.commandhandling.GenericCommandMessage;
+private CommandBus commandBus; // 1.
 
-import java.util.UUID;
+public void dispatchCommands() {
+    String cardId = UUID.randomUUID().toString(); // 2.
 
-public class CommandDispatcher {
-    
-    private final CommandBus commandBus; // 1.
-    
-    public void publishCommand() {
-        String cardId = UUID.randomUUID().toString(); // 2.
-        int cardBalance = 100;
-        
-        // 3.
-        CommandMessage<IssueCardCommand> commandMessage =
-                GenericCommandMessage.asCommandMessage(new IssueCardCommand(cardId, cardBalance));
-        
-        commandBus.dispatch(commandMessage); // 4.
-    }
-    
-    public void publishCommandWithCallback() {
-        String cardId = UUID.randomUUID().toString();
-        CommandMessage<IssueCardCommand> commandMessage =
-                GenericCommandMessage.asCommandMessage(new IssueCardCommand(cardId, 100));
-        
-        // 5.
-        commandBus.dispatch(commandMessage, new CommandCallback<IssueCardCommand, Object>() {
-            @Override // 6.
-            public void onResult(CommandMessage<? extends IssueCardCommand> commandMessage,
-                                 CommandResultMessage<?> commandResultMessage) {
+    // 3. & 4.
+    commandBus.dispatch(GenericCommandMessage.asCommandMessage(new IssueCardCommand(cardId, 100, "shopId")));
+
+    // 5. & 6.
+    commandBus.dispatch(
+            GenericCommandMessage.asCommandMessage(new IssueCardCommand(cardId, 100, "shopId")),
+            (CommandCallback<IssueCardCommand, String>) (cmdMsg, cmdResultMsg) -> {
                 // 7.
-                if (commandResultMessage.isExceptional()) {
-                    Throwable throwable = commandResultMessage.exceptionResult();
+                if (cmdResultMsg.isExceptional()) {
+                    Throwable throwable = cmdResultMsg.exceptionResult();
                 } else {
-                    Object commandResult = commandResultMessage.getPayload();
+                    String commandResult = cmdResultMsg.getPayload();
                 }
             }
-        });
-    }
-    // Omitted constructor and result usage 
+    );
 }
+// omitted class, constructor and result usage 
 ```
 
 The `CommandDispatcher` described above exemplifies a couple of important aspects and capabilities of the dispatching commands:
@@ -114,48 +92,15 @@ While you are not required to use a gateway to dispatch commands, it is generall
 The `CommandGateway` interface can be separated in two sets of methods, namely `send` and `sendAndWait`:
 
 ```java
-import org.axonframework.commandhandling.CommandCallback;
-import org.axonframework.commandhandling.CommandMessage;
-import org.axonframework.commandhandling.CommandResultMessage;
-import org.axonframework.commandhandling.gateway.CommandGateway;
+private CommandGateway commandGateway; // 1.
 
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
+public void sendCommand() {
+    String cardId = UUID.randomUUID().toString(); // 2.
 
-public class CommandDispatcher {
-    
-    private final CommandGateway commandGateway; // 1.
-    
-    public void sendCommand() {
-        String cardId = UUID.randomUUID().toString(); // 2.
-        int cardBalance = 100;
-        IssueCardCommand command = new IssueCardCommand(cardId, cardBalance);
-    
-        // 3.
-        CompletableFuture<Object> completableFuture = commandGateway.send(command);
-    }
-    
-    public void sendCommandWithCallback() {
-        String cardId = UUID.randomUUID().toString();
-        int cardBalance = 100;
-        IssueCardCommand command = new IssueCardCommand(cardId, cardBalance);
-        
-        // 4.
-        commandGateway.send(command, new CommandCallback<IssueCardCommand, Object>() {
-            @Override // 5.
-            public void onResult(CommandMessage<? extends IssueCardCommand> commandMessage,
-                                 CommandResultMessage<?> commandResultMessage) {
-                // 6.
-                if (commandResultMessage.isExceptional()) {
-                    Throwable throwable = commandResultMessage.exceptionResult();
-                } else {
-                    Object commandResult = commandResultMessage.getPayload();
-                }
-            }
-        });
-    }
-    // Omitted constructor and result usage
+    // 3.
+    CompletableFuture<String> futureResult = commandGateway.send(new IssueCardCommand(cardId, 100, "shopId"));
 }
+// omitted class, constructor and result usage
 ```
 
 The `send` API as shown above introduces a couple of concepts, marked with numbered comments:
@@ -168,21 +113,8 @@ Typed identifier objects are also possible, as long as the object implements a s
 This is an asynchronous approach to dispatching commands.
 As such the response of the `send` method is a `CompletableFuture`.
 This allows for chaining of follow up operations _after_ the command [result](#command-dispatching-results) has been returned.
-4. If you need more control over the outcome of command handling,
- an optional second parameter can be provided, the `CommandCallback`.
-5. The Command Callback has one function, `onResult(CommandMessage, CommandResultMessage)`,
- which is called when command handling has finished. 
-The first parameter is the dispatched command wrapped in a `CommandMessage`,
- whilst the second is execution result of the dispatched command.
-Lastly, the `CommandCallback` is a 'functional interface' due to `onResult` being its only method.
-As such, `commandBus.dispatch(commandMessage, (cmdMsg, commandResultMessage) -> { /* ... */ })` would also be possible.
-6. The `CommandResultMessage` provides the API to verify whether command execution was exceptional or successful. 
-If `CommandResultMessage#isExceptional` returns true,
- you can assume that the `CommandResultMessage#exceptionResult` will return a `Throwable` instance containing the actual exception.
-Otherwise, the `CommandResultMessage#getPayload` method _may_ provide you with an actual result or `null`,
- as further specified [here](#command-dispatching-results).
 
-> **Note**
+> **Callback when using `send(Object)`**
 >
 > The `CommandGateway#send(Object)` method uses the `FutureCallback` under the hood to unblock the command dispatching 
  thread from the command handling thread. 
@@ -190,36 +122,17 @@ Otherwise, the `CommandResultMessage#getPayload` method _may_ provide you with a
 A synchronous approach to sending messages can also be achieved, by using the `sendAndWait` methods:
 
 ```java
-import org.axonframework.commandhandling.gateway.CommandGateway;
+private CommandGateway commandGateway;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+public void sendCommandAndWaitOnResult() {
+    IssueCardCommand commandPayload = new IssueCardCommand(UUID.randomUUID().toString(), 100, "shopId");
+    // 1.
+    String result = commandGateway.sendAndWait(commandPayload);
 
-public class CommandDispatcher {
-    
-    private final CommandGateway commandGateway;
-    
-    public void sendCommandAndWaitOnResult() {
-        String cardId = UUID.randomUUID().toString();
-        int cardBalance = 100;
-        IssueCardCommand command = new IssueCardCommand(cardId, cardBalance);
-        
-        // 1.
-        Object result = commandGateway.sendAndWait(command);
-    }
-    
-    public void sendCommandAndWaitOnResultWithTimeout() {
-        String cardId = UUID.randomUUID().toString();
-        int cardBalance = 100;
-        IssueCardCommand command = new IssueCardCommand(cardId, cardBalance);
-        
-        // 2.
-        int timeout = 1000;
-        TimeUnit timoutUnit = TimeUnit.MILLISECONDS;
-        Object result = commandGateway.sendAndWait(command, timeout, timoutUnit);
-    }
-    // Omitted constructor and result usage
+    // 2.
+    result = commandGateway.sendAndWait(commandPayload, 1000, TimeUnit.MILLISECONDS);
 }
+// omitted class, constructor and result usage
 ```
 
 1. The `CommandGateway#sendAndWait(Object)` function takes in a single parameter, your command object.
