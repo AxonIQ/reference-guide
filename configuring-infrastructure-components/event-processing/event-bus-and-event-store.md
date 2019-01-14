@@ -61,7 +61,7 @@ Alternatively, Axon provides non-axon-server option, the `EmbeddedEventStore`. I
 
 There are multiple `EventStorageEngine` implementations available:
 
-### `JpaEventStorageEngine`
+#### `JpaEventStorageEngine`
 
 The `JpaEventStorageEngine` stores events in a JPA-compatible data source. The JPA event store stores events in so called entries. These entries contain the serialized form of an event, as well as some fields where metadata is stored for fast lookup of these entries. To use the `JpaEventStorageEngine`, you must have the JPA \(`javax.persistence`\) annotations on your classpath.
 
@@ -163,7 +163,7 @@ public EventStorageEngine storageEngine(Serializer defaultSerializer,
 {% endtab %}
 {% endtabs %}
 
-### JdbcEventStorageEngine
+#### JdbcEventStorageEngine
 
 The JDBC event storage engine uses a JDBC Connection to store events in a JDBC compatible data storage. Typically, these are relational databases. Theoretically, anything that has a JDBC driver could be used to back the `JdbcEventStorageEngine`.
 
@@ -209,7 +209,7 @@ public JdbcEventStorageEngine eventStorageEngine(ConnectionProvider connectionPr
 {% endtab %}
 {% endtabs %}
 
-### MongoEventStorageEngine
+#### MongoEventStorageEngine
 
 [MongoDB](https://www.mongodb.com/) is a document based NoSQL store. Its scalability characteristics make it suitable for use as an event store. Axon provides the `MongoEventStorageEngine`, which uses MongoDB as backing database. It is contained in the Axon Mongo module \(Maven artifactId `axon-mongo`\).
 
