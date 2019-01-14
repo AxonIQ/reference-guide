@@ -200,7 +200,7 @@ By simply declaring dependency to `axon-spring-boot-starter`, Axon will automati
 
 ### SimpleQueryBus
 
-The `SimpleQueryBus` does straightforward processing of queries in the thread that dispatches them. The `SimpleQueryBus` allows interceptors to be configured.
+The `SimpleQueryBus` does straightforward processing of queries in the thread that dispatches them. To configure `SimpleQueryBus` (instead of `AxonServerQueryBus`):
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
