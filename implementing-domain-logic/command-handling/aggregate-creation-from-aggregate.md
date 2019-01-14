@@ -37,4 +37,6 @@ public class AggregateB {
 
 > **Note** Creation of a new Aggregate should be done in a Command Handling function rather than in an Event Handling function \(given the usage of Event Sourced Aggregate\). Rationale: we do not want to create new Aggregates when we are sourcing a given Aggregate - previously created aggregate will be Event Sourced based on its events. However, if you try to create a new Aggregate while Axon is replaying events, an `UnsupportedOperationException` will be thrown.
 
+<!--
 ## Aggregate-from-Aggregate Use Cases
+-->

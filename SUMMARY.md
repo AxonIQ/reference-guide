@@ -26,19 +26,18 @@
 * [Event handling](implementing-domain-logic/event-handling/event-handling.md)
     * [Handling events](implementing-domain-logic/event-handling/handling-events.md)
     * [Dispatching events](implementing-domain-logic/event-handling/dispatching-events.md)
-    * [Updating view model](implementing-domain-logic/event-handling/updating-view-model.md)
+    <!--* [Updating view model](implementing-domain-logic/event-handling/updating-view-model.md)-->
 * [Query handling](implementing-domain-logic/query-handling/query-handling.md)
     * [Handling queries](implementing-domain-logic/query-handling/handling-queries.md)
     * [Dispatching queries](implementing-domain-logic/query-handling/dispatching-queries.md)
 * [Complex business transactions](implementing-domain-logic/complex-business-transactions/complex-business-transactions.md)
-    * [Deciding when to use a Saga](implementing-domain-logic/complex-business-transactions/when-to-use-saga.md)
+    <!--* [Deciding when to use a Saga](implementing-domain-logic/complex-business-transactions/when-to-use-saga.md)-->
     * [Implementing a Saga](implementing-domain-logic/complex-business-transactions/implementing-saga.md)
-    * [Dealing with errors](implementing-domain-logic/complex-business-transactions/dealing-with-errors.md)
+    <!--* [Dealing with errors](implementing-domain-logic/complex-business-transactions/dealing-with-errors.md)-->
     * [Deadline handling](implementing-domain-logic/complex-business-transactions/deadline-handling.md)
     * [Managing associations](implementing-domain-logic/complex-business-transactions/managing-associations.md)
     * [Testing a Saga](implementing-domain-logic/complex-business-transactions/testing.md)
-    <!--    * [Alternatives to Sagas](... explain BPMN engines ...) -->
-
+    <!--* [Alternatives to Sagas](... explain BPMN engines ...)-->
 <!-- * [Connecting the UI](implementing-domain-logic/connecting-the-ui/connecting-the-ui.md)
     * [Command publishing use cases](implementing-domain-logic/connecting-the-ui/command-publishing-use-cases.md)
     * [Dealing with eventual consistency](implementing-domain-logic/connecting-the-ui/dealing-with-eventual-consistency.md)
