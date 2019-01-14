@@ -2,7 +2,7 @@
 
 The [Aggregate](aggregate.md) and [External Command Handler](external-command-handler.md)
  pages provide the background on how to handle command messages in your application.
-The starting point of such a command message lies in its dispatching process.
+The dispatching process is the starting point of such a command message.
 Axon provides two interface you can use to send the commands to your command handlers, being:
 
 1. The [Command Bus](#the-command-bus), and
@@ -74,7 +74,7 @@ If `CommandResultMessage#isExceptional` returns true,
 Otherwise, the `CommandResultMessage#getPayload` method _may_ provide you with an actual result or `null`,
  as further specified [here](#command-dispatching-results).     
 
-> **Note**
+> **Command Callback consideration**
 >
 > In the case that `dispatch(CommandMessage, CommandCallback)` is used,
  the calling component may _not_ assume that the callback is invoked in the same thread that dispatched the command. 
