@@ -7,6 +7,8 @@ In general, these can be grouped in two major areas:
 2. Dispatching events from regular components 
 
 This page will describe how to get an event message on the event bus from both locations.
+For more specifics regarding event publication and storage implementations in Axon Framework,
+ read [this](../../configuring-infrastructure-components/event-processing/event-bus-and-event-store.md) section.
 
 ## Dispatching events from an Aggregate
 
