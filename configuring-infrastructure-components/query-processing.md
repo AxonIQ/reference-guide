@@ -150,6 +150,84 @@ commandGateway.sendAndWait(new RedeemCmd("gc1", amount));
 
 \(5\) When we issue a `RedeemCmd`, our event handler in the projection will eventually be triggered, which will result in the emission of an update. Since we subscribed with the `println()` method to updates, the update will be printed out once it is received.
 
+
+### AxonServerQueryBus
+
+Axon provides a query bus out of the box, the `AxonServerQueryBus`. It connects to the [AxonIQ AxonServer Server](/introduction/axon-server.md) to send and receive Queries.
+
+`AxonServerQueryBus` is a 'distributed query bus'. It is using [`SimpleQueryBus`](query-processing.md#simplequerybus) to handle incoming queries on different JVM's by default.
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
+Declare dependencies:
+```
+<!--somewhere in the POM file-->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-server-connector</artifactId>
+    <version>${axon.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-configuration</artifactId>
+    <version>${axon.version}</version>
+</dependency>
+```
+Configure your application:
+```java
+// Returns a Configurer instance with default components configured. `AxonServerQueryBus` is configured as Query Bus by default.
+Configurer configurer = DefaultConfigurer.defaultConfiguration();
+```
+> NOTE: If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' query bus option: `SimpleQueryBus` (see [below](query-processing.md#simplequerybus))
+
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+
+By simply declaring dependency to `axon-spring-boot-starter`, Axon will automatically configure the Axon Server Query Bus:
+```
+<!--somewhere in the POM file-->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-spring-boot-starter</artifactId>
+    <version>${axon.version}</version>
+</dependency>
+
+```
+{% endtab %}
+{% endtabs %}
+
 ### SimpleQueryBus
 
 The `SimpleQueryBus` does straightforward processing of queries in the thread that dispatches them. The `SimpleQueryBus` allows interceptors to be configured.
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+            .configureQueryBus(c -> SimpleQueryBus.builder().transactionManager(c.getComponent(TransactionManager.class)).messageMonitor(c.messageMonitor(SimpleQueryBus.class, "queryBus")).build());
+ ```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Bean
+public SimpleQueryBus queryBus(AxonConfiguration axonConfiguration, TransactionManager transactionManager) {
+    return SimpleQueryBus.builder()
+                         .messageMonitor(axonConfiguration.messageMonitor(QueryBus.class, "queryBus"))
+                         .transactionManager(transactionManager)
+                         .errorHandler(axonConfiguration.getComponent(
+                                 QueryInvocationErrorHandler.class,
+                                 () -> LoggingQueryInvocationErrorHandler.builder().build()
+                         ))
+                         .queryUpdateEmitter(axonConfiguration.getComponent(QueryUpdateEmitter.class))
+                         .build();
+}
+
+```
+> NOTE: If you exclude `axon-server-connector` dependency from `axon-spring-boot-starter` you will have `SimpleQueryBus` component auto-configured and loaded into Spring Application Context by default, and you don't need to explicitly define this component in you Spring configuration.
+
+{% endtab %}
+{% endtabs %}
