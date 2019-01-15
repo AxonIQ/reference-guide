@@ -47,7 +47,11 @@ EventMessage eventMessage =
 3. `andMetaData` adds the entries from the given Map to the Message's meta data. Existing entries with equal keys are 
    overwritten.
 
-`MetaData` also implements `Map<String, Object>`, meaning 
+ > *Note - about `MetaData` implementing `Map<String, Object>`*
+ >  
+ > `MetaData` also implements `Map<String, Object>`, meaning that instead of passing a `singletonMap` (or any other 
+ > type of Map), you can also use `MetaData.with(key, value)`. As `MetaData` is immutable, all mutating operations of 
+ > `Map` will throw an `UnsupportedOperationException`. 
 
 ## Message-specific data
 
