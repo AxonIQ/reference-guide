@@ -82,8 +82,6 @@
     * [Access Control](operations-guide/setting-up-axon-server/access-control.md)
     * [Axon Server clustering](operations-guide/setting-up-axon-server/axon-server-clustering.md)
     * [Multi-context](operations-guide/setting-up-axon-server/multi-context.md)
-    * [Field-level encryption (GDPR module)](operations-guide/setting-up-axon-server/field-level-encryption.md)
-    * [Big data & Fast data](operations-guide/setting-up-axon-server/big-data-fast-data.md)
 * [Alternative event storage options](operations-guide/alternative-event-storage-options.md)
 * [Scaling out](operations-guide/scaling-out/scaling-out.md)
     * [Considerations when scaling](operations-guide/scaling-out/considerations-when-scaling.md)
