@@ -20,7 +20,7 @@ When you see a log line announcing "Started Axon Server in _some-value_ seconds 
 
 ## Starting Axon server in a docker container
 
-To run Axon Server in Docker you can use [the image provided on Docker Hub]((https://hub.docker.com/r/axoniq/axonserver/)):
+To run Axon Server in Docker you can use [the image provided on Docker Hub](https://hub.docker.com/r/axoniq/axonserver/):
 
 ```bash
 $ docker run -d --name my-axon-server -p 8024:8024 -p 8124:8124 axoniq/axonserver
