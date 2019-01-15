@@ -1,11 +1,5 @@
 # Quick start
 
--DRAFT version 1.0.0-
-
-'The plan of this QuickStart chapter is to guide the users through the process of building a minimalistic application, before going into the architecture.
-
-The QuickStart download on the website is an alternative (see bellow), in that case, we send users to the download page on the website'
-
 
  1. Get everything you need by downloading [QuickStart archive](https://axoniq.io/download)
 
