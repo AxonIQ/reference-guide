@@ -23,6 +23,7 @@
     * [Dispatching Commands](implementing-domain-logic/command-handling/dispatching-commands.md)
     * [Testing](implementing-domain-logic/command-handling/testing.md)
     * [Aggregate creation from another Aggregate](implementing-domain-logic/command-handling/aggregate-creation-from-aggregate.md)
+    * [Conflict Resolution](implementing-domain-logic/command-handling/conflict-resolution.md)
 * [Event handling](implementing-domain-logic/event-handling/event-handling.md)
     * [Handling Events](implementing-domain-logic/event-handling/handling-events.md)
     * [Dispatching Events](implementing-domain-logic/event-handling/dispatching-events.md)
@@ -42,7 +43,6 @@
     * [Command publishing use cases](implementing-domain-logic/connecting-the-ui/command-publishing-use-cases.md)
     * [Dealing with eventual consistency](implementing-domain-logic/connecting-the-ui/dealing-with-eventual-consistency.md)
     * [Query publishing use cases](implementing-domain-logic/connecting-the-ui/query-publishing-use-cases.md) -->
-
 
 ## Configuring Infrastructure components
 
@@ -64,13 +64,14 @@
 
 ## Production considerations
 
-* [Application versioning](production-considerations/application-versioning/application-versioning.md)
-    * [Versioning events](production-considerations/application-versioning/versioning-events.md)
+* [Application Versioning](production-considerations/application-versioning/application-versioning.md)
+    * [Versioning Events](production-considerations/application-versioning/versioning-events.md)
 * [Serializers](production-considerations/serializers/serializers.md)
-<!--
-    * [Custom serializer](production-considerations/serializers/_custom-serializer.md)
-    * [Content type converters](production-considerations/serializers/_content-type-converters.md)
--->
+    * [Content Type Converters](production-considerations/serializers/content-type-converters.md)
+    * [Serializer Tuning](production-considerations/serializers/serializer-tuning.md)
+* [Monitoring and Metrics](production-considerations/monitoring-and-metrics/monitoring-and-metrics.md)
+    * [Metrics](production-considerations/monitoring-and-metrics/metrics.md)
+    * [Monitoring](production-considerations/monitoring-and-metrics/monitoring.md)
 
 ## Operations Guide 
 
@@ -97,7 +98,9 @@
 ## Appendices
 
 * [A. RDBMS Tuning](appendices/rdbms-tuning.md)
-
-* [B. Tuning Message Handler definitions](appendices/handler-definitions/handler-definitions.md)
-    * [Custom Handler Definition](appendices/handler-definitions/custom-handler-definition.md)
-    * [Handler Enhancers](appendices/handler-definitions/custom-handler-enhancers.md)
+* [B. Tuning Message Handler definitions](appendices/message-handler-tuning/message-handler-tuning.md)
+    * [Parameter Resolvers](appendices/message-handler-tuning/parameter-resolvers.md)
+    <!--* [Handler Definition](appendices/message-handler-tuning/handler-definition.md)-->
+    * [Handler Enhancers](appendices/message-handler-tuning/handler-enhancers.md)
+* [C. Meta Annotations](appendices/meta-annotations.md)
+* [D. Identifier Generation](appendices/identifier-generation.md)
