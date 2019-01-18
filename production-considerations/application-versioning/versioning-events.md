@@ -1,5 +1,10 @@
 # Versioning Events
 
+In the lifecycle of an Axon application events _will_ typically change their format.
+As events are stored indefinitely the application should be able to cope with several versions of an event.
+This chapter will discuss what to keep in mind when creating your events, for backwards (and forwards) compatibility,
+ and it will explain the upcasting process.  
+
 ## Event Upcasting
 
 Due to the ever-changing nature of software applications it is likely that event definitions also change over time. 
