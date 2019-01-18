@@ -27,22 +27,14 @@
 * [Event handling](implementing-domain-logic/event-handling/event-handling.md)
     * [Handling Events](implementing-domain-logic/event-handling/handling-events.md)
     * [Dispatching Events](implementing-domain-logic/event-handling/dispatching-events.md)
-    <!--* [Updating view model](implementing-domain-logic/event-handling/updating-view-model.md)-->
 * [Query handling](implementing-domain-logic/query-handling/query-handling.md)
     * [Handling Queries](implementing-domain-logic/query-handling/handling-queries.md)
     * [Dispatching Queries](implementing-domain-logic/query-handling/dispatching-queries.md)
 * [Complex Business Transactions](implementing-domain-logic/complex-business-transactions/complex-business-transactions.md)
-    <!--* [Deciding when to use a Saga](implementing-domain-logic/complex-business-transactions/when-to-use-saga.md)-->
     * [Implementing a Saga](implementing-domain-logic/complex-business-transactions/implementing-saga.md)
-    <!--* [Dealing with errors](implementing-domain-logic/complex-business-transactions/dealing-with-errors.md)-->
     * [Deadline Handling](implementing-domain-logic/complex-business-transactions/deadline-handling.md)
     * [Managing Associations](implementing-domain-logic/complex-business-transactions/managing-associations.md)
     * [Testing a Saga](implementing-domain-logic/complex-business-transactions/testing.md)
-    <!--* [Alternatives to Sagas](... explain BPMN engines ...)-->
-<!-- * [Connecting the UI](implementing-domain-logic/connecting-the-ui/connecting-the-ui.md)
-    * [Command publishing use cases](implementing-domain-logic/connecting-the-ui/command-publishing-use-cases.md)
-    * [Dealing with eventual consistency](implementing-domain-logic/connecting-the-ui/dealing-with-eventual-consistency.md)
-    * [Query publishing use cases](implementing-domain-logic/connecting-the-ui/query-publishing-use-cases.md) -->
 
 ## Configuring Infrastructure components
 
@@ -62,17 +54,6 @@
 * [Query processing](configuring-infrastructure-components/query-processing.md)
 * [Deadlines](configuring-infrastructure-components/deadlines.md)
 
-## Production considerations
-
-* [Application Versioning](production-considerations/application-versioning/application-versioning.md)
-    * [Versioning Events](production-considerations/application-versioning/versioning-events.md)
-* [Serializers](production-considerations/serializers/serializers.md)
-    * [Content Type Converters](production-considerations/serializers/content-type-converters.md)
-    * [Serializer Tuning](production-considerations/serializers/serializer-tuning.md)
-* [Monitoring and Metrics](production-considerations/monitoring-and-metrics/monitoring-and-metrics.md)
-    * [Metrics](production-considerations/monitoring-and-metrics/metrics.md)
-    * [Monitoring](production-considerations/monitoring-and-metrics/monitoring.md)
-
 ## Operations Guide 
 
 * [Setting up Axon Server](operations-guide/setting-up-axon-server/setting-up-axon-server.md)
@@ -83,9 +64,10 @@
     * [Access Control](operations-guide/setting-up-axon-server/access-control.md)
     * [Axon Server clustering](operations-guide/setting-up-axon-server/axon-server-clustering.md)
     * [Multi-context](operations-guide/setting-up-axon-server/multi-context.md)
-* [Scaling out](operations-guide/scaling-out/scaling-out.md)
-    * [Considerations when scaling](operations-guide/scaling-out/considerations-when-scaling.md)
-    * [Scaling event processors](operations-guide/scaling-out/scaling-event-processors.md)
+* [Production considerations](operations-guide/production-considerations/production-considerations.md)
+    * [Versioning Events](operations-guide/production-considerations/versioning-events.md)
+    * [Serializers](operations-guide/production-considerations/serializers.md)
+    * [Monitoring and Metrics](operations-guide/production-considerations/monitoring-and-metrics.md)
 
 ## Extensions
 
@@ -100,7 +82,6 @@
 * [A. RDBMS Tuning](appendices/rdbms-tuning.md)
 * [B. Tuning Message Handler definitions](appendices/message-handler-tuning/message-handler-tuning.md)
     * [Parameter Resolvers](appendices/message-handler-tuning/parameter-resolvers.md)
-    <!--* [Handler Definition](appendices/message-handler-tuning/handler-definition.md)-->
     * [Handler Enhancers](appendices/message-handler-tuning/handler-enhancers.md)
 * [C. Meta Annotations](appendices/meta-annotations.md)
 * [D. Identifier Generation](appendices/identifier-generation.md)

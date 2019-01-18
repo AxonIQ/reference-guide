@@ -116,3 +116,78 @@ configurer.configureEventSerializer(conf -> /* create serializer here*/);
 
 If no explicit `eventSerializer` is configured,
  Events are serialized using the main serializer that has been configured \(which in turn defaults to the `XStreamSerializer`\).
+
+## ContentTypeConverters
+
+An [upcaster](../versioning-events.md#event-upcasting) works on a given content type \(e.g. dom4j Document\). 
+To provide extra flexibility between upcasters, content types between chained upcasters may vary. 
+Axon will try to convert between the content types automatically by using `ContentTypeConverter`s. 
+It will search for the shortest path from type `x` to type `y`, perform the conversion and pass the converted value into the requested upcaster. 
+For performance reasons, conversion will only be performed if the `canUpcast` method on the receiving upcaster yields true.
+
+The `ContentTypeConverter`s may depend on the type of serializer used. 
+Attempting to convert a `byte[]` to a dom4j `Document` will not make any sense unless a `Serializer` was used that writes an event as XML. 
+To make sure the `UpcasterChain` has access to the serializer-specific `ContentTypeConverter`s,
+ you can pass a reference to the serializer to the constructor of the `UpcasterChain`.
+
+> **Tip**
+>
+> To achieve the best performance,
+>  ensure that all upcasters in the same chain \(where one's output is another's input\) work on the same content type.
+
+If the content type conversion that you need is not provided by Axon you can always write one yourself using the `ContentTypeConverter` interface.
+
+The `XStreamSerializer` supports dom4j as well as XOM as XML document representations. 
+The `JacksonSerializer` supports Jackson's `JsonNode`.
+
+## Serializer Tuning
+
+Several things might be considered when the serialization process proofs to not be up to par with the expectations. 
+
+### XStreamSerializer
+
+XStream is very configurable and extensible. If you just use a plain `XStreamSerializer`, there are some quick wins ready to pick up. 
+XStream allows you to configure aliases for package names and event class names. 
+Aliases are typically much shorter \(especially if you have long package names\), making the serialized form of an event smaller. 
+And since we're talking XML, each character removed from XML is twice the profit \(one for the start tag, and one for the end tag\).
+
+A more advanced topic in XStream is creating custom converters. 
+The default reflection based converters are simple, but do not generate the most compact XML. 
+Always look carefully at the generated XML and see if all the information there is really needed to reconstruct the original instance.
+
+Avoid the use of upcasters when possible. XStream allows aliases to be used for fields, when they have changed name. 
+Imagine revision 0 of an event, that used a field called `"clientId"`. 
+The business prefers the term `"customer"`, so revision 1 was created with a field called `"customerId"`. 
+This can be configured completely in XStream, using field aliases. 
+You need to configure two aliases, in the following order: 
+ alias `"customerId"` to `"clientId"` and then alias `"customerId"` to `"customerId"`. 
+This will tell XStream that if it encounters a field called `"customerId"`,
+ it will call the corresponding XML element `"customerId"` \(the second alias overrides the first\). 
+But if XStream encounters an XML element called `"clientId"`,
+ it is a known alias and will be resolved to field name `"customerId"`. 
+Check out the XStream documentation for more information.
+
+For ultimate performance, you're probably better off without reflection based mechanisms altogether. 
+In that case, it is probably wisest to create a custom serialization mechanism. 
+The `DataInputStream` and `DataOutputStream` allow you to easily write the contents of the events to an output stream. 
+The `ByteArrayOutputStream` and `ByteArrayInputStream` allow writing to and reading from byte arrays.
+
+### Preventing duplicate serialization
+
+Especially in distributed systems, event messages need to be serialized on multiple occasions. 
+Axon's components are aware of this and have support for `SerializationAware` messages. 
+If a `SerializationAware` message is detected, its methods are used to serialize an object,
+ instead of simply passing the payload to a serializer. This allows for performance optimizations.
+
+When you serialize messages yourself, and want to benefit from the `SerializationAware` optimization,
+ use the `MessageSerializer` class to serialize the payload and metadata of messages. 
+All optimization logic is implemented in that class. See the JavaDoc of the `MessageSerializer` for more details.
+
+### Different serializer for Events
+
+When using event sourcing, serialized events can stick around for a long time. 
+Therefore, consider the format to which they are serializer carefully. 
+Consider configuring a separate serializer for events, carefully optimizing for the way they are stored. 
+The JSON format generated by Jackson is generally more suitable for the long term than XStream's XML format. 
+For more information on how to configure your`EventSerializer` to something different,
+ check out the documentation about [Serializers](../serializers.md). 

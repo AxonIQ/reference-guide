@@ -1,1 +1,0 @@
-# Considerations when scaling (TODO)
