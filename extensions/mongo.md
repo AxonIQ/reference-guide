@@ -23,3 +23,22 @@ Load testing is ultimately the best way to discover which indices provide the be
   Put a \(unique\) index on the `"sagaIdentifier"` in the saga \(default name: `"sagas"`\) collection.
   Put an index on the `"sagaType"`, `"associations.key"` and `"associations.value"` properties in the saga 
    \(default name: `"sagas"`\) collection.
+
+## Configuration in Spring Boot
+
+```java
+// The Event store `EmbeddedEventStore` delegates actual storage and retrieval of events to an `EventStorageEngine`.
+@Bean
+public EmbeddedEventStore eventStore(EventStorageEngine storageEngine, AxonConfiguration configuration) {
+    return EmbeddedEventStore.builder()
+            .storageEngine(storageEngine)
+            .messageMonitor(configuration.messageMonitor(EventStore.class, "eventStore"))
+            .build();
+}
+
+// The `MongoEventStorageEngine` stores each event in a separate MongoDB document
+@Bean
+public EventStorageEngine storageEngine(MongoClient client) {
+    return MongoEventStorageEngine.builder().mongoTemplate(DefaultMongoTemplate.builder().mongoDatabase(client).build()).build();
+}
+```

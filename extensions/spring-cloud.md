@@ -124,3 +124,18 @@ public class MyApplicationConfiguration {
     }
 }
 ```
+
+## Configuration in Spring Boot
+
+The Spring Cloud Auto-configuration doesn't have much to configure. It uses an existing Spring Cloud Discovery Client \(so make sure `@EnableDiscoveryClient` is used and the necessary client is on the classpath\).
+
+However, some discovery clients are not able to update instance metadata dynamically on the server. If Axon detects this, it will automatically fall back to querying that node using HTTP. This is done once on each discovery heartbeat \(usually 30 seconds\).
+
+This behavior can be configured or disabled, using the following settings in `appplication.properties`:
+
+```text
+# whether to fall back to http when no meta-data is available
+axon.distributed.spring-cloud.fallback-to-http-get=true
+# the URL on which to publish local data and retrieve from other nodes.
+axon.distributed.spring-cloud.fallback-url=/message-routing-information
+```

@@ -10,9 +10,15 @@ To use the Spring AMQP components from Axon, make sure the `axon-amqp` module is
 
 The `SpringAMQPPublisher` forwards events to an AMQP exchange. It is initialized with a `SubscribableMessageSource`, which is generally the `EventBus` or `EventStore`. Theoretically, this could be any source of events that the publisher can subscribe to.
 
-To configure the \`SpringAMQPPublisher\`, simply define an instance as a Spring Bean. There is a number of setter methods that allow you to specify the behavior you expect, such as transaction support, publisher acknowledgements \(if supported by the broker\), and the exchange name.
+To forward events generated in the application to an AMQP Channel, a single line of `application.properties` configuration is sufficient:
 
-The default exchange name is `"Axon.EventBus"`.
+```text
+axon.amqp.exchange=ExchangeName
+```
+
+This will automatically send all published events to the AMQP Exchange with the given name.
+
+By default, no AMQP transactions are used when sending. This can be overridden using the `axon.amqp.transaction-mode` property, and setting it to `transactional` or `publisher-ack`.
 
 > **Note**
 >
@@ -24,12 +30,13 @@ Spring has extensive support for reading messages from an AMQP Queue. However, t
 
 The `SpringAMQPMessageSource` allows event processors to read messages from a queue, instead of the event store or event bus. It acts as an adapter between Spring AMQP and the `SubscribableMessageSource` needed by these processors.
 
-The easiest way to configure the `SpringAMQPMessageSource`, is by defining a bean which overrides the default `onMessage` method and annotates it with `@RabbitListener`, as follows:
+To receive events from a queue and process them inside an Axon application, you need to configure a `SpringAMQPMessageSource`:
 
 ```java
 @Bean
-public SpringAMQPMessageSource myMessageSource(Serializer serializer) {
-    return new SpringAMQPMessageSource(serializer) {
+public SpringAMQPMessageSource myQueueMessageSource(AMQPMessageConverter messageConverter) {
+    return new SpringAMQPMessageSource(messageConverter) {
+
         @RabbitListener(queues = "myQueue")
         @Override
         public void onMessage(Message message, Channel channel) throws Exception {
@@ -39,16 +46,10 @@ public SpringAMQPMessageSource myMessageSource(Serializer serializer) {
 }
 ```
 
-Spring its `@RabbitListener` annotation tells Spring that this method needs to be invoked for each message on the given queue \(`'myQueue'` in the example\). This method simply invokes the `super.onMessage()` method, which performs the actual publication of the Event to all the processors that have been subscribed to it.
+and then configure a processor to use this bean as the source for its messages:
 
-To subscribe processors to this `MessageSource`, pass the correct `SpringAMQPMessageSource` instance to the constructor of the subscribing event processor:
-
-```java
-// in an @Configuration file
-@Autowired
-public void configure(EventProcessingConfigurer epConfig, SpringAmqpMessageSource myMessageSource) {
-    epConfig.registerSubscribingEventProcessor("myProcessor", c -> myMessageSource);
-}
+```text
+axon.eventhandling.processors.name.source=myQueueMessageSource
 ```
 
 Note that tracking processors are not compatible with the `SpringAMQPMessageSource`.

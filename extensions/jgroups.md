@@ -58,4 +58,27 @@ connector.connect();
 >
 > Note that it is not required that all segments have command handlers for the same type of commands. You may use different segments for different command types altogether. The distributed command bus will always choose a node to dispatch a command to that has support for that specific type of command.
 
+
+## Configuration in Spring Boot
+
 If you use Spring, you may want to consider using the `JGroupsConnectorFactoryBean`. It automatically connects the Connector when the `ApplicationContext` is started, and does a proper disconnect when the `ApplicationContext` is shut down. Furthermore, it uses sensible defaults for a testing environment \(but should not be considered production ready\) and autowiring for the configuration.
+
+The settings for the JGroups connector are all prefixed with `axon.distributed.jgroups`.
+
+```text
+# the address to bind this instance to. By default, attempts to find the Global IP address
+axon.distributed.jgroups.bind-addr=GLOBAL
+# the port to bind the local instance to
+axon.distributed.jgroups.bind-port=7800
+
+# the name of the JGroups Cluster to connect to
+axon.distributed.jgroups.cluster-name=Axon
+
+# the JGroups Configuration file to configure JGroups with
+axon.distributed.jgroups.configuration-file=default_tcp_gossip.xml
+
+# The IP and port of the Gossip Servers (comma separated) to connect to
+axon.distributed.jgroups.gossip.hosts=localhost[12001]
+# when true, will start an embedded Gossip Server on bound to the port of the first mentioned gossip host.
+axon.distributed.jgroups.gossip.auto-start=false
+```
