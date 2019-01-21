@@ -4,26 +4,26 @@
 * [Architecture overview](introduction/architecture-overview/architecture-overview.md)
     * [DDD & CQRS concepts](introduction/architecture-overview/ddd-cqrs-concepts.md)
     * [Event-Driven Microservices](introduction/architecture-overview/event-driven-microservices.md)
-* [Axon server](introduction/axon-server.md)
+* [Axon Server](introduction/axon-server.md)
 
 ## Setting up
 
 * [Prerequisites](setting-up/prerequisites.md)
 * [Maven/Gradle dependencies](setting-up/maven-dependencies.md)
-* [Spring boot](setting-up/spring-boot.md)
-* [Starting the Axon server](setting-up/starting-the-axon-server.md)
+* [Spring Boot](setting-up/spring-boot.md)
+* [Starting the Axon Server](setting-up/starting-the-axon-server.md)
 
 ## Implementing domain logic
 
-* [Command Handling](implementing-domain-logic/command-handling/command-handling.md)
+* [Command handling](implementing-domain-logic/command-handling/command-handling.md)
     * [Aggregate](implementing-domain-logic/command-handling/aggregate.md)
     * [Multi-entity Aggregates](implementing-domain-logic/command-handling/multi-entity-aggregates.md)
-    * [External Command Handler](implementing-domain-logic/command-handling/external-command-handler.md)
+    * [External Command Handlers](implementing-domain-logic/command-handling/external-command-handler.md)
     * [State-Stored Aggregates](implementing-domain-logic/command-handling/state-stored-aggregates.md)
     * [Dispatching Commands](implementing-domain-logic/command-handling/dispatching-commands.md)
     * [Testing](implementing-domain-logic/command-handling/testing.md)
     * [Aggregate creation from another Aggregate](implementing-domain-logic/command-handling/aggregate-creation-from-aggregate.md)
-    * [Conflict Resolution](implementing-domain-logic/command-handling/conflict-resolution.md)
+    * [Conflict resolution](implementing-domain-logic/command-handling/conflict-resolution.md)
 * [Event handling](implementing-domain-logic/event-handling/event-handling.md)
     * [Handling Events](implementing-domain-logic/event-handling/handling-events.md)
     * [Dispatching Events](implementing-domain-logic/event-handling/dispatching-events.md)
@@ -32,15 +32,15 @@
     * [Dispatching Queries](implementing-domain-logic/query-handling/dispatching-queries.md)
 * [Complex Business Transactions](implementing-domain-logic/complex-business-transactions/complex-business-transactions.md)
     * [Implementing a Saga](implementing-domain-logic/complex-business-transactions/implementing-saga.md)
-    * [Deadline Handling](implementing-domain-logic/complex-business-transactions/deadline-handling.md)
+    * [Deadline handling](implementing-domain-logic/complex-business-transactions/deadline-handling.md)
     * [Managing Associations](implementing-domain-logic/complex-business-transactions/managing-associations.md)
     * [Testing a Saga](implementing-domain-logic/complex-business-transactions/testing.md)
 
 ## Configuring Infrastructure components
 
 * [Messaging concepts](configuring-infrastructure-components/messaging-concepts/messaging-concepts.md)
-    * [Anatomy of a message](configuring-infrastructure-components/messaging-concepts/message-anatomy.md)
-    * [Message Intercepting](configuring-infrastructure-components/messaging-concepts/message-intercepting.md)
+    * [Anatomy of a Message](configuring-infrastructure-components/messaging-concepts/message-anatomy.md)
+    * [Message intercepting](configuring-infrastructure-components/messaging-concepts/message-intercepting.md)
     * [Supported Parameters for annotated handlers](configuring-infrastructure-components/messaging-concepts/supported-parameters-for-annotated-handlers.md)
     * [Unit of Work](configuring-infrastructure-components/messaging-concepts/unit-of-work.md)
 * [Command processing](configuring-infrastructure-components/command-processing/command-processing.md)
@@ -80,7 +80,7 @@
 ## Appendices
 
 * [A. RDBMS Tuning](appendices/rdbms-tuning.md)
-* [B. Tuning Message Handler definitions](appendices/message-handler-tuning/message-handler-tuning.md)
+* [B. Message Handler Tuning](appendices/message-handler-tuning/message-handler-tuning.md)
     * [Parameter Resolvers](appendices/message-handler-tuning/parameter-resolvers.md)
     * [Handler Enhancers](appendices/message-handler-tuning/handler-enhancers.md)
 * [C. Meta Annotations](appendices/meta-annotations.md)

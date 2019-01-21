@@ -1,4 +1,4 @@
-# Multi-Context
+# Multi-context
 
  > NOTE: This feature is only available on the Enterprise Edition of AxonServer
 

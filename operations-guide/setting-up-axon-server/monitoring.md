@@ -9,9 +9,10 @@ In particular, you will find following actuator endpoints enabled:
  - `/actuator/info` endpoint informs you about some basic attributes of an AxonServer (name, description, version)
  - `/actuator/metrics` endpoint publishes information about OS, JVM as well as [application level metrics](monitoring.md#application-level-metrics)
  - `/actuator/loggers` endpoint exposes detailed view of the loggers configuration
+<!---
  - `/actuator/prometheus` endpoint exposes metrics data in a format that can be scraped by a [Prometheus server (Monitoring system & time series database)](https://prometheus.io/)
  - `/actuator/env` endpoint exposes the current environment properties 
-
+-->
 ## Application level metrics 
 
 

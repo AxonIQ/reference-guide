@@ -1,4 +1,4 @@
-# Handling queries
+# Handling Queries
 
 In Axon, an object may declare a number of query handler methods, by annotating them with `@QueryHandler`. The declared parameters of the method define which messages it will receive.
 

@@ -1,4 +1,4 @@
-# DDD and CQRS Concepts
+# DDD and CQRS concepts
 
 Axon is heavily based on the principles of Domain Driven Design (DDD) and Command-Query Responsibility Segregation. 
 While a full explanation of these concepts is beyond the scope and intent of this reference guide, we do want to provide a 

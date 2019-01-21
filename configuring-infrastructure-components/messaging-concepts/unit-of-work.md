@@ -1,4 +1,4 @@
-# Unit of work
+# Unit of Work
 
 The `UnitOfWork` is an important concept in the Axon Framework, though in most cases you are unlikely to interact with it directly. The processing of a message is seen as a single unit. The purpose of the unit of work is to coordinate actions performed during the processing of a message \(command, event or query\). Components can register actions to be performed during each of the stages of a `UnitOfWork`, such as `onPrepareCommit` or `onCleanup`.
 

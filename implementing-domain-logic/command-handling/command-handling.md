@@ -1,4 +1,4 @@
-# Command Handling
+# Command handling
 
 In this chapter we will cover the process of handling and dispatching commands within an Axon application in more detail.
 Topics like Aggregate modelling, external command handlers, command dispatching and testing will be covered here.

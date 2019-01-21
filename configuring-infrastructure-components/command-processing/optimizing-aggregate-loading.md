@@ -1,4 +1,4 @@
-# Optimizing aggregate loading
+# Optimizing Aggregate loading
 
 ## Snapshotting
 

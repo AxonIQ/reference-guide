@@ -1,4 +1,4 @@
-# Axon server
+# Axon Server
 
 In a message-driven microservices environment it is extremely important that communication between services is efficient, reliable and easy to manage and monitor. Routing of messages should not require any manual configuration and adding new services should be easy to do.
 
