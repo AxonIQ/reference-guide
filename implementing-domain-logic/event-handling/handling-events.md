@@ -76,4 +76,3 @@ public class MyEventHandlerClass {
 ```
 {% endtab %}
 {% endtabs %}
-

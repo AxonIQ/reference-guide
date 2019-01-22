@@ -157,4 +157,3 @@ kind: Service
 ```
 
 Use `axonserver` \(as that is the name of the Kubernetes service\) if you're going to deploy the client next to the server in the cluster, which is what you'ld probably want. Running the client outside the cluster, with Axon Server _inside_, entails extra work to enable and secure this, and is definitely beyond the scope of this example.
-
