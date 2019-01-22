@@ -1,69 +1,87 @@
 # Table of contents
 
-* [About 4.0](README.md)
-* [Architecture overview](architecture-overview.md)
-* [License](license.md)
+* [Quick start](introduction/quick-start.md)
+* [Architecture overview](introduction/architecture-overview/architecture-overview.md)
+    * [DDD & CQRS concepts](introduction/architecture-overview/ddd-cqrs-concepts.md)
+    * [Event-Driven Microservices](introduction/architecture-overview/event-driven-microservices.md)
+* [Axon Server](introduction/axon-server.md)
 
-## 1 Axon Framework
+## Setting up
 
-* [Introduction](1-axon-framework/introduction.md)
-* [Getting started](1-axon-framework/getting-started.md)
+* [Prerequisites](setting-up/prerequisites.md)
+* [Maven/Gradle dependencies](setting-up/maven-dependencies.md)
+* [Spring Boot](setting-up/spring-boot.md)
+* [Starting the Axon Server](setting-up/starting-the-axon-server.md)
 
-## 1.1 Concepts
+## Implementing domain logic
 
-* [1.1.1 Architecture overview](1.1-concepts/architecture-overview.md)
-* [1.1.2 Messaging concepts](1.1-concepts/messaging-concepts.md)
-* [1.1.3 Configuration API](1.1-concepts/configuration-api.md)
+* [Command handling](implementing-domain-logic/command-handling/command-handling.md)
+    * [Aggregate](implementing-domain-logic/command-handling/aggregate.md)
+    * [Multi-entity Aggregates](implementing-domain-logic/command-handling/multi-entity-aggregates.md)
+    * [External Command Handlers](implementing-domain-logic/command-handling/external-command-handler.md)
+    * [State-Stored Aggregates](implementing-domain-logic/command-handling/state-stored-aggregates.md)
+    * [Dispatching Commands](implementing-domain-logic/command-handling/dispatching-commands.md)
+    * [Testing](implementing-domain-logic/command-handling/testing.md)
+    * [Aggregate creation from another Aggregate](implementing-domain-logic/command-handling/aggregate-creation-from-aggregate.md)
+    * [Conflict resolution](implementing-domain-logic/command-handling/conflict-resolution.md)
+* [Event handling](implementing-domain-logic/event-handling/event-handling.md)
+    * [Handling Events](implementing-domain-logic/event-handling/handling-events.md)
+    * [Dispatching Events](implementing-domain-logic/event-handling/dispatching-events.md)
+* [Query handling](implementing-domain-logic/query-handling/query-handling.md)
+    * [Handling Queries](implementing-domain-logic/query-handling/handling-queries.md)
+    * [Dispatching Queries](implementing-domain-logic/query-handling/dispatching-queries.md)
+* [Complex Business Transactions](implementing-domain-logic/complex-business-transactions/complex-business-transactions.md)
+    * [Implementing a Saga](implementing-domain-logic/complex-business-transactions/implementing-saga.md)
+    * [Deadline handling](implementing-domain-logic/complex-business-transactions/deadline-handling.md)
+    * [Managing Associations](implementing-domain-logic/complex-business-transactions/managing-associations.md)
+    * [Testing a Saga](implementing-domain-logic/complex-business-transactions/testing.md)
 
-## 1.2 Domain Logic
+## Configuring Infrastructure components
 
-* [1.2.1 Command handling](1.2-domain-logic/command-model.md)
-* [1.2.2 Event handling](1.2-domain-logic/event-handling.md)
-* [1.2.3 Query handling](1.2-domain-logic/query-handling.md)
-* [1.2.4 Sagas](1.2-domain-logic/sagas.md)
-* [1.2.5 Deadlines](1.2-domain-logic/deadlines.md)
-* [1.2.6 Testing](1.2-domain-logic/testing.md)
+* [Messaging concepts](configuring-infrastructure-components/messaging-concepts/messaging-concepts.md)
+    * [Anatomy of a Message](configuring-infrastructure-components/messaging-concepts/message-anatomy.md)
+    * [Message intercepting](configuring-infrastructure-components/messaging-concepts/message-intercepting.md)
+    * [Supported Parameters for annotated handlers](configuring-infrastructure-components/messaging-concepts/supported-parameters-for-annotated-handlers.md)
+    * [Unit of Work](configuring-infrastructure-components/messaging-concepts/unit-of-work.md)
+* [Command processing](configuring-infrastructure-components/command-processing/command-processing.md)
+    * [Command Model Configuration](configuring-infrastructure-components/command-processing/command-model-configuration.md)
+    * [Command dispatching](configuring-infrastructure-components/command-processing/command-dispatching.md)
+    * [Optimizing Aggregate loading](configuring-infrastructure-components/command-processing/optimizing-aggregate-loading.md)
+* [Event processing](configuring-infrastructure-components/event-processing/event-processing.md)
+    * [Event Bus & Event Store](configuring-infrastructure-components/event-processing/event-bus-and-event-store.md)
+    * [Saga infrastructure](configuring-infrastructure-components/event-processing/saga-infrastructure.md)
+    * [Event Processors](configuring-infrastructure-components/event-processing/event-processors.md)
+* [Query processing](configuring-infrastructure-components/query-processing.md)
+* [Deadlines](configuring-infrastructure-components/deadlines.md)
 
-## 1.3 Infrastructure components
+## Operations Guide 
 
-* [1.3.1 Command dispatching](1.3-infrastructure-components/command-dispatching.md)
-* [1.3.2 Event processing](1.3-infrastructure-components/event-processing.md)
-* [1.3.3 Query processing](1.3-infrastructure-components/query-processing.md)
-* [1.3.4 Repository and event store](1.3-infrastructure-components/repository-and-event-store.md)
-* [1.3.5 Spring Boot Auto-configuration](1.3-infrastructure-components/spring-boot-autoconfiguration.md)
+* [Setting up Axon Server](operations-guide/setting-up-axon-server/setting-up-axon-server.md)
+    * [Launch](operations-guide/setting-up-axon-server/launch.md)
+    * [Tuning](operations-guide/setting-up-axon-server/tuning.md)
+    * [Backups](operations-guide/setting-up-axon-server/backups.md)
+    * [Monitoring](operations-guide/setting-up-axon-server/monitoring.md)
+    * [Access Control](operations-guide/setting-up-axon-server/access-control.md)
+    * [Axon Server clustering](operations-guide/setting-up-axon-server/axon-server-clustering.md)
+    * [Multi-context](operations-guide/setting-up-axon-server/multi-context.md)
+* [Production considerations](operations-guide/production-considerations/production-considerations.md)
+    * [Versioning Events](operations-guide/production-considerations/versioning-events.md)
+    * [Serializers](operations-guide/production-considerations/serializers.md)
+    * [Monitoring and Metrics](operations-guide/production-considerations/monitoring-and-metrics.md)
 
-## 1.4 Advanced tuning
+## Extensions
 
-* [1.4.1 Advanced customizations](1.4-advanced-tuning/advanced-customizations.md)
-* [1.4.2 Performance tuning](1.4-advanced-tuning/performance-tuning.md)
-* [1.4.3 Metrics and Monitoring](1.4-advanced-tuning/metrics-and-monitoring.md)
+* [Spring AMQP](extensions/spring-amqp.md)
+* [Kafka](extensions/kafka.md)
+* [JGroups](extensions/jgroups.md)
+* [Spring Cloud](extensions/spring-cloud.md)
+* [Mongo](extensions/mongo.md)
 
-## 2 Axon Server
+## Appendices
 
-* [Introduction](2-axon-server/about.md)
-* [Getting started](2-axon-server/getting-started.md)
-* [Architecture](2-axon-server/architecture.md)
-* [Connecting Axon Applications](2-axon-server/connecting-axon-apps.md)
-
-## 2.1 Setup
-
-* [2.1.1 Starting AxonServer](2.1-setup/starting-axonserver.md)
-* [2.1.2 Advanced configuration](2.1-setup/configuration.md)
-* [2.1.3 Clustering](2.1-setup/clustering.md)
-* [2.1.4 Multi-context](2.1-setup/multi-context.md)
-* [2.1.5 Properties Overview](2.1-setup/properties.md)
-
-## 2.2 Operations
-
-* [2.2.1 Data backups](2.2-operations/backups.md)
-* [2.2.2 Monitoring](2.2-operations/monitoring.md)
-* [2.2.3 SSL Troubleshooting](2.2-operations/ssl-troubleshooting.md)
-
-## 2.3 Query Reference
-
-* [2.3.1 Query reference](2.3-query-reference/query-reference.md)
-
-## 3 Migration
-
-* [Migration guide](3-migration/migration-guide.md)
-
+* [A. RDBMS Tuning](appendices/rdbms-tuning.md)
+* [B. Message Handler Tuning](appendices/message-handler-tuning/message-handler-tuning.md)
+    * [Parameter Resolvers](appendices/message-handler-tuning/parameter-resolvers.md)
+    * [Handler Enhancers](appendices/message-handler-tuning/handler-enhancers.md)
+* [C. Meta Annotations](appendices/meta-annotations.md)
+* [D. Identifier Generation](appendices/identifier-generation.md)
