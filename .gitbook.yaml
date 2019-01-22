@@ -1,2 +1,4 @@
 redirects:
-  license: ./README.md#license
+  license: ./README.md
+  1-axon-framework/introduction: ./README.md
+  1-axon-framework/getting-started: ./introduction/quick-start.md
