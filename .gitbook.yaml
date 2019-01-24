@@ -11,7 +11,7 @@ redirects:
   1.2-domain-logic/deadlines: ./configuring-infrastructure-components/deadlines.md
   1.2-domain-logic/testing: ./implementing-domain-logic/command-handling/testing.md
   1.3-infrastructure-components/command-dispatching: ./configuring-infrastructure-components/command-processing/command-processing.md
-  1.3-infrastructure-components/event-processing: configuring-infrastructure-components/event-processing/event-processing.md
+  1.3-infrastructure-components/event-processing: reference-guide/configuring-infrastructure-components/event-processing/event-processing.md
   1.3-infrastructure-components/query-processing: ./configuring-infrastructure-components/query-processing.md
   1.3-infrastructure-components/repository-and-event-store:  ./configuring-infrastructure-components/event-processing/event-bus-and-event-store.md
   1.3-infrastructure-components/spring-boot-autoconfiguration: ./setting-up/spring-boot.md
