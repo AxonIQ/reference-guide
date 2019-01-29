@@ -167,8 +167,8 @@ public TokenStore myCustomTokenStore() {
     return new MyCustomTokenStore();
 }
 ```
-Causing the defined bean to be used as default Token Store for all processors, 
-or inject the `EventProcessingConfigurer`, which allows more fine-grained customization:
+
+Alternatively, inject the `EventProcessingConfigurer`, which allows more fine-grained customization:
 
 ```java
 @Autowired
