@@ -58,3 +58,13 @@ It will define only Spring components that you aren't already explicitly defined
 This allow you to completely override the auto-configured beans by defining your own in one of the `@Configuration` classes. 
 
 Specific Axon (Spring) component configurations will be explained in detail in the following sections of this guide.
+
+> **Spring Boot Developer Tools Notice**
+>
+> [Spring Boot Developer Tools](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-devtools.html)
+>  are a nifty addition to your project to enhance the developer experience. 
+> However, introducing `springb-boot-devtools` into your project will impose some class loading operations which have
+>  shown not to work all to well with Axon Framework.
+> We are aware of the situation and on the look out for a solution.
+> 
+> In the meantime we suggest not to include `springb-boot-devtools` when developing an Axon application. 
