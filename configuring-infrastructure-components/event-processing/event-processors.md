@@ -135,6 +135,46 @@ public SagaConfiguration<MySaga> mySagaConfigurationBean() {
 {% endtab %}
 {% endtabs %}
 
+## Error Handling
+
+Errors are inevitable and depending on where they happen, you may want to respond differently. 
+
+By default, exceptions that are raised by Event Handlers are logged, and processing continues with the next events. Exceptions that are thrown when a processor is trying to commit a transaction, update a token, or in any other other part of the process, the exception is propagated. In case of a Tracking Processor, this means the processor will go into error mode, releasing any tokens and retryin at an incremental interval (starting at 1 second, up to max 60 seconds). Subscribing processor will report a publication error to the component that provided the Event.
+
+To change this behavior, there are two levels at which you can customize how Axon deals with Exceptions:
+
+### Exceptions raised by event handler methods
+
+By default, these exceptions are logged and processing continues with the next handler or message.
+
+This behavior can be configured per processing group using the Configuration API:
+```java
+eventProcessingConfigurer.registerDefaultListenerInvocationErrorHandler(conf -> /* create error handler*/);
+
+// or for a specific processing group:
+eventProcessingConfigurer.registerListenerInvocationErrorHandler("processingGroup", conf -> /* create error handler*/);
+```
+
+You can easily implement custom behavior. The single method to implement provides the exception, the event that was handled, and a reference to the handler that was handling the message. You can choose to retry, ignore or rethrow the exception. In the latter case,
+the exception bubbles up to the Processor level.
+
+### Exceptions during processing
+
+Exceptions that occur outside of the scope of a single Event Handler, or have bubbled up from there, are handled by the ErrorHandler. The default behavior depends on the Processor implementation:
+
+The `TrackingEventProcessor` goes into Error Mode, where it will retry processing the Event using an incremental back-off period, starting at 1 second, doubling after each attempt until a maximum wait time of 60 seconds per attempt is achieved. This back-off time will ensure that if another node is able to process events successfully, it has the opportunity to claim the token required to process the event.
+
+The `SubscribingEventProcessor` will have the exception bubble up to the publishing component of the Event, allowing it to deal with it, accordingly.
+
+To customize the behavior, you can configure an Error Handler on the Processor level.
+```java
+eventProcessingConfigurer.registerDefaultErrorHandler(conf -> /* create error handler*/);
+
+// or for a specific processor:
+eventProcessingConfigurer.registerErrorHandler("processorName", conf -> /* create error handler*/);
+```
+
+To implement custom behavior, implement the `ErrorHandler`'s single method. Based on the provided `ErrorContext` object, you can decide to ignore the error, schedule retries, perform dead-letter-queue delivery or rethrow the exception.
 
 ## Token Store
 
@@ -227,9 +267,30 @@ axon.eventhandling.processors.name.initialSegmentCount=4
 {% endtab %}
 {% endtabs %}
 
+### Sequential processing
+Even though Events are processed asynchronously from their publisher, it is often desirable to process certain events in the order they are published. In Axon this is controlled by the `SequencingPolicy`.
+
+The `SequencingPolicy` defines whether events must be handled sequentially, in parallel or a combination of both. Policies return a sequence identifier of a given event. If the policy returns an equal identifier for two events, this means that they must be handled sequentially by the event handler. A `null` sequence identifier means the event may be processed in parallel with any other event.
+
+Axon provides a number of common policies you can use:
+
+* The `FullConcurrencyPolicy` will tell Axon that this event handler may handle all events concurrently. This means that there is no relationship between the events that require them to be processed in a particular order.
+* The `SequentialPolicy` tells Axon that all events must be processed sequentially. Handling of an event will start when the handling of a previous event is finished.
+* `SequentialPerAggregatePolicy` will force domain events that were raised from the same aggregate to be handled sequentially. However, events from different aggregates may be handled concurrently. This is typically a suitable policy to use for event listeners that update details from aggregates in database tables.
+
+Besides these provided policies, you can define your own. All policies must implement the `SequencingPolicy` interface. This interface defines a single method, `getSequenceIdentifierFor`, that returns the sequence identifier for a given event. Events for which an equal sequence identifier is returned must be processed sequentially. Events that produce a different sequence identifier may be processed concurrently. Policy implementations may return `null` if the event may be processed in parallel to any other event.
+
+```java
+eventProcesingConfigurer.registerSequencingPolicy("processingGroup", conf -> /* define policy */);
+
+// or, to change the default:
+
+eventProcesingConfigurer.registerDefaultSequencingPolicy(conf -> /* define policy */);
+```
+
 ### Multi-node processing
 
-For tracking processors, it doesn't matter whether the threads handling the events are all running on the same node, or on different nodes hosting the same \(logical\) tracking processor. When two instances of t tracking processor, having the same name, are active on different machines, they are considered two instances of the same logical processor. They will 'compete' for segments of the event stream. Each instance will 'claim' a segment, preventing events assigned to that segment from being processed on the other nodes.
+For tracking processors, it doesn't matter whether the threads handling the events are all running on the same node, or on different nodes hosting the same \(logical\) tracking processor. When two instances of a tracking processor, having the same name, are active on different machines, they are considered two instances of the same logical processor. They will 'compete' for segments of the event stream. Each instance will 'claim' a segment, preventing events assigned to that segment from being processed on the other nodes.
 
 The `TokenStore` instance will use the JVM's name \(usually a combination of the host name and process ID\) as the default `nodeId`. This can be overridden in `TokenStore` implementations that support multi-node processing.
 
@@ -238,28 +299,6 @@ The `TokenStore` instance will use the JVM's name \(usually a combination of the
 Distributing events in inter-process environments is supported with Axon Server by default.
 
 Alternatively, you can choose other components that you can find in one of the extension modules (Spring AMQP, Kafka).
-
-## Asynchronous Event Processing
-
-The recommended approach to handle events asynchronously is by using a tracking event processor. This implementation can guarantee processing of all events, even in case of a system failure \(assuming the events have been persisted\).
-
-However, it is also possible to handle events asynchronously in a `SubscribingEventProcessor`. To achieve this, the `SubscribingEventProcessor` must be configured with an `EventProcessingStrategy`. This strategy can be used to change how invocations of the event listeners should be managed.
-
-The default strategy \(`DirectEventProcessingStrategy`\) invokes these handlers in the thread that delivers the events. This allows processors to use existing transactions.
-
-The other Axon-provided strategy is the `AsynchronousEventProcessingStrategy`. It uses an `Executor` to asynchronously invoke the èvent listeners.
-
-Even though the `AsynchronousEventProcessingStrategy` executes asynchronously, it is still desirable that certain events are processed sequentially. The `SequencingPolicy` defines whether events must be handled sequentially, in parallel or a combination of both. Policies return a sequence identifier of a given event. If the policy returns an equal identifier for two events, this means that they must be handled sequentially by the event handler. A `null` sequence identifier means the event may be processed in parallel with any other event.
-
-Axon provides a number of common policies you can use:
-
-* The `FullConcurrencyPolicy` will tell Axon that this event handler may handle all events concurrently. This means that there is no relationship between the events that require them to be processed in a particular order.
-* The `SequentialPolicy` tells Axon that all events must be processed sequentially. Handling of an event will start when the handling of a previous event is finished.
-* `SequentialPerAggregatePolicy` will force domain events that were raised from the same aggregate to be handled sequentially. However, events from different aggregates may be handled concurrently. This is typically a suitable policy to use for event listeners that update details from aggregates in database tables.
-
-Besides these provided policies, you can define your own. All policies must implement the `SequencingPolicy` interface. This interface defines a single method, `getSequenceIdentifierFor`, that returns the sequence identifier for a given event. Events for which an equal sequence identifier is returned must be processed sequentially. Events that produce a different sequence identifier may be processed concurrently. For performance reasons, policy implementations should return `null` if the event may be processed in parallel to any other event. This is faster, because Axon does not have to check for any restrictions on event processing.
-
-It is recommended to explicitly define an `ErrorHandler` when using the `AsynchronousEventProcessingStrategy`. The default `ErrorHandler` propagates exceptions, but in an asynchronous execution, there is nothing to propagate to, other than the executor. This may result in Events not being processed. Instead, it is recommended to use an `ErrorHandler` that reports errors and allows processing to continue. The `ErrorHandler` is configured on the constructor of the `SubscribingEventProcessor`, where the `EventProcessingStrategy` is also provided.
 
 ## Replaying events
 
