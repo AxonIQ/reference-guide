@@ -142,7 +142,47 @@ Tracking event processors, unlike subscribing ones, need a token store to store 
 
 The Configuration API takes the token store, as well as most other components processors need from the global configuration instance. If no token store is explicitly defined, an `InMemoryTokenStore` is used, which is _not recommended in production_.
 
-To configure a different token store, use `Configurer.registerComponent(TokenStore.class, conf -> ... create token store ...)`
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+To configure a token store, use the `EventProcessingConfigurer` to define which implementation to use.
+ 
+To configure a default TokenStore for all processors: `Configurer.eventProcessing().registerTokenStore(conf -> ... create token store ...)`.
+
+Alternatively, to configure a TokenStore for a single, specific, Processor, use:
+Configurer.eventProcessing().registerTokenStore("processorName", conf -> ... create token store ...)`.
+{% endtab %}
+{% tab title="Spring Boot AutoConfiguration" %}
+
+The default TokenStore implementation is defined based on dependencies available in Spring Boot, in the following order:
+1. If any TokenStore bean is defined, that bean is used
+2. Otherwise, if an EntityManager is available, the `JpaTokenStore` is defined.
+3. Otherwise, if a DataSource is defined, the `JdbcTokenStore` is created
+4. Lastly, the `InMemoryToken` store is used
+
+To override the TokenStore, either define a bean in a Spring `@Configuration` class:
+
+```java
+@Bean
+public TokenStore myCustomTokenStore() {
+    return new MyCustomTokenStore();
+}
+```
+Causing the defined bean to be used as default Token Store for all processors, 
+or inject the `EventProcessingConfigurer`, which allows more fine-grained customization:
+
+```java
+@Autowired
+public void configure(EventProcessingConfigurer epConfig) {
+    epConfig.registerTokenStore(conf -> new MyCustomTokenStore());
+    
+    // or, to define one for a single processor:
+    epConfig.registerTokenStore("processorName", conf -> new MyCustomTokenStore());
+}
+
+```
+
+{% endtab %}
+{% endtabs %}
 
 Note that you can override the token store to use with tracking processors in the respective `EventProcessingConfiguration` or `SagaConfiguration` that defines that processor. Where possible, it is recommended to use a token store that stores tokens in the same database as where the event handlers update the view models. This way, changes to the view model can be stored atomically with the changed tokens, guaranteeing exactly once processing semantics.
 
