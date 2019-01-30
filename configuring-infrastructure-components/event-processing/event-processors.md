@@ -147,13 +147,34 @@ To change this behavior, there are two levels at which you can customize how Axo
 
 By default, these exceptions are logged and processing continues with the next handler or message.
 
-This behavior can be configured per processing group using the Configuration API:
+This behavior can be configured per processing group:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
 ```java
-eventProcessingConfigurer.registerDefaultListenerInvocationErrorHandler(conf -> /* create error handler*/);
+eventProcessingConfigurer.registerDefaultListenerInvocationErrorHandler(conf -> /* create error handler */);
 
 // or for a specific processing group:
-eventProcessingConfigurer.registerListenerInvocationErrorHandler("processingGroup", conf -> /* create error handler*/);
+eventProcessingConfigurer.registerListenerInvocationErrorHandler("processingGroup", conf -> /* create error handler */);
 ```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+
+```java
+
+@Autowired
+public void configure(EventProcessingConfigurer config) {
+    config.registerDefaultListenerInvocationErrorHandler(conf -> /* create error handler */);
+    
+    // or for a specific processing group:
+    config.registerListenerInvocationErrorHandler("processingGroup", conf -> /* create error handler */);
+}
+```
+
+{% endtab %}
+{% endtabs %}
 
 You can easily implement custom behavior. The single method to implement provides the exception, the event that was handled, and a reference to the handler that was handling the message. You can choose to retry, ignore or rethrow the exception. In the latter case,
 the exception bubbles up to the Processor level.
@@ -167,12 +188,32 @@ The `TrackingEventProcessor` goes into Error Mode, where it will retry processin
 The `SubscribingEventProcessor` will have the exception bubble up to the publishing component of the Event, allowing it to deal with it, accordingly.
 
 To customize the behavior, you can configure an Error Handler on the Processor level.
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
 ```java
-eventProcessingConfigurer.registerDefaultErrorHandler(conf -> /* create error handler*/);
+eventProcessingConfigurer.registerDefaultErrorHandler(conf -> /* create error handler */);
 
 // or for a specific processor:
-eventProcessingConfigurer.registerErrorHandler("processorName", conf -> /* create error handler*/);
+eventProcessingConfigurer.registerErrorHandler("processorName", conf -> /* create error handler */);
 ```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+
+```java
+@Autowired
+public void configure(EventProcessingConfigurer config) {
+    config.registerDefaultErrorHandler(conf -> /* create error handler */);
+    
+    // or for a specific processing group:
+    config.registerErrorHandler("processingGroup", conf -> /* create error handler */);
+}
+```
+{% endtab %}
+{% endtabs %}
+
 
 To implement custom behavior, implement the `ErrorHandler`'s single method. Based on the provided `ErrorContext` object, you can decide to ignore the error, schedule retries, perform dead-letter-queue delivery or rethrow the exception.
 
