@@ -85,7 +85,7 @@ Otherwise, the `CommandResultMessage#getPayload` method _may_ provide you with a
 ## The Command Gateway
 
 The 'Command Gateway' is a convenience approach towards dispatching commands.
-It does so by abstracting certain aspects for youw when dispatching a command on the `CommandBus`.
+It does so by abstracting certain aspects for you when dispatching a command on the `CommandBus`.
 It this uses the `CommandBus` underneath to perform the actual dispatching of the message.  
 While you are not required to use a gateway to dispatch commands, it is generally the easiest option to do so.
 
