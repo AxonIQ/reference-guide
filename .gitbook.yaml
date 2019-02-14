@@ -15,7 +15,7 @@ redirects:
   1.3-infrastructure-components/query-processing: ./configuring-infrastructure-components/query-processing.md
   1.3-infrastructure-components/repository-and-event-store: ./configuring-infrastructure-components/event-processing/event-bus-and-event-store.md
   1.3-infrastructure-components/spring-boot-autoconfiguration: ./setting-up/spring-boot.md
-  1.4-advanced-tuning/advanced-customizations#parameter-resolvers: ./appendices/message-handler-tuning/parameter-resolvers.md
+  1.4-advanced-tuning/advanced-customizations\#parameter-resolvers: ./appendices/message-handler-tuning/parameter-resolvers.md
   1.4-advanced-tuning/advanced-customizations: ./operations-guide/production-considerations/production-considerations.md
   1.4-advanced-tuning/performance-tuning: ./operations-guide/setting-up-axon-server/tuning.md
   1.4-advanced-tuning/metrics-and-monitoring: ./operations-guide/production-considerations/monitoring-and-metrics.md
