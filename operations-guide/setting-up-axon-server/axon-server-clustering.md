@@ -1,39 +1,133 @@
-# Axon Server Clustering
+# Clustering & Contexts
 
- > NOTE: This feature is only available on the Enterprise Edition of AxonServer
+> Note - This feature is only available in Axon Server Enterprise
 
-When running Axon Server in a licensed edition, you can set up a cluster of Axon servers. The servers run in active/active mode, so each node can receive and handle requests.
+Axon Server Enterprise can be deployed as a cluster to guarantee high availability. Client applications will dynamically connect to a node in the cluster and automatically reconnect to another,
+should the node that they are currently connected to become unreachable.
 
-You can set the following properties in the `axonserver.properties` configuration file:
+Within a single cluster you can define contexts. Contexts are comparable to logical databases in a RDBMS. They allow for strong segregation without requiring deploying and managing full instances.
+They may be used for "bounded contexts" in the DDD sense, multi-tenancy (with a context per tenant), and different retention policies. 
+When you define a context, you assign nodes that will serve that context. Data is replicated between these nodes and client connect to these nodes. For replication purposes there is one leader
+per context. The leader orchestrates the replication of data and confirms to clients when transactions are committed. To have a valid leader
+for a context, a majority of the nodes must be active (when you have a cluster with 3 nodes, you need at least 2 active nodes, for a cluster of 4 nodes you would need 3 active nodes).
 
-* `axoniq.axonserver.name` - logical name of the node in the cluster. This must be unique within the cluster.
-* `axoniq.axonserver.hostname` - sets the hostname as this node advertises it to clients
-* `axoniq.axonserver.domain` - sets the domain as used in returning the server address to clients
-* `axoniq.axonserver.internal-hostname` - hostname to be used by other nodes in the server cluster
-* `axoniq.axonserver.internal-domain` - domain to be used by other nodes in the server cluster
-* `axoniq.axonserver.internal-port` - internal gRPC port number for communication to other nodes
+Axon Server Enterprise has one special context, called "_admin". This context is used to process all configuration changes in Axon Server, so it contains the master configuration from which 
+all contexts get their information. 
 
-When there is no hostname specified it defaults to the hostname as returned by the _hostname_ command.
+To get started with Axon Server Enterprise you have perform the following steps:
 
-Sample configuration:
+1. setup axonserver.properties files for each instance
+2. start all Axon Server instances
+3. initiate the cluster on one node using the "init-cluster" command line command.
+4. add the other nodes to the cluster using the "register-node" command.
+
+When you start a new Axon Server Enterprise instance it does not have any contexts defined and is not capable of handling any commands from clients. This differs from starting a standard
+ Axon Server which is immediately available for use. 
+
+The init-cluster commands creates 2 contexts ("_admin" and "default"). The default context is the context used by clients when they have not specified any context information. 
+As this node is the only node in the cluster at this point it will be leader in both contexts.
+
+Next you can add more nodes to the cluster. For these nodes, you do not call the init-cluster command, you must add them to the cluster using the register-node command. When you register a 
+node in the cluster it will be added to all contexts by default. If you want to add it to specific contexts you can specify this in the command. You can always assign or unassign nodes from 
+a context later, but when you have a large event store synchronizing the data to the new member may take some time. 
+
+All communication between Axon Server nodes uses a dedicated port (8223 by default). When nodes are in different locations you have to make sure that this ports is accessible for all
+Axon Server nodes.
+
+## Properties
+
+A number of properties are important when setting up a cluster. Default values exist for each of the properties, but depending on your network infrastructure you may want to change them.
+
+### axoniq.axonserver.name
+
+The node name of the node in the Axon Server cluster. Defaults to the hostname of the machine, but if you want to test with multiple instances of Axon Server on the same machine, or you want
+to assign more intuitive names you can update this.
+
+This must be a unique name in the cluster.
+
+### axoniq.axonserver.hostname
+
+The hostname of the node as it would be used by clients. This defaults to the hostname of the machine, however this may not be the name as it is known externally. The final hostname that is 
+communicated to the clients is the combination of this hostname field and the axoniq.axonserver.domain property (if set)
+
+### axoniq.axonserver.domain
+
+The domain that is added to the hostname when returning hostnames to client applications. Defaults to none.
+
+### axoniq.axonserver.internal-hostname
+
+The hostname as it will be used for communication between axonserver nodes. Defaults to the axoniq.axonserver.hostname.
+May be used in combination with the internal-domain to make it a fully qualified name. 
+
+### axoniq.axonserver.internal-domain
+
+Domain that is added to the internal hostnames. Defaults to axoniq.axonserver.domain.
+
+### axoniq.axonserver.port
+
+Port used for gRPC communication from client to Axon Server node. Defaults to 8124, when you would want to run multiple nodes 
+on the same machine, each needs to have a unique port.
+
+### axoniq.axonserver.internal-port
+
+Port used for gRPC communication between Axon Server nodes. Defaults to 8224, when you would want to run multiple nodes 
+on the same machine, each needs to have a unique port.
+
+### server.port
+
+HTTP port used to access the UI and REST services. Defaults to 8024.
+
+
+## Starting a cluster
+
+Once you have the properties set-up for all instances and the Axon Server nodes started, you can
+create the cluster, using the command line interface.
+
+First step is call the init-cluster command on the first node:
 
 ```bash
-axoniq.axonserver.hostname=messaging1.axoniq.io
-axoniq.axonserver.name=messaging1
+$ java -jar axoniq-cli.jar init-cluster -S http://[node]:[port] 
 ```
 
-Connecting the nodes of a cluster is done using the command line interface. Send the register-node command to one node, specifying the address of another node in the cluster, e.g.
+With [node] being the hostname of the first node and [port] the HTTP port. When you run this command
+from the first node and you are using default ports, you can omit the -S option.
 
-```text
-# java -jar axoniq-cli.jar register-node -S http://node-to-add:port -h node-in-cluster -p internal-port-of-node-in-cluster
+Once you have run this command and look at the Axon Dashboard (at http://[node]:[port]), you will see something
+like this in the overview page:
+
+![Overview after init-cluster](/.gitbook/assets/axonserver-overview1.png)
+
+The next step is to add the other nodes to the cluster, using the register-node command:
+
+```bash
+$ java -jar axoniq-cli.jar register-node -S http://[node]:[port] -h [first-node] -p [internal-grpc-port]
 ```
 
-When you have a default setup with all nodes using the default port you can omit a number of parameters from this request. To connect node2 to with node1 run the following command on node2:
+The values for [node] and [port] are the hostname and HTTP port for the new node to add. The [first-node] is the internal hostname of 
+the first node, this should be the name that the new node uses to contact the first node. The [internal-grpc-port] is the port number of
+for internal communication on the first node, usually 8224. 
 
-```text
-# java -jar axoniq-cli.jar register-node -h node1
-```
+When you run this command on the new node and you are using default ports you can omit the -S option and the -p option. 
 
-Default value for `-S` option is [http://localhost:8024](http://localhost:8024) and for -p is 8224 \(default internal communication port\).
+After adding a second node to the cluster you will see this information in the overview page:
 
-This only has to be done once, each node maintains a list of all nodes in the cluster.
+![Overview after register-node](/.gitbook/assets/axonserver-overview2.png)
+
+You can repeat this for the third node, and then you will see the following information:
+
+![Overview after next register-node](/.gitbook/assets/axonserver-overview3.png)
+
+## Access control
+
+Axon Server nodes expect a common token on internal requests when access control is enabled. This token must be defined in the axonserver.properties file 
+with the property *axoniq.axonserver.accesscontrol.internal-token*. The value for this property needs to be the same on all nodes.   
+
+## Transport Layer Security
+
+Axon Server uses the same key for the internal and external gRPC port for TLS. However you can use different certificates for the two ports. 
+By default, Axon Server uses the value from *axoniq.axonserver.ssl.cert-chain-file* property, but if you want to use another certificate for the internal communication 
+set this in the property *axoniq.axonserver.ssl.internal-cert-chain-file*. 
+
+If you are using self-signed certificates, or certificates where the CA is not included in the cacerts keystore on the JVM, 
+specify the CA certificate in the property *axoniq.axonserver.ssl.internal-trust-manager-file*.  
+

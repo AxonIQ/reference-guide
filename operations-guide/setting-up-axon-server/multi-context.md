@@ -8,8 +8,11 @@ set of files (stored in a separate directory). Each context may have a different
 Creating a new context is done using the user interface, or via the command line interface:
 
 ```bash
-./axonserver-cli.jar create-context -S http://axonserver-node:8024 -c context-name
+$ java -jar ./axoniq-cli.jar create-context -S http://[node]:[port] -c [context-name] -n [members]
 ```
 
-The server address here is the address of the master for the *default* context. It is not possible to delete the *default*
-context.
+The server address here is the address of the leader for the *_admin* context. It is not possible to delete the *_admin*
+context. Members is a comma separated list of node names that should be members of the new context. 
+
+The context name must match the following regular expression "[a-zA-Z][a-zA-Z_\-0-9]*", so it should start 
+with a letter (uppercase or lowercase), followed by a combination of letters, digits, hyphens and underscores.
