@@ -175,17 +175,20 @@ public class AxonConfiguration {
     }
 
     @Bean
-    public JpaEventStorageEngine eventStorageEngine(
-                    Serializer serializer,
-                    DataSource dataSource,
-                    SingleEventUpcaster myUpcaster,
-                    EntityManagerProvider entityManagerProvider,
-                    TransactionManager transactionManager) throws SQLException {
-        return new JpaEventStorageEngine(serializer,
-                myUpcaster::upcast,
-                dataSource,
-                entityManagerProvider,
-                transactionManager);
+    public JpaEventStorageEngine eventStorageEngine(Serializer eventSerializer,
+                                                    Serializer snapshotSerializer,
+                                                    DataSource dataSource,
+                                                    SingleEventUpcaster myUpcaster,
+                                                    EntityManagerProvider entityManagerProvider,
+                                                    TransactionManager transactionManager) throws SQLException {
+        return JpaEventStorageEngine.builder()
+                                    .eventSerializer(eventSerializer)
+                                    .snapshotSerializer(snapshotSerializer)
+                                    .dataSource(dataSource)
+                                    .entityManagerProvider(entityManagerProvider)
+                                    .transactionManager(transactionManager)
+                                    .upcasterChain(myUpcaster)
+                                    .build();
     }
 }
 ```
