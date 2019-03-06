@@ -139,7 +139,7 @@ public SagaConfiguration<MySaga> mySagaConfigurationBean() {
 
 Errors are inevitable and depending on where they happen, you may want to respond differently. 
 
-By default, exceptions that are raised by Event Handlers are logged, and processing continues with the next events. Exceptions that are thrown when a processor is trying to commit a transaction, update a token, or in any other other part of the process, the exception is propagated. In case of a Tracking Processor, this means the processor will go into error mode, releasing any tokens and retryin at an incremental interval (starting at 1 second, up to max 60 seconds). Subscribing processor will report a publication error to the component that provided the Event.
+By default, exceptions that are raised by Event Handlers are logged, and processing continues with the next events. Exceptions that are thrown when a processor is trying to commit a transaction, update a token, or in any other other part of the process, the exception is propagated. In case of a Tracking Processor, this means the processor will go into error mode, releasing any tokens and retrying at an incremental interval (starting at 1 second, up to max 60 seconds). Subscribing processor will report a publication error to the component that provided the Event.
 
 To change this behavior, there are two levels at which you can customize how Axon deals with Exceptions:
 
@@ -270,6 +270,12 @@ Note that you can override the token store to use with tracking processors in th
 ## Event Tracker Status
 
 In some cases it might be useful to know the state of a Tracking Event Processor for each of its segment. One of those cases could be when we want to rebuild our view model and we want to check when the Processor is caught up with all the events. For cases like these, the `TrackingEventProcessor` exposes `processingStatus()` method, which returns a map where the key is the segment identifier, and the value is the event processing status. Based on this status we can determine whether the Processor is caught up and/or is replaying, and we can verify the Tracking Token of its segments.
+
+## Splitting and Merging Tracking Tokens
+
+It is possible to tune the performance of tracking processors by increasing the number of threads processing events on high load by splitting segments and reducing the number of threads when load reduces by merging segments. This can be done using through the Axon Server API or through Axon Framework using the methods `splitSegment(int segmentId)` and `mergeSegment(int segmentId)` from `TrackingEventProcessor` by providing the segmentId of the segment you want to split or merge.
+
+Note: By splitting/merging using Axon Server the most appropriate segment to split or merge is chosen for you so that segments are balanced but the decision which segment to split or merge is to be decided by the developer when using Axon Framework.
 
 ## Parallel processing
 

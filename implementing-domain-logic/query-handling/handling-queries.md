@@ -27,19 +27,19 @@ Note that similar to command handling, and unlike event handling, query handling
 // and    a single instance of SubHandler is registered
 
 public class TopHandler {
-
-    @QueryHandler
-    public MyResult handle(QueryA query) {
-    }
-
-    @QueryHandler
-    public MyResult handle(QueryB query) {
-    }
-
-    @QueryHandler
-    public MyResult handle(QueryC query) {
-    }
-}
+ 
+     @QueryHandler
+     public MyResult handle(QueryA query) {
+     }
+ 
+     @QueryHandler
+     public MyResult handle(QueryB query) {
+     }
+ 
+     @QueryHandler
+     public MyResult handle(QueryC query) {
+     }
+ }
 
 public class SubHandler extends TopHandler {
 
@@ -50,6 +50,17 @@ public class SubHandler extends TopHandler {
 ```
 
 In the example above, the handler method of `SubHandler` will be invoked for queries for `QueryB` and result `MyResult` the handler methods of `TopHandler` are invoked for queries for `QueryA` and `QueryC` and result `MyResult`.
+
+Note: It is also possible for queries to return primitive data types.
+
+```java
+public class QueryHandler {
+ 
+     @QueryHandler
+     public float handle(QueryA query) {
+     }
+ }
+```
 
 ## Registering Query Handlers
 
