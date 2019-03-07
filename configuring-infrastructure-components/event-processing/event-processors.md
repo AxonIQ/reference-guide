@@ -273,7 +273,7 @@ In some cases it might be useful to know the state of a Tracking Event Processor
 
 ## Splitting and Merging Tracking Tokens
 
-It is possible to tune the performance of tracking processors by increasing the number of threads processing events on high load by splitting segments and reducing the number of threads when load reduces by merging segments. This can be done using through the Axon Server API or through Axon Framework using the methods `splitSegment(int segmentId)` and `mergeSegment(int segmentId)` from `TrackingEventProcessor` by providing the segmentId of the segment you want to split or merge.
+It is possible to tune the performance of tracking processors by increasing the number of threads processing events on high load by splitting segments and reducing the number of threads when load reduces by merging segments.  Splitting and merging are allowed at runtime allowing you to dynamically control the number of segments. This can be done through the Axon Server API or through Axon Framework using the methods `splitSegment(int segmentId)` and `mergeSegment(int segmentId)` from `TrackingEventProcessor` by providing the segmentId of the segment you want to split or merge.
 
 Note: By splitting/merging using Axon Server the most appropriate segment to split or merge is chosen for you so that segments are balanced but the decision which segment to split or merge is to be decided by the developer when using Axon Framework.
 
