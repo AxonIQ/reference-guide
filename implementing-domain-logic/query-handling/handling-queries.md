@@ -53,17 +53,18 @@ In the example above, the handler method of `SubHandler` will be invoked for que
 
 > **Query Response Types**
 > 
-> Among the usual Objects, it is also possible for queries to return primitive data types.
+> Among the usual Objects, it is also possible for queries to return primitive data types:
+> 
+> ```java
+> public class QueryHandler {
+>  
+>      @QueryHandler
+>      public float handle(QueryA query) {
+>      }
+>  }
+> ```
+> 
 > Upon wrapping such a response for the querying party, the boxed types will be used. 
-
-```java
-public class QueryHandler {
- 
-     @QueryHandler
-     public float handle(QueryA query) {
-     }
- }
-```
 
 ## Registering Query Handlers
 
