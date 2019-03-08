@@ -51,7 +51,10 @@ public class SubHandler extends TopHandler {
 
 In the example above, the handler method of `SubHandler` will be invoked for queries for `QueryB` and result `MyResult` the handler methods of `TopHandler` are invoked for queries for `QueryA` and `QueryC` and result `MyResult`.
 
-Note: It is also possible for queries to return primitive data types.
+> **Query Response Types**
+> 
+> Among the usual Objects, it is also possible for queries to return primitive data types.
+> Upon wrapping such a response for the querying party, the boxed types will be used. 
 
 ```java
 public class QueryHandler {
