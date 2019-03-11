@@ -1,7 +1,7 @@
 # Architecture overview
 
-Axon based application follow an architectural pattern which is based on the principles of Domain-driven Design (DDD), 
-Command Query Responsibility Segregation (CQRS) and Event-driven Architecture (EDA). The combination of these principles
+Axon based application follow an architectural pattern which is based on the principles of Domain-Driven Design (DDD), 
+Command Query Responsibility Segregation (CQRS) and Event-Driven Architecture (EDA). The combination of these principles
 make Axon based applications more robust and adaptable to accommodate change required by the changes in our business domain. 
 
 Axon finds its use in both large monolithic applications, wherein the internal structure is essential to keep the monolith
@@ -13,7 +13,7 @@ more maintainable, performant and reliable software.
 ## Dealing with complexity
 
 Axon originated in an attempt to find a solution to the ever increasing accidental [^1] complexity. Applying concepts
-from Domain-driven Design will help to a very large degree, even the most well-designed model will not run by itself in
+from Domain-Driven Design will help to a very large degree, even the most well-designed model will not run by itself in
 production.
 
 While Axon is opinionated on how the interaction with a domain model should take place, it tries to avoid any 
@@ -23,7 +23,7 @@ the reference guide.
 
 ### DDD & CQRS
 
-Domain-driven Design (DDD) describes an approach to building software that puts a lot of emphasis on the design of a
+Domain-Driven Design (DDD) describes an approach to building software that puts a lot of emphasis on the design of a
 model, leveraging the use of ubiquitous language [^2]. The domain model is the heart of software, and should
 correctly capture and deal with the essential complexity of the domain.
 
@@ -135,4 +135,4 @@ necessary to build new view models, do data analysis and provide a solid basis f
 
 [^1]: Accidental complexity is a type of complexity that isn't natural to the domain, but is a result of technology and/or design choices. Unlike essential complexity, one should attempt to avoid accidental complexity as much as possible.
 
-[^2]: "Ubiquitous language" in Domain-driven Design refers to the concept that the same language should be used in different areas of a domain. For example, software must reflect the language used by the business, to ensure concepts align properly.
+[^2]: "Ubiquitous language" in Domain-Driven Design refers to the concept that the same language should be used in different areas of a domain. For example, software must reflect the language used by the business, to ensure concepts align properly.

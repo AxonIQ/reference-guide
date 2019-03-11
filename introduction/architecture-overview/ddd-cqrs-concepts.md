@@ -1,6 +1,6 @@
 # DDD and CQRS concepts
 
-Axon is heavily based on the principles of Domain-driven Design (DDD) and Command Query Responsibility Segregation. 
+Axon is heavily based on the principles of Domain-Driven Design (DDD) and Command Query Responsibility Segregation. 
 While a full explanation of these concepts is beyond the scope and intent of this reference guide, we do want to provide a 
 summary of the most important concepts in the context of an Axon application.
 
@@ -61,7 +61,7 @@ Therefore, there are a number of rules for Models and Contexts:
 ### Context Mapping
 
 A bounded context never lives entirely on its own. Information from different contexts will eventually be synchronized. It
-is useful to model this interaction explicitly. Domain-driven Design names a few relationships between contexts, which
+is useful to model this interaction explicitly. Domain-Driven Design names a few relationships between contexts, which
 drive the way they interact: 
 
  * partnership (two contexts/teams combine efforts to build interaction)
@@ -97,7 +97,7 @@ Not every command is able to completely execute in a single atomic transaction. 
 
 While ACID transactions are not necessary or even impossible in some cases, some form of transaction management is still required. Typically, these transactions are referred to as BASE transactions: Basically Available, Soft state, Eventual consistency. Contrary to ACID, BASE transactions cannot be easily rolled back. To roll back, compensating actions need to be taken to revert anything that has occurred as part of the transaction. In the gift card example, a redeem failure of `GiftCard`, will reject the `Order` payment.
 
-In CQRS, Sagas can be used to manage these BASE transactions. They respond to events and may dispatch commands, invoke external applications, etc. In the context of Domain-driven Design, it is common for Sagas to be used as coordination mechanism between different aggregates (or aggregate instances) in order to eventually achieve consistency.
+In CQRS, Sagas can be used to manage these BASE transactions. They respond to events and may dispatch commands, invoke external applications, etc. In the context of Domain-Driven Design, it is common for Sagas to be used as coordination mechanism between different aggregates (or aggregate instances) in order to eventually achieve consistency.
 
 ### View Models or Projections
 
