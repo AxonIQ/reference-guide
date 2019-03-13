@@ -37,3 +37,9 @@ When you have a default setup with all nodes using the default port you can omit
 Default value for `-S` option is [http://localhost:8024](http://localhost:8024) and for -p is 8224 \(default internal communication port\).
 
 This only has to be done once, each node maintains a list of all nodes in the cluster.
+
+##Internal APIs and stability guarantees
+
+Within the endpoints documented in /swagger-ui.html, you can find some /internal/* APIs that are not part of the public APIs. 
+These APIs are not supposed to be used and will change without notice.
+

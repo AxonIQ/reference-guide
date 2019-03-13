@@ -10,17 +10,17 @@ At AxonIQ, we believe systems evolve their way into microservices, instead of at
 from scratch. The main reason is that the exploration of sensible Context Boundaries (see [Bounded Context](ddd-cqrs-concepts.md#bounded-context))
 and models takes time. Changing these boundaries is much more difficult in distributed systems, than it is in a monolith. 
 
-Axon stimulates the separation of components and uses explicit messaging between them, which makes these components 
+Axon leverages the separation of components and uses explicit messaging between them, which makes these components 
 [Location Transparent](architecture-overview.md#location-transparency). Unlike the use of service discovery, the approach
 Axon takes for messaging doesn't require a component to know the destination of a message at all. They are automatically
-routed to a component that advertises the capability to handle such message. This makes these systems much more flexible
+routed to a component that advertises the capability to handle such messages. This makes these systems much more flexible
 to change than "regular" microservices based systems.
 
 ## Strategies for applying Axon
 
 There are different strategies for applying Axon in Microservices environments. One could adopt the Axon philosophy on
 a system level and build all services using Axon. However, Axon is also already useful when just applying it within a single
-application/services. Lastly, we'll also discuss specific strategies when using Axon in a polyglot environment. In the end,
+application/service. Lastly, we'll also discuss specific strategies when using Axon in a polyglot environment. To that end,
 Axon is built with integration in mind. 
 
 ### Axon based microservices
@@ -47,7 +47,7 @@ technology stack. In these environments, it is even more important to ensure Con
 provide decent anti-corruption layers, where applicable.
 
 It is unlikely that all technology stacks used follow the same messaging based approach that Axon applications do. However,
-that doesn't mean the concept needs to be abolished. You can still benefit from many of the advantages of explicit messaging. 
+that doesn't mean the concepts need to be abandoned. You can still benefit from many of the advantages of explicit messaging. 
 In such environments, anti-corruption layers could be implemented as components that handle commands, events and queries,
 and execute other types of calls (e.g. REST calls) to the external services. This way, components that work with explicit 
 messaging do not need to worry about polling external services for changes, or be influenced by the technical challenges
