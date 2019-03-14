@@ -40,7 +40,7 @@ This module contains all necessary components and building blocks to support com
 This module contains the necessary components to create domain models, like Aggregates and Sagas.
 
 ### Axon Event Sourcing 
-This module contains all necessary infrastructure components to support Event Sourcing Command and Query Models.
+This module contains all necessary infrastructure components to support Event Sourcing, Command and Query Models.
 
 ### Axon Test
 This module contains test fixtures that you can use to test Axon based components, such as your Command Handlers, Aggregates and Sagas. 
@@ -95,7 +95,7 @@ Visit [Maven Central Repository](https://search.maven.org/search?q=axonframework
 
 ### Axon AMQP
 This module provides components that allow you leverage an AMQP-based message broker as an Event Message distribution mechanism. 
-This allows for guaranteed-delivery, even when the Event Handler node is temporarily unavailable.
+This allows for guaranteed delivery, even when the Event Handler node is temporarily unavailable.
 
 ### Axon AMQP Spring Boot Starter
 This module provides Spring auto-configuration on top of the `axon-amqp` module.
