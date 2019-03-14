@@ -62,11 +62,15 @@ To register objects with `@EventHandler` methods, use the `registerEventHandler(
 {% tab title="Axon Configuration API" %}
 ```java
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
+                                         .registerEventHandler(conf -> new MyEventHandlerClass()));
+```
+or with configuring the event processor
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
                                          .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer
                                              .registerEventHandler(conf -> new MyEventHandlerClass()));
 ```
 {% endtab %}
-
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
 @Component

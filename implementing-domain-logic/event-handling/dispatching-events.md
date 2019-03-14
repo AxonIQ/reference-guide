@@ -58,20 +58,13 @@ This is necessary for [Event Sourcing](../command-handling/aggregate.md#basic-ag
 
 In the vast majority of cases, the [Aggregates](#dispatching-events-from-an-aggregate) will publish events by applying them. 
 However, occasionally, it is necessary to publish an event (possibly from within another component),
- directly to the Event Bus:
+ directly to the Event Gateway:
 
 ```java
-private EventBus eventBus; // 1.
+private EventGateway eventGateway;
 
 public void dispatchEvent() {
-    // 2. & 3.
-    eventBus.publish(GenericEventMessage.asEventMessage(new CardIssuedEvent("cardId", 100, "shopId")));
+    eventGateway.publish(new CardIssuedEvent("cardId", 100, "shopId"));
 }
 // omitted class and constructor 
 ```
-
-1. The `EventBus` interface which allows the publication of events.
-2. The `GenericEventMessage#asEventMessage(Object)` method allows you to wrap any object into an `EventMessage`. 
-If the passed object is already an EventMessage, it is simply returned.
-3. `publish(EventMessage...)` is used to actually publish an event.
-As shown, the event payload, the `CardIssuedEvent`, should be wrapped in an `EventMessage`. 

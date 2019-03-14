@@ -16,7 +16,7 @@ The address of the server specified in this command is the address of the curren
 This command returns the generated token to use. Note that this token is only generated once, if you loose it you must delete the application and register it again to get a new token. If you want to define the token yourself, you can provide one in the command line command using the `-T` flag, e.g.:
 
 ```text
-$ java -jar axoniq-cli.jar register-application -a 
+$ java -jar axonserver-cli.jar register-application -a 
        applicationname -d description -r READ,WRITE -T this-is-my-token
 ```
 
@@ -31,7 +31,7 @@ In the Free Edition it is not possible to create applications. If you want to us
 You can access the Axon webpages when access control is enabled by providing a username and password. Users are created through the command line using the following command:
 
 ```text
-$ java -jar axoniq-cli.jar register-user -S http://axonserver:8024 
+$ java -jar axonserver-cli.jar register-user -S http://axonserver:8024 
      -u USERNAME -r USER,ADMIN
 ```
 
