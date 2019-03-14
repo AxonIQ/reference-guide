@@ -7,8 +7,8 @@ To enable access control add the following property to the `axonserver.propertie
 To register an application and get an access token use the following command:
 
 ```text
-$ java -jar axoniq-cli.jar register-application -S 
-       http://messaging:8080 -a applicationname -d description -r READ,WRITE,ADMIN
+$ java -jar axonserver-cli.jar register-application -S 
+       http://[node]:[port] -a applicationname -d description -r READ,WRITE,ADMIN
 ```
 
 The address of the server specified in this command is the address of the current master node. The master will distribute the applications to all the replicas.
@@ -31,7 +31,7 @@ In the Free Edition it is not possible to create applications. If you want to us
 You can access the Axon webpages when access control is enabled by providing a username and password. Users are created through the command line using the following command:
 
 ```text
-$ java -jar axonserver-cli.jar register-user -S http://axonserver:8024 
+$ java -jar axonserver-cli.jar register-user -S http://[node]:[port]
      -u USERNAME -r USER,ADMIN
 ```
 

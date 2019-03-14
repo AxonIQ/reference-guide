@@ -86,7 +86,7 @@ create the cluster, using the command line interface.
 First step is call the init-cluster command on the first node:
 
 ```bash
-$ java -jar axoniq-cli.jar init-cluster -S http://[node]:[port] 
+$ java -jar axonserver-cli.jar init-cluster -S http://[node]:[port] 
 ```
 
 With [node] being the hostname of the first node and [port] the HTTP port. When you run this command
@@ -100,7 +100,7 @@ like this in the overview page:
 The next step is to add the other nodes to the cluster, using the register-node command:
 
 ```bash
-$ java -jar axoniq-cli.jar register-node -S http://[node]:[port] -h [first-node] -p [internal-grpc-port]
+$ java -jar axonserver-cli.jar register-node -S http://[node]:[port] -h [first-node] -p [internal-grpc-port]
 ```
 
 The values for [node] and [port] are the hostname and HTTP port for the new node to add. The [first-node] is the internal hostname of 
@@ -132,7 +132,7 @@ If you are using self-signed certificates, or certificates where the CA is not i
 specify the CA certificate in the property *axoniq.axonserver.ssl.internal-trust-manager-file*.  
 
 
-##Internal APIs and stability guarantees
+## Internal APIs and stability guarantees
 
 Within the endpoints documented in /swagger-ui.html, you can find some /internal/* APIs that are not part of the public APIs. 
 These APIs are not supposed to be used and will change without notice.

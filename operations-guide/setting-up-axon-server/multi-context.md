@@ -8,7 +8,7 @@ set of files (stored in a separate directory). Each context may have a different
 Creating a new context is done using the user interface, or via the command line interface:
 
 ```bash
-$ java -jar ./axoniq-cli.jar create-context -S http://[node]:[port] -c [context-name] -n [members]
+$ java -jar ./axonserver-cli.jar create-context -S http://[node]:[port] -c [context-name] -n [members]
 ```
 
 The server address here is the address of the leader for the *_admin* context. It is not possible to delete the *_admin*

@@ -69,7 +69,7 @@ Set the following properties to set flow control on the synchronization between 
 
 Requires private key and public certificate. The same certificate is used to connect to all event store servers.
 
-For gRPC communication add file locations to the axonserver.properties file:
+For gRPC communication add file locations to the `axonserver.properties` file:
 
 * `axoniq.axonserver.ssl.cert-chain-file` - location of the public certificate file
 * `axoniq.axonserver.ssl.private-key-file` - location of the private key file
