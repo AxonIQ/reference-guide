@@ -4,7 +4,7 @@ There is more then one way to start and run Axon Server:
 
 ## Starting Axon Server locally
 
-The [Axon Server ZIP download](https://download.axoniq.io/axonserver/AxonServer.zip) contains executable JAR files for the server itself and the CLI. Copy `axonserver.jar` to a directory of your choice. Because Axon Server uses sensible defaults, you are now ready to go. Start the Axon Server using the following command:
+The [Axon download page](https://axoniq.io/download) contains executable JAR files for the server itself and the CLI. Copy `axonserver.jar` to a directory of your choice. Because Axon Server uses sensible defaults, you are now ready to go. Start the Axon Server using the following command:
 
 ```bash
 $ ./axonserver.jar
