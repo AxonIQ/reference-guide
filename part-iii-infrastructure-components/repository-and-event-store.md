@@ -241,10 +241,12 @@ public class ComplaintEvent {
 
 Upcaster:
 
+{% tabs %}
+{% tab title="Event serialized with XStream" %}
 ```java
 // Upcaster from 1.0 revision to 2.0 revision
 public class ComplaintEventUpcaster extends SingleEventUpcaster {
-    private static SimpleSerializedType targetType = new SimpleSerializedType(ComplainEvent.class.getTypeName(), "1.0");
+    private static SimpleSerializedType targetType = new SimpleSerializedType(ComplaintEvent.class.getTypeName(), "1.0");
 
     @Override
     protected boolean canUpcast(IntermediateEventRepresentation intermediateRepresentation) {
@@ -266,6 +268,35 @@ public class ComplaintEventUpcaster extends SingleEventUpcaster {
     }
 }
 ```
+{% endtab %}
+
+{% tab title="Event serialized with Jackson" %}
+```java
+// Upcaster from 1.0 revision to 2.0 revision
+public class ComplaintEventUpcaster extends SingleEventUpcaster {
+    private static SimpleSerializedType targetType = new SimpleSerializedType(ComplaintEvent.class.getTypeName(), "1.0");
+​
+    @Override
+    protected boolean canUpcast(IntermediateEventRepresentation intermediateRepresentation) {
+        return intermediateRepresentation.getType().equals(targetType);
+    }
+​
+    @Override
+    protected IntermediateEventRepresentation doUpcast(IntermediateEventRepresentation intermediateRepresentation) {
+        return intermediateRepresentation.upcastPayload(
+                new SimpleSerializedType(targetType.getName(), "2.0"),
+                com.fasterxml.jackson.databind.JsonNode.class,
+                jsonNode -> {
+                    ObjectNode objectNode = (ObjectNode) jsonNode;
+                    objectNode.set("description", new TextNode("no complaint description"));// Default value
+                    return objectNode;
+                }
+        );
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
 
 Spring boot configuration:
 
