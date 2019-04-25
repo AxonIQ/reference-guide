@@ -10,7 +10,7 @@ By default, `@QueryHandler` annotated methods allow the following parameter type
 * Parameters of type `UnitOfWork` get the current unit of work injected. This allows query handlers to register actions to be performed at specific stages of the unit of work, or gain access to the resources registered with it.
 * Parameters of type `Message`, or `QueryMessage` will get the complete message, with both the payload and the metadata. This is useful if a method needs several meta data fields, or other properties of the wrapping message.
 
-You can configure additional `ParameterResolver`s by implementing the `ParameterResolverFactory` interface and creating a file named `/META-INF/service/org.axonframework.common.annotation.ParameterResolverFactory` containing the fully qualified name of the implementing class. See [Advanced customizations](../1.4-advanced-tuning/advanced-customizations.md) for details.
+You can configure additional `ParameterResolver`s by implementing the `ParameterResolverFactory` interface and creating a file named `/META-INF/service/org.axonframework.common.annotation.ParameterResolverFactory` containing the fully qualified name of the implementing class. See [Advanced customizations](../../appendices/message-handler-tuning/parameter-resolvers.md) for details.
 
 In all circumstances, at most one query handler method is invoked per query handling instance. Axon will search for the most specific method to invoke, using following rules:
 
