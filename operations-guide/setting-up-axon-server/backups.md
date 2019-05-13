@@ -20,8 +20,8 @@ move that file to another storage medium.
 
 The event stream segments are either closed and immutable, or still open for new events. For the closed segments, it is 
 feasible to only backup the ones that haven't been backed-up yet, since the once that have been are guaranteed not to 
-change. This logic is supported by the GET endpoint `/v1/backup/filenames`. It takes an event type (either Event or 
-Snapshot), the context name and optionally the last segment that has already been backed up. It will return a list of 
+change. This logic is supported by the GET endpoint `/v1/backup/filenames`. It takes an event type (either `EVENT` or 
+`SNAPSHOT`), the context name and optionally the last segment that has already been backed up. It will return a list of 
 file names belonging to segments that haven't been backed up yet, but which are now safe to backup by simply copying them.
 
 In addition, you may choose to backup the current segment file that is being written to. These are files with name
