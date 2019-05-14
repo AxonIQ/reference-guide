@@ -43,18 +43,18 @@ So, as per this snippet, Spring Boot will try to apply all the configuration cla
 
 Whether these configuration classes will be applied or not, it will depend on conditions defined on this classes:
 
- - `AxonServerAutoConfiguration` configures Axon Server as implementation for the CommandBus, QueryBus and EventStore. 
+ - `AxonServerAutoConfiguration` configures Axon Server as implementation for the Command Bus, Query Bus and Event Store. 
 It will be applied before `AxonAutoConfiguration`,
  and it will be applied only if the `org.axonframework.axonserver.connector.AxonServerConfiguration` class is available in the classpath.
 
- - `AxonAutoConfiguration` configures 'non-axon-server' implementation of CommandBus, QueryBus,
- EventStore/EventBus and other Axon components. 
-This components will be initialized only if they are not in the Spring Application context already, eg. `@ConditionalOnMissingBean(EventBus.class)`. 
-As `AxonAutoConfiguration` will be applied after `AxonServerAutoConfiguration` this Axon components will be in the Spring Application Context already, so Axon Server implementation of CommandBus, QueryBus and EventStore/EventBus will win.
+ - `AxonAutoConfiguration` configures a 'non-axon-server' implementation of Command Bus, Query Bus,
+ Event Store/Event Bus and other Axon components. 
+These components will be initialized only if they are not in the Spring Application context already, eg. `@ConditionalOnMissingBean(EventBus.class)`. 
+As `AxonAutoConfiguration` will be applied after `AxonServerAutoConfiguration` these Axon components will be in the Spring Application Context already, and therefore Axon Server's implementation of Command Bus, Query Bus and Event Store/Event Bus will win.
 
 
 Axon Spring Boot auto-configuration is not intrusive. 
-It will define only Spring components that you aren't already explicitly defined in the application context. 
+It will define only Spring components that you haven't already explicitly defined in the application context. 
 This allow you to completely override the auto-configured beans by defining your own in one of the `@Configuration` classes. 
 
 Specific Axon (Spring) component configurations will be explained in detail in the following sections of this guide.
@@ -63,8 +63,8 @@ Specific Axon (Spring) component configurations will be explained in detail in t
 >
 > [Spring Boot Developer Tools](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-devtools.html)
 >  are a nifty addition to your project to enhance the developer experience. 
-> However, introducing `springb-boot-devtools` into your project will impose some class loading operations which have
+> However, introducing `spring-boot-devtools` into your project will impose some class loading operations which have
 >  shown not to work all to well with Axon Framework.
 > We are aware of the situation and on the look out for a solution.
 > 
-> In the meantime we suggest not to include `springb-boot-devtools` when developing an Axon application. 
+> In the meantime we suggest not to include `spring-boot-devtools` when developing an Axon application. 
