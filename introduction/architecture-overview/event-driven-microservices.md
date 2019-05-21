@@ -8,7 +8,7 @@ Axon in such environments.
 
 At AxonIQ, we believe systems evolve their way into microservices, instead of attempting to build a microservices system
 from scratch. The main reason is that the exploration of sensible Context Boundaries (see [Bounded Context](ddd-cqrs-concepts.md#bounded-context))
-and models takes time. Changing these boundaries is much more difficult in distributed systems, than it is in a monolith. 
+and models takes time. Changing these boundaries is much more difficult in distributed systems than it is in a monolith. 
 
 Axon leverages the separation of components and uses explicit messaging between them, which makes these components 
 [Location Transparent](architecture-overview.md#location-transparency). Unlike the use of service discovery, the approach
@@ -46,12 +46,12 @@ In practice, many microservices based systems run in a polyglot environment. Dif
 technology stack. In these environments, it is even more important to ensure Contexts Boundaries are properly guarded and
 provide decent anti-corruption layers, where applicable.
 
-It is unlikely that all technology stacks used follow the same messaging based approach that Axon applications do. However,
+It is unlikely that all used technology stacks follow the same messaging based approach that Axon applications do. However,
 that doesn't mean the concepts need to be abandoned. You can still benefit from many of the advantages of explicit messaging. 
-In such environments, anti-corruption layers could be implemented as components that handle commands, events and queries,
+In such environments, anti-corruption layers could be implemented as components that handle commands, events, and queries,
 and execute other types of calls (e.g. REST calls) to the external services. This way, components that work with explicit 
-messaging do not need to worry about polling external services for changes, or be influenced by the technical challenges
-cause by different types of APIs.
+messaging do not need to worry about polling external services for changes or be influenced by the technical challenges
+caused by different types of APIs.
 
 Axon supports different types of connectors that allow Events (and in certain cases other message types, too) to be published
 to third party message brokers. By default, Axon will make assumptions on the format of these external events, but they can 
