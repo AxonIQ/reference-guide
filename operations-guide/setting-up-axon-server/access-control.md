@@ -39,4 +39,10 @@ The command will prompt for a password. If you want to set the password directly
 
 Note that the command line interface also requires a token when executing remote commands. If you execute a command from an Axon Server node itself, you do not need to provide a token.
 
+If you are not using the command line interface because you prefer to interface directly with the REST APIs, you can specify the token in the HTTP requests via the following header:
+
+```text
+AxonIQ-Access-Token: my-token-value-here
+```
+
 If access control is enabled and Axon Server is running in clustered mode, the nodes in the cluster also need to attach a token with the messages sent between them. This token must be defined in the application properties file on each node with property `axoniq.axonserver.accesscontrol.internal-token`. The value of this property must be the same for all nodes.
