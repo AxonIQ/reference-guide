@@ -8,7 +8,6 @@ For the Axon Server Standard edition the only supported commands are:
 - users
 - register-user
 - delete-user
-- purge-events (only in [Development Mode](../../operations-guide/setting-up-axon-server/development-mode.md))
 
 Axon Server Enterprise edition supports these additional commands:
 
