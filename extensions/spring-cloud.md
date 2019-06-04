@@ -112,13 +112,15 @@ public class MyApplicationConfiguration {
     @Bean
     public CommandRouter springCloudHttpBackupCommandRouter(
                              DiscoveryClient discoveryClient, 
-                             RestTemplate restTemplate, 
+                             RestTemplate restTemplate,
+                             Registration localServiceInstance,							 
                              @Value("${axon.distributed.spring-cloud.fallback-url}") 
                                          String messageRoutingInformationEndpoint) {
         return SpringCloudHttpBackupCommandRouter.builder()
                                                  .discoveryClient(discoveryClient)
                                                  .routingStrategy(new AnnotationRoutingStrategy())
                                                  .restTemplate(restTemplate)
+												 .localServiceInstance(localServiceInstance)
                                                  .messageRoutingInformationEndpoint(messageRoutingInformationEndpoint)
                                                  .build();
     }
