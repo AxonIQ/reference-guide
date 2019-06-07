@@ -20,8 +20,13 @@ The Spring Cloud connector setup is a combination of the `SpringCloudCommandRout
 
 The `SpringCloudCommandRouter` has to be created by providing the following:
 
-* A "discovery client" of type `DiscoveryClient` - This can be provided by annotating your Spring Boot application with `@EnableDiscoveryClient`, which will look for a Spring Cloud implementation on your classpath.
-* A "routing strategy" of type `RoutingStrategy` - The `axon-messaging` module currently provides several implementations, but a function call can suffice as well. If you want to route the Commands based on the 'aggregate identifier' for example, you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
+* A "discovery client" of type `DiscoveryClient` - This can be provided by annotating your Spring Boot application with `@EnableDiscoveryClient`,
+ which will look for a Spring Cloud implementation on your classpath.
+* A "routing strategy" of type `RoutingStrategy` - The `axon-messaging` module currently provides several implementations, but a function call can suffice as well. 
+If you want to route the Commands based on the 'aggregate identifier' for example,
+ you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
+* A "local service instance" of type `Registration` - If you're Spring Boot application is annotated with the aforementioned `@EnableDiscoveryClient`,
+ it will automatically create a `Registration` bean referencing the instance itself. 
 
 Other optional parameters for the `SpringCloudCommandRouter` are:
 
@@ -52,10 +57,11 @@ public class MyApplication {
 
     // Example function providing a Spring Cloud Connector
     @Bean
-    public CommandRouter springCloudCommandRouter(DiscoveryClient discoveryClient) {
+    public CommandRouter springCloudCommandRouter(DiscoveryClient discoveryClient, Registration localServiceInstance) {
         return SpringCloudCommandRouter.builder()
                                        .discoveryClient(discoveryClient)
                                        .routingStrategy(new AnnotationRoutingStrategy())
+                                       .localServiceInstance(localServiceInstance)
                                        .build();
     }
 
