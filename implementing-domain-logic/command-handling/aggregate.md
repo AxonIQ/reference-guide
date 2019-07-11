@@ -8,7 +8,8 @@ For more details on what an Aggregate is read the [DDD and CQRS Patterns](../../
 An Aggregate is a regular object, which contains state and methods to alter that state.
 When creating the Aggregate object, you are effectively creating the 'Aggregate Root', typically carrying the name of the entire Aggregate.
 For the purpose of this description the 'Gift Card' domain will be used, which brings us the `GiftCard` as the Aggregate (Root).
-By default, Axon will configure your Aggregate as an 'Event Sourced' Aggregate (as described [here](../../introduction/architecture-overview/event-driven-microservices.md)).
+By default, Axon will configure your Aggregate as an 'Event Sourced' Aggregate (as described
+ [here](../../introduction/architecture-overview/architecture-overview.md#event-sourcing)).
 Henceforth our basic `GiftCard` Aggregate structure will focus on the Event Sourcing approach:
 
 ```java
