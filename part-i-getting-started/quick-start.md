@@ -1,5 +1,10 @@
 # Quick Start
 
+> **Warning - outdated version**
+>
+> This version is outdated. If you're looking to get started with Axon, please check the documentation of more recent 
+> versions of Axon on [docs.axoniq.io](https://docs.axoniq.io/).
+
 This section will explain how you can obtain the binaries for Axon to get started and how to build your first Axon application. There are currently two ways of obtaining the binaries: either download the binaries from our website or configure a repository for your build system \(Maven, Gradle, etc\).
 
 ## Download Axon
