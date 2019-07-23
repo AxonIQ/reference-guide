@@ -54,7 +54,7 @@
 * [Query processing](configuring-infrastructure-components/query-processing.md)
 * [Deadlines](configuring-infrastructure-components/deadlines.md)
 
-## Operations Guide 
+## Operations Guide
 
 * [Setting up Axon Server](operations-guide/setting-up-axon-server/setting-up-axon-server.md)
     * [Launch](operations-guide/setting-up-axon-server/launch.md)
@@ -65,6 +65,7 @@
     * [Axon Server clustering](operations-guide/setting-up-axon-server/axon-server-clustering.md)
     * [Multi-context](operations-guide/setting-up-axon-server/multi-context.md)
     * [Command-line interface](operations-guide/setting-up-axon-server/command-line.md)
+    * [Tagging](operations-guide/setting-up-axon-server/tagging.md)
 * [Production considerations](operations-guide/production-considerations/production-considerations.md)
     * [Versioning Events](operations-guide/production-considerations/versioning-events.md)
     * [Serializers](operations-guide/production-considerations/serializers.md)
