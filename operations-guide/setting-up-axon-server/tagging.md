@@ -1,6 +1,7 @@
 # Configuring Client Connections (Tagging)
 
-> Note - This feature is only available in Axon Server Enterprise
+> Note - This feature is only available in Axon Server Enterprise and compatible
+with version 4.2 onwards of Axon Framework
 
 To optimise the connections between framework clients and Axon Server, its is possible to tag both clients and Axon Server with information which describes properties of those clients and nodes. Axon Server will then use these tags to make a connection to the client.
 
@@ -14,13 +15,11 @@ If both client and server are tagged with multiple tags then the connection that
 
 ## Enabling tagging
 
-To enable tagging you must modify configuration on both the client and the server.
+To enable tagging you must configure both the client and server.
 
 ### Axon Server
 
-Set the value of property `axoniq.axonserver.clients-connection-strategy` to `matchingTags` to enable the tagging connection strategy.
-
-Then configure the tags that you would like for each node through properties using `axoniq.axonserver.tags.computeRegion: europe`. Additional tags can be specified by adding to the `tags` element (e.g. `axoniq.axonserver.tags.networkSpeed: fast`).
+You can configure the tags that you would like for each node through properties using `axoniq.axonserver.tags.computeRegion: europe`. Additional tags can be specified by adding to the `tags` element (e.g. `axoniq.axonserver.tags.networkSpeed: fast`).
 
 ### Client
 

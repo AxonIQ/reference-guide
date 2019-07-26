@@ -65,7 +65,7 @@ Domain that is added to the internal hostnames. Defaults to axoniq.axonserver.do
 
 ### axoniq.axonserver.port
 
-Port used for gRPC communication from client to Axon Server node. Defaults to 8124, when you would want to run multiple nodes 
+Port used for gRPC communication from client to Axon Server node. Defaults to 8124, when you would want to run multiple nodes
 on the same machine, each needs to have a unique port.
 
 ### axoniq.axonserver.internal-port
@@ -76,11 +76,6 @@ on the same machine, each needs to have a unique port.
 ### server.port
 
 HTTP port used to access the UI and REST services. Defaults to 8024.
-
-### axoniq.axonserver.clients-connection-strategy
-
-The strategy that is used when clients make connections to Axon Server nodes. Defaults to `subscriptionCount` which balances connections across all nodes based on load. Also  configurable to `matchingTags` (which is described [here](../../../operations-guide/setting-up-axon-server/tagging.md)).
-
 
 ## Starting a cluster
 
