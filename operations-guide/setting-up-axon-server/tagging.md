@@ -1,7 +1,7 @@
 # Configuring Client Connections (Tagging)
 
 > Note - This feature is only available in Axon Server Enterprise and compatible
-with version 4.2 onwards of Axon Framework
+with version 4.2 onwards of Axon.
 
 To optimise the connections between framework clients and Axon Server, its is possible to tag both clients and Axon Server with information which describes properties of those clients and nodes. Axon Server will then use these tags to make a connection to the client.
 
