@@ -16,3 +16,5 @@ This page shows you how to start building your own application using Axon platfo
 
  7. Explore the `README.md`
 
+ 8. Watch coding example on YouTube: [The Structure of an Axon Application](https://youtu.be/tqn9p8Duy54)
+
