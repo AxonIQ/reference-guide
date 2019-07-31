@@ -18,7 +18,7 @@ For example, the following classes:
 
 will trigger the creation of two Processors:
 
-* `org.axonframework.example.eventhandling` with 2 handlers, and 
+* `org.axonframework.example.eventhandling` with 2 handlers, and
 * `org.axonframework.example.eventhandling.module` with a single handler
 
 The Configuration API allows you to configure other strategies for assigning classes to processors, or even assign specific instances to specific processors.
@@ -56,8 +56,8 @@ The `EventProcessingConfigurer` class defines a number of methods that can be us
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
                                 .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.usingSubscribingEventProcessors())
                                 .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerEventHandler(c -> new MyEventHandler()));
-                
-  
+
+
 ```
 
 {% endtab %}
@@ -88,6 +88,56 @@ axon.eventhandling.processors[name].source=eventBus
 ```
 {% endtab %}
 {% endtabs %}
+
+### Multiple Event Sources
+
+You can configure the event processor to use multiple sources when processing Events. This is useful for compiling metrics across domains or simply when your events are distributed between multiple stores.
+
+Having multiple sources means that there might be a choice of multiple events that the processor could consume in a given instant and therefore you can specify a `Comparator` to choose between them. The default implementation chooses the Event with the oldest timestamp (i.e. the event waiting the longest).
+
+Multiple sources also means that the tracking processor's polling interval needs to be divided between the sources in a strategy to optimize event discovery and minimize overhead in establishing costly connections to the data sources. Therefore you can choose which source the majority of the polling is done on using the `longPollingSource()` method in the builder. This ensures one source consumes most of the polling interval whilst also checking intermittently for events on the other sources. The default `longPollingSource` is done on the last configured source.
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
+Create a `MultiStreamableMessageSource` using it's `builder()` and register is as the message source when calling `EventProcessingConfigurer.registerTrackingEventProcessor()`.
+
+For example:
+
+```java
+MultiStreamableMessageSource.builder()
+        .addMessageSource("eventSourceA", eventSourceA)
+        .addMessageSource("eventSourceB", eventSourceB)
+        .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
+        .trackedEventComparator(priorityA) // where priorityA is a comparator prioritizing events from eventSourceA
+        .build();
+```
+
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+
+```java
+
+@Bean
+public MultiStreamableMessageSource multiStreamSource(EventStore eventSourceA, EventStore eventStoreB) {
+  MultiStreamableMessageSource.builder()
+          .addMessageSource("eventSourceA", eventSourceA)
+          .addMessageSource("eventSourceB", eventSourceB)
+          .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
+          .trackedEventComparator(priorityA) // where priorityA is a comparator prioritizing events from eventSourceA
+          .build();
+}
+
+@Autowired
+public void configure(EventProcessingConfigurer config, MultiStreamableMessageSource multiStreamableMessageSource) {
+    config.registerTrackingEventProcessor("NameOfEventProcessor", c-> multiStreamableMessageSource)(conf -> /* c
+}
+```
+
+{% endtab %}
+{% endtabs %}
+
 
 
 ### Sagas
@@ -123,11 +173,11 @@ If a `SagaConfiguration` instance is present for an annotated saga, that configu
 ```java
 @Saga(configurationBean = "mySagaConfigBean")
 public class MySaga {
-    // methods here 
+    // methods here
 }
 
 // in the Spring configuration:
-@Bean 
+@Bean
 public SagaConfiguration<MySaga> mySagaConfigurationBean() {
     // create and return SagaConfiguration instance
 }
@@ -137,13 +187,13 @@ public SagaConfiguration<MySaga> mySagaConfigurationBean() {
 
 ## Error Handling
 
-Errors are inevitable and depending on where they happen, you may want to respond differently. 
+Errors are inevitable and depending on where they happen, you may want to respond differently.
 
-By default, exceptions that are raised by Event Handlers are logged, and processing continues with the next events. 
+By default, exceptions that are raised by Event Handlers are logged, and processing continues with the next events.
 Exceptions that are thrown when a processor is trying to commit a transaction, update a token,
- or in any other other part of the process, the exception is propagated. 
+ or in any other other part of the process, the exception is propagated.
 In case of a Tracking Processor, this means the processor will go into error mode,
- releasing any tokens and retrying at an incremental interval (starting at 1 second, up to max 60 seconds). 
+ releasing any tokens and retrying at an incremental interval (starting at 1 second, up to max 60 seconds).
 Subscribing processor will report a publication error to the component that provided the Event.
 
 To change this behavior, there are two levels at which you can customize how Axon deals with Exceptions:
@@ -172,7 +222,7 @@ eventProcessingConfigurer.registerListenerInvocationErrorHandler("processingGrou
 @Autowired
 public void configure(EventProcessingConfigurer config) {
     config.registerDefaultListenerInvocationErrorHandler(conf -> /* create error handler */);
-    
+
     // or for a specific processing group:
     config.registerListenerInvocationErrorHandler("processingGroup", conf -> /* create error handler */);
 }
@@ -211,7 +261,7 @@ eventProcessingConfigurer.registerErrorHandler("processorName", conf -> /* creat
 @Autowired
 public void configure(EventProcessingConfigurer config) {
     config.registerDefaultErrorHandler(conf -> /* create error handler */);
-    
+
     // or for a specific processing group:
     config.registerErrorHandler("processingGroup", conf -> /* create error handler */);
 }
@@ -231,7 +281,7 @@ The Configuration API takes the token store, as well as most other components pr
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 To configure a token store, use the `EventProcessingConfigurer` to define which implementation to use.
- 
+
 To configure a default TokenStore for all processors: `Configurer.eventProcessing().registerTokenStore(conf -> ... create token store ...)`.
 
 Alternatively, to configure a TokenStore for a single, specific, Processor, use:
@@ -260,7 +310,7 @@ Alternatively, inject the `EventProcessingConfigurer`, which allows more fine-gr
 @Autowired
 public void configure(EventProcessingConfigurer epConfig) {
     epConfig.registerTokenStore(conf -> new MyCustomTokenStore());
-    
+
     // or, to define one for a single processor:
     epConfig.registerTokenStore("processorName", conf -> new MyCustomTokenStore());
 }
@@ -280,12 +330,12 @@ In some cases it might be useful to know the state of a Tracking Event Processor
 
 It is possible to tune the performance of Tracking Processors by increasing the number of threads processing events on
  high load by splitting segments and reducing the number of threads when load reduces by merging segments.  
-Splitting and merging are allowed at runtime allowing you to dynamically control the number of segments. 
+Splitting and merging are allowed at runtime allowing you to dynamically control the number of segments.
 This can be done through the Axon Server API or through Axon Framework using the methods `splitSegment(int segmentId)`
  and `mergeSegment(int segmentId)` from `TrackingEventProcessor` by providing the segmentId of the segment you want to split or merge.
 
-> **Segment Selection Considerations** 
-> 
+> **Segment Selection Considerations**
+>
 > By splitting/merging using Axon Server the most appropriate segment to split or merge is chosen for you.
 > When using the Axon Framework API directly, the segment to split/merge should be deduced by the developer themselves:
 >  * Split: for fair balancing, a split is ideally performed on the biggest segment
@@ -370,24 +420,24 @@ In cases when you want to rebuild projections \(view models\), replaying past ev
 public class MyProjection {
     ...
     @EventHandler
-    public void on(MyEvent event, ReplayStatus replayStatus) { 
+    public void on(MyEvent event, ReplayStatus replayStatus) {
                 // we can wire a ReplayStatus here so we can see whether this
                 // event is delivered to our handler as a 'REGULAR' event or
                 // 'REPLAY' event
         // do event handling
     }
 
-    @AllowReplay(false) // it is possible to prevent some handlers 
+    @AllowReplay(false) // it is possible to prevent some handlers
                         // from being replayed
     @EventHandler
     public void on(MyOtherEvent event) {
-        // perform some side effect introducing functionality, 
+        // perform some side effect introducing functionality,
         //  like sending an e-mail, which we do not want to be replayed
     }    
 
     @ResetHandler
     public void onReset() { // will be called before replay starts
-        // do pre-reset logic, like clearing out the Projection table for a 
+        // do pre-reset logic, like clearing out the Projection table for a
         // clean slate
     }
     ...
@@ -398,7 +448,7 @@ And now, we can reset our `TrackingEventProcessor`:
 
 ```java
 configuration.eventProcessingConfiguration()
-             .eventProcessorByProcessingGroup("projections", 
+             .eventProcessorByProcessingGroup("projections",
                                               TrackingEventProcessor.class)
              .ifPresent(trackingEventProcessor -> {
                  trackingEventProcessor.shutDown();
@@ -415,8 +465,8 @@ configuration.eventProcessingConfiguration()
 
 Prior to Axon release 3.3, you could only reset a `TrackingEventProcessor` to the beginning of the event stream. As of version 3.3 functionality for starting a `TrackingEventProcessor` from a custom position has been introduced. The `TrackingEventProcessorConfiguration` provides the option to set an initial token for a given `TrackingEventProcessor` through the `andInitialTrackingToken(Function<StreamableMessageSource, TrackingToken>)` builder method. As an input parameter for the token builder function, we receive a `StreamableMessageSource` which gives us three possibilities to build a token:
 
-* From the head of event stream: `createHeadToken()`. 
-* From the tail of event stream: `createTailToken()`. 
+* From the head of event stream: `createHeadToken()`.
+* From the tail of event stream: `createTailToken()`.
 * From some point in time: `createTokenAt(Instant)` and `createTokenSince(duration)` - Creates a token that tracks all events after given time. If there is an event exactly at the given time, it will be taken into account too.
 
 Of course, you can completely disregard the `StreamableMessageSource` input parameter and create a token by yourself.
@@ -427,6 +477,6 @@ Below we can see an example of creating a `TrackingEventProcessorConfiguration` 
 TrackingEventProcessorConfiguration
             .forSingleThreadedProcessing()
             .andInitialTrackingToken(
-                streamableMessageSource -> 
+                streamableMessageSource ->
                     streamableMessageSource.createTokenAt("2007-12-03T10:15:30.00Z"));
 ```
