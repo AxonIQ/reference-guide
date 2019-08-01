@@ -131,7 +131,7 @@ public MultiStreamableMessageSource multiStreamSource(EventStore eventSourceA, E
 
 @Autowired
 public void configure(EventProcessingConfigurer config, MultiStreamableMessageSource multiStreamableMessageSource) {
-    config.registerTrackingEventProcessor("NameOfEventProcessor", c-> multiStreamableMessageSource)(conf -> /* c
+    config.registerTrackingEventProcessor("NameOfEventProcessor", c -> multiStreamableMessageSource);
 }
 ```
 
