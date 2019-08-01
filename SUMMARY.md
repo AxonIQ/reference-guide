@@ -65,7 +65,11 @@
     * [Axon Server clustering](operations-guide/setting-up-axon-server/axon-server-clustering.md)
     * [Multi-context](operations-guide/setting-up-axon-server/multi-context.md)
     * [Command-line interface](operations-guide/setting-up-axon-server/command-line.md)
+<<<<<<< HEAD
     * [Tagging](operations-guide/setting-up-axon-server/tagging.md)
+=======
+    * [Development Mode](operations-guide/setting-up-axon-server/development-mode.md)
+>>>>>>> parent of ea0ec56... removing references to dev mode
 * [Production considerations](operations-guide/production-considerations/production-considerations.md)
     * [Versioning Events](operations-guide/production-considerations/versioning-events.md)
     * [Serializers](operations-guide/production-considerations/serializers.md)
