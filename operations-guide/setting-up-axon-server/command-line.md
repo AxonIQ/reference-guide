@@ -75,9 +75,9 @@ _register-user_
 
 Usage: 
 
-    axonserver-cli.jar register-user -u username [-r roles] [-p password]
+    axonserver-cli.jar register-user -u username -r roles [-p password]
     
-Registers a user with specified roles. If no roles are specified, Axon Server registers the user with READ role.
+Registers a user with specified roles. 
 Specify multiple roles by giving a comma separated list (without spaces), e.g. READ,ADMIN.  
 If you do not specify a password with the -p option, the command line interface will prompt you for one.
 
