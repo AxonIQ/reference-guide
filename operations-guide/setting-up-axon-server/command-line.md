@@ -38,8 +38,8 @@ The option -S with the url to the Axon Server is optional, if it is omitted it d
 ## Access control
 
 When running Axon Server with access control enabled, executing commands remotely requires an access token. 
-This has to provided with the -t option. When you run a command on the Axon Server node itself, you don't have to provide 
-a token.
+This has to provided with the -t option. When you run a command on the Axon Server node itself from the directory where 
+Axon Server was started, you don't have to provide a token.
 
 For Axon Server Standard Edition the token is specified in the axonserver.properties file (property name = **axoniq.axonserver.token**).
 In Enterprise Edition you need to register an application with ADMIN role, and you can use that application's token to
@@ -108,7 +108,7 @@ Usage:
     
 Registers an application with specified name. Roles is a comma seperated list of roles per context, where a role per context 
 is the combination of <Role>@<Context>, e.g. READ@context1,WRITE@context2. If you do not specify the context for the role it 
-will be for context **default**.
+will be for all contexts.
 
 If you omit the -T option, Axon Server will generate a unique token for you. Applications must use this token to access
 Axon Server. Note that this token is only returned once, you will not be able to retrieve this token later. 
