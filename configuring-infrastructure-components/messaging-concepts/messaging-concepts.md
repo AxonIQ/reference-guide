@@ -6,7 +6,7 @@ Although all these messages implement the `Message` interface, there is a clear 
 
 All messages contain a payload, meta data and unique identifier. The payload of the message is the functional description of what the message means. The combination of the class name of this object and the data it carries, describe the application's meaning of the message. The metadata allows you to describe the context in which a message is being sent. You can, for example, store tracing information, to allow the origin or cause of messages to be tracked. You can also store information to describe the security context under which a command is being executed.
 
-Watch coding example on YouTube: [The Core API of Axon](https://youtu.be/vnCxjWZrrk0)
+[Axon Coding Tutorial #2: - The Core API](https://youtu.be/vnCxjWZrrk0)
 
 > **Note**
 >

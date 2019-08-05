@@ -5,5 +5,5 @@ Topics like Aggregate modelling, external command handlers, command dispatching 
 For a more in depth explanation of what a Command Model or Aggregate is we recommend reading the 
 [DDD and CQRS Patterns](../../introduction/architecture-overview/ddd-cqrs-patters.md) chapter.
 
-Watch coding example on YouTube: [The Command Model](https://youtu.be/7oy4w5THFEU)
+[Axon Coding Tutorial #3: - The Command Model](https://youtu.be/7oy4w5THFEU)
 
