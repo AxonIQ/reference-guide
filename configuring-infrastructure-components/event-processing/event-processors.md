@@ -422,7 +422,14 @@ Alternatively, you can choose other components that you can find in one of the e
 
 ## Replaying events
 
-In cases when you want to rebuild projections \(view models\), replaying past events comes in handy. The idea is to start from the beginning of time and invoke all event handlers anew. The `TrackingEventProcessor` supports replaying of events. In order to achieve that, you should invoke the `resetTokens()` method on it. It is important to know that the \`tracking event processor must not be in active state when starting a reset. Hence it is wise to shut it down first, then reset it and once this was successful, start it up again. It is possible to define a `@ResetHandler`, so you can do some preparation prior to resetting. Let's take a look how we can accomplish replaying. First, we will see one simple projecting class.
+In cases when you want to rebuild projections \(view models\), replaying past events comes in handy. 
+The idea is to start from the beginning of time and invoke all event handlers anew. 
+The `TrackingEventProcessor` supports replaying of events. 
+In order to achieve that, you should invoke the `resetTokens()` method on it. 
+It is important to know that the \`tracking event processor must not be in active state when starting a reset. 
+Hence it is wise to shut it down first, then reset it and once this was successful, start it up again. 
+It is possible to define a `@ResetHandler`, so you can do some preparation prior to resetting. 
+Let's take a look how we can accomplish replaying. First, we will see one simple projecting class.
 
 ```java
 @ProcessingGroup("projections")
@@ -430,24 +437,24 @@ public class MyProjection {
     ...
     @EventHandler
     public void on(MyEvent event, ReplayStatus replayStatus) {
-                // we can wire a ReplayStatus here so we can see whether this
-                // event is delivered to our handler as a 'REGULAR' event or
+                // We can wire a ReplayStatus here so we can see whether this
+                //  event is delivered to our handler as a 'REGULAR' event or
                 // 'REPLAY' event
-        // do event handling
+        // Perform event handling
     }
 
-    @AllowReplay(false) // it is possible to prevent some handlers
-                        // from being replayed
     @EventHandler
+    @DisallowReplay // It is possible to prevent some handlers
+                            //  From being replayed
     public void on(MyOtherEvent event) {
-        // perform some side effect introducing functionality,
+        // Perform some side effect introducing functionality,
         //  like sending an e-mail, which we do not want to be replayed
     }    
 
     @ResetHandler
     public void onReset() { // will be called before replay starts
-        // do pre-reset logic, like clearing out the Projection table for a
-        // clean slate
+        // Do pre-reset logic, like clearing out the Projection table for a
+        //  clean slate
     }
     ...
 }
@@ -466,9 +473,12 @@ configuration.eventProcessingConfiguration()
              });
 ```
 
-> **Note**
+> **Partial Replays**
 >
-> It is possible to provide a token position to be used when resetting a `TrackingEventProcessor`, thus specifying from which point in the event log it should start replaying the events.
+> It is possible to provide a token position to be used when resetting a `TrackingEventProcessor`,
+>  thus specifying from which point in the event log it should start replaying the events.
+>
+> How to customize a Tracking Token position is described [here](#custom-tracking-token-position).
 
 ## Custom tracking token position
 
