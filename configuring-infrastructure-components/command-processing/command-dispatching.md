@@ -329,17 +329,23 @@ public DisruptorCommandBus commandBus(TransactionManager txManager, AxonConfigur
 {% endtab %}
 {% endtabs %}
 
-## Distributing the command bus
+## Distributing the Command Bus
 
 Sometimes, you want multiple instances of command buses in different JVMs to act as one. 
-Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM while sending back any results.
+Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM
+ while sending back any results.
 
-That is where the concept of 'distributing the command bus' comes in. Default implementation of a distributed command bus is `AxonServerCommandBus`.
+That is where the concept of 'distributing the command bus' comes in. 
+Default implementation of a distributed command bus is `AxonServerCommandBus`.
 It connects to the [AxonIQ AxonServer Server](/introduction/axon-server.md) to submit and receive Commands.
 Unlike the other `CommandBus` implementations, the `AxonServerCommandBus` does not invoke any handlers at all. 
-All it does is form a "bridge" between command bus implementations on different JVM's. 
-By default, [`SimpleCommandBus`](command-dispatching.md#simplecommandbus) is configured to handle incoming commands on this different JVM's. You can configure `AxonServerCommandBus`
-to use other command bus implementations for this purposes: [`AsynchronousCommandBus`](command-dispatching.md#asynchronouscommandbus), [`DisruptorCommandBus`](command-dispatching.md#disruptorcommandbus).
+All it does is form a "bridge" between command bus implementations on different JVM's.
+ 
+By default, [`SimpleCommandBus`](command-dispatching.md#simplecommandbus) is configured to handle incoming commands on
+ the different JVM's. 
+You can configure `AxonServerCommandBus` to use other command bus implementations for this purposes: 
+[`AsynchronousCommandBus`](command-dispatching.md#asynchronouscommandbus), 
+[`DisruptorCommandBus`](command-dispatching.md#disruptorcommandbus).
 
 ### DistributedCommandBus
 
