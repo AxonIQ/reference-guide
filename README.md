@@ -13,6 +13,8 @@ Many of the recent changes to Axon have been made with this use case in mind.
 Please visit [the AxonIQ website](https://axoniq.io/) to learn more about AxonIQ and the Axon community. 
 There, you will find information about Axon training, support options, upcoming and past events.
 
+[Axon Coding Tutorial - full overview](https://www.youtube.com/playlist?list=PL4O1nDpoa5KQkkApGXjKi3rzUW3II5pjm)
+
 ## How to use this guide
 
 With this guide,

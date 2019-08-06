@@ -202,3 +202,5 @@ If we want more granular control over the results, we can use the `initialResult
 5. When we issue a `RedeemCmd`, our event handler in the projection will eventually be triggered,
  which will result in the emission of an update. 
 Since we subscribed with the `println()` method to updates, the update will be printed out once it is received.
+
+[Axon Coding Tutorial #5: - Connecting the UI](https://youtu.be/lxonQnu1txQ)
