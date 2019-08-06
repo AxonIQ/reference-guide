@@ -19,44 +19,60 @@ It is still possible to use a service layer that you can invoke to execute comma
 The method will just need to start a unit of work \(see [Unit of Work](../messaging-concepts/unit-of-work.md)\)
  and perform a commit or rollback on it when the method is finished.
 
-The next sections provide an overview of the tasks related to setting up a command dispatching infrastructure with the Axon Framework.
+The next sections provide an overview of the tasks related to setting up a command dispatching infrastructure with the
+ Axon Framework.
 
 ## The Command Gateway
 
-The command gateway is a convenient interface towards the command dispatching mechanism. 
+The Command Gateway is a convenient interface towards the command dispatching mechanism. 
 While you are not required to use a gateway to dispatch commands, it is generally the easiest option to do so.
 
-There are two ways to use a command gateway. 
+There are two ways to use a Command Gateway. 
 The first is to use the `CommandGateway` interface and the `DefaultCommandGateway` implementation provided by Axon. 
-The command gateway provides a number of methods that allow you to send a command and wait for a result either synchronously,
- with a timeout or asynchronously.
+The command gateway provides a number of methods that allow you to send a command and wait for a result either
+ synchronously, with a timeout or asynchronously.
 
 The other option is perhaps the most flexible of all. 
 You can turn almost any interface into a command gateway using the `CommandGatewayFactory`. 
-This allows you to define your application's interface using strong typing and declaring your own \(checked\) business exceptions. 
+This allows you to define your application's interface using strong typing and declaring your own \(checked\) business
+ exceptions. 
 Axon will automatically generate an implementation for that interface at runtime.
 
-### Configuring the command gateway
+### Configuring the Command Gateway
 
-Both your custom gateway and the one provided by Axon need to be configured with at least access to the command bus. 
-In addition, the command gateway can be configured with a `RetryScheduler`, `CommandDispatchInterceptor`s, and `CommandCallback`s.
+Both your custom Command Gateway and the one provided by Axon need to at least be configured with a Command Bus. 
+In addition, the Command Gateway can be configured with a `RetryScheduler`, `CommandDispatchInterceptor`s,
+ and `CommandCallback`s.
+
+**RetryScheduler**
 
 The `RetryScheduler` is capable of scheduling retries when command execution has failed. 
-The `IntervalRetryScheduler` is an implementation that will retry a given command at set intervals until it succeeds,
- or a maximum number of retries is done. 
 When a command fails due to an exception that is explicitly non-transient, no retries are done at all. 
 Note that the retry scheduler is only invoked when a command fails due to a `RuntimeException`. 
 Checked exceptions are regarded "business exception" and will never trigger a retry. 
 
-`CommandDispatchInterceptor`s allow modification of `CommandMessage`s prior to dispatching them to the command bus. 
-In contrast to `CommandDispatchInterceptor`s configured on the command bus,
- these interceptors are only invoked when messages are sent through this gateway. 
+Currently two implementations exist:
+
+1. The `IntervalRetryScheduler` will retry a given command at set intervals until it succeeds,
+ or a maximum number of retries has taken place.
+2. The `ExponentialBackOffIntervalRetryScheduler` retries failed commands with an exponential back-off interval until
+ it succeeds, or a maximum number of retries has taken place.
+  
+**CommandDispatchInterceptor**
+
+`CommandDispatchInterceptor`s allow modification of `CommandMessage`s prior to dispatching them to the Command Bus. 
+In contrast to `CommandDispatchInterceptor`s configured on the Command Bus,
+ these interceptors are only invoked when messages are sent through this Gateway. 
 The interceptors can be used to attach metadata to a command or do validation, for example.
 
-The `CommandCallback`s are invoked for each command sent. 
-This allows for some generic behavior for all Commands sent through this gateway, regardless of their type.
+**CommandCallback** 
 
-### Creating a custom command gateway
+A `CommandCallback` can be provided to the Command Gateway upon a regular `send`,
+ specifying what to do with the command handling result. 
+It works with the `CommandMessage` and `CommandResultMessage` classes,
+ thus allowing for some generic behavior for all Commands sent through this gateway regardless of their type.
+
+### Creating a custom Command Gateway
 
 Axon allows a custom interface to be used as a command gateway. 
 The behavior of each method declared in the interface is based on the parameter types, return type and declared exception. 
