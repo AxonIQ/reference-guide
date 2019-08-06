@@ -91,16 +91,26 @@ axon.eventhandling.processors[name].source=eventBus
 
 ### Multiple Event Sources
 
-You can configure the event processor to use multiple sources when processing Events. This is useful for compiling metrics across domains or simply when your events are distributed between multiple stores.
+You can configure a Tracking Event Processor to use multiple sources when processing Events. 
+This is useful for compiling metrics across domains or simply when your events are distributed between multiple stores.
 
-Having multiple sources means that there might be a choice of multiple events that the processor could consume in a given instant and therefore you can specify a `Comparator` to choose between them. The default implementation chooses the Event with the oldest timestamp (i.e. the event waiting the longest).
+Having multiple sources means that there might be a choice of multiple events that the processor could consume in a
+ given instant and therefore you can specify a `Comparator` to choose between them. 
+The default implementation chooses the Event with the oldest timestamp (i.e. the event waiting the longest).
 
-Multiple sources also means that the tracking processor's polling interval needs to be divided between the sources in a strategy to optimize event discovery and minimize overhead in establishing costly connections to the data sources. Therefore you can choose which source the majority of the polling is done on using the `longPollingSource()` method in the builder. This ensures one source consumes most of the polling interval whilst also checking intermittently for events on the other sources. The default `longPollingSource` is done on the last configured source.
+Multiple sources also means that the tracking processor's polling interval needs to be divided between the sources in a
+ strategy to optimize event discovery and minimize overhead in establishing costly connections to the data sources. 
+Therefore you can choose which source the majority of the polling is done on using the `longPollingSource()` method in
+ the builder. 
+This ensures one source consumes most of the polling interval whilst also checking intermittently for events on the
+ other sources. 
+The default `longPollingSource` is done on the last configured source.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 
-Create a `MultiStreamableMessageSource` using it's `builder()` and register is as the message source when calling `EventProcessingConfigurer.registerTrackingEventProcessor()`.
+Create a `MultiStreamableMessageSource` using it's `builder()`
+ and register is as the message source when calling `EventProcessingConfigurer.registerTrackingEventProcessor()`.
 
 For example:
 
@@ -109,7 +119,7 @@ MultiStreamableMessageSource.builder()
         .addMessageSource("eventSourceA", eventSourceA)
         .addMessageSource("eventSourceB", eventSourceB)
         .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
-        .trackedEventComparator(priorityA) // where priorityA is a comparator prioritizing events from eventSourceA
+        .trackedEventComparator(priorityA) // Where 'priorityA' is a comparator prioritizing events from eventSourceA
         .build();
 ```
 
@@ -120,13 +130,13 @@ MultiStreamableMessageSource.builder()
 ```java
 
 @Bean
-public MultiStreamableMessageSource multiStreamSource(EventStore eventSourceA, EventStore eventStoreB) {
-  MultiStreamableMessageSource.builder()
-          .addMessageSource("eventSourceA", eventSourceA)
-          .addMessageSource("eventSourceB", eventSourceB)
-          .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
-          .trackedEventComparator(priorityA) // where priorityA is a comparator prioritizing events from eventSourceA
-          .build();
+public MultiStreamableMessageSource multiStreamableMessageSource(EventStore eventSourceA, EventStore eventStoreB) {
+    return MultiStreamableMessageSource.builder()
+            .addMessageSource("eventSourceA", eventSourceA)
+            .addMessageSource("eventSourceB", eventSourceB)
+            .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
+            .trackedEventComparator(priorityA) // Where 'priorityA' is a comparator prioritizing events from eventSourceA
+            .build();
 }
 
 @Autowired
@@ -137,7 +147,6 @@ public void configure(EventProcessingConfigurer config, MultiStreamableMessageSo
 
 {% endtab %}
 {% endtabs %}
-
 
 
 ### Sagas
