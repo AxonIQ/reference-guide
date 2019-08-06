@@ -36,5 +36,23 @@ Additional tags can be specified by adding to the `tags` element (e.g. `axoniq.a
 
 ### Client
 
-On the client side, you can add tags by using the property `axon.tags.computeRegion: europe` and,
- similar to server configuration, additional tags can be added.
+On the client side, there are two approaches through which you can specify tags.
+Either the properties file is expanded (similar to server configuration, also allowing additional tags to be added) in
+ a Spring Boot environment, or a `TagsConfiguration` object is registered to the `Configurer`.
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+Map<String, String> tags = new HashMap();
+// Insert tags
+DefaultConfigurer.defaultConfiguration()
+    .configureTags(config -> new TagsConfiguration(tags));
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```properties
+axon.tags.computeRegion: europe
+```
+{% endtab %}
+{% endtabs %}
