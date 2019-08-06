@@ -62,6 +62,25 @@ There are two flavors of interceptors, the Dispatch and Handler Interceptors
  which intercept a message prior to publishing \(Dispatch Interceptor\) or whilst it is being handled \(Handler Interceptor\). 
 The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled. The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J, but also provides a simple overridable template to set up your own desired logging format. We refer to the command, event and query sections for the specifics on how to configure message interceptors.
 
+### Event Tracker Status
+
+Since [Tracking Tokens](../../configuring-infrastructure-components/event-processing/event-processors.md#token-store) 
+ "track" the progress of a given Tracking Event Processor, 
+ they provide a sensible monitoring hook in any Axon application.
+Such a hook proofs it's usefulness when we for example want to rebuild our view model and we want to check when the
+ Processor is caught up with all the events. 
+ 
+To that end, the `TrackingEventProcessor` exposes the `processingStatus()` method,
+ which returns a map where the key is the segment identifier, and the value is an "Event Tracker Status".
+The Event Tracker Status exposes a couple of metrics:
+
+ * The `Segment` it reflects the status of.
+ * A Boolean specifying whether it is caught up with the Event Stream.
+ * A Boolean specifying whether the given Segment is replaying.
+ * The `TrackingToken` of the given Segment.
+ * A Boolean specifying whether the Segment is in an error state.
+ * An optional `Throwable` if the Event Tracker reached an error state.
+
 ## Metrics
 
 Interesting metrics in a message centric system come in several forms and flavors, like count, capacity and latency for example.  
