@@ -1,6 +1,7 @@
 # External Command Handlers
 
-Command handling functions are most often directly placed on the Aggregate (as described in more detail [here](aggregate.md)).
+Command handling functions are most often directly placed on the Aggregate
+ (as described in more detail [here](aggregate.md)).
 There are situations however where it is not possible nor desired to route a command directly to an Aggregate instance. 
 Message handling functions, like Command Handlers, can however be pleased on any object.
 It is thus possible to instantiate a 'Command Handling Object'.
@@ -34,7 +35,8 @@ Instead, we load the `GiftCard` manually and execute the desired method on it:
 1. The `Repository` for the `GiftCard` Aggregate, used for retrieval and storage of an Aggregate. 
 If `@CommandHandler` methods are placed directly on the Aggregate,
  Axon will automatically know to call the `Repository` to load a given instance. 
-It is thus _not_ mandatory to directly access the `Repository`, but a [design choice](../../introduction/architecture-overview/architecture-overview.md#separation-of-business-logic-and-infrastructure).
+It is thus _not_ mandatory to directly access the `Repository`,
+ but a [design choice](../../introduction/architecture-overview/architecture-overview.md#separation-of-business-logic-and-infrastructure).
 2. To load the intended `GiftCard` Aggregate instance, the `Repository#load(String)` method is used. 
 The provided parameter should be the Aggregate identifier.
 3. After that Aggregate has been loaded, the `Aggregate#execute(Consumer)` function should be invoked to perform an operation on the Aggregate.
