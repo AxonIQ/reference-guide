@@ -7,13 +7,14 @@ Especially in a location transparent environment like an Axon application
 ## Monitoring
 
 Monitoring a message centric application will require you to be able to see where your messages are at a given point in time. 
-This translates to being able to track your commands, events and queries from one component to another in an Axon application.
+This translates to being able to track your commands,
+ events and queries from one component to another in an Axon application.
 
 ### Correlation Data
 
 One import aspect in regards to this is tracing a given message. 
 To that end the framework provides the `CorrelationDataProvider`,
- as described briefly [here](../../../configuring-infrastructure-components/messaging-concepts/message-intercepting.md). 
+ as described briefly [here](../../configuring-infrastructure-components/messaging-concepts/message-intercepting.md). 
 This interface and its implementations provide you the means to populate the meta-data of your messages with specific fields,
  like a 'trace-id', 'correlation-id' or any other field you might be interested in.
 
@@ -58,19 +59,22 @@ public class MonitoringConfiguration {
 
 Another good approach to track the flow of messages throughout an Axon application is by setting up the right interceptors in your application.  
 There are two flavors of interceptors, the Dispatch and Handler Interceptors
- \(like discussed [here](../../../configuring-infrastructure-components/messaging-concepts/message-intercepting.md)\), 
+ \(like discussed [here](../../configuring-infrastructure-components/messaging-concepts/message-intercepting.md)\), 
  which intercept a message prior to publishing \(Dispatch Interceptor\) or whilst it is being handled \(Handler Interceptor\). 
-The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled. The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J, but also provides a simple overridable template to set up your own desired logging format. We refer to the command, event and query sections for the specifics on how to configure message interceptors.
+The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled. 
+The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J,
+ but also provides a simple overridable template to set up your own desired logging format. 
+We refer to the command, event and query sections for the specifics on how to configure message interceptors.
 
 ## Metrics
 
 Interesting metrics in a message centric system come in several forms and flavors, like count, capacity and latency for example.  
 The Axon Framework allows you to retrieve such measurements through the use of the `axon-metrics` module.
 With this module you can register a number of `MessageMonitor` implementations to your messaging components,
- like the [`CommandBus`](../../../configuring-infrastructure-components/command-processing/command-dispatching.md#the-command-bus),
- [`EventBus`](../../../configuring-infrastructure-components/event-processing/event-bus-and-event-store.md#event-bus),
- [`QueryBus`](../../../configuring-infrastructure-components/query-processing.md#query-bus)
- and [`EventProcessors`](../../../configuring-infrastructure-components/event-processing/event-processors.md#event-processors).
+ like the [`CommandBus`](../../configuring-infrastructure-components/command-processing/command-dispatching.md#the-command-bus),
+ [`EventBus`](../../configuring-infrastructure-components/event-processing/event-bus-and-event-store.md#event-bus),
+ [`QueryBus`](../../configuring-infrastructure-components/query-processing.md#query-bus)
+ and [`EventProcessors`](../../configuring-infrastructure-components/event-processing/event-processors.md#event-processors).
 
 Internally, the `axon-metrics` module uses [Dropwizard Metrics](https://metrics.dropwizard.io/) for registering the measurements correctly. 
 That thus means that `MessageMonitors` are registered against the Dropwizard `MetricRegistry`. 
@@ -109,7 +113,8 @@ public class MetricsConfiguration {
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```text
-# The default value is `true`. Thus you will have Metrics configured if axon-metrics and io.dropwizard.metrics are on your classpath.
+# The default value is `true`. 
+# Thus you will have Metrics configured if axon-metrics and io.dropwizard.metrics are on your classpath.
 axon.metrics.auto-configuration.enabled=true
 ```
 {% endtab %}

@@ -14,24 +14,24 @@ Visit [Maven Central Repository](https://search.maven.org/search?q=g:org.axonfra
 
 > **Note**
 >
-> The [Axon Spring Boot Starter](#axon-spring-boot-starter) module is the quickest start in to an Axon project as it will retrieve all the required modules/dependencies transitively.
+> The [Axon Spring Boot Starter](maven-dependencies.md#axon-spring-boot-starter) module is the quickest start in to an Axon project as it will retrieve all the required modules/dependencies transitively.
 > Alternatively, you can manually select individual modules for a customized configuration.
 >
 
-| Module                                                | Artifact Id              | Group Id          | Maven Central                                                             |
-| ----------------------------------------------------- | ------------------------ | ----------------- |:-------------------------------------------------------------------------:|
-| [Axon Messaging](#axon-messaging)                     | axon-messaging           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-messaging)           |
-| [Axon Modeling](#axon-modeling)                       | axon-modelling           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-modelling)           |
-| [Axon Event Sourcing](#axon-event sourcing)            | axon-eventsourcing       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
-| [Axon Configuration](#axon-configuration)             | axon-configuration       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-configuration)       |
-| [Axon Test](#axon-test)                               | axon-test                | org.axonframework | [available](https://search.maven.org/search?q=a:axon-test)                |
-| [Axon Server Connector](#axon-server-connector)       | axon-server-connector    | org.axonframework | [available](https://search.maven.org/search?q=a:axon-server-connector)    |
-| [Axon Spring](#axon-spring)                           | axon-spring              | org.axonframework | [available](https://search.maven.org/search?q=a:axon-spring)              |
-| [Axon Spring Boot Starter](#axon-spring-boot-starter) | axon-spring-boot-starter | org.axonframework | [available](https://search.maven.org/search?q=a:axon-spring-boot-starter) |
-| [Axon Disruptor](#axon-disruptor)                     | axon-disruptor           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-disruptor)           |
-| [Axon Metrics](#axon-metrics)                         | axon-metrics             | org.axonframework | [available](https://search.maven.org/search?q=a:axon-metrics)             |
-| [Axon CDI](#axon-cdi)                                 | axon-cdi                 | org.axonframework | [available](https://search.maven.org/search?q=a:axon-cdi)                 |
-| [Axon Legacy](#axon-legacy)                           | axon-legacy              | org.axonframework | [available](https://search.maven.org/search?q=a:axon-legacy)              |
+| Module                                                                     | Artifact Id              | Group Id          | Maven Central                                                             |
+| -------------------------------------------------------------------------- | ------------------------ | ----------------- |:-------------------------------------------------------------------------:|
+| [Axon Messaging](maven-dependencies.md#axon-messaging)                     | axon-messaging           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-messaging)           |
+| [Axon Modeling](maven-dependencies.md#axon-modeling)                       | axon-modelling           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-modelling)           |
+| [Axon Event Sourcing](maven-dependencies.md#axon-event sourcing)           | axon-eventsourcing       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
+| [Axon Configuration](maven-dependencies.md#axon-configuration)             | axon-configuration       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-configuration)       |
+| [Axon Test](maven-dependencies.md#axon-test)                               | axon-test                | org.axonframework | [available](https://search.maven.org/search?q=a:axon-test)                |
+| [Axon Server Connector](maven-dependencies.md#axon-server-connector)       | axon-server-connector    | org.axonframework | [available](https://search.maven.org/search?q=a:axon-server-connector)    |
+| [Axon Spring](maven-dependencies.md#axon-spring)                           | axon-spring              | org.axonframework | [available](https://search.maven.org/search?q=a:axon-spring)              |
+| [Axon Spring Boot Starter](maven-dependencies.md#axon-spring-boot-starter) | axon-spring-boot-starter | org.axonframework | [available](https://search.maven.org/search?q=a:axon-spring-boot-starter) |
+| [Axon Disruptor](maven-dependencies.md#axon-disruptor)                     | axon-disruptor           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-disruptor)           |
+| [Axon Metrics](maven-dependencies.md#axon-metrics)                         | axon-metrics             | org.axonframework | [available](https://search.maven.org/search?q=a:axon-metrics)             |
+| [Axon CDI](maven-dependencies.md#axon-cdi)                                 | axon-cdi                 | org.axonframework | [available](https://search.maven.org/search?q=a:axon-cdi)                 |
+| [Axon Legacy](maven-dependencies.md#axon-legacy)                           | axon-legacy              | org.axonframework | [available](https://search.maven.org/search?q=a:axon-legacy)              |
 
 ### Axon Messaging 
 This module contains all necessary components and building blocks to support command, event and query messaging.
@@ -80,17 +80,17 @@ They address distribution concerns of Axon Framework towards non-Axon Server sol
 The maven `groupId` of these extensions starts with `org.axonframework.extensions.*`. 
 Visit [Maven Central Repository](https://search.maven.org/search?q=axonframework%20extensions) to copy coordinates for the version you need.
 
-| Module                                                                     | Artifact Id                          | Group Id                                 | Maven Central                                                                         |
-| -------------------------------------------------------------------------- | ------------------------------------ | ---------------------------------------- |:-------------------------------------------------------------------------------------:|
-| [Axon AMQP](#axon-amqp )                                                   | axon-amqp                            | org.axonframework.extensions.amqp        | [available](https://search.maven.org/search?q=a:axon-amqp)                            |
-| [Axon AMQP Spring Boot Starter](#axon-amqp-spring-boot-starter)            | axon-amqp-spring-boot-starter        | org.axonframework.extensions.amqp        | [available](https://search.maven.org/search?q=a:axon-amqp-spring-boot-starter)        |
-| [Axon Kafka](#axon-kafka)                                                  | axon-kafka                           | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka)                           |
-| [Axon Kafka Spring Boot Starter](#axon-kafka-spring-boot-starter)          | axon-kafka-spring-boot-starter       | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka-spring-boot-starter)       |
-| [Axon Spring Cloud](#axon-spring cloud)                                    | axon-springcloud                     | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud)                     |
-| [Axon Spring Cloud Spring Boot Starter](#axon-jgroups-spring-boot-starter) | axon-springcloud-spring-boot-starter | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud-spring-boot-starter) |
-| [Axon JGroups](#axon-jgroups)                                              | axon-jgroups                         | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups)                         |
-| [Axon JGroups Spring Boot Starter](#axon-jgroups-spring-boot-starter)      | axon-jgroups-spring-boot-starter     | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups-spring-boot-starter)     |
-| [Axon Mongo](#axon-mongo)                                                  | axon-mongo                           | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo)                           |
+| Module                                                                                          | Artifact Id                          | Group Id                                 | Maven Central                                                                         |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------ | ---------------------------------------- |:-------------------------------------------------------------------------------------:|
+| [Axon AMQP](maven-dependencies.md#axon-amqp)                                                    | axon-amqp                            | org.axonframework.extensions.amqp        | [available](https://search.maven.org/search?q=a:axon-amqp)                            |
+| [Axon AMQP Spring Boot Starter](maven-dependencies.md#axon-amqp-spring-boot-starter)            | axon-amqp-spring-boot-starter        | org.axonframework.extensions.amqp        | [available](https://search.maven.org/search?q=a:axon-amqp-spring-boot-starter)        |
+| [Axon Kafka](maven-dependencies.md#axon-kafka)                                                  | axon-kafka                           | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka)                           |
+| [Axon Kafka Spring Boot Starter](maven-dependencies.md#axon-kafka-spring-boot-starter)          | axon-kafka-spring-boot-starter       | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka-spring-boot-starter)       |
+| [Axon Spring Cloud](maven-dependencies.md#axon-spring cloud)                                    | axon-springcloud                     | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud)                     |
+| [Axon Spring Cloud Spring Boot Starter](maven-dependencies.md#axon-jgroups-spring-boot-starter) | axon-springcloud-spring-boot-starter | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud-spring-boot-starter) |
+| [Axon JGroups](maven-dependencies.md#axon-jgroups)                                              | axon-jgroups                         | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups)                         |
+| [Axon JGroups Spring Boot Starter](maven-dependencies.md#axon-jgroups-spring-boot-starter)      | axon-jgroups-spring-boot-starter     | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups-spring-boot-starter)     |
+| [Axon Mongo](maven-dependencies.md#axon-mongo)                                                  | axon-mongo                           | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo)                           |
 
 
 ### Axon AMQP
