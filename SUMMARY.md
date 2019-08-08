@@ -64,7 +64,7 @@
     * [Access Control](operations-guide/setting-up-axon-server/access-control.md)
     * [Axon Server clustering](operations-guide/setting-up-axon-server/axon-server-clustering.md)
     * [Multi-context](operations-guide/setting-up-axon-server/multi-context.md)
-    * [Command-line interface](operations-guide/setting-up-axon-server/command-line.md)
+    * [Command-line Interface](operations-guide/setting-up-axon-server/command-line.md)
 * [Production Considerations](operations-guide/production-considerations/production-considerations.md)
     * [Versioning Events](operations-guide/production-considerations/versioning-events.md)
     * [Serializers](operations-guide/production-considerations/serializers.md)
