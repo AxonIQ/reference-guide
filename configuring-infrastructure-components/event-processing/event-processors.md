@@ -586,7 +586,7 @@ configuration.eventProcessingConfiguration()
 > It is possible to provide a token position to be used when resetting a `TrackingEventProcessor`,
 >  thus specifying from which point in the event log it should start replaying the events.
 >
-> How to customize a Tracking Token position is described [here](#custom-tracking-token-position).
+> How to customize a Tracking Token position is described [here](event-processors.md#custom-tracking-token-position).
 
 ## Custom tracking token position
 
