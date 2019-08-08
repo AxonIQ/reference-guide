@@ -1,4 +1,4 @@
-# Conflict resolution
+# Conflict Resolution
 
 One of the major advantages of being explicit about the meaning of changes,
  is that you can detect conflicting changes with more precision. 

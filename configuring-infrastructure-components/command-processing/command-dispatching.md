@@ -1,4 +1,4 @@
-# Command dispatching
+# Command Dispatching
 
 Command dispatching, as exemplified in the [Dispatching Commands](../../implementing-domain-logic/command-handling/dispatching-commands.md) page,
  has a number of advantages.

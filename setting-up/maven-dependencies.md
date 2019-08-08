@@ -1,4 +1,4 @@
-# Maven/Gradle dependencies
+# Maven/Gradle Dependencies
 
 Axon Framework consists of a number of modules that provide specific capabilities. 
 Depending on the exact needs of your project, you will need to include one or more of these modules.
