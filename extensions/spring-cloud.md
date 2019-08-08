@@ -2,7 +2,7 @@
 
 Spring Cloud is an alternative approach to distributing command bus (commands), besides Axon Server which is default.
 
-The Spring Cloud connector setup uses the service registration and discovery mechanism described by [Spring Cloud](http://projects.spring.io/spring-cloud/) for distributing the command bus. You are thus left free to choose which Spring Cloud implementation to use to distribute your commands. An example implementations is the Eureka Discovery/Eureka Server combination.
+The Spring Cloud connector setup uses the service registration and discovery mechanism described by [Spring Cloud](https://spring.io/projects/spring-cloud) for distributing the command bus. You are thus left free to choose which Spring Cloud implementation to use to distribute your commands. An example implementations is the Eureka Discovery/Eureka Server combination.
 
 To use the Spring Cloud components from Axon, make sure the `axon-springcloud` module is available on the classpath.
 

@@ -5,7 +5,8 @@ Although, creating such a layer is fairly straight-forward,
  using Axon Framework for this part of the application has a number of benefits, 
  such as the reuse of features such as interceptors and message monitoring.
 
-The next sections provide an overview of the tasks related to setting up a query dispatching infrastructure with the Axon Framework.
+The next sections provide an overview of the tasks related to setting up a query dispatching infrastructure with the
+ Axon Framework.
 
 Axon Framework makes a distinction between three types of queries:
 
@@ -22,9 +23,10 @@ While you are not required to use a gateway to dispatch queries,
  it is generally the easiest option to do so. 
 
 Axon provides a `QueryGateway` interface and the `DefaultQueryGateway` implementation. 
-The query gateway provides a number of methods that allow you to send a query and wait for a single or multiple results either synchronously,
- with a timeout or asynchronously. 
-The query gateway needs to be configured with access to the query bus and a \(possibly empty\) list of `QueryDispatchInterceptor`s.
+The query gateway provides a number of methods that allow you to send a query and wait for a single 
+ or multiple results either synchronously, with a timeout or asynchronously. 
+The query gateway needs to be configured with access to the query bus and a
+ \(possibly empty\) list of `QueryDispatchInterceptor`s.
 
 ## Query bus
 
@@ -36,9 +38,11 @@ When dispatching queries, the client must indicate whether it wants a response f
 
 ### AxonServerQueryBus
 
-Axon provides a query bus out of the box, the `AxonServerQueryBus`. It connects to the [AxonIQ AxonServer Server](/introduction/axon-server.md) to send and receive Queries.
+Axon provides a query bus out of the box, the `AxonServerQueryBus`. 
+It connects to the [AxonIQ AxonServer Server](../introduction/axon-server.md) to send and receive Queries.
 
-`AxonServerQueryBus` is a 'distributed query bus'. It is using [`SimpleQueryBus`](query-processing.md#simplequerybus) to handle incoming queries on different JVM's by default.
+`AxonServerQueryBus` is a 'distributed query bus'. It is using [`SimpleQueryBus`](query-processing.md#simplequerybus)
+ to handle incoming queries on different JVM's by default.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -59,16 +63,21 @@ Declare dependencies:
 ```
 Configure your application:
 ```java
-// Returns a Configurer instance with default components configured. `AxonServerQueryBus` is configured as Query Bus by default.
+// Returns a Configurer instance with default components configured. 
+// `AxonServerQueryBus` is configured as Query Bus by default.
 Configurer configurer = DefaultConfigurer.defaultConfiguration();
 ```
-> NOTE: If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' query bus option: `SimpleQueryBus` (see [below](query-processing.md#simplequerybus))
+> **Excluding the Axon Server Connector**
+> 
+> If you exclude the `axon-server-connector` dependency you will fallback to 'non-axon-server' query bus option,
+>  the `SimpleQueryBus` (see [below](query-processing.md#simplequerybus))
 
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
 
-By simply declaring dependency to `axon-spring-boot-starter`, Axon will automatically configure the Axon Server Query Bus:
+By simply declaring dependency to `axon-spring-boot-starter`,
+ Axon will automatically configure the Axon Server Query Bus:
 ```
 <!--somewhere in the POM file-->
 <dependency>
@@ -83,14 +92,20 @@ By simply declaring dependency to `axon-spring-boot-starter`, Axon will automati
 
 ### SimpleQueryBus
 
-The `SimpleQueryBus` does straightforward processing of queries in the thread that dispatches them. To configure `SimpleQueryBus` (instead of `AxonServerQueryBus`):
+The `SimpleQueryBus` does straightforward processing of queries in the thread that dispatches them. 
+To configure `SimpleQueryBus` (instead of `AxonServerQueryBus`):
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 
 ```java
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
-            .configureQueryBus(c -> SimpleQueryBus.builder().transactionManager(c.getComponent(TransactionManager.class)).messageMonitor(c.messageMonitor(SimpleQueryBus.class, "queryBus")).build());
+    .configureQueryBus(
+        c -> SimpleQueryBus.builder()
+            .transactionManager(c.getComponent(TransactionManager.class))
+            .messageMonitor(c.messageMonitor(SimpleQueryBus.class, "queryBus"))
+            .build()
+    );
  ```
 {% endtab %}
 
@@ -110,7 +125,10 @@ public SimpleQueryBus queryBus(AxonConfiguration axonConfiguration, TransactionM
 }
 
 ```
-> NOTE: If you exclude `axon-server-connector` dependency from `axon-spring-boot-starter` you will have `SimpleQueryBus` component auto-configured and loaded into Spring Application Context by default, and you don't need to explicitly define this component in you Spring configuration.
+> **Excluding the Axon Server Connector**
+>
+> If you exclude the `axon-server-connector` dependency from the `axon-spring-boot-starter` dependency, 
+>  the `SimpleQueryBus` will be auto-configured for you. 
 
 {% endtab %}
 {% endtabs %}

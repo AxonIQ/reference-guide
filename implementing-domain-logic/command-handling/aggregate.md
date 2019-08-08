@@ -1,12 +1,13 @@
 # Aggregate
 
 This chapter will cover the basics on how to implement an ['Aggregate'](../../introduction/architecture-overview/ddd-cqrs-concepts.md#aggregates). 
-For more details on what an Aggregate is read the [DDD and CQRS Patterns](../../introduction/architecture-overview/ddd-cqrs-concepts.md) page.
+For more details on what an Aggregate is read the [DDD and CQRS concepts](../../introduction/architecture-overview/ddd-cqrs-concepts.md) page.
 
 ## Basic Aggregate Structure
 
 An Aggregate is a regular object, which contains state and methods to alter that state.
-When creating the Aggregate object, you are effectively creating the 'Aggregate Root', typically carrying the name of the entire Aggregate.
+When creating the Aggregate object, you are effectively creating the 'Aggregate Root',
+ typically carrying the name of the entire Aggregate.
 For the purpose of this description the 'Gift Card' domain will be used, which brings us the `GiftCard` as the Aggregate (Root).
 By default, Axon will configure your Aggregate as an 'Event Sourced' Aggregate (as described
  [here](../../introduction/architecture-overview/architecture-overview.md#event-sourcing)).
@@ -57,12 +58,13 @@ As all the Event Sourcing Handlers combined will form the Aggregate, this is whe
 Note that the Aggregate Identifier **must** be set in the `@EventSourcingHandler` of the very first Event published by the aggregate. 
 This is usually the creation event.
 Lastly, `@EventSourcingHandler` annotated functions are resolved using specific rules.
-These rules are the same for the `@EventHandler` annotated methods, and are thoroughly explained in [Annotated Event Handler](../event-handling/handling-events.md#handling-events).
+These rules are the same for the `@EventHandler` annotated methods,
+ and are thoroughly explained in [Annotated Event Handler](../event-handling/handling-events.md#handling-events).
 5. A no-arg constructor, which is required by Axon.
 Axon Framework uses this constructor to create an empty aggregate instance before initializing it using past Events. 
 Failure to provide this constructor will result in an exception when loading the Aggregate.
 
-> **Note**
+> **Modifiers for Message Handling functions**
 >
 > Event Handler methods may be private,
 >  as long as the security settings of the JVM allow the Axon Framework to change the accessibility of the method. 
@@ -70,7 +72,8 @@ Failure to provide this constructor will result in an exception when loading the
 >  from the internal logic, which processes the events.
 >
 > Most IDE's have an option to ignore "unused private method" warnings for methods with a specific annotation. 
-> Alternatively, you can add an `@SuppressWarnings("UnusedDeclaration")` annotation to the method to make sure you do not accidentally delete an event handler method.
+> Alternatively, you can add an `@SuppressWarnings("UnusedDeclaration")` annotation to the method to make sure you
+>  do not accidentally delete an event handler method.
 
 ## Handling Commands in an Aggregate
 
@@ -196,7 +199,7 @@ Failing to do so means the Aggregate would miss state changes when it is being s
 The [Aggregate Test Fixture](testing.md) will guard from unintentional state changes in Command Handling functions.
 It is thus advised to provide thorough test cases for _any_ Aggregate implementation.
 
-> **Note**
+> **When to handle an Event**
 >
 > The only state an Aggregate requires is the state it needs to make a decision.
 > Handling an Event published by the Aggregate is thus only required if the state change the Event resembles is needed to drive future validation. 
@@ -204,24 +207,28 @@ It is thus advised to provide thorough test cases for _any_ Aggregate implementa
 ## Applying Events from Event Sourcing Handlers
 
 In some cases, especially when the Aggregate structures grows beyond just a couple of Entities,
- it is cleaner to react on events being published in other Entities of the same Aggregate (multi Entity Aggregates are explained in more detail [here](multi-entity-aggregates.md)). 
-However, since the Event Handling methods are also invoked when reconstructing Aggregate state, special precautions must be taken.
+ it is cleaner to react on events being published in other Entities of the same Aggregate 
+ (multi Entity Aggregates are explained in more detail [here](multi-entity-aggregates.md)). 
+However, since the Event Handling methods are also invoked when reconstructing Aggregate state,
+ special precautions must be taken.
 
 It is possible to `apply()` new events inside an Event Sourcing Handler method. 
 This makes it possible for an Entity 'B' to apply an event in reaction to Entity 'A' doing something. 
 Axon will ignore the `apply()`invocation when replaying historic events upon sourcing the given Aggregate. 
 Do note that in the scenario where Event Messages are published from an Event Sourcing Handler,
  the Event of the inner `apply()` invocation is only published to the entities after all entities have received the first event. 
-If more events need to be published, based on the state of an entity after applying an inner event, use `apply(...).andThenApply(...)`.
+If more events need to be published, based on the state of an entity after applying an inner event,
+ use `apply(...).andThenApply(...)`.
 
-> **Note**
+> **Reacting to other Events**
 >
 > An Aggregate __cannot__ handle events from other sources then itself.
 > This is intentional as the Event Sourcing Handlers are used to recreate the state of the Aggregate.
 > For this it only needs it's own events as those represent it's state changes.
 > 
 > To make an Aggregate react on events from other Aggregate instances,
- [Sagas](../complex-business-transactions/complex-business-transactions.md) or [Event Handling Components](../event-handling/event-handling.md) should be leveraged.
+>  [Sagas](../complex-business-transactions/complex-business-transactions.md) or
+>  [Event Handling Components](../event-handling/event-handling.md) should be leveraged.
 
 ## Aggregate Lifecycle Operations
 
@@ -230,7 +237,8 @@ To that end, the `AggregateLifecycle` class in Axon provides a couple of static 
 
 1. `apply(Object)` and `apply(Object, MetaData)`: The `AggregateLifecycle#apply` will publish an Event message on an 
 `EventBus` such that it is known to have originated from the Aggregate executing the operation. 
-There is the possibility to provide just the Event `Object` or both the Event and some specific [MetaData](../../configuring-infrastructure-components/messaging-concepts/message-anatomy.md#metadata).  
+There is the possibility to provide just the Event `Object` or both the Event
+ and some specific [MetaData](../../configuring-infrastructure-components/messaging-concepts/message-anatomy.md#meta-data).  
 2. `createNew(Class, Callable)`: Instantiate a new Aggregate as a result of handling a Command. 
 Read [this](aggregate-creation-from-aggregate.md) for more details on this.
 3. `isLive()`: Check to verify whether the Aggregate is in a 'live' state. 
