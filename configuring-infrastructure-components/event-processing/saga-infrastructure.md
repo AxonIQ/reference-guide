@@ -1,4 +1,4 @@
-# Saga infrastructure
+# Saga Infrastructure
 
 Events need to be redirected to the appropriate saga instances. 
 To do so, some infrastructure classes are required. 

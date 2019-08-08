@@ -1,4 +1,4 @@
-# Query processing
+# Query Processing
 
 Axon Framework offers components for the query handling. 
 Although, creating such a layer is fairly straight-forward, 
