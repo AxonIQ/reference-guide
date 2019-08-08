@@ -79,6 +79,7 @@
 * [JGroups](extensions/jgroups.md)
 * [Spring Cloud](extensions/spring-cloud.md)
 * [Mongo](extensions/mongo.md)
+* [Tracing](extensions/tracing.md)
 
 ## Appendices
 
