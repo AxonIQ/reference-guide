@@ -33,14 +33,11 @@ To that end, the `Configuration` API allows you to define a default, message and
 1. The Event `Serializer` is in charge of de-/serializing event messages. 
 Events are typically stored in an event store for a long period of time. 
 This is the main driver for choosing the event serializer implementation.
-2. The Message `Serializer` is in charge of de-/serializing the command and query messages
- \(used in a distributed application set up\). 
+2. The Message `Serializer` is in charge of de-/serializing the command and query messages \(used in a distributed application set up\). 
 Messages are shared between nodes and typically need to be interoperable and/or compact. 
 Take this into account when choosing the message serializer. 
 3. The default `Serializer` is in charge of de-/serializing the remainder, being the tokens, snapshots and sagas. 
-These objects are generally not shared between different applications,
- and most of these classes aren't expected to have some of the getters and setters that are, for example,
- typically required by Jackson based serializers. 
+These objects are generally not shared between different applications, and most of these classes aren't expected to have some of the getters and setters that are, for example, typically required by Jackson based serializers. 
 A flexible, general purpose serializer like [XStream](http://x-stream.github.io/) is quite suited for this purpose.
 
 By default all three `Serializer` flavors are set to use the `XStreamSerializer`,
