@@ -1,4 +1,4 @@
-# Deadline handling
+# Deadline Handling
 
 It is easy to make a saga take action when something happens. 
 After all, there is an event to notify the saga. 

@@ -1,4 +1,4 @@
-# Message intercepting
+# Message Intercepting
 
 There are two different types of interceptors: dispatch Interceptors and handler Interceptors. 
 Dispatch interceptors are invoked before a message is dispatched to a message handler. 

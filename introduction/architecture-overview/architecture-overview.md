@@ -1,4 +1,4 @@
-# Architecture overview
+# Architecture Overview
 
 Axon based application follow an architectural pattern which is based on the principles of Domain-Driven Design (DDD), 
 Command Query Responsibility Segregation (CQRS) and Event-Driven Architecture (EDA). The combination of these principles
