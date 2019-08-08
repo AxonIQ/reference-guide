@@ -7,7 +7,8 @@ Especially in a location transparent environment like an Axon application
 ## Monitoring
 
 Monitoring a message centric application will require you to be able to see where your messages are at a given point in time. 
-This translates to being able to track your commands, events and queries from one component to another in an Axon application.
+This translates to being able to track your commands,
+ events and queries from one component to another in an Axon application.
 
 ### Correlation Data
 
@@ -60,7 +61,10 @@ Another good approach to track the flow of messages throughout an Axon applicati
 There are two flavors of interceptors, the Dispatch and Handler Interceptors
  \(like discussed [here](../../configuring-infrastructure-components/messaging-concepts/message-intercepting.md)\), 
  which intercept a message prior to publishing \(Dispatch Interceptor\) or whilst it is being handled \(Handler Interceptor\). 
-The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled. The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J, but also provides a simple overridable template to set up your own desired logging format. We refer to the command, event and query sections for the specifics on how to configure message interceptors.
+The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled. 
+The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J,
+ but also provides a simple overridable template to set up your own desired logging format. 
+We refer to the command, event and query sections for the specifics on how to configure message interceptors.
 
 ### Event Tracker Status
 
@@ -128,7 +132,8 @@ public class MetricsConfiguration {
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```text
-# The default value is `true`. Thus you will have Metrics configured if axon-metrics and io.dropwizard.metrics are on your classpath.
+# The default value is `true`. 
+# Thus you will have Metrics configured if axon-metrics and io.dropwizard.metrics are on your classpath.
 axon.metrics.auto-configuration.enabled=true
 ```
 {% endtab %}

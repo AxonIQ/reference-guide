@@ -4,8 +4,8 @@ How to handle query message has been covered in more detail on the [previous pag
 Queries have to be dispatched, just like any type of message, before they can be handled.
 To that end Axon provides two interfaces:
 
-1. The [Query Bus](#the-query-bus-and-query-gateway), and
-2. The [Query Gateway](#the-query-bus-and-query-gateway)
+1. The [Query Bus](dispatching-queries.md#the-query-bus-and-query-gateway), and
+2. The [Query Gateway](dispatching-queries.md#the-query-bus-and-query-gateway)
 
 This page will show how and when to use the query gateway and bus.
 How to configure and specifics on the the query gateway and bus implementations are discussed
@@ -26,15 +26,16 @@ It abstracts certain aspects for you, like the necessity to wrap a Query payload
 Regardless whether you choose to use the `QueryBus` or the `QueryGateway`, both provide several types of queries.
 Axon Framework makes a distinction between three types, being:
 
-1. [Point-to-Point queries](#point-to-point-queries),
-2. [Scatter-Gather queries](#scatter-gather-queries), and
-3. [Subscription queries](#subscription-queries)
+1. [Point-to-Point queries](dispatching-queries.md#point-to-point-queries),
+2. [Scatter-Gather queries](dispatching-queries.md#scatter-gather-queries), and
+3. [Subscription queries](dispatching-queries.md#subscription-queries)
 
 ### Point-to-Point queries
 
 The direct query represents a query request to a single query handler. 
 If no handler is found for a given query, a `NoHandlerForQueryException` is thrown. 
-In case multiple handlers are registered, it is up to the implementation of the Query Bus to decide which handler is actually invoked. 
+In case multiple handlers are registered,
+ it is up to the implementation of the Query Bus to decide which handler is actually invoked. 
 In the listing below we have a simple query handler:
 
 ```java
@@ -70,7 +71,8 @@ When you want responses from all of the query handlers matching your query messa
  the scatter-gather query is the type to use. 
 As a response to that query a stream of results is returned. 
 This stream contains a result from each handler that successfully handled the query, in unspecified order. 
-In case there are no handlers for the query, or all handlers threw an exception while handling the request, the stream is empty.
+In case there are no handlers for the query,
+ or all handlers threw an exception while handling the request, the stream is empty.
 
 In the listing below we have two query handlers:
 
@@ -109,7 +111,7 @@ The subscription query allows a client to get the initial state of the model it 
 In short it is an invocation of the Direct Query with possibility to be updated when the initial state changes. 
 To update a subscription with changes to the model, we will use the `QueryUpdateEmitter` component provided by Axon.
 
-Let's take a look at `CardSummaryProjection` in the [Getting Started](../1-axon-framework/getting-started.md) section:
+Let's take a look at a snippet from the `CardSummaryProjection`:
 
 ```java
 @QueryHandler
@@ -125,7 +127,8 @@ public List<CardSummary> handle(FetchCardSummariesQuery query) {
 
 This query handler will provide us with the list of GiftCard states. 
 Once our GiftCard gets redeemed we would like to update any component which is interested in the updated state of that GiftCard. 
-We'll achieve this by emitting an update using the `QueryUpdateEmitter` component within the event handler function of the `RedeemedEvt` event:
+We'll achieve this by emitting an update using the `QueryUpdateEmitter` component within the event handler function
+ of the `RedeemedEvt` event:
 
 ```java
 @EventHandler
@@ -180,7 +183,8 @@ The type of the update is a single instance of `CardSummary`.
 Do note that the type of the update must match the type of the emission side.
 3. Once the message is created, we are sending it via the `QueryGateway`. 
 We receive a query result which contains two components: one is `initialResult` and the other is `updates`. 
-In order to achieve 'reactiveness' we use [Project Reactor](https://projectreactor.io/)'s `Mono` for `initialResult` and `Flux` for `updates`.
+In order to achieve 'reactiveness' we use [Project Reactor](https://projectreactor.io/)'s `Mono` for `initialResult`
+ and `Flux` for `updates`.
 
 > **Note** 
 >

@@ -15,7 +15,7 @@ To detect conflict, pass a parameter of type `ConflictResolver` to the `@Command
 This interface provides `detectConflicts` methods that allow you to define the types of events
  that are considered a conflict when executing that specific type of command.
 
-> **Note**
+> **Expected Aggregate Version**
 >
 > Note that the `ConflictResolver` will only contain any potentially conflicting events if the Aggregate was loaded with an expected version. 
 > Use `@TargetAggregateVersion` on a field of a command to indicate the expected version of the Aggregate.
