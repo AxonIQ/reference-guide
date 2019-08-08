@@ -44,14 +44,12 @@ So, as per this snippet, Spring Boot will try to apply all the configuration cla
 Whether these configuration classes will be applied or not, it will depend on conditions defined on this classes:
 
  - `AxonServerAutoConfiguration` configures Axon Server as implementation for the Command Bus, Query Bus and Event Store. 
-It will be applied before `AxonAutoConfiguration`,
- and it will be applied only if the `org.axonframework.axonserver.connector.AxonServerConfiguration` class is available in the classpath.
+It will be applied before `AxonAutoConfiguration`, and it will be applied only if the `org.axonframework.axonserver.connector.AxonServerConfiguration` class is available in the classpath.
 
  - `AxonAutoConfiguration` configures a 'non-axon-server' implementation of Command Bus, Query Bus,
  Event Store/Event Bus and other Axon components. 
 These components will be initialized only if they are not in the Spring Application context already, eg. `@ConditionalOnMissingBean(EventBus.class)`. 
 As `AxonAutoConfiguration` will be applied after `AxonServerAutoConfiguration` these Axon components will be in the Spring Application Context already, and therefore Axon Server's implementation of Command Bus, Query Bus and Event Store/Event Bus will win.
-
 
 Axon Spring Boot auto-configuration is not intrusive. 
 It will define only Spring components that you haven't already explicitly defined in the application context. 

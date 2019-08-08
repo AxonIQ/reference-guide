@@ -75,8 +75,7 @@ will generally be represented by a specific Java Class in that application. Whil
 writing an Axon based application, it does come with a few advantages:
 
  * The use of explicit messages makes it easier to transparently distribute message to remote components;
- * The use of explicit messages puts an emphasis on message design, which has proven important in the long-term
-   maintainability of an application;
+ * The use of explicit messages puts an emphasis on message design, which has proven important in the long-term maintainability of an application;
  * Explicit messages can be easily stored for later processing
 
 While Messaging is a core concept in Axon, not all Message are created equal. Different intents require different routing

@@ -33,10 +33,8 @@ In the above snippet we have decided that the `RedeemCardCommand` should no long
 Instead, we load the `GiftCard` manually and execute the desired method on it:
 
 1. The `Repository` for the `GiftCard` Aggregate, used for retrieval and storage of an Aggregate. 
-If `@CommandHandler` methods are placed directly on the Aggregate,
- Axon will automatically know to call the `Repository` to load a given instance. 
-It is thus _not_ mandatory to directly access the `Repository`,
- but a [design choice](../../introduction/architecture-overview/architecture-overview.md#separation-of-business-logic-and-infrastructure).
+If `@CommandHandler` methods are placed directly on the Aggregate, Axon will automatically know to call the `Repository` to load a given instance. 
+It is thus _not_ mandatory to directly access the `Repository`, but a [design choice](../../introduction/architecture-overview/architecture-overview.md#separation-of-business-logic-and-infrastructure).
 2. To load the intended `GiftCard` Aggregate instance, the `Repository#load(String)` method is used. 
 The provided parameter should be the Aggregate identifier.
 3. After that Aggregate has been loaded, the `Aggregate#execute(Consumer)` function should be invoked to perform an operation on the Aggregate.
