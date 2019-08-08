@@ -1,4 +1,4 @@
-# Maven/Gradle dependencies
+# Maven/Gradle Dependencies
 
 Axon Framework consists of a number of modules that provide specific capabilities. Depending on the exact needs of your project, you will need to include one or more of these modules.
 
@@ -22,7 +22,7 @@ Visit [Maven Central Repository](https://search.maven.org/search?q=g:org.axonfra
 | ----------------------------------------------------- | ------------------------ | ----------------- |:-------------------------------------------------------------------------:|
 | [Axon Messaging](#axon-messaging)                     | axon-messaging           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-messaging)           |
 | [Axon Modeling](#axon-modeling)                       | axon-modelling           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-modelling)           |
-| [Axon Event Sourcing](#axon-event sourcing)            | axon-eventsourcing      | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
+| [Axon Event Sourcing](#axon-event-sourcing)           | axon-eventsourcing      | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
 | [Axon Configuration](#axon-configuration)             | axon-configuration       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-configuration)       |
 | [Axon Test](#axon-test)                               | axon-test                | org.axonframework | [available](https://search.maven.org/search?q=a:axon-test)                |
 | [Axon Server Connector](#axon-server-connector)       | axon-server-connector    | org.axonframework | [available](https://search.maven.org/search?q=a:axon-server-connector)    |
@@ -87,7 +87,7 @@ Visit [Maven Central Repository](https://search.maven.org/search?q=axonframework
 | [Axon AMQP Spring Boot Starter](#axon-amqp-spring-boot-starter)            | axon-amqp-spring-boot-starter        | org.axonframework.extensions.amqp        | [available](https://search.maven.org/search?q=a:axon-amqp-spring-boot-starter)        |
 | [Axon Kafka](#axon-kafka)                                                  | axon-kafka                           | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka)                           |
 | [Axon Kafka Spring Boot Starter](#axon-kafka-spring-boot-starter)          | axon-kafka-spring-boot-starter       | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka-spring-boot-starter)       |
-| [Axon Spring Cloud](#axon-spring cloud)                                    | axon-springcloud                     | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud)                     |
+| [Axon Spring Cloud](#axon-spring-cloud)                                    | axon-springcloud                     | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud)                     |
 | [Axon Spring Cloud Spring Boot Starter](#axon-jgroups-spring-boot-starter) | axon-springcloud-spring-boot-starter | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud-spring-boot-starter) |
 | [Axon JGroups](#axon-jgroups)                                              | axon-jgroups                         | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups)                         |
 | [Axon JGroups Spring Boot Starter](#axon-jgroups-spring-boot-starter)      | axon-jgroups-spring-boot-starter     | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups-spring-boot-starter)     |
@@ -96,34 +96,40 @@ Visit [Maven Central Repository](https://search.maven.org/search?q=axonframework
 | [Axon Tracing](#axon-tracing)                                              | axon-tracing                         | org.axonframework.extensions.tracing     | [available](https://search.maven.org/search?q=a:axon-tracing)                             |
 | [Axon Tracing Spring Boot Starter](#axon-tracing-spring-boot-starter)      | axon-tracing-spring-boot-starter     | org.axonframework.extensions.tracing     | [available](https://search.maven.org/search?q=a:axon-tracing-spring-boot-starter)     |
 
-
 ### Axon AMQP
-This module provides components that allow you leverage an AMQP-based message broker as an Event Message distribution mechanism. 
-This allows for guaranteed delivery, even when the Event Handler node is temporarily unavailable.
+This module provides components that allow you leverage an AMQP-based message broker as an Event Message distribution
+ mechanism. 
+This allows for guaranteed-delivery, even when the Event Handler node is temporarily unavailable.
 
 ### Axon AMQP Spring Boot Starter
 This module provides Spring auto-configuration on top of the `axon-amqp` module.
 
 ### Axon Kafka
-This module provides integration with Kafka for event distribution (do note that events are not stored in this scenario).
+This module provides integration with Kafka for event distribution.
+As such it plays a similar role as the [Axon AMQP](maven-dependencies.md#axon-amqp) extension
+ and thus is **not** a replacement Event Storage mechanism.
+[Kafka](https://kafka.apache.org/) is a distributed message streaming platform.
 
 ### Axon Kafka Spring Boot Starter
 This module provides Spring auto-configuration on top of the `axon-kafka` module.
 
 ### Axon Spring Cloud
 This module provides integration with Spring Cloud for command distribution.
+[Spring Cloud](https://spring.io/projects/spring-cloud) provides an API for common distributed system patterns.
 
 ### Axon Spring Cloud Spring Boot Starter
 This module provides Spring auto-configuration on top of the `axon-springcloud` module
 
 ### Axon JGroups 
 This module provides integration with JGroups for command distribution.
+[JGroups](http://www.jgroups.org/) should be regarded as a reliable messaging toolkit. 
 
 ### Axon JGroups Spring Boot Starter
 This module provides Spring auto-configuration on top of the `axon-jgroups` module
 
 ### Axon Mongo
-This module provides event and saga store implementations that store event streams and sagas in a MongoDB database. [MongoDB](https://www.mongodb.com/) is a document based NoSQL database. 
+This module provides event and saga store implementations that store event streams and sagas in a MongoDB database. 
+[MongoDB](https://www.mongodb.com/) is a document based NoSQL database. 
 
 ### Axon CDI
 This module provides support for Contexts and Dependency Injection (CDI) for the Java EE platform.

@@ -1,4 +1,4 @@
-# Supported Parameters for annotated handlers
+# Supported Parameters for Annotated Handlers
 
 By default, `@CommandHandler` annotated methods allow the following parameter types:
 

@@ -1,4 +1,4 @@
-# Command processing
+# Command Processing
 
 In this chapter we will cover the infrastructure components for handling and dispatching commands within an Axon
  application in more detail. 
