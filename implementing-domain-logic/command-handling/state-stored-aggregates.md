@@ -98,7 +98,7 @@ These methods will be invoked when an Event Message is published prior to being 
 9. A no-arg constructor, which is required by JPA. 
 Failure to provide this constructor will result in an exception when loading the Aggregate.
 
-> **Note**
+> **Adjusting state in Command Handlers**
 > 
 > Differently from [Event Sourced Aggregates](aggregate.md#business-logic-and-state-changes),
 >  State-Stored Aggregates can pair the decision making logic and state changes in a Command Handler.

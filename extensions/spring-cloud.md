@@ -2,7 +2,7 @@
 
 Spring Cloud is an alternative approach to distributing command bus (commands), besides Axon Server which is default.
 
-The Spring Cloud connector setup uses the service registration and discovery mechanism described by [Spring Cloud](http://projects.spring.io/spring-cloud/) for distributing the command bus. You are thus left free to choose which Spring Cloud implementation to use to distribute your commands. An example implementations is the Eureka Discovery/Eureka Server combination.
+The Spring Cloud connector setup uses the service registration and discovery mechanism described by [Spring Cloud](https://spring.io/projects/spring-cloud) for distributing the command bus. You are thus left free to choose which Spring Cloud implementation to use to distribute your commands. An example implementations is the Eureka Discovery/Eureka Server combination.
 
 To use the Spring Cloud components from Axon, make sure the `axon-springcloud` module is available on the classpath.
 
@@ -20,13 +20,10 @@ The Spring Cloud connector setup is a combination of the `SpringCloudCommandRout
 
 The `SpringCloudCommandRouter` has to be created by providing the following:
 
-* A "discovery client" of type `DiscoveryClient` - This can be provided by annotating your Spring Boot application with `@EnableDiscoveryClient`,
- which will look for a Spring Cloud implementation on your classpath.
+* A "discovery client" of type `DiscoveryClient` - This can be provided by annotating your Spring Boot application with `@EnableDiscoveryClient`, which will look for a Spring Cloud implementation on your classpath.
 * A "routing strategy" of type `RoutingStrategy` - The `axon-messaging` module currently provides several implementations, but a function call can suffice as well. 
-If you want to route the Commands based on the 'aggregate identifier' for example,
- you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
-* A "local service instance" of type `Registration` - If you're Spring Boot application is annotated with the aforementioned `@EnableDiscoveryClient`,
- it will automatically create a `Registration` bean referencing the instance itself. 
+If you want to route the Commands based on the 'aggregate identifier' for example, you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
+* A "local service instance" of type `Registration` - If you're Spring Boot application is annotated with the aforementioned `@EnableDiscoveryClient`, it will automatically create a `Registration` bean referencing the instance itself. 
 
 Other optional parameters for the `SpringCloudCommandRouter` are:
 

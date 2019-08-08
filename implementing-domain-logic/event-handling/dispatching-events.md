@@ -45,18 +45,19 @@ The `AggregateLifecycle#apply(Object)` will go through a number of steps:
 The `EventMessage` will also receive the `sequenceNumber` from the previous step, as well as the Aggregate it's identifier.
 4. The Event Message will be published from here on. 
 The event will first be send to all the Event Handlers in the Aggregate which are interested.
-This is necessary for [Event Sourcing](../command-handling/aggregate.md#basic-aggregate-structure),
- to update the Aggregate's state accordingly.
+This is necessary for [Event Sourcing](../command-handling/aggregate.md#basic-aggregate-structure), to update the Aggregate's state accordingly.
 5. After the Aggregate itself has handled the event, it will be published on the `EventBus`. 
 
 > **MetaData in Aggregate Event Messages**
 >
 > The `AggregateLifecycle` also provides a `apply(Object, MetaData)` function.
-> This can be used to attach command-handler specific [MetaData](../../configuring-infrastructure-components/messaging-concepts/message-anatomy.md#metadata).
+> This can be used to attach command-handler specific
+>  [MetaData](../../configuring-infrastructure-components/messaging-concepts/message-anatomy.md#meta-data).
 
 ## Dispatching events from a Non-Aggregate
 
-In the vast majority of cases, the [Aggregates](#dispatching-events-from-an-aggregate) will publish events by applying them. 
+In the vast majority of cases,
+ the [Aggregates](dispatching-events.md#dispatching-events-from-an-aggregate) will publish events by applying them. 
 However, occasionally, it is necessary to publish an event (possibly from within another component),
  directly to the Event Gateway:
 

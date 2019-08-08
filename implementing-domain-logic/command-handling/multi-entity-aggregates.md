@@ -4,7 +4,7 @@ Complex business logic often requires more than what an Aggregate with only an A
 In that case, it is important that the complexity is spread over a number of 'Entities' within the aggregate.
 In this chapter we will discuss the specifics around creating entities in your aggregates and how they can handle message. 
 
-> **Note** 
+> **State among Entities** 
 >
 > A common misinterpretation of the rule that aggregates should not expose state,
 >  is that none of the entities should contain any property accessor methods. 
@@ -12,7 +12,8 @@ In this chapter we will discuss the specifics around creating entities in your a
 > In fact, an aggregate will probably benefit a lot if the entities _within_ the aggregate expose state to the other entities in that same aggregate. 
 > However, is is recommended not to expose the state _outside_ of the aggregate.
 
-Within the 'Gift Card' domain, the `GiftCard` aggregate root was defined in [this](aggregate.md#basic-aggregate-structure) section.
+Within the 'Gift Card' domain, the `GiftCard` aggregate root was defined in
+ [this](aggregate.md#basic-aggregate-structure) section.
 Let's leverage this domain to introduce entities:
 
 ```java
@@ -60,18 +61,15 @@ The snippet above shows two important concepts of multi-entity aggregates:
 1. The field that declares the child entity/entities must be annotated with `@AggregateMember`. 
 This annotation tells Axon that the annotated field contains a class that should be inspected for message handlers.
 This example shows the annotation on an implementation of `Iterable`, but it can also be placed on a single Object or a `Map`.
-In the latter case, the values of the `Map` are expected to contain the entities,
- while the key contains a value that is used as their reference.
+In the latter case, the values of the `Map` are expected to contain the entities, while the key contains a value that is used as their reference.
 2. The `@EntityId` annotation specifying the identifying field of an Entity. 
-Required to be able to route a command (or [event](#event-sourcing-handlers-in-entities)) message to the correct entity instance.
-The property on the payload that will be used to find the entity that the message should be routed to,
- defaults to the name of the `@EntityId` annotated field.
-For example, when annotating the field `transactionId`, the command must define a property with that same name,
- which means either a `transactionId` or a `getTransactionId()` method must be present. 
+Required to be able to route a command (or [event](multi-entity-aggregates.md#event-sourcing-handlers-in-entities)) message to the correct entity instance.
+The property on the payload that will be used to find the entity that the message should be routed to, defaults to the name of the `@EntityId` annotated field.
+For example, when annotating the field `transactionId`, the command must define a property with that same name, which means either a `transactionId` or a `getTransactionId()` method must be present. 
 If the name of the field and the routing property differ, you may provide a value explicitly using `@EntityId(routingKey = "customRoutingProperty")`.
 This annotation is __mandatory__ on the Entity implementation if it will be part of a `Collection` or `Map` of child entities.
 
-> **Note**
+> **Defining the Entity type**
 >
 > The field declaration for both the `Collection` or `Map` should contain proper generics to allow Axon to identify the type of Entity contained in the collection or map. 
 > If it is not possible to add the generics in the declaration 
@@ -140,7 +138,7 @@ If a field value is null at the time an incoming command arrives for that entity
 If there is a `Collection` or `Map` of child entities and none entity can be found which matches the routing key of the command, 
  Axon throws an `IllegalStateException` as apparently the aggregate is not capable of processing the command at that point in time.
 
-> **Note**
+> **Command Handler considerations**
 >
 > Note that each command must have exactly one handler in the aggregate. 
 > This means that you cannot annotate multiple entities \(either root nor not\) with `@CommandHandler` which handle the same command type. 
@@ -251,7 +249,7 @@ public class GiftCard {
 By setting the `eventForwardingMode` to `ForwardMatchingInstances` an Event Message will only be forwarded if it 
 contains a field/getter which matches the name of the `@EntityId` annotated field on the entity.
 This routing behaviour can be further specified with the `routingKey` field on the `@EntityId` annotation,
- mirroring that of [routing commands in entities](#command-handling-in-entities). 
+ mirroring that of [routing commands in entities](multi-entity-aggregates.md#command-handling-in-entities). 
 Other forwarding modes which can be used are `ForwardAll` (the default) and `ForwardNone`,
  which respectively forward all events to all entities or no events at all.
  

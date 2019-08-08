@@ -7,13 +7,14 @@ Especially in a location transparent environment like an Axon application
 ## Monitoring
 
 Monitoring a message centric application will require you to be able to see where your messages are at a given point in time. 
-This translates to being able to track your commands, events and queries from one component to another in an Axon application.
+This translates to being able to track your commands,
+ events and queries from one component to another in an Axon application.
 
 ### Correlation Data
 
 One import aspect in regards to this is tracing a given message. 
 To that end the framework provides the `CorrelationDataProvider`,
- as described briefly [here](../../../configuring-infrastructure-components/messaging-concepts/message-intercepting.md). 
+ as described briefly [here](../../configuring-infrastructure-components/messaging-concepts/message-intercepting.md). 
 This interface and its implementations provide you the means to populate the meta-data of your messages with specific fields,
  like a 'trace-id', 'correlation-id' or any other field you might be interested in.
 
@@ -58,27 +59,25 @@ public class MonitoringConfiguration {
 
 Another good approach to track the flow of messages throughout an Axon application is by setting up the right interceptors in your application.  
 There are two flavors of interceptors, the Dispatch and Handler Interceptors
- \(like discussed [here](../../../configuring-infrastructure-components/messaging-concepts/message-intercepting.md)\), 
+ \(like discussed [here](../../configuring-infrastructure-components/messaging-concepts/message-intercepting.md)\), 
  which intercept a message prior to publishing \(Dispatch Interceptor\) or whilst it is being handled \(Handler Interceptor\). 
-The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled. The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J, but also provides a simple overridable template to set up your own desired logging format. We refer to the command, event and query sections for the specifics on how to configure message interceptors.
+The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled. 
+The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J,
+ but also provides a simple overridable template to set up your own desired logging format. 
+We refer to the command, event and query sections for the specifics on how to configure message interceptors.
 
 ## Metrics
 
 Interesting metrics in a message centric system come in several forms and flavors, like count, capacity and latency for example.  
-The Axon Framework allows you to retrieve such measurements through the use of the `axon-metrics` or `axon-micrometer` module.
-With this module(s) you can register a number of `MessageMonitor` implementations to your messaging components,
- like the [`CommandBus`](../../../configuring-infrastructure-components/command-processing/command-dispatching.md#the-command-bus),
- [`EventBus`](../../../configuring-infrastructure-components/event-processing/event-bus-and-event-store.md#event-bus),
- [`QueryBus`](../../../configuring-infrastructure-components/query-processing.md#query-bus)
- and [`EventProcessors`](../../../configuring-infrastructure-components/event-processing/event-processors.md#event-processors).
+The Axon Framework allows you to retrieve such measurements through the use of the `axon-metrics` module.
+With this module you can register a number of `MessageMonitor` implementations to your messaging components,
+ like the [`CommandBus`](../../configuring-infrastructure-components/command-processing/command-dispatching.md#the-command-bus),
+ [`EventBus`](../../configuring-infrastructure-components/event-processing/event-bus-and-event-store.md#event-bus),
+ [`QueryBus`](../../configuring-infrastructure-components/query-processing.md#query-bus)
+ and [`EventProcessors`](../../configuring-infrastructure-components/event-processing/event-processors.md#event-processors).
 
-`axon-metrics` module uses [Dropwizard Metrics](https://metrics.dropwizard.io/) for registering the measurements correctly. 
+Internally, the `axon-metrics` module uses [Dropwizard Metrics](https://metrics.dropwizard.io/) for registering the measurements correctly. 
 That thus means that `MessageMonitors` are registered against the Dropwizard `MetricRegistry`. 
-
-`axon-micrometer` module uses [Micrometer](https://micrometer.io/) which is a dimensional-first metrics collection facade whose aim is to allow you to time, count, and gauge your code with a vendor neutral API.
-That thus means that `MessageMonitors` are registered against the Micrometer `MeterRegistry`. 
-
-
 The following monitor implementations are currently provided:
 
 1. `CapacityMonitor` - Measure the message capacity by keeping track of the total time spent on message handling compared to total time it is active. 
@@ -90,10 +89,8 @@ This returns a number between 0 and n number of threads, thus if there are 4 thr
 
 You are free to configure any combination of `MessageMonitors` through constructors on your messaging components,
  and even simpler by using the Configuration API. 
-The `GlobalMetricRegistry` contained in the `axon-metrics` and `axon-micrometer` modules provides a set of sensible defaults per type of messaging component. 
+The `GlobalMetricRegistry` contained in the `axon-metrics` module provides a set of sensible defaults per type of messaging component. 
 The following example shows you how to configure default metrics for your message handling components:
-
-### Dropwizard
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -116,16 +113,15 @@ public class MetricsConfiguration {
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```text
-# The default value is `true`. Thus you will have Metrics configured if `axon-metrics` and `io.dropwizard.metrics` are on your classpath.
+# The default value is `true`. 
+# Thus you will have Metrics configured if axon-metrics and io.dropwizard.metrics are on your classpath.
 axon.metrics.auto-configuration.enabled=true
 ```
 {% endtab %}
 {% endtabs %}
 
-### Micrometer
+If you want to have more specific metrics on a message handling component like the `EventBus`, you can do the following:
 
-{% tabs %}
-{% tab title="Axon Configuration API" %}
 ```java
 public class MetricsConfiguration {
 
@@ -133,79 +129,24 @@ public class MetricsConfiguration {
         return DefaultConfigurer.defaultConfiguration();
     }
 
-    // The MeterRegistry is a class from the Micrometer library
-    public void configureDefaultMetrics(Configurer configurer, MeterRegistry meterRegistry) {
-        GlobalMetricRegistry globalMetricRegistry = new GlobalMetricRegistry(meterRegistry);
-        // We register the default monitors to our messaging components by doing the following
-        globalMetricRegistry.registerWithConfigurer(configurer);
+    public void configureSpecificEventBusMetrics(Configurer configurer, MetricRegistry metricRegistry) { 
+        // For the EventBus we want to count the messages per type of event being published.
+        PayloadTypeMessageMonitorWrapper<MessageCountingMonitor> messageCounterPerType =
+                new PayloadTypeMessageMonitorWrapper<>(MessageCountingMonitor::new);
+        // And we also want to set a message timer per payload type
+        PayloadTypeMessageMonitorWrapper<MessageTimerMonitor> messageTimerPerType =
+                new PayloadTypeMessageMonitorWrapper<>(MessageTimerMonitor::new);
+        // Which we group in a MultiMessageMonitor
+        MultiMessageMonitor<Message<?>> multiMessageMonitor =
+                new MultiMessageMonitor<>(messageCounterPerType, messageTimerPerType);
+        // And configure through the Configuration API to every EventBus component
+        configurer.configureMessageMonitor(EventBus.class, configuration -> multiMessageMonitor);
+
+        // But do not forget to register them to the global MetricRegistry
+        MetricRegistry eventBusRegistry = new MetricRegistry();
+        eventBusRegistry.register("messageCounterPerType", messageCounterPerType);
+        eventBusRegistry.register("messageTimerPerType", messageTimerPerType);
+        metricRegistry.register("eventBus", eventBusRegistry);
     }
-}
-```
-{% endtab %}
-
-{% tab title="Spring Boot AutoConfiguration" %}
-```text
-# The default value is `true`. Thus you will have Metrics configured if `axon-micrometer` and appropriate metric implementation (for example: `micrometer-registry-prometheus`) are on your classpath.
-axon.metrics.auto-configuration.enabled=true
-# Spring Boot metrics enabled
-management.endpoint.metrics.enabled=true
-# Spring Boot (Prometheus) endpoint (`/actuator/prometheus`) enabled and exposed
-management.metrics.export.prometheus.enabled=true
-management.endpoint.prometheus.enabled=true
-
-```
-{% endtab %}
-{% endtabs %}
-
-If you want to have more specific metrics on a message handling component like the `Command Bus`, `EventBus` (or more specifically `TrackingEventProcessor`), you can do the following:
-
-```java
-// Java (Spring Boot Configuration) - Micrometer example
-@Configuration
-public class MetricConfig {
-
-    @Bean
-    public ConfigurerModule metricConfigurer(MeterRegistry meterRegistry){
-        return configurer -> {
-            instrumentEventProcessors(meterRegistry, configurer);
-            instrumentCommandBus(meterRegistry, configurer);
-        };
-    }
-
-    private void instrumentEventProcessors(MeterRegistry meterRegistry, Configurer configurer) {
-        MessageMonitorFactory messageMonitorFactory = (configuration, componentType, componentName) -> {
-            // We want to count the messages per type of event being published.
-            PayloadTypeMessageMonitorWrapper<MessageCountingMonitor> messageCounterPerType =
-                    new PayloadTypeMessageMonitorWrapper<>(monitorName -> MessageCountingMonitor.buildMonitor(monitorName, meterRegistry),
-                                                           clazz ->  componentName + "_" + clazz.getSimpleName());
-            // And we also want to set a message timer per payload type
-            PayloadTypeMessageMonitorWrapper<MessageTimerMonitor> messageTimerPerType =
-                    new PayloadTypeMessageMonitorWrapper<>(monitorName -> MessageTimerMonitor.buildMonitor(monitorName, meterRegistry),
-                                                           clazz ->  componentName + "_" + clazz.getSimpleName());
-            //Which we group in a MultiMessageMonitor
-            return new MultiMessageMonitor<>(messageCounterPerType, messageTimerPerType);
-        };
-        configurer.configureMessageMonitor(TrackingEventProcessor.class, messageMonitorFactory);
-    }
-    
-    private void instrumentCommandBus(MeterRegistry meterRegistry, Configurer configurer) {
-            MessageMonitorFactory messageMonitorFactory = (configuration, componentType, componentName) -> {
-                PayloadTypeMessageMonitorWrapper<MessageCountingMonitor> messageCounterPerType =
-                        new PayloadTypeMessageMonitorWrapper<>(monitorName -> MessageCountingMonitor.buildMonitor(monitorName, meterRegistry),
-                                                               clazz ->  componentName + "_" + clazz.getSimpleName());
-    
-                PayloadTypeMessageMonitorWrapper<MessageTimerMonitor> messageTimerPerType =
-                        new PayloadTypeMessageMonitorWrapper<>(monitorName -> MessageTimerMonitor.buildMonitor(monitorName, meterRegistry),
-                                                               clazz -> componentName + "_" + clazz.getSimpleName());
-    
-                PayloadTypeMessageMonitorWrapper<CapacityMonitor> capacityMonitor =
-                        new PayloadTypeMessageMonitorWrapper<>(monitorName -> CapacityMonitor.buildMonitor(monitorName, meterRegistry),
-                                                               clazz -> componentName + "_" + clazz.getSimpleName());
-    
-                return new MultiMessageMonitor<>(messageCounterPerType, messageTimerPerType, capacityMonitor);
-            };
-            configurer.configureMessageMonitor(CommandBus.class, messageMonitorFactory);
-        }
-
 }
 ```
