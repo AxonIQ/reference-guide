@@ -22,7 +22,7 @@ Visit [Maven Central Repository](https://search.maven.org/search?q=g:org.axonfra
 | ----------------------------------------------------- | ------------------------ | ----------------- |:-------------------------------------------------------------------------:|
 | [Axon Messaging](#axon-messaging)                     | axon-messaging           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-messaging)           |
 | [Axon Modeling](#axon-modeling)                       | axon-modelling           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-modelling)           |
-| [Axon Event Sourcing](#axon-event sourcing)            | axon-eventsourcing       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
+| [Axon Event Sourcing](#axon-event sourcing)            | axon-eventsourcing      | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
 | [Axon Configuration](#axon-configuration)             | axon-configuration       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-configuration)       |
 | [Axon Test](#axon-test)                               | axon-test                | org.axonframework | [available](https://search.maven.org/search?q=a:axon-test)                |
 | [Axon Server Connector](#axon-server-connector)       | axon-server-connector    | org.axonframework | [available](https://search.maven.org/search?q=a:axon-server-connector)    |
@@ -30,6 +30,7 @@ Visit [Maven Central Repository](https://search.maven.org/search?q=g:org.axonfra
 | [Axon Spring Boot Starter](#axon-spring-boot-starter) | axon-spring-boot-starter | org.axonframework | [available](https://search.maven.org/search?q=a:axon-spring-boot-starter) |
 | [Axon Disruptor](#axon-disruptor)                     | axon-disruptor           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-disruptor)           |
 | [Axon Metrics](#axon-metrics)                         | axon-metrics             | org.axonframework | [available](https://search.maven.org/search?q=a:axon-metrics)             |
+| [Axon Micrometer](#axon-micrometer)                   | axon-micrometer          | org.axonframework | [available](https://search.maven.org/search?q=a:axon-micrometer)          |
 | [Axon CDI](#axon-cdi)                                 | axon-cdi                 | org.axonframework | [available](https://search.maven.org/search?q=a:axon-cdi)                 |
 | [Axon Legacy](#axon-legacy)                           | axon-legacy              | org.axonframework | [available](https://search.maven.org/search?q=a:axon-legacy)              |
 
@@ -66,6 +67,10 @@ This module contains a specific CommandBus and Command Handling solution based o
 
 ### Axon Metrics
 This module provides basic implementations based on Coda Hale to collect the monitoring information.
+
+### Axon Micrometer
+This module provides basic implementations based on Micrometer to collect the monitoring information.
+[Micrometer](https://micrometer.io/) is a dimensional-first metrics collection facade whose aim is to allow you to time, count, and gauge your code with a vendor neutral API.
 
 ### Axon CDI
 This module provides support for Contexts and Dependency Injection (CDI) for the Java EE platform.
