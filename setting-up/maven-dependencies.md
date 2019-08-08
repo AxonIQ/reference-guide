@@ -28,7 +28,7 @@ Visit [Maven Central Repository](https://search.maven.org/search?q=g:org.axonfra
 | -------------------------------------------------------------------------- | ------------------------ | ----------------- |:-------------------------------------------------------------------------:|
 | [Axon Messaging](maven-dependencies.md#axon-messaging)                     | axon-messaging           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-messaging)           |
 | [Axon Modeling](maven-dependencies.md#axon-modeling)                       | axon-modelling           | org.axonframework | [available](https://search.maven.org/search?q=a:axon-modelling)           |
-| [Axon Event Sourcing](maven-dependencies.md#axon-event sourcing)           | axon-eventsourcing       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
+| [Axon Event Sourcing](maven-dependencies.md#axon-event-sourcing)           | axon-eventsourcing       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing)       |
 | [Axon Configuration](maven-dependencies.md#axon-configuration)             | axon-configuration       | org.axonframework | [available](https://search.maven.org/search?q=a:axon-configuration)       |
 | [Axon Test](maven-dependencies.md#axon-test)                               | axon-test                | org.axonframework | [available](https://search.maven.org/search?q=a:axon-test)                |
 | [Axon Server Connector](maven-dependencies.md#axon-server-connector)       | axon-server-connector    | org.axonframework | [available](https://search.maven.org/search?q=a:axon-server-connector)    |
