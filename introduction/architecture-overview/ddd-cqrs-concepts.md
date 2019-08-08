@@ -61,8 +61,7 @@ time is a deadline, not the starting point.
 Therefore, there are a number of rules for Models and Contexts:
 
  - Explicitly define the context within which a model applies.
- - Explicitly set boundaries in terms of team organization, usage within specific parts of the application,
-    and physical manifestations such as code bases and database schemas.
+ - Explicitly set boundaries in terms of team organization, usage within specific parts of the application, and physical manifestations such as code bases and database schemas.
  - Keep the model strictly consistent within these bounds, but don’t be distracted or confused by issues outside it.
 
 ### Context Mapping
@@ -72,14 +71,11 @@ It is useful to model this interaction explicitly.
 Domain-Driven Design names a few relationships between contexts, which drive the way they interact: 
 
  * partnership (two contexts/teams combine efforts to build interaction)
- * customer-supplier (two teams in upstream/downstream relationship -
-    upstream can succeed independently of downstream team)
- * conformist (two teams in upstream/downstream relationship - 
-    upstream has no motivation to provide to downstream, and downstream team does not put effort in translation)
+ * customer-supplier (two teams in upstream/downstream relationship - upstream can succeed independently of downstream team)
+ * conformist (two teams in upstream/downstream relationship - upstream has no motivation to provide to downstream, and downstream team does not put effort in translation)
  * shared kernel (explicitly, sharing a part of the model)
  * separate ways (cut them loose)
- * anti-corruption layer (the downstream team builds a layer to prevent upstream design to 'leak' into their own models,
-    by transforming interactions)
+ * anti-corruption layer (the downstream team builds a layer to prevent upstream design to 'leak' into their own models, by transforming interactions)
 
 In Axon based application, the context defines the boundary in which Events carry value. 
 Some events may be valuable only in the context in which they are published, while others may be valuable even outside. 

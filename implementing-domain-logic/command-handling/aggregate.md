@@ -56,10 +56,8 @@ Upon calling this function the provided `Object`s will be published as `EventMes
 4. Using the `@EventSourcingHandler` is what tells the framework that the annotated function should be called when the Aggregate is 'sourced from its events'.
 As all the Event Sourcing Handlers combined will form the Aggregate, this is where all the _state changes_ happen.
 Note that the Aggregate Identifier **must** be set in the `@EventSourcingHandler` of the very first Event published by the aggregate. 
-This is usually the creation event.
-Lastly, `@EventSourcingHandler` annotated functions are resolved using specific rules.
-These rules are the same for the `@EventHandler` annotated methods,
- and are thoroughly explained in [Annotated Event Handler](../event-handling/handling-events.md#handling-events).
+This is usually the creation event. Lastly, `@EventSourcingHandler` annotated functions are resolved using specific rules.
+These rules are the same for the `@EventHandler` annotated methods, and are thoroughly explained in [Annotated Event Handler](../event-handling/handling-events.md#handling-events).
 5. A no-arg constructor, which is required by Axon.
 Axon Framework uses this constructor to create an empty aggregate instance before initializing it using past Events. 
 Failure to provide this constructor will result in an exception when loading the Aggregate.
@@ -235,10 +233,8 @@ If more events need to be published, based on the state of an entity after apply
 There are a couple of operations which are desirable to be performed whilst in the life cycle of an Aggregate.
 To that end, the `AggregateLifecycle` class in Axon provides a couple of static functions:
 
-1. `apply(Object)` and `apply(Object, MetaData)`: The `AggregateLifecycle#apply` will publish an Event message on an 
-`EventBus` such that it is known to have originated from the Aggregate executing the operation. 
-There is the possibility to provide just the Event `Object` or both the Event
- and some specific [MetaData](../../configuring-infrastructure-components/messaging-concepts/message-anatomy.md#meta-data).  
+1. `apply(Object)` and `apply(Object, MetaData)`: The `AggregateLifecycle#apply` will publish an Event message on an `EventBus` such that it is known to have originated from the Aggregate executing the operation. 
+There is the possibility to provide just the Event `Object` or both the Event and some specific [MetaData](../../configuring-infrastructure-components/messaging-concepts/message-anatomy.md#meta-data).  
 2. `createNew(Class, Callable)`: Instantiate a new Aggregate as a result of handling a Command. 
 Read [this](aggregate-creation-from-aggregate.md) for more details on this.
 3. `isLive()`: Check to verify whether the Aggregate is in a 'live' state. 
@@ -246,7 +242,5 @@ An Aggregate is regarded to be 'live' if it has finished replaying historic even
 If the Aggregate is thus in the process of being event sourced, an `AggregateLifecycle.isLive()` call would return `false`.
 Using this `isLive()` method, you can perform activity that should only be done when handling newly generated events.  
 4. `markDeleted()`: Will mark the Aggregate instance calling the function as being 'deleted'.
-Useful if the domain specifies a given Aggregate can be removed/deleted/closed, 
- after which it should no longer be allowed to handle any Commands.
-This function should be called from an `@EventSourcingHandler` annotated function to ensure that 
-_being marked deleted_ is part of that Aggregate's state.
+Useful if the domain specifies a given Aggregate can be removed/deleted/closed, after which it should no longer be allowed to handle any Commands.
+This function should be called from an `@EventSourcingHandler` annotated function to ensure that _being marked deleted_ is part of that Aggregate's state.

@@ -42,10 +42,10 @@ EventMessage eventMessage =
                            .andMetaData(singletonMap("otherKey", "some value")); // 2
 ```
 1. Create an EventMessage with "myPayload" as payload
-2. `withMetaData` replaces any Meta Data in the message with the given Map. In this case 
-   `java.util.Collections.singletonMap()` is used to define a single entry.
-3. `andMetaData` adds the entries from the given Map to the Message's meta data. Existing entries with equal keys are 
-   overwritten.
+2. `withMetaData` replaces any Meta Data in the message with the given Map. 
+    In this case `java.util.Collections.singletonMap()` is used to define a single entry.
+3. `andMetaData` adds the entries from the given Map to the Message's meta data. 
+    Existing entries with equal keys are overwritten.
 
  > *Note - about `MetaData` implementing `Map<String, Object>`*
  >  

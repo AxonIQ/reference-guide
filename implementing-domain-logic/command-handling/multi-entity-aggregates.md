@@ -61,15 +61,11 @@ The snippet above shows two important concepts of multi-entity aggregates:
 1. The field that declares the child entity/entities must be annotated with `@AggregateMember`. 
 This annotation tells Axon that the annotated field contains a class that should be inspected for message handlers.
 This example shows the annotation on an implementation of `Iterable`, but it can also be placed on a single Object or a `Map`.
-In the latter case, the values of the `Map` are expected to contain the entities,
- while the key contains a value that is used as their reference.
+In the latter case, the values of the `Map` are expected to contain the entities, while the key contains a value that is used as their reference.
 2. The `@EntityId` annotation specifying the identifying field of an Entity. 
-Required to be able to route a command
- (or [event](multi-entity-aggregates.md#event-sourcing-handlers-in-entities)) message to the correct entity instance.
-The property on the payload that will be used to find the entity that the message should be routed to,
- defaults to the name of the `@EntityId` annotated field.
-For example, when annotating the field `transactionId`, the command must define a property with that same name,
- which means either a `transactionId` or a `getTransactionId()` method must be present. 
+Required to be able to route a command (or [event](multi-entity-aggregates.md#event-sourcing-handlers-in-entities)) message to the correct entity instance.
+The property on the payload that will be used to find the entity that the message should be routed to, defaults to the name of the `@EntityId` annotated field.
+For example, when annotating the field `transactionId`, the command must define a property with that same name, which means either a `transactionId` or a `getTransactionId()` method must be present. 
 If the name of the field and the routing property differ, you may provide a value explicitly using `@EntityId(routingKey = "customRoutingProperty")`.
 This annotation is __mandatory__ on the Entity implementation if it will be part of a `Collection` or `Map` of child entities.
 

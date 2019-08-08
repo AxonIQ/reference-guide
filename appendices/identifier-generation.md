@@ -12,10 +12,8 @@ Java's `ServiceLoader` mechanism will detect that file and attempt to create an 
 
 There are a few requirements for the `IdentifierFactory`. 
 The implementation must:
-1. Have its fully qualified class name as the contents of the 
- `/META-INF/services/org.axonframework.common.IdentifierFactory` file on the classpath,
+1. Have its fully qualified class name as the contents of the `/META-INF/services/org.axonframework.common.IdentifierFactory` file on the classpath,
 2. have an accessible zero-argument constructor,
 3. extend `IdentifierFactory`,
-4. be accessible by the context classloader of the application or by the classloader that loaded the `IdentifierFactory` class,
- and must
+4. be accessible by the context classloader of the application or by the classloader that loaded the `IdentifierFactory` class, and must
 5. Be thread-safe.

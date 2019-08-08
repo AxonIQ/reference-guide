@@ -42,12 +42,10 @@ The `AggregateLifecycle#apply(Object)` will go through a number of steps:
 1. The current scope of the Aggregate is retrieved.
 2. The last known sequence number of the Aggregate is used to set the sequence number of the event to publish.
 3. The provided Event payload, the `Object`, will be wrapped in an `EventMessage`.
-The `EventMessage` will also receive the `sequenceNumber` from the previous step,
- as well as the Aggregate it's identifier.
+The `EventMessage` will also receive the `sequenceNumber` from the previous step, as well as the Aggregate it's identifier.
 4. The Event Message will be published from here on. 
 The event will first be send to all the Event Handlers in the Aggregate which are interested.
-This is necessary for [Event Sourcing](../command-handling/aggregate.md#basic-aggregate-structure),
- to update the Aggregate's state accordingly.
+This is necessary for [Event Sourcing](../command-handling/aggregate.md#basic-aggregate-structure), to update the Aggregate's state accordingly.
 5. After the Aggregate itself has handled the event, it will be published on the `EventBus`. 
 
 > **MetaData in Aggregate Event Messages**

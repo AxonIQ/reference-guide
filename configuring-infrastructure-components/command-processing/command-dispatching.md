@@ -76,8 +76,7 @@ This is how parameters affect the behavior of the command gateway:
 
 The declared return value of a method will also affect its behavior:
 
-* A `void` return type will cause the method to return immediately,
-   unless there are other indications on the method that one would want to wait, such as a timeout or declared exceptions.
+* A `void` return type will cause the method to return immediately, unless there are other indications on the method that one would want to wait, such as a timeout or declared exceptions.
 * Return types of `Future`, `CompletionStage` and `CompletableFuture` will cause the method to return immediately. 
    You can access the result of the command handler using the `CompletableFuture` instance returned from the method. 
    Exceptions and timeouts declared on the method are ignored.
@@ -87,8 +86,7 @@ The declared return value of a method will also affect its behavior:
 Exceptions have the following effect:
 
 * Any declared checked exception will be thrown if the command handler \(or an interceptor\) threw an exception of that type. 
-   If a checked exception is thrown that has not been declared, it is wrapped in a `CommandExecutionException`,
-    which is a `RuntimeException`.
+   If a checked exception is thrown that has not been declared, it is wrapped in a `CommandExecutionException`, which is a `RuntimeException`.
 * When a timeout occurs, the default behavior is to return `null` from the method. 
    This can be changed by declaring a `TimeoutException`. 
    If this exception is declared, a `TimeoutException` is thrown instead.
@@ -96,18 +94,15 @@ Exceptions have the following effect:
    In that case, the interrupted flag is set back on the thread. 
    By declaring an `InterruptedException` on the method, this behavior is changed to throw that exception instead. 
    The interrupt flag is removed when the exception is thrown, consistent with the java specification.
-* Other runtime exceptions may be declared on the method, 
-   but will not have any effect other than clarification to the API user.
+* Other runtime exceptions may be declared on the method, but will not have any effect other than clarification to the API user.
 
 Finally, there is the possibility to use annotations:
 
-* As specified in the parameter section, 
-   the `@MetaDataValue` annotation on a parameter will have the value of that parameter added as metadata value. 
+* As specified in the parameter section, the `@MetaDataValue` annotation on a parameter will have the value of that parameter added as metadata value. 
    The key of the metadata entry is provided as parameter to the annotation.
 * Methods annotated with `@Timeout` will block at most the indicated amount of time. 
    This annotation is ignored if the method declares timeout parameters.
-* Classes annotated with `@Timeout` will cause all methods declared in that class to block at most the indicated amount of time,
-   unless they are annotated with their own `@Timeout` annotation or specify timeout parameters.
+* Classes annotated with `@Timeout` will cause all methods declared in that class to block at most the indicated amount of time, unless they are annotated with their own `@Timeout` annotation or specify timeout parameters.
 
 ```java
 public interface MyGateway {
@@ -320,8 +315,7 @@ While the `DisruptorCommandBus` easily outperforms the `SimpleCommandBus` by a f
 * Commands should generally not cause a failure that requires a rollback of the unit of work. 
    When a rollback occurs, the `DisruptorCommandBus` cannot guarantee that commands are processed in the order they were dispatched. 
    Furthermore, it requires a retry of a number of other commands, causing unnecessary computations.
-* When creating a new aggregate Instance,
-   commands updating that created instance may not all happen in the exact order as provided. 
+* When creating a new aggregate Instance, commands updating that created instance may not all happen in the exact order as provided. 
    Once the aggregate is created, all commands will be executed exactly in the order they were dispatched. 
    To ensure the order, use a callback on the creating command to wait for the aggregate being created. 
    It shouldn't take more than a few milliseconds.
@@ -347,21 +341,18 @@ Optionally, you can provide a `DisruptorConfiguration` instance,
     Three of the threads are claimed by the processing components of the `DisruptorCommandBus`. 
     Extra threads are used to invoke callbacks and to schedule retries in case an Aggregate's state is detected to be corrupt. 
     Defaults to a `CachedThreadPool` that provides threads from a thread group called `"DisruptorCommandBus"`.
-* `TransactionManager` - defines the transaction manager that should ensure that the storage and publication of events
-    are executed within a transaction.
+* `TransactionManager` - defines the transaction manager that should ensure that the storage and publication of events are executed within a transaction.
 * `InvokerInterceptors` - defines the `CommandHandlerInterceptor`s that are to be used in the invocation process. 
     This is the process that calls the actual Command Handler method.
 * `PublisherInterceptors` - defines the `CommandHandlerInterceptor`s that are to be used in the publication process. 
     This is the process that stores and publishes the generated events.
 * `RollbackConfiguration` - defines on which Exceptions a Unit of Work should be rolled back. 
     Defaults to a configuration that rolls back on unchecked exceptions.
-* `RescheduleCommandsOnCorruptState` - indicates whether Commands that have been executed against an Aggregate that has
-    been corrupted \(e.g. because a Unit of Work was rolled back\) should be rescheduled. 
+* `RescheduleCommandsOnCorruptState` - indicates whether Commands that have been executed against an Aggregate that has been corrupted \(e.g. because a Unit of Work was rolled back\) should be rescheduled. 
    If `false` the callback's `onFailure()` method will be invoked. 
    If `true` \(the default\), the command will be rescheduled instead.
 * `CoolingDownPeriod` - sets the number of seconds to wait to make sure all commands are processed. 
-   During the cooling down period, no new commands are accepted, but existing commands are processed, 
-    and rescheduled when necessary. 
+   During the cooling down period, no new commands are accepted, but existing commands are processed, and rescheduled when necessary. 
    The cooling down period ensures that threads are available for rescheduling the commands and calling callbacks. 
    Defaults to `1000` \(1 second\).
 * `Cache` - sets the cache that stores aggregate instances that have been reconstructed from the Event Store. 
@@ -375,7 +366,6 @@ Optionally, you can provide a `DisruptorConfiguration` instance,
 * `Serializer` - the serializer to perform pre-serialization with. 
    When a serializer is configured, the `DisruptorCommandBus` will wrap all generated events in a `SerializationAware` message. 
    The serialized form of the payload and metadata is attached before they are published to the Event Store.
-
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -454,8 +444,7 @@ There are three possible policies:
 * `RANDOM_KEY` - will return a random value when a \`routing key cannot be resolved from the command message.
    This effectively means that those commands will be routed to a random segment of the command bus.
 * `STATIC_KEY` - Will return a static key \(being "unresolved"\) for unresolved routing keys. 
-   This effectively means that all those commands will be routed to the same segment,
-    as long as the configuration of segments does not change.
+   This effectively means that all those commands will be routed to the same segment, as long as the configuration of segments does not change.
 
 You can choose different flavor of this components that are available in one of the extension modules:
  - [SpringCloud](../../extensions/spring-cloud.md) or 
