@@ -51,7 +51,9 @@
     * [Event Bus & Event Store](configuring-infrastructure-components/event-processing/event-bus-and-event-store.md)
     * [Saga Infrastructure](configuring-infrastructure-components/event-processing/saga-infrastructure.md)
     * [Event Processors](configuring-infrastructure-components/event-processing/event-processors.md)
-* [Query Processing](configuring-infrastructure-components/query-processing.md)
+* [Query Processing](configuring-infrastructure-components/query-processing/query-processing.md)
+    * [Configuring Query Handlers](configuring-infrastructure-components/query-processing/configuring-query-handlers.md)
+    * [Query Dispatching](configuring-infrastructure-components/query-processing/query-dispatching.md)
 * [Deadlines](configuring-infrastructure-components/deadlines.md)
 
 ## Operations Guide 

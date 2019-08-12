@@ -73,7 +73,7 @@ The Axon Framework allows you to retrieve such measurements through the use of t
 With this module you can register a number of `MessageMonitor` implementations to your messaging components,
  like the [`CommandBus`](../../configuring-infrastructure-components/command-processing/command-dispatching.md#the-command-bus),
  [`EventBus`](../../configuring-infrastructure-components/event-processing/event-bus-and-event-store.md#event-bus),
- [`QueryBus`](../../configuring-infrastructure-components/query-processing.md#query-bus)
+ [`QueryBus`](../../configuring-infrastructure-components/query-processing/query-dispatching.md#query-bus)
  and [`EventProcessors`](../../configuring-infrastructure-components/event-processing/event-processors.md#event-processors).
 
 Internally, the `axon-metrics` module uses [Dropwizard Metrics](https://metrics.dropwizard.io/) for registering the measurements correctly. 

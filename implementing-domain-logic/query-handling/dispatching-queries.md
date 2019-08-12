@@ -9,7 +9,7 @@ To that end Axon provides two interfaces:
 
 This page will show how and when to use the query gateway and bus.
 How to configure and specifics on the the query gateway and bus implementations are discussed
- [here](../../configuring-infrastructure-components/query-processing.md)
+ [here](../../configuring-infrastructure-components/query-processing/query-processing.md)
 
 ## The Query Bus and Query Gateway 
 

@@ -1,22 +1,12 @@
-# Query Processing
+# Query Dispatching
 
-Axon Framework offers components for the query handling. 
-Although, creating such a layer is fairly straight-forward, 
- using Axon Framework for this part of the application has a number of benefits, 
- such as the reuse of features such as interceptors and message monitoring.
+When it comes to dispatching queries,
+ as explained in the [Dispatching Queries](../../implementing-domain-logic/query-handling/dispatching-queries.md) section,
+ there are a couple of implementations when it comes to actually sending the query message in question. 
+The next sections provide an overview of the possible implementations,
+ as well as pointing out how to set up a query dispatching infrastructure with Axon.
 
-The next sections provide an overview of the tasks related to setting up a query dispatching infrastructure with the
- Axon Framework.
-
-Axon Framework makes a distinction between three types of queries:
-
-1. [Point-to-Point queries](../implementing-domain-logic/query-handling/dispatching-queries.md#point-to-point-queries),
-2. [Scatter-Gather queries](../implementing-domain-logic/query-handling/dispatching-queries.md#scatter-gather-queries), and
-3. [Subscription queries](../implementing-domain-logic/query-handling/dispatching-queries.md#subscription-queries)
-
-Click the links for specifics on how to implement each type of query.
-
-## Query gateway
+## Query Gateway
 
 The query gateway is a convenient interface towards the query dispatching mechanism. 
 While you are not required to use a gateway to dispatch queries,
@@ -28,7 +18,7 @@ The query gateway provides a number of methods that allow you to send a query an
 The query gateway needs to be configured with access to the query bus and a
  \(possibly empty\) list of `QueryDispatchInterceptor`s.
 
-## Query bus
+## Query Bus
 
 The query bus is the mechanism that dispatches queries to query handlers. 
 Queries are registered using the combination of the query request name and query response type. 
@@ -39,9 +29,9 @@ When dispatching queries, the client must indicate whether it wants a response f
 ### AxonServerQueryBus
 
 Axon provides a query bus out of the box, the `AxonServerQueryBus`. 
-It connects to the [AxonIQ AxonServer Server](../introduction/axon-server.md) to send and receive Queries.
+It connects to the [AxonIQ AxonServer Server](../../introduction/axon-server.md) to send and receive Queries.
 
-`AxonServerQueryBus` is a 'distributed query bus'. It is using [`SimpleQueryBus`](query-processing.md#simplequerybus)
+`AxonServerQueryBus` is a 'distributed query bus'. It is using [`SimpleQueryBus`](query-dispatching.md#simplequerybus)
  to handle incoming queries on different JVM's by default.
 
 {% tabs %}
@@ -70,7 +60,7 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration();
 > **Excluding the Axon Server Connector**
 > 
 > If you exclude the `axon-server-connector` dependency you will fallback to 'non-axon-server' query bus option,
->  the `SimpleQueryBus` (see [below](query-processing.md#simplequerybus))
+>  the `SimpleQueryBus` (see [below](query-dispatching.md#simplequerybus))
 
 {% endtab %}
 
