@@ -109,3 +109,56 @@ public class SubQueryHandler extends QueryHandler {
 In the example above, the handler method of `SubQueryHandler` will be invoked for queries for `QueryB`
  and result `MyResult` the handler methods of `QueryHandler` are invoked for queries for `QueryA` and `QueryC` 
  and result `MyResult`.
+
+## Query Handler return values
+
+Axon allows a multitude of return types for a query handler method,
+ as defined [earlier](handling-queries.md#writing-a-query-handler) on this page.
+You should think of single objects and collections of objects, taking into account wildcards or generics too.
+Below we share a list of all the options which are supported and tested in the framework.
+
+For clarity we make a deviation between single instance and multiple instances of a response type.
+This follows the requirement to specify the response type when [dispatching a query](dispatching-queries.md),
+ which expects the user to state if either a single result or multiple results are desired.
+
+### Supported Single Instance return values
+
+The following list contains supported method return values for a Query Handling function
+ which will react if a query expects a single result:
+ 
+ * A regular object as response type - `QueryResponse` 
+ * A subtype of the response type - `SubTypedQueryResponse`, where `class SubTypedQueryResponse extends QueryResponse`
+ * A generic bound to the response type - `<E extends QueryResponse> E`
+ * A generic with multiple bounds to the response type - `<E extends SubTypedQueryResponse & QueryResponseInterface>`, where `class SubTypedQueryResponse extends QueryResponse`
+ * A`Future` of the response type - `Future<QueryResponse>`
+
+### Supported Multiple Instances return values
+
+The following list contains supported method return values for a Query Handling function
+ which will react if a query expects multiple results:
+   
+ * An array of the response type - `QueryResponse[]`
+ * An array of a subtype of the response type - `SubTypedQueryResponse[]`, where `class SubTypedQueryResponse extends QueryResponse`
+ * An array of a generic bound to the response type - `<E extends QueryResponse> E[]`
+ * An array of a generic with multiple bounds to the response type - `<E extends SubTypedQueryResponse & QueryResponseInterface> E[]`, where `class SubTypedQueryResponse extends QueryResponse`
+ * An `Iterable` of the response type - `List<QueryResponse>`
+ * An `Iterable` of a subtype of the response type - `List<SubTypedQueryResponse>`, where `class SubTypedQueryResponse extends QueryResponse`
+ * An `Iterable` of a generic bound to the response type - `<E extends QueryResponse> List<E>`
+ * An `Iterable` of a generic with multiple bounds to the response type - `<E extends SubTypedQueryResponse & QueryResponseInterface> List<E>`
+ * An `Iterable` of a wildcard with an upper bound to the response type - `List<? extends SubTypedQueryResponse>`
+ * An `Iterable` of a wildcard with an upper bound to a generic bounded to the response type - `<E extends SubTypedQueryResponse> List<? extends E>`
+ * An `Iterable` of a wildcard with an upper bound to a generic with multiple bounds to the response type  - `<E extends SubTypedQueryResponse & QueryResponseInterface> List<? extends E>`
+ * An implementation of an `Iterable` of the response type - `QueryResponseList`, where `class QueryResponseList extends ArrayList<QueryResponse>`
+ * An implementation of an `Iterable` using a bounded generic to the response type - `<E extends QueryResponse> BoundQueryResponseList<E>`, where `class BoundQueryResponseList<E extends QueryResponse> extends ArrayList<E>`
+ * An implementation of an `Iterable` using a multi-bounded generic to the response type - `<E extends QueryResponse, R> MultiBoundQueryResponseList<E, R>`, where `class MultiBoundQueryResponseList<E extends QueryResponse, R> extends ArrayList<E>`
+ * A `Stream` of the response type - `Stream<QueryResponse>`
+ * A `Future` of a list of the response type - `Future<List<QueryResponse>>`
+
+### Unsupported return values
+
+The following list contains method return values which are not supported when queried for:
+   
+ * Primitive types
+ * An array of primitive types
+ * An `Optinal` of a response type
+ * A `Map` of a given key and value type
