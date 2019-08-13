@@ -93,6 +93,8 @@ Visit [Maven Central Repository](https://search.maven.org/search?q=axonframework
 | [Axon JGroups Spring Boot Starter](#axon-jgroups-spring-boot-starter)      | axon-jgroups-spring-boot-starter     | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups-spring-boot-starter)     |
 | [Axon Mongo](#axon-mongo)                                                  | axon-mongo                           | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo)                           |
 | [Axon CDI](maven-dependencies.md#axon-cdi)                                 | axon-cdi                             | org.axonframework.extensions.cdi         | [available](https://search.maven.org/search?q=a:axon-cdi)                             |
+| [Axon Tracing](#axon-tracing)                                              | axon-tracing                         | org.axonframework.extensions.tracing     | [available](https://search.maven.org/search?q=a:axon-tracing)                             |
+| [Axon Tracing Spring Boot Starter](#axon-tracing-spring-boot-starter)      | axon-tracing-spring-boot-starter     | org.axonframework.extensions.tracing     | [available](https://search.maven.org/search?q=a:axon-tracing-spring-boot-starter)     |
 
 ### Axon AMQP
 This module provides components that allow you leverage an AMQP-based message broker as an Event Message distribution
@@ -131,3 +133,10 @@ This module provides event and saga store implementations that store event strea
 
 ### Axon CDI
 This module provides support for Contexts and Dependency Injection (CDI) for the Java EE platform.
+
+### Axon Tracing
+This module provides support for distributed tracing of Axon applications.
+The [Open Tracing](https://opentracing.io/) standard is used to provide the tracing capabilities.
+
+### Axon Tracing Spring Boot Starter
+This module provides Spring auto-configuration on top of the `axon-tracing` module
