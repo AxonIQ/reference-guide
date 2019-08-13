@@ -160,5 +160,5 @@ The following list contains method return values which are not supported when qu
    
  * Primitive types
  * An array of primitive types
- * An `Optinal` of a response type
+ * An `Optional` of a response type
  * A `Map` of a given key and value type
