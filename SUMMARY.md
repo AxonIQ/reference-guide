@@ -27,7 +27,7 @@
 * [Event handling](implementing-domain-logic/event-handling/event-handling.md)
     * [Handling Events](implementing-domain-logic/event-handling/handling-events.md)
     * [Dispatching Events](implementing-domain-logic/event-handling/dispatching-events.md)
-* [Query handling](implementing-domain-logic/query-handling/query-handling.md)
+* [Query Handling](implementing-domain-logic/query-handling/query-handling.md)
     * [Handling Queries](implementing-domain-logic/query-handling/handling-queries.md)
     * [Dispatching Queries](implementing-domain-logic/query-handling/dispatching-queries.md)
 * [Complex Business Transactions](implementing-domain-logic/complex-business-transactions/complex-business-transactions.md)
@@ -51,7 +51,9 @@
     * [Event Bus & Event Store](configuring-infrastructure-components/event-processing/event-bus-and-event-store.md)
     * [Saga Infrastructure](configuring-infrastructure-components/event-processing/saga-infrastructure.md)
     * [Event Processors](configuring-infrastructure-components/event-processing/event-processors.md)
-* [Query Processing](configuring-infrastructure-components/query-processing.md)
+* [Query Processing](configuring-infrastructure-components/query-processing/query-processing.md)
+    * [Configuring Query Handlers](configuring-infrastructure-components/query-processing/configuring-query-handlers.md)
+    * [Query Dispatching](configuring-infrastructure-components/query-processing/query-dispatching.md)
 * [Deadlines](configuring-infrastructure-components/deadlines.md)
 
 ## Operations Guide 
