@@ -175,5 +175,5 @@ The following list contains supported method return values for a Query Handling 
 The following list contains method return values which are not supported when queried for:
    
  * An array of primitive types
- * An `Optinal` of a response type
+ * An `Optional` of a response type
  * A `Map` of a given key and value type
