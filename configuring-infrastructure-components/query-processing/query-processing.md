@@ -18,9 +18,9 @@ To that end the approach to registering `@QueryHandler` annotated methods is dis
 
 > **Query Types**
 > 
-> Axon Framework makes a distinction between three types of queries:
->  1. [Point-to-Point queries](../../implementing-domain-logic/query-handling/dispatching-queries.md#point-to-point-queries),
->  2. [Scatter-Gather queries](../../implementing-domain-logic/query-handling/dispatching-queries.md#scatter-gather-queries), and
->  3. [Subscription queries](../../implementing-domain-logic/query-handling/dispatching-queries.md#subscription-queries)
+> Axon Framework makes a distinction between three types of queries,
+>  namely (1) [Point-to-Point queries](../../implementing-domain-logic/query-handling/dispatching-queries.md#point-to-point-queries),,
+>  (2) [Scatter-Gather queries](../../implementing-domain-logic/query-handling/dispatching-queries.md#scatter-gather-queries), 
+>  and (3) [Subscription queries](../../implementing-domain-logic/query-handling/dispatching-queries.md#subscription-queries).
 > 
 > Click the links for specifics on how to implement each type of query.
