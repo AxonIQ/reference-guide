@@ -126,11 +126,27 @@ This follows the requirement to specify the response type when [dispatching a qu
 The following list contains supported method return values for a Query Handling function
  which will react if a query expects a single result:
  
+ * A primitive type - `int`, `boolean`, etc
  * A regular object as response type - `QueryResponse` 
  * A subtype of the response type - `SubTypedQueryResponse`, where `class SubTypedQueryResponse extends QueryResponse`
  * A generic bound to the response type - `<E extends QueryResponse> E`
  * A generic with multiple bounds to the response type - `<E extends SubTypedQueryResponse & QueryResponseInterface>`, where `class SubTypedQueryResponse extends QueryResponse`
  * A`Future` of the response type - `Future<QueryResponse>`
+
+> **Primitive Return Types**
+> 
+> Among the usual Objects, it is also possible for queries to return primitive data types:
+> 
+> ```java
+> public class QueryHandler {
+>  
+>      @QueryHandler
+>      public float handle(QueryA query) {
+>      }
+>  }
+> ```
+> 
+> Note that the querying party will retrieve a boxed result instead of the primitive type. 
 
 ### Supported Multiple Instances return values
 
@@ -158,7 +174,6 @@ The following list contains supported method return values for a Query Handling 
 
 The following list contains method return values which are not supported when queried for:
    
- * Primitive types
  * An array of primitive types
  * An `Optinal` of a response type
  * A `Map` of a given key and value type
