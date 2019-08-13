@@ -132,6 +132,7 @@ The following list contains supported method return values for a Query Handling 
  * A generic bound to the response type - `<E extends QueryResponse> E`
  * A generic with multiple bounds to the response type - `<E extends SubTypedQueryResponse & QueryResponseInterface>`, where `class SubTypedQueryResponse extends QueryResponse`
  * A`Future` of the response type - `Future<QueryResponse>`
+ * An `Optional` of the response type - `Optional<QueryResponse>`
 
 > **Primitive Return Types**
 > 
@@ -175,5 +176,4 @@ The following list contains supported method return values for a Query Handling 
 The following list contains method return values which are not supported when queried for:
    
  * An array of primitive types
- * An `Optional` of a response type
  * A `Map` of a given key and value type
