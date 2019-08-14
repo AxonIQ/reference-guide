@@ -1,8 +1,9 @@
 # Architecture Overview
 
-Axon based application follow an architectural pattern which is based on the principles of Domain-Driven Design (DDD), 
-Command Query Responsibility Segregation (CQRS) and Event-Driven Architecture (EDA). The combination of these principles
-make Axon based applications more robust and adaptable to accommodate change required by the changes in our business domain. 
+Axon based applications follow an architectural pattern which is based on the principles of Domain-Driven Design (DDD),
+ Command Query Responsibility Segregation (CQRS) and Event-Driven Architecture (EDA). 
+The combination of these principles make Axon based applications more robust
+ and adaptable to accommodate change required by the changes in our business domain. 
 
 Axon finds its use in both large monolithic applications, wherein the internal structure is essential to keep the monolith
 adaptable, as well as microservices, where the distributed nature of the system adds complexity.
@@ -12,9 +13,9 @@ more maintainable, performant and reliable software.
 
 ## Dealing with complexity
 
-Axon originated in an attempt to find a solution to the ever increasing accidental [^1] complexity. Applying concepts
-from Domain-Driven Design will help to a very large degree, even the most well-designed model will not run by itself in
-production.
+Axon originated in an attempt to find a solution to the ever-increasing accidental [^1] complexity. 
+Applying concepts from Domain-Driven Design will help to a very large degree,
+ even the most well-designed model will not run by itself in production.
 
 While Axon is opinionated on how the interaction with a domain model should take place, it tries to avoid any 
 restrictions on the modelling freedom that one has. Even when your opinion differs from that of Axon, there are enough
@@ -74,12 +75,13 @@ Axon strongly leverages the use of explicit message objects. This means that eac
 will generally be represented by a specific Java Class in that application. While this does create a little overhead in
 writing an Axon based application, it does come with a few advantages:
 
- * The use of explicit messages makes it easier to transparently distribute message to remote components;
+ * The use of explicit messages makes it easier to transparently distribute them to remote components;
  * The use of explicit messages puts an emphasis on message design, which has proven important in the long-term maintainability of an application;
  * Explicit messages can be easily stored for later processing
 
-While Messaging is a core concept in Axon, not all Message are created equal. Different intents require different routing
-patterns. For example, for certain message, one would expect a result while others are inherently fire-and-forget. 
+While Messaging is a core concept in Axon, not all Messages are created equal. 
+Different intents require different routing patterns. 
+For example, for certain message, one would expect a result while others are inherently fire-and-forget. 
 
 Axon separates Messages in roughly three categories:
  * **Commands**; express the intent to change the application's state. Commands are routed to a single destination and may provide a response.
@@ -88,14 +90,15 @@ Axon separates Messages in roughly three categories:
 
 ### Location transparency
 
-The biggest benefit of using explicit Messages, is that components that interact with each other don't need to know the
-location of their counterpart. In fact, in most cases, the sending components isn't even interested in the actual 
-destination of a message. We call this "Location Transparency".
+The biggest benefit of using explicit Messages,
+ is that components that interact with each other don't need to know the location of their counterpart. 
+In fact, in most cases, the sending component isn't even interested in the actual destination of a message. 
+We call this "Location Transparency".
 
-Axon takes location transparency further than placing services behind a logical URL. In Axon, a component that send a
-message does not need to specify a destination for that message. Messages are routed based on their stereotype (Command, Query 
-or Event) and the type of payload that they carry. Axon uses an application's capabilities to find a suitable destination
-for a message automatically. 
+Axon takes location transparency further than placing services behind a logical URL. 
+In Axon, a component that sends a message does not need to specify a destination for that message. 
+Messages are routed based on their stereotype (Command, Query or Event) and the type of payload that they carry. 
+Axon uses an application's capabilities to find a suitable destination for a message automatically. 
 
 A system built up of Location Transparent components makes that system highly adaptable. For example, a monolithic system
 built out of well-separated components that communicate solely using Commands, Events and Queries, can be easily split
@@ -103,24 +106,26 @@ into separately deployed units, without any impact on functionality.
 
 ![Microservices Evolution through Location Transparency](/.gitbook/assets/location-transparency.png)
 
-This makes Axon highly suitable for Microservices environments. Logic can be easily moved from, to and in-between deployed 
-components without impact of the functional aspects of the system as a whole. The location of logic can then be primarily
-decided upon based on the non-functional requirements of each individual component of that system. Components that have
-clearly different performance characteristics, or components that require a different release cycle, could, for example,
-be split out of a monolithic application to reduce impact of changes to this component.
+This makes Axon highly suitable for Microservices environments. 
+Logic can be easily moved from, to, and in-between deployed components without impact on the functional aspects of the system as a whole. 
+The location of logic can then be primarily decided upon based on the non-functional requirements
+ of each individual component of that system. 
+Components that have clearly different performance characteristics, or components that require a different release cycle,
+ could, for example, be split out of a monolithic application to reduce the impact of changes to this component.
 
 ### Event Sourcing
 
 In many systems, events are given a lot of extra attention. While Axon clearly acknowledges that not every message is an
 Event (there are also Commands and Queries), there is something special about events.
 
-Events retain value. Where the value of Commands and Queries reduce significantly when they have triggered their 
-side-effects or provided their results, Event represent something that has happened, which may be useful to know for a 
-long time after the occurrence of the event.
+Events retain value. 
+Where the value of Commands and Queries reduce significantly when they have triggered their side-effects or provided their results,
+ Events represent something that has happened, 
+ which may be useful to know for a long time after the occurrence of the event.
 
-Events provide a very good level of granularity for an audit trail. However, for an audit trail to be 100% reliable it should not only be generated as a side-effect, one must also be able to ensure any decisions are correctly reflected
-by the audit trail.
-
+Events provide a very good level of granularity for an audit trail. 
+However, for an audit trail to be 100% reliable it should not only be generated as a side-effect,
+ one must also be able to ensure any decisions are correctly reflected by the audit trail.
 
 Event Sourcing is the process where Events are not only generated as the side-effects of a Command, but also form the source
 of the state. While the current state of the application isn't explicitly stored in the database, it is implicitly stored as a series of events which can be used to derive the current state. On receipt of a Command the state of the application is dynamically derived from the events stored in the database and then decides which side-effects to apply.  
