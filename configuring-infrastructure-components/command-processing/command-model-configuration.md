@@ -1,10 +1,12 @@
 # Command Model Configuration
 
-This chapter will deal with describing the suite of options for the Command Model.
+This page aims to describe the suite of options for configuring the Command Model.
+In doing so
 
 ## Aggregate Configuration
 
-Core concepts within the Command Model are the Aggregates which are implemented.
+Core concepts within the Command Model are the
+ [Aggregates](../../implementing-domain-logic/command-handling/aggregate.md) which are implemented.
 To instantiate a default Aggregate configuration you simply do the following:
 
 {% tabs %}
@@ -44,6 +46,68 @@ public class GiftCard {
 {% endtab %}
 {% endtabs %}
 
+## Registering a Command Handler
+
+Often times the command handler functions are placed directly on the
+ [aggregate](../../implementing-domain-logic/command-handling/aggregate.md).
+When this approach is taken,
+ simply registering the Aggregate as described [above](command-model-configuration.md#aggregate-configuration) is 
+ sufficient for all its command handler methods to be registered too.
+
+[External Command Handlers](../../implementing-domain-logic/command-handling/external-command-handler.md) however do
+ require direct registration as being a command handler, which is shown in the following sample:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+
+Taken the existence of the following Command Handler:
+```java
+public class GiftCardCommandHandler {
+    
+    private final Repository<GiftCard> giftCardRepository;
+    
+    @CommandHandler
+    public void handle(RedeemCardCommand cmd) {
+        giftCardRepository.load(cmd.getCardId())
+                          .execute(giftCard -> giftCard.handle(cmd));
+    }
+    // omitted constructor
+}
+```
+The following is needed to register a `GiftCardCommandHandler` as being a Command Handler: 
+```java
+Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
+    .registerCommandHandler(conf -> new GiftCardCommandHandler());
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+
+When using Spring Boot, simply specifying the Command Handler as a bean is sufficient:
+```java
+@Component
+public class GiftCardCommandHandler {
+    
+    private final Repository<GiftCard> giftCardRepository;
+    
+    @CommandHandler
+    public void handle(RedeemCardCommand cmd) {
+        giftCardRepository.load(cmd.getCardId())
+                          .execute(giftCard -> giftCard.handle(cmd));
+    }
+    // omitted constructor
+}
+```
+{% endtab %}
+{% endtabs %}
+
+> **Duplicate Command Handling Functions**
+>
+> As specified in the [Messaging Concepts](../messaging-concepts/messaging-concepts.md#commands) section,
+>  a command always has exactly one destination.
+> That thus means there should only be a single Command Handler method for a given command.
+> If however a duplicate Command Handler method is registered, the last registration will be kept. 
+
 ## Command Model Repositories
 
 The repository is the mechanism that provides access to aggregates. 
@@ -52,7 +116,8 @@ In CQRS, the repositories only need to be able to find aggregates based on their
 Any other types of queries should be performed against the query database.
 
 In the Axon Framework, all repositories must implement the `Repository` interface. 
-This interface prescribes three methods: `load(identifier, version)`, `load(identifier)` and `newInstance(factoryMethod)`. 
+This interface prescribes three methods:
+ `load(identifier, version)`, `load(identifier)` and `newInstance(factoryMethod)`. 
 The `load` methods allows you to load aggregates from the repository. 
 The optional `version` parameter is used to detect concurrent modifications 
  \(see [Conflict resolution](../../implementing-domain-logic/command-handling/conflict-resolution.md)\). 
@@ -65,12 +130,16 @@ Axon Framework makes a distinction between repositories that save the current st
  and those that store the events of an aggregate 
  \(see [Event Sourcing repositories](command-model-configuration.md#event-sourcing-repositories)\).
 
-Note that the Repository interface does not prescribe a `delete(identifier)` method. Deleting aggregates is done by invoking the `AggregateLifecycle.markDeleted()` method from within an aggregate. Deleting an aggregate is a state migration like any other, with the only difference that it is irreversible in many cases. You should create your own meaningful method on your aggregate which sets the aggregate's state to "deleted". This also allows you to register any events that you would like to have published.
+Note that the Repository interface does not prescribe a `delete(identifier)` method. 
+Deleting aggregates is done by invoking the `AggregateLifecycle.markDeleted()` method from within an aggregate. 
+Deleting an aggregate is a state migration like any other,
+ with the only difference that it is irreversible in many cases. 
+You should create your own meaningful method on your aggregate which sets the aggregate's state to "deleted". 
+This also allows you to register any events that you would like to have published.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
         .configureAggregate(
             AggregateConfigurer.defaultConfiguration(GiftCard.class)
@@ -78,7 +147,6 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration()
                 .eventStore(c.eventStore())
                 .build())
         );
-
 ```
 {% endtab %}
 {% tab title="Spring Boot AutoConfiguration" %}
@@ -88,17 +156,18 @@ For Axon Framework to use this repository for the intended aggregate,
  define the bean name of the repository in the `repository` attribute on `@Aggregate` Annotation. 
 Alternatively, specify the bean name of the repository to be the aggregate's name, \(first character lowercase\),
  suffixed with `Repository`. 
-So on a class of type `MyAggregate`, the default repository name is `myAggregateRepository`. 
-If no bean with that name is found, Axon will define an `EventSourcingRepository` \(which fails if no `EventStore` is available\).
+So on a class of type `GiftCard`, the default repository name is `giftCardRepository`. 
+If no bean with that name is found,
+ Axon will define an `EventSourcingRepository` \(which fails if no `EventStore` is available\).
 
 ```java
 @Bean
-public Repository<MyAggregate> repositoryForMyAggregate(EventStore eventStore) {
+public Repository<GiftCard> repositoryForGiftCard(EventStore eventStore) {
     return EventSourcingRepository.builder(GiftCard.class).eventStore(eventStore).build();
 }
-...
-@Aggregate(repository = "repositoryForMyAggregate")
-public class MyAggregate {...}
+
+@Aggregate(repository = "repositoryForGiftCard")
+public class GiftCard { /*...*/ }
 ```
 
 Note that this requires full configuration of the Repository,
@@ -107,7 +176,7 @@ Note that this requires full configuration of the Repository,
 {% endtab %}
 {% endtabs %}
 
-### Standard repositories
+### Standard Repositories
 
 Standard repositories store the actual state of an aggregate. Upon each change, the new state will overwrite the old. 
 This makes it possible for the query components of the application to use the same information the command component also uses. 
@@ -124,7 +193,7 @@ You can also easily implement your own repository. In that case, it is best to e
 As aggregate wrapper type, it is recommended to use the `AnnotatedAggregate`. 
 See the sources of `GenericJpaRepository` for an example.
 
-### Event Sourcing repositories
+### Event Sourcing Repositories
 
 Aggregate roots that are able to reconstruct their state based on events may
  also be configured to be loaded by an event sourcing repository. 
@@ -158,7 +227,8 @@ The `GenericAggregateFactory` is suitable for most scenarios where aggregates
 ### SpringPrototypeAggregateFactory
 
 Depending on your architectural choices, it might be useful to inject dependencies into your aggregates using Spring. 
-You could, for example, inject query repositories into your aggregate to ensure the existence \(or nonexistence\) of certain values.
+You could, for example,
+ inject query repositories into your aggregate to ensure the existence \(or nonexistence\) of certain values.
 
 To inject dependencies into your aggregates,
  you need to configure a prototype bean of your aggregate root in the Spring context that also defines the
@@ -167,7 +237,7 @@ Instead of creating regular instances of using a constructor,
  it uses the Spring Application Context to instantiate your aggregates. 
 This will also inject any dependencies in your aggregate.
 
-### Implementing your own aggregate factory
+### Implementing your own Aggregate Factory
 
 In some cases, the `GenericAggregateFactory` just doesn't deliver what you need. 
 For example, you could have an abstract aggregate type with multiple implementations for different scenarios
