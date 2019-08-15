@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Quick start](introduction/quick-start.md)
+* [Quick Start](introduction/quick-start.md)
 * [Architecture Overview](introduction/architecture-overview/architecture-overview.md)
     * [DDD & CQRS Concepts](introduction/architecture-overview/ddd-cqrs-concepts.md)
     * [Event-Driven Microservices](introduction/architecture-overview/event-driven-microservices.md)
