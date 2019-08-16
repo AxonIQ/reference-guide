@@ -6,6 +6,7 @@
     * [Event-Driven Microservices](introduction/architecture-overview/event-driven-microservices.md)
 * [Axon Server](introduction/axon-server.md)
 * [Release Notes](introduction/release-notes/release-notes.md)
+    * [Bug Fixes](introduction/release-notes/bug-fixes.md)
 
 ## Setting up
 

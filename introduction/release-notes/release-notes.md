@@ -4,7 +4,8 @@ All the enhancements and features which have been introduced to our major and mi
 This covers improvements to [Axon Framework](https://github.com/AxonFramework/AxonFramework),
  [Axon Server](https://axoniq.io/product-overview/axon-server) 
  and the [Axon Framework Extensions](https://github.com/AxonFramework?utf8=%E2%9C%93&q=extensions&type=&language=),
- since all three follow the same release cadence. 
+ since all three follow the same release cadence.
+For bug fixes per project, we refer to [this](bug-fixes.md) page. 
 
 ## Release 4.0
 
