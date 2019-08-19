@@ -97,7 +97,7 @@ Regardless, the full list can be found
 
 ## Axon Framework Extensions
 
-### Axon JGroups Extension 4.2
+### JGroups 4.2
 
 As marked under [this](https://github.com/AxonFramework/extension-jgroups/issues/4) issue, the command callback will
  not be called if the connection between JGroups peers dies whilst a command is in transit.
@@ -113,7 +113,7 @@ This issue was resolved for release 4.1 [here](https://github.com/AxonFramework/
 The Mongo extension incorrectly used the content type instead of the tokens type upon storing a serialized token.
 The issue was marked and resolved under [#1](https://github.com/AxonFramework/extension-mongo/issues/1).
 
-### Axon Spring Cloud Extension 4.2
+### Spring Cloud 4.2
 
 When using the [Kubernetes](https://spring.io/projects/spring-cloud-kubernetes) implementation of Spring Cloud the
  `SpringCloudCommandRouter` would throw `NullPointerException`s.
