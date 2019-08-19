@@ -1,6 +1,6 @@
 # Introduction
 
-Axon 4.0 was released on October 18, 2018 as the successor to Axon Framework 3.\*. 
+Axon 4.0 was released as the successor to Axon Framework 3.\*. 
 The name change from "Axon Framework" to "Axon" is intentional: starting from 4.0, Axon is not just a framework,
  but a complete platform consisting of both 
  [Axon Framework](introduction/architecture-overview/architecture-overview.md) and 
@@ -13,7 +13,7 @@ Many of the recent changes to Axon have been made with this use case in mind.
 Please visit [the AxonIQ website](https://axoniq.io/) to learn more about AxonIQ and the Axon community. 
 There, you will find information about Axon training, support options, upcoming and past events.
 
-Meet our technical team led by Allard Buijze at Event-Driven Microservices Conference in Amsterdam on 27 September 2019. This one-day conference organized by AxonIQ is the only event fully focused on theory, practice and hands-on workshops related to Event-driven Microservices, [axoniq.io/conference](http://axoniq.io/conference).
+ > Meet our technical team led by Allard Buijze at Event-Driven Microservices Conference in Amsterdam on 27 September 2019. This one-day conference organized by AxonIQ is the only event fully focused on theory, practice and hands-on workshops related to Event-driven Microservices, [axoniq.io/conference](http://axoniq.io/conference).
 
 [Axon Coding Tutorial - full overview](https://www.youtube.com/playlist?list=PL4O1nDpoa5KQkkApGXjKi3rzUW3II5pjm)
 
