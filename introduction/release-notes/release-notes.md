@@ -7,6 +7,19 @@ This covers improvements to [Axon Framework](https://github.com/AxonFramework/Ax
  since all three follow the same release cadence.
 For bug fixes per project, we refer to [this](bug-fixes.md) page. 
 
+## Release 4.1
+
+ * The `TrackingEventProcessor` now has an API to split and merge `TrackingTokens` during runtime of an application.
+   Axon Server has additions to the UI to split and merge a given Tracking Event Processor's tokens.
+ * Next to [Dropwizard](https://metrics.dropwizard.io/4.0.0/) metrics the framework now also supports [Micrometer](https://micrometer.io/) metrics.
+   The `MessageMonitor` interface is used to allow integration with Micrometer.
+   Lastly, we are incredibly thankful that this has been introduced as a community contribution.
+ * Primitive types are now supported as `@QueryHandler` return types.
+ * In a similar fashion as the `CommandGateway` and `QueryGateway` we have introduced the `EventGateway`.
+   As with the command and query version, the `EventGateway` provides a simpler API when it comes to dispatching Events on the `EventBus`.
+
+We refer to [this](https://github.com/AxonFramework/AxonFramework/milestone/31?closed=1) page for a full list of all the changes.
+
 ## Release 4.0
 
  * The package structure of Axon Framework has changed drastically with the aim to provide users the option to pick and choose.
