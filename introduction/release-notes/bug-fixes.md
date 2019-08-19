@@ -50,7 +50,7 @@ Regardless, the full list can be found
 
 ## Axon Framework Extensions
 
-### Axon Mongo Extension 4.0.1
+### Mongo 4.0.1
 
 The Mongo extension incorrectly used the content type instead of the tokens type upon storing a serialized token.
 The issue was marked and resolved under [#1](https://github.com/AxonFramework/extension-mongo/issues/1).
