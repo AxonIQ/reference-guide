@@ -103,12 +103,12 @@ As marked under [this](https://github.com/AxonFramework/extension-jgroups/issues
  not be called if the connection between JGroups peers dies whilst a command is in transit.
 Credits go to "sgrimm-sg" for filing the issue and solving [it](https://github.com/AxonFramework/extension-jgroups/pull/5).
 
-### Axon JGroups Extension 4.1
+### JGroups 4.1
 
 If cluster connection message came in quickly after starting the connection, a `NullPointerException` could be thrown.
 This issue was resolved for release 4.1 [here](https://github.com/AxonFramework/extension-jgroups/issues/1).
 
-### Axon Mongo Extension 4.0.1
+### Mongo 4.0.1
 
 The Mongo extension incorrectly used the content type instead of the tokens type upon storing a serialized token.
 The issue was marked and resolved under [#1](https://github.com/AxonFramework/extension-mongo/issues/1).
@@ -122,7 +122,7 @@ This occurs because Spring Cloud Kubernetes does not support the `ServiceInstanc
 [This](https://github.com/AxonFramework/extension-springcloud/pull/10) pull request introduced a null check to ensure
  the null pointer would not be thrown again. 
 
-### Axon Spring Cloud Extension 4.1
+### Spring Cloud 4.1
 
 The `SpringCloudCommandRouter` failed to correctly connect to a Spring Cloud Discovery Service
  if the node did not contain any Command Handler methods.
