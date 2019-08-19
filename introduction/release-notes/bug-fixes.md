@@ -91,7 +91,7 @@ Regardless, the full list can be found
 If cluster connection message came in quickly after starting the connection, a `NullPointerException` could be thrown.
 This issue was resolved for release 4.1 [here](https://github.com/AxonFramework/extension-jgroups/issues/1).
 
-### Axon Mongo Extension 4.0.1
+### Mongo 4.0.1
 
 The Mongo extension incorrectly used the content type instead of the tokens type upon storing a serialized token.
 The issue was marked and resolved under [#1](https://github.com/AxonFramework/extension-mongo/issues/1).
