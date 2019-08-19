@@ -86,7 +86,7 @@ Regardless, the full list can be found
 
 ## Axon Framework Extensions
 
-### Axon JGroups Extension 4.1
+### JGroups 4.1
 
 If cluster connection message came in quickly after starting the connection, a `NullPointerException` could be thrown.
 This issue was resolved for release 4.1 [here](https://github.com/AxonFramework/extension-jgroups/issues/1).
@@ -96,7 +96,7 @@ This issue was resolved for release 4.1 [here](https://github.com/AxonFramework/
 The Mongo extension incorrectly used the content type instead of the tokens type upon storing a serialized token.
 The issue was marked and resolved under [#1](https://github.com/AxonFramework/extension-mongo/issues/1).
 
-### Axon Spring Cloud Extension 4.1
+### Spring Cloud 4.1
 
 The `SpringCloudCommandRouter` failed to correctly connect to a Spring Cloud Discovery Service if the node did not contain any Command Handler methods.
 This undesired behaviour was marked by user "travikk" and made more lenient under [this](https://github.com/AxonFramework/extension-springcloud/issues/1).
