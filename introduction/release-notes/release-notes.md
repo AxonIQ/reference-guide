@@ -7,6 +7,21 @@ This covers improvements to [Axon Framework](https://github.com/AxonFramework/Ax
  since all three follow the same release cadence.
 For bug fixes per project, we refer to [this](bug-fixes.md) page. 
 
+## Release 4.2
+
+ * Axon Framework applications can now use tags to support a level of 'location awareness' between Axon clients and Axon Server instances.
+   This feature is further described [here](../../operations-guide/setting-up-axon-server/tagging.md).
+ * Axon Server already supported several contexts, but Axon Framework application could no specify to which context message should be dispatched.
+   The Axon Server Connector has been expanded with a `TargetContextResolver` to allow just this.
+ * A new implementation of the `StreamablbeMessageSource` has been implemented: the `MultiStreamableMessageSource`.
+   This implementation allow pairing several "streamable" message sources into a single source.
+   This can in turn be used to for example read events from several distinct contexts for a single Tracking Event Processor.
+ * Handler Execution Exception now allow application specific information to be sent back over the wire in case of a distributed set up.
+ * The `TrackingToken` interface now provides an estimate of it's relative position in the event stream through the `position()` method.
+ * `Optional` return types can now be used for Query Handling methods.  
+
+For a full list of all features, enhancements and bugs, check out the [issue tracker](https://github.com/AxonFramework/AxonFramework/milestone/38?closed=1).
+
 ## Release 4.1
 
  * The `TrackingEventProcessor` now has an API to split and merge `TrackingTokens` during runtime of an application.
