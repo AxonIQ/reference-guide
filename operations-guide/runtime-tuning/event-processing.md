@@ -76,3 +76,46 @@ CompletableFuture<Boolean> futureResult = trackingProcessor.mergeSegment(segment
 >
 > Note though that especially in such a set up you would need to delegate said split or merge to the correct instance.
 > With "correct instance" is meant the instance owning the segment you want to split and merge.
+
+## Blacklisting Events
+
+In a heterogeneously distributed application landscape your Event Handling components might receive events they do not
+ have actual Event Handling members for.
+That this occurs is completely fine;
+ the chances of a single application handling the entirety of all existing events is very small.
+This fact however does open up the possibility for optimization by _blacklisting_ events.
+ 
+To this end Axon has to option to automatically blacklist events it cannot handle.
+The Tracking Event Processor takes the lead in actual blacklisting,
+ which it does by signaling the utilized Event Stream when none of its handlers can handle the event in question.
+The Event Stream provided by the Axon Server connection in turn implements the functionality to notify an Axon Server
+ node that certain events cannot be handled by it.
+
+By default, blacklisting is turned for an Axon client connected to Axon Server.
+To disable blacklisting, the `disableEventBlacklisting` property can be adjusted as follows:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+AxonServerConfiguration axonServerConfig = new AxonServerConfiguration();
+axonServerConfig.setDisableEventBlacklisting(true);
+
+Configurer configurer = 
+    DefaultConfigurer.defaultConfiguration()
+        .registerComponent(AxonServerConfiguration.class, c -> axonServerConfig); 
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```properties
+axon.axonserver.disableEventBlacklisting=true
+```
+{% endtab %}
+{% endtabs %}
+
+> **Retrying Blacklisted Events**
+> 
+> The topology of Event Handlers might change in the lifecycle of a given application.
+> This thus means that once blacklisted events might at a later stage do have Event Handler members present.
+> To cover this scenario,
+>  Axon Server will periodically send over blacklisted events to refresh the blacklisted set.
