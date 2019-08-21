@@ -76,7 +76,7 @@
     * [Serializers](operations-guide/production-considerations/serializers.md)
     * [Monitoring and Metrics](operations-guide/production-considerations/monitoring-and-metrics.md)
 * [Runtime Tuning](operations-guide/runtime-tuning/runtime-tuning.md)
-    * [Event Processing](operations-guide/runtime-tuning/event-processing.md)
+    * [Tuning Event Processing](operations-guide/runtime-tuning/tuning-event-processing.md)
     * [Tuning Command Processing](operations-guide/runtime-tuning/tuning-command-processing.md)
 
 ## Extensions
