@@ -123,6 +123,8 @@ Besides an Annotated Command Handler, you can register a wide variety of compone
    Registers a field that should be ignored for a given class when state equality is performed. 
  * `registerHandlerDefinition`:
    Registers a custom [`HandlerDefinition`](../../appendices/message-handler-tuning/handler-definition.md) to the test fixture.
+ * `registerCommandTargetResolver`:
+   Registers a `CommandTargetResolver` to the test fixture.
 
 Once the fixture is configured, you can define the "given" events. 
 The test fixture will wrap these events as `DomainEventMessage`s. 
@@ -151,8 +153,8 @@ Similar as with the given Events, if the provided Command is of type `CommandMes
 The behavior of the invoked handler \(either on the aggregate or as an external handler\)
  is monitored and compared to the expectations registered in the validation phase.
 
-Secondly, it is possible to elapse a certain time span with the `andThenTimeElapses(Duration)` and 
- `andThenTimeAdvancesTo(Instant)` handles.
+Secondly, it is possible to elapse a certain time span with the `whenThenTimeElapses(Duration)` and 
+ `whenThenTimeAdvancesTo(Instant)` handles.
 These support testing the publication of `DeadlineMessage`s,
  as is further defined in [this](../../configuring-infrastructure-components/deadlines.md) chapter. 
 
