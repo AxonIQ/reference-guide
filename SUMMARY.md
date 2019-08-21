@@ -1,4 +1,4 @@
-# Table of contents
+# Table of Contents
 
 * [Quick Start](introduction/quick-start.md)
 * [Architecture Overview](introduction/architecture-overview/architecture-overview.md)
@@ -8,14 +8,14 @@
 * [Release Notes](introduction/release-notes/release-notes.md)
     * [Bug Fixes](introduction/release-notes/bug-fixes.md)
 
-## Setting up
+## Setting Up
 
 * [Prerequisites](setting-up/prerequisites.md)
 * [Maven/Gradle Dependencies](setting-up/maven-dependencies.md)
 * [Spring Boot](setting-up/spring-boot.md)
 * [Starting the Axon Server](setting-up/starting-the-axon-server.md)
 
-## Implementing domain logic
+## Implementing Domain Logic
 
 * [Command handling](implementing-domain-logic/command-handling/command-handling.md)
     * [Aggregate](implementing-domain-logic/command-handling/aggregate.md)
@@ -24,7 +24,7 @@
     * [State-Stored Aggregates](implementing-domain-logic/command-handling/state-stored-aggregates.md)
     * [Dispatching Commands](implementing-domain-logic/command-handling/dispatching-commands.md)
     * [Testing](implementing-domain-logic/command-handling/testing.md)
-    * [Aggregate creation from another Aggregate](implementing-domain-logic/command-handling/aggregate-creation-from-aggregate.md)
+    * [Aggregate Creation from another Aggregate](implementing-domain-logic/command-handling/aggregate-creation-from-aggregate.md)
     * [Conflict Resolution](implementing-domain-logic/command-handling/conflict-resolution.md)
 * [Event handling](implementing-domain-logic/event-handling/event-handling.md)
     * [Handling Events](implementing-domain-logic/event-handling/handling-events.md)
@@ -38,7 +38,7 @@
     * [Managing Associations](implementing-domain-logic/complex-business-transactions/managing-associations.md)
     * [Testing a Saga](implementing-domain-logic/complex-business-transactions/testing.md)
 
-## Configuring Infrastructure components
+## Configuring Infrastructure Components
 
 * [Messaging concepts](configuring-infrastructure-components/messaging-concepts/messaging-concepts.md)
     * [Anatomy of a Message](configuring-infrastructure-components/messaging-concepts/message-anatomy.md)
@@ -49,7 +49,7 @@
     * [Command Model Configuration](configuring-infrastructure-components/command-processing/command-model-configuration.md)
     * [Command Dispatching](configuring-infrastructure-components/command-processing/command-dispatching.md)
     * [Optimizing Aggregate Loading](configuring-infrastructure-components/command-processing/optimizing-aggregate-loading.md)
-* [Event processing](configuring-infrastructure-components/event-processing/event-processing.md)
+* [Event Processing](configuring-infrastructure-components/event-processing/event-processing.md)
     * [Event Bus & Event Store](configuring-infrastructure-components/event-processing/event-bus-and-event-store.md)
     * [Saga Infrastructure](configuring-infrastructure-components/event-processing/saga-infrastructure.md)
     * [Event Processors](configuring-infrastructure-components/event-processing/event-processors.md)
@@ -66,7 +66,7 @@
     * [Backups](operations-guide/setting-up-axon-server/backups.md)
     * [Monitoring](operations-guide/setting-up-axon-server/monitoring.md)
     * [Access Control](operations-guide/setting-up-axon-server/access-control.md)
-    * [Axon Server clustering](operations-guide/setting-up-axon-server/axon-server-clustering.md)
+    * [Axon Server Clustering](operations-guide/setting-up-axon-server/axon-server-clustering.md)
     * [Multi-context](operations-guide/setting-up-axon-server/multi-context.md)
 * [Production Considerations](operations-guide/production-considerations/production-considerations.md)
     * [Versioning Events](operations-guide/production-considerations/versioning-events.md)
