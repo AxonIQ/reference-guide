@@ -40,7 +40,7 @@ The `AggregateTestFixture` allows you to configure a certain infrastructure,
 > Also, all `given` and `expected` events are meant to be triggered from the aggregate under test fixture.
 
 The following example shows the usage of the "given-when-then" test fixture with JUnit 4 on the `GiftCard` aggregate
- (as defined [earlier](aggregate.md#basic-aggregate-structure):
+ (as defined [earlier](aggregate.md#basic-aggregate-structure)):
 
 ```java
 import org.axonframework.test.aggregate.AggregateTestFixture;
@@ -65,13 +65,15 @@ public class GiftCardTest {
         These four lines define the actual scenario and its expected result. 
         The first line defines the events that happened in the past. 
         These events define the state of the aggregate under test.
-        In practical terms, these are the events that the event store returns when an aggregate is loaded. 
+        In practical terms, these are the events that the event store returns
+         when an aggregate is loaded. 
         
         The second line defines the command that we wish to execute against our system. 
         
         Finally, we have two more methods that define expected behavior. 
         In the example, we use the recommended void return type. 
-        The last method defines that we expect a single event as result of the command execution.
+        The last method defines that we expect a single event as result
+         of the command execution.
         */
     }
 }
@@ -153,7 +155,7 @@ The behavior of the invoked handler \(either on the aggregate or as an external 
 
 Secondly, it is possible to elapse a certain time span with the `andThenTimeElapses(Duration)` and 
  `andThenTimeAdvancesTo(Instant)` handles.
-These support testing the publication of `DeadlineMessage`s,
+These support testing the publication of `DeadlineMessages`,
  as is further defined in [this](../../configuring-infrastructure-components/deadlines.md) chapter. 
 
 Note that only activities that occur during the test _execution_ phase are monitored. 
@@ -192,7 +194,7 @@ The following methods are available for validating Command Results:
     Validates that the handler returned a successful response, with a payload matching the given Matcher
  * `fixture.expectResultMessage(CommandResultMessage)`: 
     Validates that the `CommandResultMessage` received has equal payload and meta data to that of given message.
- * `fixture.expectResultMessageMatching`: 
+ * `fixture.expectResultMessageMatching(Matcher)`: 
     Validates that the `CommandResultMessage` matches the given Matcher.
  * `fixture.expectException(Matcher)`: 
     Validates that the command handling result is an exceptional result, and that the exception matches the given `Matcher`.
@@ -351,21 +353,21 @@ You can expect scheduled deadlines both through a `Duration` or an `Instant`, us
  a `Matcher` or just a deadline type to verify the deadline message.  
 The following methods are available for validating Deadlines:
 
- * `expectScheduledDeadline(Duration duration, Object deadline)`:
+ * `expectScheduledDeadline(Duration, Object)`:
    Explicitly expect a given `deadline` to be scheduled after the specified `Duration`. 
- * `expectScheduledDeadlineMatching(Duration duration, Matcher<? super DeadlineMessage<?>> matcher)`:
+ * `expectScheduledDeadlineMatching(Duration, Matcher)`:
    Expect a deadline matching the `Matcher` to be scheduled after the specified `Duration`.
- * `expectScheduledDeadlineOfType(Duration duration, Class<?> deadlineType)`:
+ * `expectScheduledDeadlineOfType(Duration, Class)`:
    Expect a deadline matching the given type to be scheduled after the specified `Duration`.
- * `expectScheduledDeadline(Instant scheduledTime, Object deadline)`:
+ * `expectScheduledDeadline(Instant, Object)`:
    Explicitly expect a given `deadline` to be scheduled at the specified `Duration`.
- * `expectScheduledDeadlineMatching(Instant scheduledTime, Matcher<? super DeadlineMessage<?>> matcher)`:
+ * `expectScheduledDeadlineMatching(Instant, Matcher)`:
    Expect a deadline matching the `Matcher` to be scheduled at the specified `Duration`.
- * `expectScheduledDeadlineOfType(Instant scheduledTime, Class<?> deadlineType)`:
+ * `expectScheduledDeadlineOfType(Instant, Class)`:
    Expect a deadline matching the given type to be scheduled at the specified `Duration`.
  * `expectNoScheduledDeadlines()`:
    Expect that no deadlines are scheduled at all.
- * `expectDeadlinesMet(Object... expected)`:
+ * `expectDeadlinesMet(Object...)`:
    Explicitly expect a `deadline` or several deadlines to have been met.
- * `expectDeadlinesMetMatching(Matcher<? extends List<? super DeadlineMessage<?>>> matcher)`:
+ * `expectDeadlinesMetMatching(Matcher<List<DeadlineMessage>>)`:
    Expect a matching deadline or several matching deadlines to have been met.
