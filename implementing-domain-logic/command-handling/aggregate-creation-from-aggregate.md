@@ -1,4 +1,4 @@
-# Aggregate creation from another Aggregate
+# Aggregate Creation from another Aggregate
 
 Regularly, instantiating a new Aggregate is done by issuing a creation command which is handled by a `@CommandHandler`
  annotated Aggregate constructor.
