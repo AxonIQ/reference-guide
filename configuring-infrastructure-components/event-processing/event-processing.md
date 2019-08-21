@@ -1,4 +1,4 @@
-# Event processing
+# Event Processing
 
 In this chapter we will cover the infrastructure components for processing,
  handling and dispatching events within an Axon application in more detail. 
