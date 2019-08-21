@@ -362,11 +362,11 @@ The following methods are available for validating Deadlines:
  * `expectScheduledDeadlineOfType(Duration, Class)`:
    Expect a deadline matching the given type to be scheduled after the specified `Duration`.
  * `expectScheduledDeadline(Instant, Object)`:
-   Explicitly expect a given `deadline` to be scheduled at the specified `Duration`.
+   Explicitly expect a given `deadline` to be scheduled at the specified `Instant`.
  * `expectScheduledDeadlineMatching(Instant, Matcher)`:
-   Expect a deadline matching the `Matcher` to be scheduled at the specified `Duration`.
+   Expect a deadline matching the `Matcher` to be scheduled at the specified `Instant`.
  * `expectScheduledDeadlineOfType(Instant, Class)`:
-   Expect a deadline matching the given type to be scheduled at the specified `Duration`.
+   Expect a deadline matching the given type to be scheduled at the specified `Instant`.
  * `expectNoScheduledDeadlines()`:
    Expect that no deadlines are scheduled at all.
  * `expectDeadlinesMet(Object...)`:
