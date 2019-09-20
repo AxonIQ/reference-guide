@@ -15,9 +15,9 @@ A typical tag could describe where the respective client and server node are run
 ## Tag Matching
 
 A match is made when the the label and the value of the tag matches. 
-For example, a server tagged with `"computeRegion": "europe"` will match with a client tag of
- `"computeRegion": "europe"`. 
-Similarly if a server is tagged with `"computeRegion": "europe"` and client is tagged with `"computeRegion": "asia"`
+For example, a server tagged with `computeRegion=europe` will match with a client tag of
+ `computeRegion=europe`. 
+Similarly if a server is tagged with `computeRegion=europe` and client is tagged with `computeRegion=asia`
  then this is not considered a match.
 
 If both client and server are tagged with multiple tags
@@ -32,7 +32,7 @@ To enable tagging you must configure both the client and server.
 
 You can configure the tags that you would like for each node through properties using
  `axoniq.axonserver.tags.computeRegion=europe`. 
-Additional tags can be specified by adding to the `tags` element (e.g. `axoniq.axonserver.tags.networkSpeed: fast`).
+Additional tags can be specified by adding to the `tags` element (e.g. `axoniq.axonserver.tags.networkSpeed=fast`).
 
 ### Client
 
