@@ -31,7 +31,7 @@ To enable tagging you must configure both the client and server.
 ### Axon Server
 
 You can configure the tags that you would like for each node through properties using
- `axoniq.axonserver.tags.computeRegion: europe`. 
+ `axoniq.axonserver.tags.computeRegion=europe`. 
 Additional tags can be specified by adding to the `tags` element (e.g. `axoniq.axonserver.tags.networkSpeed: fast`).
 
 ### Client
@@ -52,7 +52,7 @@ DefaultConfigurer.defaultConfiguration()
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```properties
-axon.tags.computeRegion: europe
+axon.tags.computeRegion=europe
 ```
 {% endtab %}
 {% endtabs %}
