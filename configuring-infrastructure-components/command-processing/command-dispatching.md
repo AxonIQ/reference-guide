@@ -469,7 +469,9 @@ There in one setting that is independent of the type of connector used:
 axon.distributed.load-factor=100
 ```
 
-> The Load Factor Explained
+The load factor of any Distributed Command Bus is defaulted to a `100`.
+
+> **The Load Factor Explained**
 > 
 > The load factor defines the amount of load that instance would carry compared to the others.
 > If you would thus have a two machine set up,
