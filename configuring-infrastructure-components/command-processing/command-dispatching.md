@@ -470,8 +470,6 @@ You can choose different flavor of this components that are available in one of 
  - [SpringCloud](../../extensions/spring-cloud.md) or 
  - [JGroups](../../extensions/jgroups.md).
  
-{% tabs %}
-{% tab title="Spring Boot AutoConfiguration" %}
 Configuring a distributed command bus can \(mostly\) be done without any modifications in configuration files.
 
 First of all, the starters for one of the Axon distributed command bus modules needs to be included
@@ -490,5 +488,12 @@ There in one setting that is independent of the type of connector used:
 ```text
 axon.distributed.load-factor=100
 ```
-{% endtab %}
-{% endtabs %}
+
+> The Load Factor Explained
+> 
+> The load factor defines the amount of load that instance would carry compared to the others.
+> If you would thus have a two machine set up,
+>  both with a load factor of a 100, both will carry an equal amount of load.
+> Evidently, increasing the load factor to 200 on both would still main both machines receive the same amount of load.
+> Concluding, the load factor is intended to serves heterogeneous application landscapes with the means to set
+>  more load on the faster machines than on the slower versions.   
