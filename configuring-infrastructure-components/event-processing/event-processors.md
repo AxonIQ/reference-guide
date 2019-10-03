@@ -1,21 +1,22 @@
 # Event Processors
 
-Event Handlers define the business logic to be performed when an Event is received. 
-Event Processors are the components that take care of the technical aspects of that processing. 
-They start a Unit of Work and possibly a transaction,
- but also ensure that correlation data can be correctly attached to all messages created during Event processing.
+Event handlers define the business logic to be performed when an event is received. 
+Event processors are the components that take care of the technical aspects of that processing. 
+They start a unit of work and possibly a transaction.
+However, they also ensure that correlation data can be correctly attached to all
+messages created during event processing.
 
 Event Processors come in roughly two forms: Subscribing and Tracking. 
-The Subscribing Event Processors subscribe themselves to a source of Events
- and are invoked by the thread managed by the publishing mechanism. 
+Subscribing Event Processors subscribe themselves to a source of Events
+and are invoked by the thread managed by the publishing mechanism. 
 Tracking Event Processors, on the other hand, pull their messages from a source using a thread that it manages itself.
 
 ## Assigning handlers to processors
 
 All processors have a name, which identifies a processor instance across JVM instances. 
-Two processors with the same name, can be considered as two instances of the same processor.
+Two processors with the same name are considered as two instances of the same processor.
 
-All Event Handlers are attached to a Processor whose name is the package name of the Event Handler's class.
+All event handlers are attached to a processor whose name is the package name of the Event Handler's class.
 
 For example, the following classes:
 
@@ -23,53 +24,53 @@ For example, the following classes:
 * `org.axonframework.example.eventhandling.MyOtherHandler`, and
 * `org.axonframework.example.eventhandling.module.MyHandler`
 
-will trigger the creation of two Processors:
+will trigger the creation of two processors:
 
 * `org.axonframework.example.eventhandling` with 2 handlers, and
 * `org.axonframework.example.eventhandling.module` with a single handler
 
 The Configuration API allows you to configure other strategies for assigning classes to processors,
- or even assign specific instances to specific processors.
+or even assign specific handler instances to specific processors.
 
 ## Ordering Event Handlers within a single Event Processor
 
 To order Event Handlers within an Event Processor,
- the ordering in which Event Handlers are registered 
+ the order in which Event Handlers are registered 
  \(as described in the [Registering Event Handlers](../../implementing-domain-logic/event-handling/handling-events.md#registering-event-handlers) section\) is guiding. 
 Thus, the ordering in which Event Handlers will be called by an Event Processor
- for Event Handling is their insertion ordering in the configuration API.
+ for Event Handling is the same as their insertion ordering in the configuration API.
 
 If Spring is selected as the mechanism to wire everything,
- the ordering of the Event Handlers can be specified by adding the `@Order` annotation. 
-This annotation should be placed on class level of your Event Handler class,
- adding a `integer` value to specify the ordering.
+the ordering of the Event Handlers can be explicitly specified by adding the `@Order` annotation. 
+This annotation should be placed at the class level of your event handler class,
+and an `integer` value should be provided to specify the ordering.
 
-Do note that it is not possible to order Event Handlers which are not a part of the same Event Processor.
+Not that it is not possible to order event handlers which are not a part of the same event processor.
 
 ## Configuring processors
 
 Processors take care of the technical aspects of handling an event,
- regardless of the business logic triggered by each event. 
-However, the way "regular" \(singleton, stateless\) event handlers are Configured is slightly different from Sagas,
- as different aspects are important for both types of handlers.
+regardless of the business logic triggered by each event. 
+However, the way "regular" \(singleton, stateless\) event handlers are configured is slightly different from sagas,
+as different aspects are important for both types of handlers.
 
-### Event Handlers
+### Event Processors
 
 By default, Axon will use Tracking Event Processors.
-It is possible to change how Handlers are assigned and how processors are configured.
+It is possible to change how handlers are assigned and how processors are configured.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 
 The `EventProcessingConfigurer` class defines a number of methods that can be used to define how processors need to be configured.
 
-* `registerEventProcessorFactory` allows you to define a default factory method that creates Event Processors for which no explicit factories have been defined.
-* `registerEventProcessor(String name, EventProcessorBuilder builder)` defines the factory method to use to create a Processor with given `name`. 
-   Note that such Processor is only created if `name` is chosen as the processor for any of the available Event Handler beans.
-* `registerTrackingEventProcessor(String name)` defines that a processor with given name should be configured as a Tracking Event Processor, using default settings. 
+* `registerEventProcessorFactory` allows you to define a default factory method that creates event processors for which no explicit factories have been defined.
+* `registerEventProcessor(String name, EventProcessorBuilder builder)` defines the factory method to use to create a processor with given `name`. 
+   Note that such a processor is only created if `name` is chosen as the processor for any of the available event handler beans.
+* `registerTrackingEventProcessor(String name)` defines that a processor with given name should be configured as a tracking event processor, using default settings. 
    It is configured with a TransactionManager and a TokenStore, both taken from the main configuration by default.
-* `registerTrackingProcessor(String name, Function<Configuration, StreamableMessageSource<TrackedEventMessage<?>>> source, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration)` defines that a processor with given name should be configured as a Tracking Processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading. 
-   The `StreamableMessageSource` defines an event source from which this processor should pull for events.
+* `registerTrackingProcessor(String name, Function<Configuration, StreamableMessageSource<TrackedEventMessage<?>>> source, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration)` defines that a processor with given name should be configured as a tracking processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading. 
+   The `StreamableMessageSource` defines an event source from which this processor should pull events.
 * `usingSubscribingEventProcessors()` sets the default to subscribing event processors instead of tracking ones.
 
 ```java
@@ -92,14 +93,14 @@ public void configure(EventProcessingConfigurer config) {
 }
 ```
 
-Certain aspect of event processors can also be configured in `application.properties`.
+Certain aspects of event processors can also be configured in `application.properties`.
 
 ```text
 axon.eventhandling.processors.name.mode=subscribing
 axon.eventhandling.processors.name.source=eventBus
 ```
 
-If the name of a processor contains periods `.`, use the map notation:
+If the name of an event processor contains periods `.`, use the map notation:
 
 ```text
 axon.eventhandling.processors[name].mode=subscribing
@@ -110,26 +111,26 @@ axon.eventhandling.processors[name].source=eventBus
 
 ### Multiple Event Sources
 
-You can configure a Tracking Event Processor to use multiple sources when processing Events. 
-This is useful for compiling metrics across domains or simply when your events are distributed between multiple stores.
+You can configure a Tracking Event Processor to use multiple sources when processing events. 
+This is useful for compiling metrics across domains or simply when your events are distributed between multiple event stores.
 
-Having multiple sources means that there might be a choice of multiple events that the processor could consume in a
- given instant and therefore you can specify a `Comparator` to choose between them. 
-The default implementation chooses the Event with the oldest timestamp (i.e. the event waiting the longest).
+Having multiple sources means that there might be a choice of multiple events that the processor could consume
+at any given instant. Therefore, you can specify a `Comparator` to choose between them. 
+The default implementation chooses the event with the oldest timestamp (i.e. the event waiting the longest).
 
-Multiple sources also means that the tracking processor's polling interval needs to be divided between the sources in a
- strategy to optimize event discovery and minimize overhead in establishing costly connections to the data sources. 
-Therefore you can choose which source the majority of the polling is done on using the `longPollingSource()` method in
- the builder. 
+Multiple sources also means that the tracking processor's polling interval needs to be divided between sources using a
+strategy to optimize event discovery and minimize overhead in establishing costly connections to the data sources. 
+Therefore, you can choose which source the majority of the polling is done on using the `longPollingSource()` method in
+the builder. 
 This ensures one source consumes most of the polling interval whilst also checking intermittently for events on the
- other sources. 
+other sources.
 The default `longPollingSource` is done on the last configured source.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 
-Create a `MultiStreamableMessageSource` using it's `builder()`
- and register is as the message source when calling `EventProcessingConfigurer.registerTrackingEventProcessor()`.
+Create a `MultiStreamableMessageSource` using its `builder()`
+ and register it as the message source when calling `EventProcessingConfigurer.registerTrackingEventProcessor()`.
 
 For example:
 
@@ -193,8 +194,8 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration()
 {% tab title="Spring Boot AutoConfiguration" %}
 
 The configuration of infrastructure components to operate sagas is triggered by the `@Saga` annotation
- \(in package `org.axonframework.spring.stereotype`\). 
-Axon will configure a `SagaManager` and `SagaRepository`. 
+ \(in the `org.axonframework.spring.stereotype` package\). 
+Axon will then configure a `SagaManager` and `SagaRepository`. 
 The `SagaRepository` will use a `SagaStore` available in the context
  \(defaulting to `JPASagaStore` if JPA is found\) for the actual storage of sagas.
 
@@ -214,9 +215,9 @@ For a saga class called `MySaga`, the bean that Axon looks for is `mySagaConfigu
 If no such bean is found, it creates a configuration based on available components.
 
 If a `SagaConfiguration` instance is present for an annotated saga,
- that configuration is used to retrieve and register the components for this type of saga. 
-If the `SagaConfiguration` bean is not named as described above, it is possible that the saga is registered twice,
- and receives events in duplicate. 
+that configuration will be used to retrieve and register components for sagas of that type. 
+If the `SagaConfiguration` bean is not named as described above, it is possible that saga will be registered twice.
+It will then receive events in duplicate. 
 To prevent this, you can specify the bean name of the `SagaConfiguration` using the `@Saga` annotation:
 
 ```java
@@ -236,20 +237,20 @@ public SagaConfiguration<MySaga> mySagaConfigurationBean() {
 
 ## Error Handling
 
-Errors are inevitable and depending on where they happen, you may want to respond differently.
+Errors are inevitable. Depending on where they happen, you may want to respond differently.
 
-By default, exceptions that are raised by Event Handlers are logged, and processing continues with the next events.
-Exceptions that are thrown when a processor is trying to commit a transaction, update a token,
- or in any other other part of the process, the exception is propagated.
-In case of a Tracking Processor, this means the processor will go into error mode,
- releasing any tokens and retrying at an incremental interval (starting at 1 second, up to max 60 seconds).
-Subscribing processor will report a publication error to the component that provided the Event.
+By default exceptions raised by event handlers are logged and processing continues with the next events.
+When an exception is thrown when a processor is trying to commit a transaction, update a token,
+or in any other other part of the process, the exception will be propagated.
+In case of a Tracking Event Processor, this means the processor will go into error mode,
+releasing any tokens and retrying at an incremental interval (starting at 1 second, up to max 60 seconds).
+A Subscribing Event Processor will report a publication error to the component that provided the event.
 
-To change this behavior, there are two levels at which you can customize how Axon deals with Exceptions:
+To change this behavior, there are two levels at which you can customize how Axon deals with exceptions:
 
 ### Exceptions raised by event handler methods
 
-By default, these exceptions are logged and processing continues with the next handler or message.
+By default these exceptions are logged and processing continues with the next handler or message.
 
 This behavior can be configured per processing group:
 
@@ -280,28 +281,28 @@ public void configure(EventProcessingConfigurer config) {
 {% endtab %}
 {% endtabs %}
 
-You can easily implement custom behavior. 
-The single method to implement provides the exception, the event that was handled,
- and a reference to the handler that was handling the message. 
+It is easy to implement custom error handling behavior. 
+The error handling method to implement provides the exception, the event that was handled,
+and a reference to the handler that was handling the message.
 You can choose to retry, ignore or rethrow the exception. 
-In the latter case, the exception bubbles up to the Processor level.
+In the latter case, the exception will bubble up to the event processor level.
 
 ### Exceptions during processing
 
-Exceptions that occur outside of the scope of a single Event Handler, or have bubbled up from there,
+Exceptions that occur outside of the scope of an event handler, or have bubbled up from there,
  are handled by the ErrorHandler. 
-The default behavior depends on the Processor implementation:
+The default behavior depends on the processor implementation:
 
-The `TrackingEventProcessor` goes into Error Mode,
- where it will retry processing the Event using an incremental back-off period, starting at 1 second, 
- doubling after each attempt until a maximum wait time of 60 seconds per attempt is achieved. 
-This back-off time will ensure that if another node is able to process events successfully,
- it has the opportunity to claim the token required to process the event.
+A `TrackingEventProcessor` will go into Error Mode.
+Then, it will retry processing the event using an incremental back-off period. 
+It will start at 1 second and double after each attempt until a maximum wait time of 60 seconds per attempt is achieved. 
+This back-off time ensures that if another node is able to process events successfully,
+it will have the opportunity to claim the token required to process the event.
 
-The `SubscribingEventProcessor` will have the exception bubble up to the publishing component of the Event,
- allowing it to deal with it, accordingly.
+The `SubscribingEventProcessor` will have the exception bubble up to the publishing component of the event,
+allowing it to deal with it, accordingly.
 
-To customize the behavior, you can configure an Error Handler on the Processor level.
+To customize the behavior, you can configure an error handler on the event processor level.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -337,28 +338,35 @@ Based on the provided `ErrorContext` object, you can decide to ignore the error,
 
 Tracking event processors, unlike subscribing ones, need a token store to store their progress in. 
 Each message a tracking processor receives through its event stream is accompanied by a token. 
-This token allows the processor to reopen the stream at any later point, picking up where it left off with the last Event.
+This token allows the processor to reopen the stream at any later point, picking up where it left off with the last event.
 
 The Configuration API takes the token store,
  as well as most other components processors need from the global configuration instance. 
-If no token store is explicitly defined, an `InMemoryTokenStore` is used, which is _not recommended in production.
+If no token store is explicitly defined, an `InMemoryTokenStore` is used, which is _not_ recommended in production.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 To configure a token store, use the `EventProcessingConfigurer` to define which implementation to use.
  
 To configure a default TokenStore for all processors:
- `Configurer.eventProcessing().registerTokenStore(conf -> ... create token store ...)`.
 
-Alternatively, to configure a TokenStore for a single, specific, Processor, use:
+```java
+ Configurer.eventProcessing().registerTokenStore(conf -> ... create token store ...)
+```
+
+Alternatively, to configure a TokenStore for a specific processor, use:
+
+```java
 Configurer.eventProcessing().registerTokenStore("processorName", conf -> ... create token store ...)`.
+```
 {% endtab %}
 {% tab title="Spring Boot AutoConfiguration" %}
 
 The default TokenStore implementation is defined based on dependencies available in Spring Boot, in the following order:
-1. If any TokenStore bean is defined, that bean is used
-2. Otherwise, if an EntityManager is available, the `JpaTokenStore` is defined.
-3. Otherwise, if a DataSource is defined, the `JdbcTokenStore` is created
+
+1. If any `TokenStore` bean is defined, that bean is used
+2. Otherwise, if an `EntityManager` is available, the `JpaTokenStore` is defined.
+3. Otherwise, if a `DataSource` is defined, the `JdbcTokenStore` is created
 4. Lastly, the `InMemoryToken` store is used
 
 To override the TokenStore, either define a bean in a Spring `@Configuration` class:
@@ -390,14 +398,14 @@ Note that you can override the token store to use with tracking processors
  in the respective `EventProcessingConfiguration` or `SagaConfiguration` that defines that processor. 
 Where possible, it is recommended to use a token store that stores tokens in the same database
  as where the event handlers update the view models. 
-This way, changes to the view model can be stored atomically with the changed tokens,
- guaranteeing exactly once processing semantics.
+This way, changes to the view model can be stored atomically with the changed tokens.
+This guarantees exactly once processing semantics.
 
 ## Splitting and Merging Tracking Tokens
 
-It is possible to tune the performance of Tracking Processors by increasing the number of threads processing events on
+It is possible to tune the performance of Tracking Event Processors by increasing the number of threads processing events on
  high load by splitting segments and reducing the number of threads when load reduces by merging segments.  
-Splitting and merging are allowed at runtime allowing you to dynamically control the number of segments.
+Splitting and merging is allowed at runtime which allows you to dynamically control the number of segments.
 This can be done through the Axon Server API or through Axon Framework using the methods `splitSegment(int segmentId)`
  and `mergeSegment(int segmentId)` from `TrackingEventProcessor` by providing the segmentId of the segment you want to split or merge.
 
@@ -411,19 +419,18 @@ This can be done through the Axon Server API or through Axon Framework using the
 ## Parallel processing
 
 Tracking processors can use multiple threads to process an event stream. 
-They do so, by claiming a so-called segment, identifier by a number. 
+They do so by claiming a segment which is identified by a number. 
 Normally, a single thread will process a single segment.
 
 The number of segments used can be defined. 
-When a processor starts for the first time, it can initialize a number of segments. 
+When an event processor starts for the first time, it can initialize a number of segments. 
 This number defines the maximum number of threads that can process events simultaneously. 
-Each node running of a tracking processor will attempt to start its configured amount of threads,
- to start processing these.
+Each node running of a tracking event processor will attempt to start its configured amount of threads
+to start processing events.
 
 Event handlers may have specific expectations on the ordering of events. 
 If this is the case, the processor must ensure these events are sent to these handlers in that specific order. 
-Axon uses the `SequencingPolicy` for this. The `SequencingPolicy` is essentially a function,
- that returns a value for any given message. 
+Axon uses the `SequencingPolicy` for this. The `SequencingPolicy` is a function that returns a value for any given message. 
 If the return value of the `SequencingPolicy` function is equal for two distinct event messages,
  it means that those messages must be processed sequentially. 
 By default, Axon components will use the `SequentialPerAggregatePolicy`,
@@ -436,10 +443,10 @@ Axon will ensure each saga instance receives the events it needs
 
 > **Note**
 >
-> Note that subscribing processors don't manage their own threads. 
+> Note that subscribing event processors don't manage their own threads. 
 > Therefore, it is not possible to configure how they should receive their events. 
 > Effectively, they will always work on a sequential-per-aggregate basis,
->  as that is generally the level of concurrency in the Command Handling component.
+>  as that is generally the level of concurrency in the command handling component.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -461,7 +468,7 @@ DefaultConfigurer.defaultConfiguration()
 {% tab title="Spring Boot AutoConfiguration" %}
 
 You can configure the number of threads \(on this instance\)
- as well as the initial number of segments that a processor should define, if non are yet available.
+ as well as the initial number of segments that a processor should define, if none are yet available.
 
 ```text
 axon.eventhandling.processors.name.mode=tracking
@@ -474,7 +481,7 @@ axon.eventhandling.processors.name.initialSegmentCount=4
 {% endtabs %}
 
 ### Sequential processing
-Even though Events are processed asynchronously from their publisher,
+Even though events are processed asynchronously from their publisher,
  it is often desirable to process certain events in the order they are published. 
 In Axon this is controlled by the `SequencingPolicy`.
 
@@ -489,7 +496,7 @@ Axon provides a number of common policies you can use:
 * The `FullConcurrencyPolicy` will tell Axon that this event handler may handle all events concurrently. 
    This means that there is no relationship between the events that require them to be processed in a particular order.
 * The `SequentialPolicy` tells Axon that all events must be processed sequentially. 
-   Handling of an event will start when the handling of a previous event is finished.
+   Handling of an event will start when the handling of a previous event has finished.
 * `SequentialPerAggregatePolicy` will force domain events that were raised from the same aggregate to be handled sequentially. 
    However, events from different aggregates may be handled concurrently. 
    This is typically a suitable policy to use for event listeners that update details from aggregates in database tables.
@@ -511,9 +518,9 @@ eventProcesingConfigurer.registerDefaultSequencingPolicy(conf -> /* define polic
 
 ### Multi-node processing
 
-For tracking processors, it doesn't matter whether the threads handling the events are all running on the same node,
+For tracking processors, it doesn't matter whether the threads handling the events are all running on the same node
  or on different nodes hosting the same \(logical\) tracking processor. 
-When two instances of a tracking processor, having the same name, are active on different machines,
+When two instances of a tracking processor with the same name are active on different machines,
  they are considered two instances of the same logical processor. 
 They will 'compete' for segments of the event stream. Each instance will 'claim' a segment,
  preventing events assigned to that segment from being processed on the other nodes.
@@ -534,7 +541,7 @@ In cases when you want to rebuild projections \(view models\), replaying past ev
 The idea is to start from the beginning of time and invoke all event handlers anew. 
 The `TrackingEventProcessor` supports replaying of events. 
 In order to achieve that, you should invoke the `resetTokens()` method on it. 
-It is important to know that the \`tracking event processor must not be in active state when starting a reset. 
+It is important to know that the tracking event processor must not be in active state when starting a reset. 
 Hence it is wise to shut it down first, then reset it and once this was successful, start it up again. 
 It is possible to define a `@ResetHandler`, so you can do some preparation prior to resetting. 
 Let's take a look how we can accomplish replaying. First, we will see one simple projecting class.
@@ -545,24 +552,24 @@ public class MyProjection {
     ...
     @EventHandler
     public void on(MyEvent event, ReplayStatus replayStatus) {
-                // We can wire a ReplayStatus here so we can see whether this
-                //  event is delivered to our handler as a 'REGULAR' event or
-                // 'REPLAY' event
+        // We can wire a ReplayStatus here so we can see whether this
+        // event is delivered to our handler as a 'REGULAR' event or
+        // a 'REPLAY' event
         // Perform event handling
     }
 
     @EventHandler
     @DisallowReplay // It is possible to prevent some handlers
-                            //  From being replayed
+                    // from being replayed
     public void on(MyOtherEvent event) {
         // Perform some side effect introducing functionality,
-        //  like sending an e-mail, which we do not want to be replayed
+        // like sending an e-mail, which we do not want to be replayed
     }    
 
-    @ResetHandler
-    public void onReset() { // will be called before replay starts
-        // Do pre-reset logic, like clearing out the Projection table for a
-        //  clean slate
+    @ResetHandler // This method will be called before replay starts
+    public void onReset() {
+        // Do pre-reset logic, like clearing out the projection table for a
+        // clean slate
     }
     ...
 }
@@ -586,7 +593,7 @@ configuration.eventProcessingConfiguration()
 > It is possible to provide a token position to be used when resetting a `TrackingEventProcessor`,
 >  thus specifying from which point in the event log it should start replaying the events.
 >
-> How to customize a Tracking Token position is described [here](event-processors.md#custom-tracking-token-position).
+> How to customize a tracking token position is described [here](event-processors.md#custom-tracking-token-position).
 
 ## Custom tracking token position
 

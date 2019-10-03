@@ -4,7 +4,7 @@ In Axon, an object may declare a number of event handler methods, by annotating 
 
 Axon provides out-of-the-box support for the following parameter types:
 
-* The first parameter is always the payload of the event message. In the case the event handlers does not need access to the payload of the message, you can specify the expected payload type on the `@EventHandler` annotation. When specified, the first parameter is resolved using the rules specified below. Do not configure the payload type on the annotation if you want the payload to be passed as a parameter.
+* The first parameter is always the payload of the event message. In the case where the event handler does not need access to the payload of the message, you can specify the expected payload type on the `@EventHandler` annotation. When specified, the first parameter is resolved using the rules specified below. Do not configure the payload type on the annotation if you want the payload to be passed as a parameter.
 * Parameters annotated with `@MetaDataValue` will resolve to the metadata value with the key as indicated on the annotation. If `required` is `false` \(default\), `null` is passed when the metadata value is not present. If `required` is `true`, the resolver will not match and prevent the method from being invoked when the metadata value is not present.
 * Parameters of type `MetaData` will have the entire `MetaData` of an `EventMessage` injected.
 * Parameters annotated with `@Timestamp` and of type `java.time.Instant` \(or `java.time.temporal.Temporal`\) will resolve to the timestamp of the `EventMessage`. This is the time at which the event was generated.

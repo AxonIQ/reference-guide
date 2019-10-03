@@ -1,12 +1,12 @@
 # Testing a Saga
 
-Similar to command handling components, sagas have a clearly defined interface: they only respond to events. On the other hand, sagas often have a notion of time and may interact with other components as part of their event handling process. Axon Framework its test support module contains fixtures that help you writing tests for sagas.
+Similar to command handling components, sagas have a clearly defined interface: they only respond to events. On the other hand, sagas often have a notion of time and may interact with other components as part of their event handling process. Axon Framework's test support module contains fixtures that help you write tests for sagas.
 
 Each test fixture contains three phases, similar to those of the command handling component fixture described in the previous section.
 
 * Given certain events \(from certain aggregates\),
 * when an event arrives or time elapses,
-* Expect certain behavior or state.
+* expect certain behavior or state.
 
 Both the "given" and the "when" phases accept events as part of their interaction. During the "given" phase, all side effects, such as generated commands are ignored, when possible. During the "when" phase, on the other hand, events and commands generated from the saga are recorded and can be verified.
 

@@ -1,25 +1,25 @@
 # Tuning Event Processing
 
-Typically, application components contain one or more Event Processors,
+Typically, application components contain one or more Event Processors
  which are responsible for processing incoming events. 
-The Tracking Processors have configuration aspects that can be changed at runtime,
+Tracking Event Processors have configuration aspects that can be changed at runtime
  to accommodate for changes in the system topology.
 
 ## Increasing and decreasing segment counts
 
-Tracking Processors that handle events in multiple threads use Segments to separate the events in the stream
+Tracking Event Processors that handle events in multiple threads use segments to separate the events in the stream
  across these threads in a reliable way. 
 However, especially when these threads are spread across multiple instances of a component,
- and the number of instances changes, it may be useful to scale the number of Segments accordingly.
+ and the number of instances changes, it may be useful to scale the number of segments accordingly.
  
 To this end, Axon Framework provides a [split and merge API](../../configuring-infrastructure-components/event-processing/event-processors.md#splitting-and-merging-tracking-tokens).
 This API can be utilized directly or through Axon Server, where the latter takes required coordination into account.
 
 ### Segment tuning through Axon Server
 
-AxonServer provides an API to trigger the increase and decrease of the number of Segments, at runtime,
+Axon Server provides an API to trigger the increase and decrease of the number of Segments, at runtime,
  across different instances of a processor.
-Follow these steps to increase or decrease the number of Segments for a Processor:
+Follow these steps to increase or decrease the number of segments for a processor:
 
 * In the UI, navigate to the component overview, and select one of the application instances that contains the component to change the number of segments for.
 * In the Component Details screen, scroll down to the list of processors.
@@ -39,7 +39,7 @@ The Tracking Event Processors in Axon Framework provide methods to increase or d
 When using this API, one must provide the ID of the segment to increase/decrease. 
 Additionally, the instance on which the method is invoked, must be actively processing that segment.
 
-First, the instance of the Tracking Processor must be obtained. 
+First, the instance of the Tracking Event Processor must be obtained. 
 This can be done using Axon's Configuration API like so:
 
 ```java
@@ -75,20 +75,20 @@ CompletableFuture<Boolean> futureResult = trackingProcessor.mergeSegment(segment
 > Such a set up is a regular scenario to require segment tuning.
 >
 > Note though that especially in such a set up you would need to delegate said split or merge to the correct instance.
-> With "correct instance" is meant the instance owning the segment you want to split and merge.
+> Where "correct instance" is means the instance owning the segment you want to split and merge.
 
 ## Blacklisting Events
 
-In a heterogeneously distributed application landscape your Event Handling components might receive events they do not
- have actual Event Handling members for.
+In a heterogeneously distributed application landscape your event handling components might receive events they do not
+ have actual event handling members for.
 That this occurs is completely fine;
  the chances of a single application handling the entirety of all existing events is very small.
 This fact however does open up the possibility for optimization by _blacklisting_ events.
  
 To this end Axon has to option to automatically blacklist events it cannot handle.
 The Tracking Event Processor takes the lead in actual blacklisting,
- which it does by signaling the utilized Event Stream when none of its handlers can handle the event in question.
-The Event Stream provided by the Axon Server connection in turn implements the functionality to notify an Axon Server
+ which it does by signaling the utilized event stream when none of its handlers can handle the event in question.
+The event stream provided by the Axon Server connection in turn implements the functionality to notify an Axon Server
  node that certain events cannot be handled by it.
 
 By default, blacklisting is turned for an Axon client connected to Axon Server.

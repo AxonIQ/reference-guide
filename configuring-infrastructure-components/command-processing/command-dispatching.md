@@ -6,13 +6,13 @@ First of all, there is a single object that clearly describes the intent of the 
 By logging the command, you store both the intent and related data for future reference. 
 Command handling also makes it easy to expose your command processing components to remote clients,
  via web services for example. 
-Testing also becomes a lot easier, you could define test scripts by just defining the starting situation \(given\),
+Testing also becomes a lot easier. You could define test scripts by just defining the starting situation \(given\),
  command to execute \(when\) and expected results \(then\) by listing a number of events and commands
   \(see [Testing](../../implementing-domain-logic/command-handling/testing.md) for more on this\). 
 The last major advantage is that it is very easy to switch between synchronous
  and asynchronous as well as local versus distributed command processing.
 
-This does not mean command dispatching using explicit command object is the only way to do it. 
+This does not mean command dispatching using explicit command objects is the only way to do it. 
 The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way,
  while providing best practices as the default behavior. 
 It is still possible to use a service layer that you can invoke to execute commands. 
@@ -49,21 +49,21 @@ In addition, the Command Gateway can be configured with a `RetryScheduler`, `Com
 The `RetryScheduler` is capable of scheduling retries when command execution has failed. 
 When a command fails due to an exception that is explicitly non-transient, no retries are done at all. 
 Note that the retry scheduler is only invoked when a command fails due to a `RuntimeException`. 
-Checked exceptions are regarded "business exception" and will never trigger a retry. 
+Checked exceptions are regarded as a "business exception" and will never trigger a retry. 
 
 Currently two implementations exist:
 
 1. The `IntervalRetryScheduler` will retry a given command at set intervals until it succeeds,
- or a maximum number of retries has taken place.
-2. The `ExponentialBackOffIntervalRetryScheduler` retries failed commands with an exponential back-off interval until
- it succeeds, or a maximum number of retries has taken place.
+or a maximum number of retries has taken place.
+2. The `ExponentialBackOffIntervalRetryScheduler` retries failed commands with an exponential back-off interval until 
+it succeeds, or a maximum number of retries has taken place.
   
 **CommandDispatchInterceptor**
 
 `CommandDispatchInterceptor`s allow modification of `CommandMessage`s prior to dispatching them to the Command Bus. 
 In contrast to `CommandDispatchInterceptor`s configured on the Command Bus,
  these interceptors are only invoked when messages are sent through this Gateway. 
-The interceptors can be used to attach metadata to a command or do validation, for example.
+For example, these interceptors could be used to attach metadata to a command or perform validation.
 
 **CommandCallback** 
 
@@ -86,8 +86,8 @@ This is how parameters affect the behavior of the command gateway:
    Metadata defined by latter parameters will overwrite the metadata of earlier parameters, if their key is equal.
 * Parameters of type `CommandCallback` will have their `onSuccess` or `onFailure` invoked after the command is handled. 
    You may pass in more than one callback, and it may be combined with a return value. In that case, the invocations of the callback will always match with the return value \(or exception\).
-* The last two parameters may be of types `long` \(or `int`\) and `TimeUnit`. 
-   In that case the method will block at most as long as these parameters indicate. How the method reacts on a timeout depends on the exceptions declared on the method \(see below\). 
+* The last two parameters indicate a timeout and may be of types `long` \(or `int`\) and `TimeUnit`. 
+   The method will block at most as long as these parameters indicate. How the method reacts to a timeout depends on the exceptions declared on the method \(see below\). 
    Note that if other properties of the method prevent blocking altogether, a timeout will never occur.
 
 The declared return value of a method will also affect its behavior:
@@ -162,7 +162,7 @@ Axon provides a command bus out of the box, the `AxonServerCommandBus`.
 It connects to the [AxonIQ AxonServer Server](../../introduction/axon-server.md) to submit and receive Commands.
 
 `AxonServerCommandBus` is a [distributed command bus](command-dispatching.md#distributing-the-command-bus). 
-It is using [`SimpleCommandBus`](command-dispatching.md#simplecommandbus) to handle incoming commands on different JVM's by default.
+It uses a [`SimpleCommandBus`](command-dispatching.md#simplecommandbus) to handle incoming commands on different JVM's by default.
  
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -220,7 +220,7 @@ Like most `CommandBus` implementations, the `SimpleCommandBus` allows intercepto
 `CommandDispatchInterceptor`s are invoked when a command is dispatched on the command bus. 
 The `CommandHandlerInterceptor`s are invoked before the actual command handler method is,
  allowing you to do modify or block the command. 
-See [Command interceptors](../messaging-concepts/message-intercepting.md#command-interceptors) for more information.
+See [Command Interceptors](../messaging-concepts/message-intercepting.md#command-interceptors) for more information.
 
 Since all command processing is done in the same thread, this implementation is limited to the JVM's boundaries. 
 The performance of this implementation is good, but not extraordinary. 
@@ -331,7 +331,7 @@ While the `DisruptorCommandBus` easily outperforms the `SimpleCommandBus` by a f
 * Commands should generally not cause a failure that requires a rollback of the unit of work. 
    When a rollback occurs, the `DisruptorCommandBus` cannot guarantee that commands are processed in the order they were dispatched. 
    Furthermore, it requires a retry of a number of other commands, causing unnecessary computations.
-* When creating a new aggregate Instance, commands updating that created instance may not all happen in the exact order as provided. 
+* When creating a new aggregate instance, commands updating that created instance may not all happen in the exact order as provided. 
    Once the aggregate is created, all commands will be executed exactly in the order they were dispatched. 
    To ensure the order, use a callback on the creating command to wait for the aggregate being created. 
    It shouldn't take more than a few milliseconds.
@@ -483,19 +483,19 @@ Once that is present, a single property needs to be added to the application con
 axon.distributed.enabled=true
 ```
 
-There in one setting that is independent of the type of connector used:
+There is one setting that is independent of the type of connector used:
 
 ```text
 axon.distributed.load-factor=100
 ```
 
-The load factor of any Distributed Command Bus is defaulted to a `100`.
+The load factor of a Distributed Command Bus is defaulted to `100`.
 
 > **The Load Factor Explained**
 > 
-> The load factor defines the amount of load that instance would carry compared to the others.
-> If you would thus have a two machine set up,
->  both with a load factor of a 100, both will carry an equal amount of load.
-> Evidently, increasing the load factor to 200 on both would still main both machines receive the same amount of load.
-> Concluding, the load factor is intended to serves heterogeneous application landscapes with the means to set
->  more load on the faster machines than on the slower versions.   
+> The load factor defines the amount of load the instance would carry compared to others.
+> For example, if you have a two machine set up,
+>  both with a load factor of 100, both will carry an equal amount of load.
+> Increasing the load factor to 200 on both would still mean that both machines receive the same amount of load.
+> Concluding, the load factor is intended to serve heterogeneous application landscapes with the means to distribute
+>  more load to faster machines than to slower machines.   

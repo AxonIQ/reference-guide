@@ -2,13 +2,13 @@
 
 ## Snapshotting
 
-When aggregates live for a long time, and their state constantly changes, they will generate a large amount of events. Having to load all these events in to rebuild an aggregate's state may have a big performance impact. The snapshot event is a domain event with a special purpose: it summarises an arbitrary amount of events into a single one. By regularly creating and storing a snapshot event, the event store does not have to return long lists of events. Just the last snapshot events and all events that occurred after the snapshot was made.
+When aggregates live for a long time, and their state constantly changes, they will generate a large amount of events. Having to load all these events in to rebuild an aggregate's state may have a big performance impact. The snapshot event is a domain event with a special purpose: it summarises an arbitrary amount of events into a single one. By regularly creating and storing a snapshot event, the event store does not have to return long lists of events. Just the latest snapshot events and all events that occurred after the snapshot was made.
 
 For example, items in stock tend to change quite often. Each time an item is sold, an event reduces the stock by one. Every time a shipment of new items comes in, the stock is incremented by some larger number. If you sell a hundred items each day, you will produce at least 100 events per day. After a few days, your system will spend too much time reading in all these events just to find out whether it should raise an "ItemOutOfStockEvent". A single snapshot event could replace a lot of these events, just by storing the current number of items in stock.
 
 ### Creating a snapshot
 
-Snapshot creation can be triggered by a number of factors, for example the number of events created since the last snapshot, the time to initialize an aggregate exceeds a certain threshold, time-based, etc. Currently, Axon provides a mechanism that allows you to trigger snapshots based on an event count threshold.
+Snapshot creation can be triggered by a number of factors, for example: the number of events created since the last snapshot, the time to initialize an aggregate exceeds a certain threshold, time-based, etc. Currently, Axon provides a mechanism that allows you to trigger snapshots based on an event count threshold.
 
 The definition of when snapshots should be created, is provided by the `SnapshotTriggerDefinition` interface.
 
@@ -54,7 +54,7 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration()
 {% endtab %}
 {% tab title="Spring Boot AutoConfiguration" %}
 
-It is possible to define a custom `SnapshotTriggerDefinition` for an aggregate as a spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows how to define a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot on each five hundredths event.
+It is possible to define a custom `SnapshotTriggerDefinition` for an aggregate as a Spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows how to define a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot every 500 events.
 
 Note that a `Snapshotter` instance, if not explicitly defined as a bean already, will be automatically configured for you. This means you can simply pass the `Snapshotter` as a parameter to your `SnapshotTriggerDefinition`.
 
@@ -121,10 +121,10 @@ Here are a few guidelines that help you get the most out of your caching solutio
 
   This means that commands should be consistently routed to the same machine, for as long as that machine is "healthy". Routing commands consistently prevents the cache from going stale. A hit on a stale cache will cause a command to be executed and fail at the moment events are stored in the event store. By default, Axon's distributed command bus components will use consistent hashing to route commands.
 
-* Configure a sensible time to live / time to idle
+* Configure a sensible time to live / time to idle.
 
   By default, caches have a tendency to have a relatively short time to live, a matter of minutes. For a command handling component with consistent routing, a longer time-to-idle and time-to-live is usually better. This prevents the need to re-initialize an aggregate based on its events, just because its cache entry expired. The time-to-live of your cache should match the expected lifetime of your aggregate.
 
-* Cache data in-memory
+* Cache data in-memory.
 
-  For true optimziation, caches should keep data in-memory \(and preferably on-heap\) to best performance. This prevents the need to \(se\)serialize aggregates when storing to disk and even off-heap.
+  For true optimization, caches should keep data in-memory \(and preferably on-heap\) for best performance. This prevents the need to \(re\)serialize aggregates when storing to disk and even off-heap.

@@ -1,6 +1,6 @@
 # Spring cloud
 
-Spring Cloud is an alternative approach to distributing command bus (commands), besides Axon Server which is default.
+Spring Cloud is an alternative approach to distributing command bus (commands), besides Axon Server which is the default.
 
 The Spring Cloud connector setup uses the service registration and discovery mechanism described by [Spring Cloud](https://spring.io/projects/spring-cloud) for distributing the command bus. You are thus left free to choose which Spring Cloud implementation to use to distribute your commands. An example implementations is the Eureka Discovery/Eureka Server combination.
 
@@ -16,13 +16,13 @@ The Spring Cloud connector setup is a combination of the `SpringCloudCommandRout
 
 > **Note**
 >
-> When using the `SpringCloudCommandRouter`, make sure that your Spring application is has heartbeat events enabled. The implementation leverages the heartbeat events published by a Spring Cloud application to check whether its knowledge of all the others nodes is up to date. Hence if heartbeat events are disabled the majority of the Axon applications within your cluster will not be aware of the entire set up, thus posing issues for correct command routing.
+> When using the `SpringCloudCommandRouter`, make sure that your Spring application is has heartbeat events enabled. The implementation leverages the heartbeat events published by a Spring Cloud application to check whether its knowledge of all the others nodes is up to date. If heartbeat events are disabled, then the majority of the Axon applications within your cluster will not be aware of the entire setup. This will cause issues for correct command routing.
 
 The `SpringCloudCommandRouter` has to be created by providing the following:
 
 * A "discovery client" of type `DiscoveryClient` - This can be provided by annotating your Spring Boot application with `@EnableDiscoveryClient`, which will look for a Spring Cloud implementation on your classpath.
 * A "routing strategy" of type `RoutingStrategy` - The `axon-messaging` module currently provides several implementations, but a function call can suffice as well. 
-If you want to route the Commands based on the 'aggregate identifier' for example, you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
+If you want to route the commands based on the 'aggregate identifier' for example, you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
 * A "local service instance" of type `Registration` - If you're Spring Boot application is annotated with the aforementioned `@EnableDiscoveryClient`, it will automatically create a `Registration` bean referencing the instance itself. 
 
 Other optional parameters for the `SpringCloudCommandRouter` are:
@@ -99,13 +99,13 @@ public CommandBus localSegment() {
 
 > **Note**
 >
-> Note that it is not required that all segments have command handlers for the same type of commands. You may use different segments for different command types altogether. The Distributed Command Bus will always choose a node to dispatch a Command to that has support for that specific type of Command.
+> Note that it is not required that all segments have command handlers for the same type of commands. You may use different segments for different command types altogether. The Distributed Command Bus will always choose a node to dispatch a command to that has support for that specific type of command.
 
 **Spring Cloud Http Back Up Command Router**
 
-Internally, the `SpringCloudCommandRouter` uses the `Metadata` map contained in the Spring Cloud `ServiceInstance` to communicate the allowed message routing information throughout the distributed Axon environment. If the desired Spring Cloud implementation however does not allow the modification of the `ServiceInstance.Metadata` field \(e.g. Consul\), one can choose to instantiate a `SpringCloudHttpBackupCommandRouter` instead of the `SpringCloudCommandRouter`.
+Internally, the `SpringCloudCommandRouter` uses the `Metadata` map contained in the Spring Cloud `ServiceInstance` to communicate the allowed message routing information throughout the distributed Axon environment. However, if the desired Spring Cloud implementation does not allow the modification of the `ServiceInstance.Metadata` field \(e.g. Consul\), one can choose to instantiate a `SpringCloudHttpBackupCommandRouter` instead of the `SpringCloudCommandRouter`.
 
-The `SpringCloudHttpBackupCommandRouter`, as the name suggests, has a back up mechanism if the `ServiceInstance.Metadata` field does not contained the expected message routing information. That back up mechanism is to provide an HTTP endpoint from which the message routing information can be retrieved and by simultaneously adding the functionality to query that endpoint of other known nodes in the cluster to retrieve their message routing information. As such the back up mechanism functions is a Spring Controller to receive requests at a specifiable endpoint and uses a `RestTemplate` to send request to other nodes at the specifiable endpoint.
+The `SpringCloudHttpBackupCommandRouter`, as the name suggests, has a backup mechanism if the `ServiceInstance.Metadata` field does not contain the expected message routing information. That backup mechanism is to provide an HTTP endpoint from which the message routing information can be retrieved and by simultaneously adding the functionality to query that endpoint of other known nodes in the cluster to retrieve their message routing information. As such, the backup mechanism functions as a Spring Controller to receive requests at a specifiable endpoint and uses a `RestTemplate` to send request to other nodes at the specifiable endpoint.
 
 To use the `SpringCloudHttpBackupCommandRouter` instead of the `SpringCloudCommandRouter`, add the following Spring Java configuration \(which replaces the `SpringCloudCommandRouter` method in our earlier example\):
 
@@ -136,7 +136,7 @@ The Spring Cloud Auto-configuration doesn't have much to configure. It uses an e
 
 However, some discovery clients are not able to update instance metadata dynamically on the server. If Axon detects this, it will automatically fall back to querying that node using HTTP. This is done once on each discovery heartbeat \(usually 30 seconds\).
 
-This behavior can be configured or disabled, using the following settings in `appplication.properties`:
+This behavior can be configured or disabled using the following settings in `appplication.properties`:
 
 ```text
 # whether to fall back to http when no meta-data is available

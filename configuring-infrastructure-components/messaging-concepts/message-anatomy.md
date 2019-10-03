@@ -5,12 +5,12 @@ In Axon, all communication between components is done with explicit messages, re
 and Meta Data, which is a key-value pair describing the context of the message.
 
 Each of `Message`'s sub-interfaces represent a specific type of message, and defines additional information that 
-describes that Message. Unlike any Meta Data, this additional information defines information required for correct 
+describes that Message. Unlike Meta Data, this additional information defines information required for correct 
 processing of that type of message.
 
 Messages are immutable. That means that, to add a Meta Data element, you effectively create a new Message instance, with
 an additional (or other) Meta Data element. To still be able to consider two Java-instances of a message as representing
-the same conceptual Message, each message has an identifier. Changing Meta Data of a message will not change this 
+the same conceptual Message, each message has an identifier. Changing the Meta Data of a message will not change this 
 identifier.
 
 ## Meta Data
@@ -20,8 +20,8 @@ contain information about the message that caused this Message to be generated (
 based on an incoming Command).
 
 In Axon, Meta Data is represented as a Map of String to Object. While you are free to add any type of object as the 
-Meta Data value, we strongly recommend sticking to primitives and Strings, or at most simple objects. Meta Data does not
-come with the same flexibility as the payload, when it comes to structural changes.
+Meta Data value, we strongly recommend sticking to primitives and Strings (or at most simple objects). Meta Data does not
+come with the same flexibility as the payload when it comes to structural changes.
 
 Unlike a regular `Map<String,Object>`, `MetaData` in Axon is immutable. Mutating methods will create and return a new
 instance, instead of modifying an existing one.
@@ -33,7 +33,7 @@ MetaData metaData = MetaData.with("myKey", 42) // 1
 1. Creates a `MetaData` instance with the indicated key-value pair
 2. Add an additional key-value pair, returning a new instance of `MetaData`.
 
-Meta Data in message works similarly:
+Meta Data in a message works similarly:
 
 ```java 
 EventMessage eventMessage = 
@@ -41,10 +41,10 @@ EventMessage eventMessage =
                            .withMetaData(singletonMap("myKey", 42)) // 2
                            .andMetaData(singletonMap("otherKey", "some value")); // 2
 ```
-1. Create an EventMessage with "myPayload" as payload
+1. Create an EventMessage with "myPayload" as the payload
 2. `withMetaData` replaces any Meta Data in the message with the given Map. 
     In this case `java.util.Collections.singletonMap()` is used to define a single entry.
-3. `andMetaData` adds the entries from the given Map to the Message's meta data. 
+3. `andMetaData` adds the entries from the given Map to the Message's metadata. 
     Existing entries with equal keys are overwritten.
 
  > *Note - about `MetaData` implementing `Map<String, Object>`*
@@ -55,7 +55,7 @@ EventMessage eventMessage =
 
 ## Message-specific data
 
-Certain types of messages provide extra information, on top of what the Message provides, itself. For example, an 
+Certain types of messages provide extra information (on top of what the Message provides). For example, an 
 `EventMessage` (an interface extending `Message`) also provides a timestamp, representing the time at which the event
-was generated. The `QueryMessage` carries, besides Payload and Meta Data, also a description of the type of response 
+was generated. The `QueryMessage` carries, besides Payload and Meta Data, a description of the type of response 
 that the requesting component expects. 

@@ -1,6 +1,6 @@
 # Apache Kafka
 
-Kafka is an alternative approach to distributing events, besides Axon Server which is default.
+Kafka is an alternative approach to distributing events, besides Axon Server which is the default.
 
 Kafka is a very popular system for publishing and consuming events. It's architecture is fundamentally different from most messaging systems, and combines speed with reliability.
 
@@ -84,8 +84,8 @@ AsyncFetcher.builder(configs)
 
 Axon will automatically provide certain Kafka related components based on the availability of beans and/or properties.
 
-To enable a KafkaPublisher, either provide a bean of type `ProducerFactory`, or set `axon.kafka.producer.transaction-id-prefix` in `application.properties` to have auto configuration configure a ProducerFactory with Transactional semantics. In either case, `application.properties` should provide the necessary Kafka Client properties, available under the `axon.kafka` prefix. If none are provided, default settings are used, and `localhost:9092` is used as the bootstrap server.
+To enable a KafkaPublisher, either provide a bean of type `ProducerFactory`, or set `axon.kafka.producer.transaction-id-prefix` in `application.properties` to have auto configuration configure a ProducerFactory with transactional semantics. In either case, `application.properties` should provide the necessary Kafka client properties, available under the `axon.kafka` prefix. If none are provided, default settings are used and `localhost:9092` is used as the bootstrap server.
 
-To enable a `KafkaMessageSource`, either provide a bean of type `ConsumerFactory`, or provide the `axon.kafka.consumer.group-id` setting in `application.properties`. Also make sure all necessary Kafka Client Configuration properties are available under the `axon.kafka` prefix.
+To enable a `KafkaMessageSource`, either provide a bean of type `ConsumerFactory`, or provide the `axon.kafka.consumer.group-id` setting in `application.properties`. Also make sure all necessary Kafka client configuration properties are available under the `axon.kafka` prefix.
 
 Alternatively, you may provide your own `KafkaMessageSource` bean\(s\), in which case Axon will not create the default KafkaMessageSource.

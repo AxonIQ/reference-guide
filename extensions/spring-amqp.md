@@ -1,6 +1,6 @@
 # Spring AMQP
 
-Spring AMQP is an alternative approach to distributing events, besides Axon Server which is default.
+Spring AMQP is an alternative approach to distributing events, besides Axon Server which is the default.
 
 Axon provides out-of-the-box support to transfer events to and from an AMQP message broker, such as [RabbitMQ](https://www.rabbitmq.com/).
 
@@ -28,7 +28,7 @@ By default, no AMQP transactions are used when sending. This can be overridden u
 
 Spring has extensive support for reading messages from an AMQP Queue. However, this needs to be 'bridged' to Axon, so that these messages can be handled from Axon as if they are regular event messages.
 
-The `SpringAMQPMessageSource` allows event processors to read messages from a queue, instead of the event store or event bus. It acts as an adapter between Spring AMQP and the `SubscribableMessageSource` needed by these processors.
+The `SpringAMQPMessageSource` allows event processors to read messages from a queue instead of the event store or event bus. It acts as an adapter between Spring AMQP and the `SubscribableMessageSource` needed by these processors.
 
 To receive events from a queue and process them inside an Axon application, you need to configure a `SpringAMQPMessageSource`:
 

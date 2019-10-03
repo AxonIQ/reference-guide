@@ -9,7 +9,7 @@ Through providing the functionality to describe query handling methods
  (as further explained in [this](../../implementing-domain-logic/query-handling/query-handling.md) section) 
  and a dedicated bus for query messages, 
  common message features such as [interceptors](../messaging-concepts/message-intercepting.md) and
-  [message monitoring](../../operations-guide/production-considerations/monitoring-and-metrics.md) can used.
+  [message monitoring](../../operations-guide/production-considerations/monitoring-and-metrics.md) can be used.
 
 The next sections provide an overview of the tasks related to configuring the necessary components to start processing
  queries in an Axon application.
