@@ -49,7 +49,7 @@ To override these settings, create a file called `/META-INF/orm.xml` on the clas
 ```markup
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings version="1.0" xmlns="http://java.sun.com/xml/ns/persistence/orm">
-    <mapped-superclass access="FIELD" metadata-complete="false" class="org.axonframework.eventsourcing.eventstore.AbstractSequencedDomainEventEntry">
+    <mapped-superclass access="FIELD" metadata-complete="false" class="org.axonframework.eventhandling.AbstractSequencedDomainEventEntry">
         <attributes>
             <id name="globalIndex">
                 <generated-value strategy="SEQUENCE" generator="myGenerator"/>
