@@ -24,6 +24,17 @@ Load testing is ultimately the best way to discover which indices provide the be
   Put an index on the `"sagaType"`, `"associations.key"` and `"associations.value"` properties in the saga 
    \(default name: `"sagas"`\) collection.
 
+{% hint style="info" %}
+
+In pre Axon Framework 3 release we found MongoDb to be a very good fit as an Event Store. 
+However with the introduction of Tracking Event Processors and how they track their events,
+ we have encountered some inefficiencies in regards to the Mongo Event Store implementation. 
+We recommend using a built-for-purpose event store like [Axon Server](../introduction/axon-server.md),
+ or alternatively an RDBMS based \(the JPA or JDBC implementations for example\),
+ and would only suggest to use Mongo for this use case if you have found its performance to be beneficial for your application.
+ 
+{% endhint %}
+
 ## Configuration in Spring Boot
 
 ```java
