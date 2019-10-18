@@ -71,6 +71,7 @@
     * [Command-line Interface](operations-guide/setting-up-axon-server/command-line.md)
     * [Tagging](operations-guide/setting-up-axon-server/tagging.md)
     * [Development Mode](operations-guide/setting-up-axon-server/development-mode.md)
+    * [Heartbeat Monitoring](operations-guide/setting-up-axon-server/heartbeat-monitoring.md)
 * [Production Considerations](operations-guide/production-considerations/production-considerations.md)
     * [Versioning Events](operations-guide/production-considerations/versioning-events.md)
     * [Serializers](operations-guide/production-considerations/serializers.md)
