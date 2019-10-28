@@ -147,28 +147,14 @@ The `@Autowired` and `@javax.inject.Inject` annotation can be used to demarcate 
  but they are injected by Axon by looking for these annotations on fields and methods. 
 Constructor injection is not \(yet\) supported.
 
-To tune the configuration of sagas, it is possible to define a custom `SagaConfiguration` bean. 
-For an annotated saga class, Axon will attempt to find a configuration for that saga. 
-It does so by checking for a bean of type `SagaConfiguration` with a specific name. 
-For a saga class called `MySaga`, the bean that Axon looks for is `mySagaConfiguration`. 
-If no such bean is found, it creates a configuration based on available components.
-
-If a `SagaConfiguration` instance is present for an annotated saga,
- that configuration is used to retrieve and register the components for this type of saga. 
-If the `SagaConfiguration` bean is not named as described above, it is possible that the saga is registered twice,
- and receives events in duplicate. 
-To prevent this, you can specify the bean name of the `SagaConfiguration` using the `@Saga` annotation:
+In addition to `SagaManager` and `SagaRepository`, Axon will also configure an Event Processor for that Saga.
+By default, the name of the created Event Processor will be the Saga class name suffixed with `Processor`.
+Tuning the event processing configuration of sagas is possible by configuring Saga's assigned Event Processor via `EventProcessingConfigurer`:
 
 ```java
-@Saga(configurationBean = "mySagaConfigBean")
-public class MySaga {
-    // methods here 
-}
-
-// in the Spring configuration:
-@Bean 
-public SagaConfiguration<MySaga> mySagaConfigurationBean() {
-    // create and return SagaConfiguration instance
+@Autowired
+public void configureSagaEventProcessing(EventProcessingConfigurer config) {
+    config.registerTokenStore("MySagaProcessor", c -> new MySagaCustomTokenStore())
 }
 ```
 {% endtab %}
@@ -327,7 +313,7 @@ public void configure(EventProcessingConfigurer epConfig) {
 {% endtabs %}
 
 Note that you can override the token store to use with tracking processors
- in the respective `EventProcessingConfiguration` or `SagaConfiguration` that defines that processor. 
+ in the `EventProcessingConfiguration` that defines that processor. 
 Where possible, it is recommended to use a token store that stores tokens in the same database
  as where the event handlers update the view models. 
 This way, changes to the view model can be stored atomically with the changed tokens,
