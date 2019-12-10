@@ -527,9 +527,14 @@ Of course, you can completely disregard the `StreamableMessageSource` input para
 Below we can see an example of creating a `TrackingEventProcessorConfiguration` with an initial token on `"2007-12-03T10:15:30.00Z"`:
 
 ```java
-TrackingEventProcessorConfiguration
-            .forSingleThreadedProcessing()
-            .andInitialTrackingToken(
-                streamableMessageSource -> 
-                    streamableMessageSource.createTokenAt("2007-12-03T10:15:30.00Z"));
+public class Configuration {
+    
+    public TrackingEventProcessorConfiguration customConfiguration() {
+        return TrackingEventProcessorConfiguration
+                .forSingleThreadedProcessing()
+                .andInitialTrackingToken(streamableMessageSource -> streamableMessageSource.createTokenAt(
+                        Instant.parse("2007-12-03T10:15:30.00Z")
+                ));
+    }
+}
 ```
