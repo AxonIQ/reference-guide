@@ -7,11 +7,11 @@ Especially when it comes to failures when handling a command or a query, message
  
 ## Handler Execution Exception
 
-The `HandlerExceutionException` marks an exception which originates from a message handling member.
+The `HandlerExecutionException` marks an exception which originates from a message handling member.
 Since an [Event](../../configuring-infrastructure-components/messaging-concepts/messaging-concepts.md#events)
  message is unidirectional, handling an event does not include any return values.
 As such,
- the `HandlerExceutionException` should only be returned as an exceptional result from handling a command or a query.
+ the `HandlerExecutionException` should only be returned as an exceptional result from handling a command or a query.
 Axon provides a more concrete implementation of this exception for failed command and query handling,
  respectively the `CommandExecutionException` and `QueryExecutionException`. 
 
@@ -24,7 +24,7 @@ To support and encourage this decoupling,
  Axon will generify any exception which is a result of Command or Query handling.
  
 To maintain support for conditional logic dependent on the type of exception thrown in a distributed scenario,
- it is possible to provide details in a `HandlerExceutionException`.
+ it is possible to provide details in a `HandlerExecutionException`.
 It is thus recommended to throw a `CommandExecutionException`/`QueryExecutionException` with the required details,
  when command/query handling fails.
 This behaviour could be supported generically by implementing
