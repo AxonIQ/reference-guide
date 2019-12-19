@@ -36,8 +36,36 @@ Therefor we recommend using a built-for-purpose event store like [Axon Server](.
 
 When Event Messages are published to an Event Bus \(or Event Store\),
  they can be forwarded to a Kafka topic using the `KafkaPublisher`. 
-Publication of the messages to Kafka will happen in the same thread
- \(and Unit of Work\) that published the events to the Event Bus.
+To achieve this it will utilize a Kafka `Producer`, retrieved through Axon's `ProducerFactory`.
+The `KafkaPublisher` in turn receives the events to publish from a `KafkaEventPublisher`.
+
+Since the `KafkaEventPublisher` is an event message handler in Axon terms, we can provide it to any
+ [Event Processor](../configuring-infrastructure-components/event-processing/event-processors.md) to receive the
+ published events.
+The choice of event processor which brings differing characteristics for event publication to Kafka:
+
+* **Subscribing Event Processor** - publication of the messages to Kafka will happen in the same thread 
+\(and Unit of Work\) that published the events to the event bus. This approach ensures failure to send to Kafka enforces
+ failure of the initial event publication on the event bus
+* **Tracking Event Processor** - publication of the messages to Kafka is run in a different thread \(and Unit of Work\)
+ then that which published the events to the event bus. 
+ This approach ensure the event has been published on the event bus regardless of whether publication to Kafka works
+
+When settings up event publication it is also important to take into account which `ConfirmationMode` is used.
+The `ConfirumationMode` influences the process of actually producing an event message on a Kafka topic,
+ but also what kind of `Producer` the `ProducerFactory` will instantiate:
+
+* **Transactional** - This will require the `Producer` to start, commit and (in case of failure) rollback the
+ transaction of publishing an event message. 
+ Alongside this, it will create a pool of `Producer` instances in the `ProducerFactory` to avoid continuous creation of
+  new ones, requiring the user to provide a "transactional id prefix" to uniquely identify every `Producer` in the pool.
+* **Wait-for-Ack** - Setting "WAIT_FOR_ACK" as the `ConfirmationMode` will require the `Producer` instance to wait for
+ a default of 1 second (configurable on the `KafkaPublisher`) until the event message publication has ben acknowledged.
+ Alongside this, it will create a single, shareable `Producer` instance from within the `ProducerFactory`.  
+* **None** - This is the _default_ mode, which only ensures a single,
+ shareable `Producer` instance from within the `ProducerFactory`.
+
+### Configuring Event Publication to Kafka
 
 The `KafkaPublisher` takes a `KafkaPublisherConfiguration` instance,
  which provides the different values and settings required to publish events to Kafka.
