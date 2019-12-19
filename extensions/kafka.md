@@ -1,13 +1,35 @@
 # Apache Kafka
 
-Kafka is an alternative approach to distributing events, besides Axon Server which is default.
+{% hint style="info" %}
 
-Kafka is a very popular system for publishing and consuming events. It's architecture is fundamentally different from most messaging systems, and combines speed with reliability.
+The Kafka Extension currently only has a Release Candidate. 
+Due to this, minor releases of the extension or Axon Framework may include breaking changes to the APIs.
 
-To use the Kafka components from Axon, make sure the `axon-kafka` module is available on the classpath.
+{% endhint %}
+
+Apache Kafka is a very popular system for publishing and consuming events. 
+It's architecture is fundamentally different from most messaging systems, and combines speed with reliability.
+
+Axon provides an extension dedicated to _publishing_ and _receiving_ event messages from Kafka.
+The Kafka Extensions should be regarded as an alternative approach to distributing events,
+ besides (the default) Axon Server.
+
+The implementation of the extension can be found in [this](https://github.com/AxonFramework/extension-kafka) repository,
+ which also contains a [sample project](https://github.com/AxonFramework/extension-kafka/tree/master/kafka-axon-example) using the extension.
+
+To use the Kafka Extension components from Axon, make sure the `axon-kafka` module is available on the classpath.
+Using the extension requires setting up and configuring Kafka following your project's requirements.
+How this is achieved is outside of the scope of this reference guide
+ and should be found in Kafka's [documentation](https://kafka.apache.org/).
 
 {% hint style="info" %}
-The `axon-kafka` module is a new addition to the framework. Minor releases of the framework could include breaking changes to the APIs.
+
+Note that Kafka is a perfectly fine event distribution mechanism, but it is not a good fit for an event store.
+Along those lines this extension **only** provides the means to distributed Axon's events through Kafka.
+Due to this the extension cannot be used to event source aggregates, as this requires an event store implementation.
+Therefor we recommend using a built-for-purpose event store like [Axon Server](../introduction/axon-server.md),
+ or alternatively an RDBMS based \(the JPA or JDBC implementations for example\).
+
 {% endhint %}
 
 ## Publishing Events to a Kafka topic
