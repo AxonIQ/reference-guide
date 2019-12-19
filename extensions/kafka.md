@@ -32,11 +32,15 @@ Therefor we recommend using a built-for-purpose event store like [Axon Server](.
 
 {% endhint %}
 
-## Publishing Events to a Kafka topic
+## Publishing Events to Kafka
 
-When Event Messages are published to an Event Bus \(or Event Store\), they can be forwarded to a Kafka topic using the `KafkaPublisher`. Publication of the messages to Kafka will happen in the same thread \(and Unit of Work\) that published the events to the Event Bus.
+When Event Messages are published to an Event Bus \(or Event Store\),
+ they can be forwarded to a Kafka topic using the `KafkaPublisher`. 
+Publication of the messages to Kafka will happen in the same thread
+ \(and Unit of Work\) that published the events to the Event Bus.
 
-The `KafkaPublisher` takes a `KafkaPublisherConfiguration` instance, which provides the different values and settings required to publish events to Kafka.
+The `KafkaPublisher` takes a `KafkaPublisherConfiguration` instance,
+ which provides the different values and settings required to publish events to Kafka.
 
 ```java
 KafkaPublisherConfiguration configuration = KafkaPublisherConfiguration.<String, byte[]>builder()
@@ -49,7 +53,10 @@ KafkaPublisher<String, byte[]> publisher = new KafkaPublisher<>(configuration); 
 publisher.start(); // to start publishing all events
 ```
 
-Axon provides a `DefaultProducerFactory`, which attempts to reuse created instances to avoid continuous creation of new ones. It's creation uses a similar builder pattern. The builder requires a `configs` Map, which are the settings to use for the Kafka client, such as the Kafka instance locations. Please check the Kafka guide for the possible settings and their values.
+Axon provides a `DefaultProducerFactory`, which attempts to reuse created instances to avoid continuous creation of new ones. 
+It's creation uses a similar builder pattern. 
+The builder requires a `configs` Map, which are the settings to use for the Kafka client, such as the Kafka instance locations. 
+Please check the Kafka guide for the possible settings and their values.
 
 ```java
 DefaultProducerFactory.builder(configs)
@@ -62,13 +69,17 @@ DefaultProducerFactory.builder(configs)
         .build();
 ```
 
-Note that the `DefaultProducerFactory` needs to be `shutDown` properly, to ensure all producer instances are properly closed.
+Note that the `DefaultProducerFactory` needs to be `shutDown` properly,
+ to ensure all producer instances are properly closed.
 
-## Consuming Events from a Kafka topic
+## Consuming Events from Kafka
 
-Messages can be consumed by Tracking Event Processors by configuring a `KafkaMessageSource`. This message source uses a `Fetcher` to retrieve the actual messages from Kafka. You can either use the `AsyncFetcher`, or provide your own.
+Messages can be consumed by Tracking Event Processors by configuring a `KafkaMessageSource`. 
+This message source uses a `Fetcher` to retrieve the actual messages from Kafka. 
+You can either use the `AsyncFetcher`, or provide your own.
 
-The `AsyncFetcher` is initialized using a builder, which requires the Kafka Configuration to initialize the client. Please check the Kafka guide for the possible settings and their values.
+The `AsyncFetcher` is initialized using a builder, which requires the Kafka Configuration to initialize the client. 
+Please check the Kafka guide for the possible settings and their values.
 
 ```java
 // the fetcher only requires Kafka Client Configuration properties:
@@ -84,13 +95,19 @@ AsyncFetcher.builder(configs)
         .build();
 ```
 
-The `AsyncFetcher` doesn't need to be explicitly started, as it will start when the first processors connect to it. It does need to be shut down, to ensure any thread pool or active connections are properly closed.
+The `AsyncFetcher` doesn't need to be explicitly started, as it will start when the first processors connect to it. 
+It does need to be shut down, to ensure any thread pool or active connections are properly closed.
 
 ## Customizing message format
 
-By default, Axon uses the `DefaultKafkaMessageConverter` to convert an `EventMessage` to a Kafka `ProducerRecord` and an `ConsumerRecord` back into an `EventMessage`. This implementation already allows for some customization, such as how the `Message`'s `MetaData` is mapped to Kafka headers. You can also choose which serializer should be used to fill the payload of the `ProducerRecord`.
+By default, Axon uses the `DefaultKafkaMessageConverter` to convert an `EventMessage` to a Kafka `ProducerRecord`
+ and an `ConsumerRecord` back into an `EventMessage`. 
+This implementation already allows for some customization,
+ such as how the `Message`'s `MetaData` is mapped to Kafka headers. 
+You can also choose which serializer should be used to fill the payload of the `ProducerRecord`.
 
-For further customization, you can implement your own `KafkaMessageConverter`, and wire it into the `KafkaPublisherConfiguration` and `AsyncFetcher`:
+For further customization, you can implement your own `KafkaMessageConverter`,
+ and wire it into the `KafkaPublisherConfiguration` and `AsyncFetcher`:
 
 ```java
 KafkaPublisherConfiguration.<String, byte[]>builder() // the <String, byte[]> defines the type of key and payload, respectively
@@ -106,8 +123,15 @@ AsyncFetcher.builder(configs)
 
 Axon will automatically provide certain Kafka related components based on the availability of beans and/or properties.
 
-To enable a KafkaPublisher, either provide a bean of type `ProducerFactory`, or set `axon.kafka.producer.transaction-id-prefix` in `application.properties` to have auto configuration configure a ProducerFactory with Transactional semantics. In either case, `application.properties` should provide the necessary Kafka Client properties, available under the `axon.kafka` prefix. If none are provided, default settings are used, and `localhost:9092` is used as the bootstrap server.
+To enable a KafkaPublisher, either provide a bean of type `ProducerFactory`,
+ or set `axon.kafka.producer.transaction-id-prefix` in `application.properties` to have auto configuration configure a ProducerFactory with Transactional semantics. 
+In either case, `application.properties` should provide the necessary Kafka Client properties,
+ available under the `axon.kafka` prefix. 
+If none are provided, default settings are used, and `localhost:9092` is used as the bootstrap server.
 
-To enable a `KafkaMessageSource`, either provide a bean of type `ConsumerFactory`, or provide the `axon.kafka.consumer.group-id` setting in `application.properties`. Also make sure all necessary Kafka Client Configuration properties are available under the `axon.kafka` prefix.
+To enable a `KafkaMessageSource`, either provide a bean of type `ConsumerFactory`,
+ or provide the `axon.kafka.consumer.group-id` setting in `application.properties`. 
+Also make sure all necessary Kafka Client Configuration properties are available under the `axon.kafka` prefix.
 
-Alternatively, you may provide your own `KafkaMessageSource` bean\(s\), in which case Axon will not create the default KafkaMessageSource.
+Alternatively, you may provide your own `KafkaMessageSource` bean\(s\),
+ in which case Axon will not create the default KafkaMessageSource.
