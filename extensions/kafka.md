@@ -67,38 +67,87 @@ The `ConfirumationMode` influences the process of actually producing an event me
 
 ### Configuring Event Publication to Kafka
 
-The `KafkaPublisher` takes a `KafkaPublisherConfiguration` instance,
- which provides the different values and settings required to publish events to Kafka.
+It is a several step process to configure Event publication to Kafka, which starts with the `ProducerFactory`.
+Axon provides a `DefaultProducerFactory` which uses the builder pattern to be instantiated.
+
+The builder has one hard requirement, which is the `Producer` configuration `Map`.
+The `Map` contains the settings to use for the Kafka `Producer` client, such as the Kafka instance locations.
+Please check the Kafka [documentation](https://kafka.apache.org/) for the possible settings and their values.
 
 ```java
-KafkaPublisherConfiguration configuration = KafkaPublisherConfiguration.<String, byte[]>builder()
-        .withProducerFactory(factory) // the factory for creating the actual client instances for sending events to kafka
-        .withTopic("topic") // the topic to send the events to. Defaults to 'Axon.Events'
-        .build();
-
-KafkaPublisher<String, byte[]> publisher = new KafkaPublisher<>(configuration); // create the publisher itself
-
-publisher.start(); // to start publishing all events
+public class KafkaEventPublicationConfiguration {
+    // ...
+    public ProducerFactory<String, byte[]> producerFactory(Duration closeTimeout,
+                                                           int producerCacheSize,
+                                                           Map<String, Object> producerConfiguration,
+                                                           ConfirmationMode confirmationMode,
+                                                           String transactionIdPrefix) {
+        return DefaultProducerFactory.<String, byte[]>builder()
+                .closeTimeout(closeTimeout)                 // Defaults to "30" seconds
+                .producerCacheSize(producerCacheSize)       // Defaults to "10"; only used for "TRANSACTIONAL" mode
+                .configuration(producerConfiguration)       // Hard requirement
+                .confirmationMode(confirmationMode)         // Defaults to a Confirmation Mode of "NONE"
+                .transactionalIdPrefix(transactionIdPrefix) // Hard requirement when in "TRANSACTIONAL" mode
+                .build();
+    }
+    // ...
+}
 ```
 
-Axon provides a `DefaultProducerFactory`, which attempts to reuse created instances to avoid continuous creation of new ones. 
-It's creation uses a similar builder pattern. 
-The builder requires a `configs` Map, which are the settings to use for the Kafka client, such as the Kafka instance locations. 
-Please check the Kafka guide for the possible settings and their values.
+The second infrastructure component to introduce is the `KafkaPublisher`,
+ which has a hard requirement on the `ProduceFactory`.
+Additionally, this would be the place to define the Kafka topic upon which Axon event messages will be published.
+Note that the `KafkaPublisher` needs to be `shutDown` properly, to ensure all `Producer` instances are properly closed.
 
 ```java
-DefaultProducerFactory.builder(configs)
-        .withConfirmationMode(ConfirmationMode.WAIT_FOR_ACK) // either TRANSACTIONAL, WAIT_FOR_ACK or NONE (default)
-        .build();
+public class KafkaEventPublicationConfiguration { 
+    // ...
 
-// or, to create a transactional ProducerFactory
-DefaultProducerFactory.builder(configs)
-        .withTransactionalIdPrefix("myTxPrefix") // this will also set ConfirmationMode to TRANSACTIONAL
-        .build();
+    public KafkaPublisher<String, byte[]> kafkaPublisher(String topic,
+                                                         ProducerFactory<String, byte[]> producerFactory,
+                                                         KafkaMessageConverter<String, byte[]> kafkaMessageConverter,
+                                                         int publisherAckTimeout) {
+        return KafkaPublisher.<String, byte[]>builder()
+                .topic(topic)                               // Defaults to "Axon.Events"
+                .producerFactory(producerFactory)           // Hard requirement
+                .messageConverter(kafkaMessageConverter)    // Defaults to a "DefaultKafkaMessageConverter"
+                .publisherAckTimeout(publisherAckTimeout)   // Defaults to "1000" milliseconds; only used for "WAIT_FOR_ACK" mode
+                .build();
+    }
+    // ...
+}
 ```
 
-Note that the `DefaultProducerFactory` needs to be `shutDown` properly,
- to ensure all producer instances are properly closed.
+Lastly, we need to provide Axon's event messages to the `KafkaPublisher`.
+To that end a `KafkaEventPublisher` should be instantiate through the builder pattern.
+Remember to add the `KafkaEventPublisher` to an event processor implementation of your choice.
+It is recommended to use the `KafkaEventPublisher#DEFAULT_PROCESSING_GROUP` as the processing group name of the event
+ processor to distinguish it from other event processors.
+
+```java
+public class KafkaEventPublicationConfiguration {
+    // ...
+    public KafkaEventPublisher<String, byte[]> kafkaEventPublisher(KafkaPublisher<String, byte[]> kafkaPublisher) {
+        return KafkaEventPublisher.<String, byte[]>builder()
+                .kafkaPublisher(kafkaPublisher)             // Hard requirement
+                .build();
+    }
+
+    public void registerPublisherToEventProcessor(EventProcessingConfigurer eventProcessingConfigurer,
+                                                  KafkaEventPublisher<String, byte[]> kafkaEventPublisher) {
+        String processingGroup = KafkaEventPublisher.DEFAULT_PROCESSING_GROUP;
+        eventProcessingConfigurer.registerEventHandler(configuration -> kafkaEventPublisher)
+                                 .assignHandlerTypesMatching(
+                                         processingGroup,
+                                         clazz -> clazz.isAssignableFrom(KafkaEventPublisher.class)
+                                 )
+                                 .assignProcessingGroup(processingGroup, processingGroup)
+                                 .registerSubscribingEventProcessor(processingGroup);
+        // Replace `registerSubscribingEventProcessor` for `registerTrackingEventProcessor` to use a tracking processor 
+    }
+    // ...
+}
+```
 
 ## Consuming Events from Kafka
 
