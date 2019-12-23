@@ -328,26 +328,43 @@ Note that as with any tracking event processor, the progress on the event stream
 Using the `StreamableKafkaMessageSource` means a `KafkaTrackingToken` containing topic-partition to offset pairs is
  stored in the `TokenStore`.
 
-## Customizing message format
+## Customizing event message format
 
-By default, Axon uses the `DefaultKafkaMessageConverter` to convert an `EventMessage` to a Kafka `ProducerRecord`
- and an `ConsumerRecord` back into an `EventMessage`. 
-This implementation already allows for some customization,
- such as how the `Message`'s `MetaData` is mapped to Kafka headers. 
-You can also choose which serializer should be used to fill the payload of the `ProducerRecord`.
+In the previous sections the `KafkaMessageConverter<K, V>` has been shown as a requirement for event production
+ and consumption. The `K` is the format of the message's key, where the `V` stand for the message's value.
+The extension provides a `DefaultKafkaMessageConverter` which converts an axon `EventMessage` to a Kafka `ProducerRecord`,
+ and an `ConsumerRecord` back into an `EventMessage`.
+This `DefaultKafkaMessageConverter` uses `String` as the key and `byte[]` as the value of the message to de-/serialize.
 
-For further customization, you can implement your own `KafkaMessageConverter`,
- and wire it into the `KafkaPublisherConfiguration` and `AsyncFetcher`:
+Albeit the default, this implementation allows for some customization,
+ such as how the `EventMessage`'s `MetaData` is mapped to Kafka headers.
+This is achieved by adjusting the "header value mapper" in the `DefaultKafkaMessageConverter`'s builder.
+
+The `SequencingPolicy` can be adjusted to change the behaviour of the record key being used.
+The default sequencing policy is the `SequentialPerAggregatePolicy`,
+ which leads to the aggregate identifier of an event being the key of a `ProducerRecord` and `ConsumerRecord`. 
+
+Lastly, the `Serializer` used by the converter can be adjusted. 
+See the [Serializer](../operations-guide/production-considerations/serializers.md) section for more details on this. 
 
 ```java
-KafkaPublisherConfiguration.<String, byte[]>builder() // the <String, byte[]> defines the type of key and payload, respectively
-        .withMessageConverter(customConverter) // the converter needs to match the expected key and payload type
-        .build();
-
-AsyncFetcher.builder(configs)
-        .withMessageConverter(customConverter)
-        .build();
+public class KafkaMessageConversationConfiguration {
+    // ...
+    public KafkaMessageConverter<String, byte[]> kafkaMessageConverter(Serializer serializer,
+                                                                       SequencingPolicy<? super EventMessage<?>> sequencingPolicy,
+                                                                       BiFunction<String, Object, RecordHeader> headerValueMapper) {
+        return DefaultKafkaMessageConverter.builder()
+                                           .serializer(serializer)                  // Hard requirement
+                                           .sequencingPolicy(sequencingPolicy)      // Defaults to a "SequentialPerAggregatePolicy"
+                                           .headerValueMapper(headerValueMapper)    // Defaults to "HeaderUtils#byteMapper()"
+                                           .build();
+    }
+    // ...
+}
 ```
+
+Make sure to use an identical `KafkaMessageConverter` on both the producing and consuming end,
+ as otherwise exception upon deserialization should be expected.
 
 ## Configuration in Spring Boot
 
