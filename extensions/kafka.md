@@ -368,17 +368,52 @@ Make sure to use an identical `KafkaMessageConverter` on both the producing and 
 
 ## Configuration in Spring Boot
 
-Axon will automatically provide certain Kafka related components based on the availability of beans and/or properties.
+This extension can be added as a Spring Boot starter dependency to your project using group id
+ `org.axonframework.extensions.kafka` and artifact id `axon-kafka-spring-boot-starter`.
+When using the auto configuration, the following components will be created for you automatically:
 
-To enable a KafkaPublisher, either provide a bean of type `ProducerFactory`,
- or set `axon.kafka.producer.transaction-id-prefix` in `application.properties` to have auto configuration configure a ProducerFactory with Transactional semantics. 
-In either case, `application.properties` should provide the necessary Kafka Client properties,
- available under the `axon.kafka` prefix. 
-If none are provided, default settings are used, and `localhost:9092` is used as the bootstrap server.
+**Generic Components:**
+ * A `DefaultKafkaMessageConverter` using the configured `eventSerializer` (which defaults to `XStreamSerializer`).
+ Uses a `String` for the keys and a `byte[]` for the record's values
+ 
+**Producer Components:**
+ * A `DefaultProducerFactory` using a `String` for the keys and a `byte[]` for the record's values.
+ This creates a `ProducerFactory` of type "NONE", as is specified [here](#publishing-events-to-kafka).
+ For a "TRANSACTIONAL" or "WAIT_FOR_ACK" variant, the `axon.kafka.publisher.confirmation-mode` can be adjusted.
+ If set to "TRANSACTIONAL", the `axon.kafka.producer.transaction-id-prefix` property should be provided
+ * A `KafkaPublisher`
+ * A `KafkaEventPublisher`. Assigns the publisher to a processor name and processing group called
+ `__axon-kafka-event-publishing-group` on a `SubscribingEventProcessor`.
+ If a `TrackingEventProcessor` is desired, the `axon.kafka.producer.event-processor-mode` should be set to `tracking`
 
-To enable a `KafkaMessageSource`, either provide a bean of type `ConsumerFactory`,
- or provide the `axon.kafka.consumer.group-id` setting in `application.properties`. 
-Also make sure all necessary Kafka Client Configuration properties are available under the `axon.kafka` prefix.
+**Consumer Components:**
+ * A `DefaultConsumerFactory` using a `String` for the keys and a `byte[]` for the record's values
+ * An `AsyncFetcher`. To adjust the `Fetcher`'s poll timeout, the `axon.kafka.fetcher.poll-timeout` can be set.
+ * A `StreamableKafkaMessageSource` which can be used for `TrackingEventProcessor` instances
 
-Alternatively, you may provide your own `KafkaMessageSource` bean\(s\),
- in which case Axon will not create the default KafkaMessageSource.
+When using the Spring Boot auto configuration be mindful to provide an `application.properties` file.
+The Kafka extension configuration specifics should be placed under prefix `axon.kafka`.
+On this level, the `bootstrapServers` (defaults to `localhost:9092`) and `default-topic` used by the producing and 
+ consuming side can be defined. 
+
+The `DefaultProducerFactory` and `DefaultConsumerFactory` expects a `Map` of configuration properties,
+ which correspond to Kafka `Producer` and `Consumer` specific properties respectively.
+As such, Axon itself passes along these properties without using them directly itself.
+The `application.properties` file provides a number of named properties under the `axon.kafka.producer.`
+ and `axon.kafka.consumer.` prefixes.
+If the property you are looking for is not predefined in Axon `KafkaProperties` file,
+ you are always able to introduce properties in a map style as follows:
+ 
+```properties
+axon.kafka.producer.properties.[key]=[value]
+axon.kafka.consumer.properties.[key]=[value]
+```
+
+> **Auto configuring a `SubscribableKafkaMessageSource`**
+>
+> The auto configured `StreamableKafkaMessageSource` can be toggled off by setting the
+>  `axon.kafka.consumer.event-processing-mode` to `subscribing`.
+> 
+> Note that this **does not** create a `SubscribableKafkaMessageSource` for you out of the box.
+> To set up a subscribable message,
+>  we recommend to read [this](#consuming-events-with-a-subscribable-message-source) section.
