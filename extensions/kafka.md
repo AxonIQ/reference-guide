@@ -377,9 +377,11 @@ When using the auto configuration, the following components will be created for 
  
 **Producer Components:**
  * A `DefaultProducerFactory` using a `String` for the keys and a `byte[]` for the record's values.
- This creates a `ProducerFactory` of type "NONE", as is specified [here](#publishing-events-to-kafka).
- For a "TRANSACTIONAL" or "WAIT_FOR_ACK" variant, the `axon.kafka.publisher.confirmation-mode` can be adjusted.
- If set to "TRANSACTIONAL", the `axon.kafka.producer.transaction-id-prefix` property should be provided
+ This creates a `ProducerFactory` in confirmation mode "NONE", as is specified [here](#publishing-events-to-kafka).
+ The `axon.kafka.publisher.confirmation-mode` should be adjusted to change this mode,
+  where the "TRANSACTIONAL" mode requires `axon.kafka.producer.transaction-id-prefix` property should be provided.
+ If the `axon.kafka.producer.transaction-id-prefix` is non-null and non-empty,
+  it is assumed a "TRANSACTIONAL" confirmation mode is desired 
  * A `KafkaPublisher`
  * A `KafkaEventPublisher`. Assigns the publisher to a processor name and processing group called
  `__axon-kafka-event-publishing-group` on a `SubscribingEventProcessor`.
