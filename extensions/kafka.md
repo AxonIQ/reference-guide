@@ -148,6 +148,21 @@ public class KafkaEventPublicationConfiguration {
 }
 ```
 
+### Topic partition publication considerations
+
+Kafka ensures message ordering on a topic-partition level, not on an entire topic.
+To control events of a certain group, based on aggregate identifier for example, moving the a dedicated partition,
+ the [message converter's](#customizing-event-message-format) `SequencingPolicy` can be utilized.
+
+The topic-partition pair events have been published in also has impact on event consumption.
+This extension mitigates any ordering concerns with the 
+ [streamable](#consuming-events-with-a-streamable-message-source) solution,
+ by ensuring a `Consumer` always receives **all** events of a topic to be able to perform a complete ordering.
+This guarantee is however not given when using the
+ [subscribable](#consuming-events-with-a-subscribable-message-source) event consumption approach.
+The subscribable stream leaves all the ordering specifics in the hands of Kafka,
+ which means the events should be published on a consistent partition to ensure ordering.
+
 ## Consuming Events from Kafka
 
 Event messages in an Axon application can be consumed through either a Subscribing or a Tracking
@@ -215,6 +230,8 @@ Although the `SubscribableKafkaMessageSource` thus provides the niceties the tra
  
  1. Axon's approach of the `SequencingPolicy` to deduce which thread receives which events is entirely lost. 
  It is thus dependent on which topic-partition pairs are given to a `Consumer` for the events your handlers receives
+ From a usage perspective this means event message ordering is no longer guaranteed by Axon. 
+ It is thus the users job to ensure events are published in the right topic-partition pair.
  2. The API Axon provides for resets is entirely lost,
   since this API can only be correctly triggered through the `TrackingEventProcessor#resetTokens` operation
  
@@ -282,9 +299,9 @@ Using the `StreamableKafkaMessageSource` means you are inclined to use a `Tracki
 
 Where as the [subscribable kafka message source](#consuming-events-with-a-subscribable-message-source) uses Kafka's idea
  of sharing the workload through multiple `Consumer` instances in the same "Consumer Group",
- the streamable approach enforces a unique consumer group per `Consumer` instance.
-Axon requires uniquely identified consumer group/`Consumer` pairs as it otherwise cannot guarantee that each
- instance/thread receives the right portion of the event stream during 
+ the streamable approach enforces a **unique** consumer group per `Consumer` instance.
+Axon requires uniquely identified consumer group/`Consumer` pairs to (1) ensure event ordering and (2) to guarantee that
+ each instance/thread receives the correct portion of the event stream during 
  [parallel processing](../configuring-infrastructure-components/event-processing/event-processors.md#parallel-processing).
 The distinct group id is derived by the `StreamableKafkaMessageSource` through a `groupIdPrefix` and a `groupdIdSuffixFactory`,
  which are adjustable through the source's builder.
