@@ -141,7 +141,6 @@ public class KafkaEventPublicationConfiguration {
                                          processingGroup,
                                          clazz -> clazz.isAssignableFrom(KafkaEventPublisher.class)
                                  )
-                                 .assignProcessingGroup(processingGroup, processingGroup)
                                  .registerSubscribingEventProcessor(processingGroup);
         // Replace `registerSubscribingEventProcessor` for `registerTrackingEventProcessor` to use a tracking processor 
     }
