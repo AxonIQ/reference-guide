@@ -8,14 +8,15 @@ Due to this, minor releases of the extension or Axon Framework may include break
 {% endhint %}
 
 Apache Kafka is a very popular system for publishing and consuming events. 
-It's architecture is fundamentally different from most messaging systems, and combines speed with reliability.
+Its architecture is fundamentally different from most messaging systems, and combines speed with reliability.
 
 Axon provides an extension dedicated to _publishing_ and _receiving_ event messages from Kafka.
-The Kafka Extensions should be regarded as an alternative approach to distributing events,
+The Kafka Extension should be regarded as an alternative approach to distributing events,
  besides (the default) Axon Server.
 
-The implementation of the extension can be found in [this](https://github.com/AxonFramework/extension-kafka) repository,
- which also contains a [sample project](https://github.com/AxonFramework/extension-kafka/tree/master/kafka-axon-example) using the extension.
+The implementation of the extension can be found [here](https://github.com/AxonFramework/extension-kafka).
+The shared repository also contains a
+ [sample project](https://github.com/AxonFramework/extension-kafka/tree/master/kafka-axon-example) using the extension.
 
 To use the Kafka Extension components from Axon, make sure the `axon-kafka` module is available on the classpath.
 Using the extension requires setting up and configuring Kafka following your project's requirements.
@@ -27,7 +28,7 @@ How this is achieved is outside of the scope of this reference guide
 Note that Kafka is a perfectly fine event distribution mechanism, but it is not a good fit for an event store.
 Along those lines this extension **only** provides the means to distributed Axon's events through Kafka.
 Due to this the extension cannot be used to event source aggregates, as this requires an event store implementation.
-Therefor we recommend using a built-for-purpose event store like [Axon Server](../introduction/axon-server.md),
+Therefore we recommend using a built-for-purpose event store like [Axon Server](../introduction/axon-server.md),
  or alternatively an RDBMS based \(the JPA or JDBC implementations for example\).
 
 {% endhint %}
@@ -44,31 +45,32 @@ Since the `KafkaEventPublisher` is an event message handler in Axon terms, we ca
  published events.
 The choice of event processor which brings differing characteristics for event publication to Kafka:
 
-* **Subscribing Event Processor** - publication of the messages to Kafka will happen in the same thread 
-\(and Unit of Work\) that published the events to the event bus. This approach ensures failure to send to Kafka enforces
- failure of the initial event publication on the event bus
-* **Tracking Event Processor** - publication of the messages to Kafka is run in a different thread \(and Unit of Work\)
- then that which published the events to the event bus. 
- This approach ensure the event has been published on the event bus regardless of whether publication to Kafka works
+* **Subscribing Event Processor** - publication of messages to Kafka will occur in the same thread (and Unit of Work)
+ which published the events to the event bus. 
+This approach ensures failure to publish to Kafka enforces failure of the initial event publication on the event bus
+* **Tracking Event Processor** - publication of messages to Kafka is run in a different thread \(and Unit of Work\)
+ then the one which published the events to the event bus. 
+ This approach ensures the event has been published on the event bus regardless of whether publication to Kafka works
 
-When settings up event publication it is also important to take into account which `ConfirmationMode` is used.
+When setting up event publication it is also important to take into account which `ConfirmationMode` is used.
 The `ConfirumationMode` influences the process of actually producing an event message on a Kafka topic,
  but also what kind of `Producer` the `ProducerFactory` will instantiate:
 
-* **Transactional** - This will require the `Producer` to start, commit and (in case of failure) rollback the
+* **TRANSACTIONAL** - This will require the `Producer` to start, commit and (in case of failure) rollback the
  transaction of publishing an event message. 
  Alongside this, it will create a pool of `Producer` instances in the `ProducerFactory` to avoid continuous creation of
   new ones, requiring the user to provide a "transactional id prefix" to uniquely identify every `Producer` in the pool.
-* **Wait-for-Ack** - Setting "WAIT_FOR_ACK" as the `ConfirmationMode` will require the `Producer` instance to wait for
- a default of 1 second (configurable on the `KafkaPublisher`) until the event message publication has ben acknowledged.
+* **WAIT_FOR_ACK** - Setting "WAIT_FOR_ACK" as the `ConfirmationMode` will require the `Producer` instance to wait for
+ a default of 1 second (configurable on the `KafkaPublisher`) until the event message publication has been acknowledged.
  Alongside this, it will create a single, shareable `Producer` instance from within the `ProducerFactory`.  
-* **None** - This is the _default_ mode, which only ensures a single,
+* **NONE** - This is the _default_ mode, which only ensures a single,
  shareable `Producer` instance from within the `ProducerFactory`.
 
 ### Configuring Event Publication to Kafka
 
 It is a several step process to configure Event publication to Kafka, which starts with the `ProducerFactory`.
-Axon provides a `DefaultProducerFactory` which uses the builder pattern to be instantiated.
+Axon provides the `DefaultProducerFactory` implementation of the `ProducerFactory`,
+ which should be instantiated through the provided `DefaultProducerFactory.Builder`.
 
 The builder has one hard requirement, which is the `Producer` configuration `Map`.
 The `Map` contains the settings to use for the Kafka `Producer` client, such as the Kafka instance locations.
@@ -95,7 +97,7 @@ public class KafkaEventPublicationConfiguration {
 ```
 
 The second infrastructure component to introduce is the `KafkaPublisher`,
- which has a hard requirement on the `ProduceFactory`.
+ which has a hard requirement on the `ProducerFactory`.
 Additionally, this would be the place to define the Kafka topic upon which Axon event messages will be published.
 Note that the `KafkaPublisher` needs to be `shutDown` properly, to ensure all `Producer` instances are properly closed.
 
@@ -151,7 +153,7 @@ public class KafkaEventPublicationConfiguration {
 ### Topic partition publication considerations
 
 Kafka ensures message ordering on a topic-partition level, not on an entire topic.
-To control events of a certain group, based on aggregate identifier for example, moving the a dedicated partition,
+To control events of a certain group to be placed in a dedicated partition, based on aggregate identifier for example,
  the [message converter's](#customizing-event-message-format) `SequencingPolicy` can be utilized.
 
 The topic-partition pair events have been published in also has impact on event consumption.
@@ -168,7 +170,7 @@ The subscribable stream leaves all the ordering specifics in the hands of Kafka,
 Event messages in an Axon application can be consumed through either a Subscribing or a Tracking
  [Event Processor](../configuring-infrastructure-components/event-processing/event-processors.md).
 Both options are maintained when it comes to consuming events from a Kafka topic,
- which from a set-up perspective this translates to a
+ which from a set-up perspective translates to a
  [SubscribableMessageSource](#consuming-events-with-a-subscribable-message-source) or a
  [StreamableKafkaMessageSource](#consuming-events-with-a-streamable-message-source) respectively,
 Both will be described in more detail later on,
@@ -176,7 +178,7 @@ Both will be described in more detail later on,
  
 Both approaches use a similar mechanism to poll events with a Kafka `Consumer`,
  which breaks down to a combination of a `ConsumerFactory` and a `Fetcher`.
-The extension provides a `DefaultConsumerFactory`, who's sole requirement is a `Map` of configuration properties.
+The extension provides a `DefaultConsumerFactory`, whose sole requirement is a `Map` of configuration properties.
 The `Map` contains the settings to use for the Kafka `Consumer` client, such as the Kafka instance locations.
 Please check the Kafka [documentation](https://kafka.apache.org/) for the possible settings and their values.
 
@@ -190,7 +192,7 @@ public class KafkaEventConsumptionConfiguration {
 }
 ```
  
-It is the `Fetcher` instance its job to retrieve the actual messages from Kafka by directing a `Consumer` instance it
+It is the `Fetcher` instance's job to retrieve the actual messages from Kafka by directing a `Consumer` instance it
  receives from the message source.
 You can draft up your own implementation or use the provided `AsyncFetcher` to this end.
 The `AsyncFetcher` doesn't need to be explicitly started, as it will react on the message source starting it. 
@@ -229,9 +231,9 @@ Although the `SubscribableKafkaMessageSource` thus provides the niceties the tra
  it does come with two catches:
  
  1. Axon's approach of the `SequencingPolicy` to deduce which thread receives which events is entirely lost. 
- It is thus dependent on which topic-partition pairs are given to a `Consumer` for the events your handlers receives
+ It is thus dependent on which topic-partition pairs are given to a `Consumer` for the events your handlers receives.
  From a usage perspective this means event message ordering is no longer guaranteed by Axon. 
- It is thus the users job to ensure events are published in the right topic-partition pair.
+ It is thus the user's job to ensure events are published in the right topic-partition pair.
  2. The API Axon provides for resets is entirely lost,
   since this API can only be correctly triggered through the `TrackingEventProcessor#resetTokens` operation
  
@@ -284,9 +286,10 @@ public class KafkaEventConsumptionConfiguration {
 }
 ```
 
-The `KafkaMessageSourceConfigurer` is an Axon `ModuleConfiguration` which ties in to the start and end lifecycle of the application.
+The `KafkaMessageSourceConfigurer` is an Axon `ModuleConfiguration` which ties in to the start
+ and end lifecycle of the application.
 It should receive the `SubscribableKafkaMessageSource` as a source which should start and stop.
-The `KafkaMessageSourceConfigurer` instance itself should be be registered as a module to the main `Configurer`.
+The `KafkaMessageSourceConfigurer` instance itself should be registered as a module to the main `Configurer`.
 
 If only a single subscribing event processor will be subscribed to the kafka message source,
  `SubscribableKafkaMessageSource.Builder#autoStart()` can be toggled on.
@@ -396,12 +399,13 @@ When using the auto configuration, the following components will be created for 
  * A `DefaultProducerFactory` using a `String` for the keys and a `byte[]` for the record's values.
  This creates a `ProducerFactory` in confirmation mode "NONE", as is specified [here](#publishing-events-to-kafka).
  The `axon.kafka.publisher.confirmation-mode` should be adjusted to change this mode,
-  where the "TRANSACTIONAL" mode requires `axon.kafka.producer.transaction-id-prefix` property should be provided.
+  where the "TRANSACTIONAL" mode requires `axon.kafka.producer.transaction-id-prefix` property to be provided.
  If the `axon.kafka.producer.transaction-id-prefix` is non-null and non-empty,
   it is assumed a "TRANSACTIONAL" confirmation mode is desired 
- * A `KafkaPublisher`
- * A `KafkaEventPublisher`. Assigns the publisher to a processor name and processing group called
- `__axon-kafka-event-publishing-group` on a `SubscribingEventProcessor`.
+ * A `KafkaPublisher`. 
+ Uses a `Producer` instance from the `ProducerFactory` to publish events to the configured Kafka topic.
+ * A `KafkaEventPublisher`. Used to provide events to the `KafkaPublisher` and to assign a processor name
+  and processing group called `__axon-kafka-event-publishing-group` to it. Defaults to  a `SubscribingEventProcessor`.
  If a `TrackingEventProcessor` is desired, the `axon.kafka.producer.event-processor-mode` should be set to `tracking`
 
 **Consumer Components:**
@@ -420,11 +424,39 @@ As such, Axon itself passes along these properties without using them directly i
 The `application.properties` file provides a number of named properties under the `axon.kafka.producer.`
  and `axon.kafka.consumer.` prefixes.
 If the property you are looking for is not predefined in Axon `KafkaProperties` file,
- you are always able to introduce properties in a map style as follows:
- 
-```properties
-axon.kafka.producer.properties.[key]=[value]
-axon.kafka.consumer.properties.[key]=[value]
+ you are always able to introduce properties in a map style.
+
+```yaml
+# This is a sample properties file to configure the Kafka Extension
+axon:
+  kafka:
+    bootstrap-servers: localhost:9092
+    client-id: kafka-axon-example
+    default-topic: local.event
+    properties:
+      security.protocol: PLAINTEXT
+
+    publisher:
+      confirmation-mode: transactional
+
+    producer:
+      transaction-id-prefix: kafka-sample
+      retries: 0
+      event-processor-mode: subscribing
+      # For additional unnamed properties, add them to the `properties` map like so
+      properties:
+        some-key: [some-value]
+
+    fetcher:
+      poll-timeout: 3000
+
+    consumer:
+      enable-auto-commit: true
+      auto-commit-interval: 3000
+      event-processor-mode: tracking
+      # For additional unnamed properties, add them to the `properties` map like so
+      properties:
+        some-key: [some-value]
 ```
 
 > **Auto configuring a `SubscribableKafkaMessageSource`**
