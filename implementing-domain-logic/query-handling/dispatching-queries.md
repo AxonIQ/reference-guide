@@ -214,7 +214,7 @@ Once we are done with using subscription query, we need to close used resource. 
 As an alternative to the `doFinally` hook, there is the Flux.using API. This is synonymous
 with the try-with-resource Java API:
 ```
-Flux.using( () -> subscriptionQueryResult, 
+Flux.using( () -> fetchQueryResult, 
             queryResult -> queryResult.handle(..., ...), 
             SubscriptionQueryResult::close
         );
