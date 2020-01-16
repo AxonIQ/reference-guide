@@ -169,9 +169,14 @@ SubscriptionQueryResult<List<CardSummary>, CardSummary> fetchQueryResult = query
                 fetchCardSummariesQuery,
                 ResponseTypes.multipleInstancesOf(CardSummary.class),
                 ResponseTypes.instanceOf(CardSummary.class));
-// 4.
-fetchQueryResult.handle(cs -> cs.forEach(System.out::println), System.out::println);
-// 5.
+
+fetchQueryResult
+//4.
+                .handle(cs -> cs.forEach(System.out::println), System.out::println)
+//5.
+                .doFinally(it -> fetchQueryResult.close());
+
+// 6.
 commandGateway.sendAndWait(new RedeemCmd("gc1", amount));
 ```
 
@@ -203,6 +208,17 @@ In order to achieve 'reactiveness' we use [Project Reactor](https://projectreact
 4. The `SubscriptionQueryResult#handle(Consumer<? super I>, Consumer<? super U>)`
  method gives us the possibility to subscribe to the `initialResult` and the `updates` in one go. 
 If we want more granular control over the results, we can use the `initialResult()` and `updates()` methods on the query result.
-5. When we issue a `RedeemCmd`, our event handler in the projection will eventually be triggered,
+5. As `queryUpdateEmitter` will continue to emit updates even when there are no subscribers, we need to notify emitting side once we are no longer interested in receiving updates.
+Failing to do so can result with hanging infinitive streams and eventually memory leak.
+Once we are done with using subscription query, we need to close used resource. We can do that in `doFinally` hook. 
+As an alternative to the `doFinally` hook, there is the Flux.using API. This is synonymous
+with the try-with-resource Java API:
+```
+Flux.using( () -> subscriptionQueryResult, 
+            queryResult -> queryResult.handle(..., ...), 
+            SubscriptionQueryResult::close
+        );
+```
+6. When we issue a `RedeemCmd`, our event handler in the projection will eventually be triggered,
  which will result in the emission of an update. 
 Since we subscribed with the `println()` method to updates, the update will be printed out once it is received.
