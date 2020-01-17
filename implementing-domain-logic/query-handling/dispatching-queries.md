@@ -212,7 +212,7 @@ If we want more granular control over the results, we can use the `initialResult
 Failing to do so can result in hanging infinitive streams and eventually a memory leak.
 Once we are done with using subscription query, we need to close the used resource. We can do that in `doFinally` hook. 
 As an alternative to the `doFinally` hook, there is the `Flux#using` API. This is synonymous
-with the try-with-resource Java API:
+to the try-with-resource Java API:
 ```
 Flux.using( () -> fetchQueryResult, 
             queryResult -> queryResult.handle(..., ...), 
