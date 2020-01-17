@@ -208,7 +208,7 @@ In order to achieve 'reactiveness' we use [Project Reactor](https://projectreact
 4. The `SubscriptionQueryResult#handle(Consumer<? super I>, Consumer<? super U>)`
  method gives us the possibility to subscribe to the `initialResult` and the `updates` in one go. 
 If we want more granular control over the results, we can use the `initialResult()` and `updates()` methods on the query result.
-5. As `queryUpdateEmitter` will continue to emit updates even when there are no subscribers, we need to notify emitting side once we are no longer interested in receiving updates.
+5. As the `queryUpdateEmitter` will continue to emit updates even when there are no subscribers, we need to notify the emitting side once we are no longer interested in receiving updates.
 Failing to do so can result with hanging infinitive streams and eventually memory leak.
 Once we are done with using subscription query, we need to close used resource. We can do that in `doFinally` hook. 
 As an alternative to the `doFinally` hook, there is the Flux.using API. This is synonymous
