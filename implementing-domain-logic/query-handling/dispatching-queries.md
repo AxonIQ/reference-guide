@@ -211,7 +211,7 @@ If we want more granular control over the results, we can use the `initialResult
 5. As the `queryUpdateEmitter` will continue to emit updates even when there are no subscribers, we need to notify the emitting side once we are no longer interested in receiving updates.
 Failing to do so can result in hanging infinitive streams and eventually a memory leak.
 Once we are done with using subscription query, we need to close the used resource. We can do that in `doFinally` hook. 
-As an alternative to the `doFinally` hook, there is the Flux.using API. This is synonymous
+As an alternative to the `doFinally` hook, there is the `Flux#using` API. This is synonymous
 with the try-with-resource Java API:
 ```
 Flux.using( () -> fetchQueryResult, 
