@@ -18,7 +18,7 @@ public class AggregateD extends AggregateB {}
 ```
 
 We can define this structure as Polymorphic Aggregate of type `AggregateA` and subtypes of `AggregateB`, `AggregateC`, 
-and `AggregateD`. If there handlers present on `Parent` class, those will be present on all aggregates as well. 
+and `AggregateD`. If there are handlers present on `Parent` class, those will be present on all aggregates as well. 
 
 While modeling a polymorphic aggregate hierarchy it is important to keep these constraints in mind:
 - It is not allowed to have a constructor annotated with `@CommandHandler` on abstract aggregate. The rationale for this 
