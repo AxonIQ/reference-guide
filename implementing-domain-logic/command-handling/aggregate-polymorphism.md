@@ -36,9 +36,9 @@ following example `AggregateB` is transitively registered as a subtype of `Aggre
 `AggregateE extends AggregateD` defined, it will not be picked up (unless explicitly registered as a subtype).
 
 ```java
-AggregateConfigurer<AggregateA> configurer = AggregateConfigurer.defaultConfiguration(AggregateA.class);
-configurer.registerSubtype(AggregateC.class);
-configurer.registerSubtype(AggregateD.class);
+AggregateConfigurer<AggregateA> configurer = AggregateConfigurer.defaultConfiguration(AggregateA.class)
+                                                                .withSubtype(AggregateC.class)
+                                                                .withSubtype(AggregateD.class);
 ```
 
 > **Polymorphic Aggregates in Spring**
