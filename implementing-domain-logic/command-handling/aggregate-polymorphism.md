@@ -22,7 +22,7 @@ and `AggregateD`. If there handlers present on `Parent` class, those will be pre
 
 While modeling a polymorphic aggregate hierarchy it is important to keep these constraints in mind:
 - It is not allowed to have a constructor annotated with `@CommandHandler` on abstract aggregate. The rationale for this 
-is that such aggregate cannot ever be created.
+is that an abstract aggregate can never be created.
 - Having creational command handlers of the same command name on different aggregates in the same hierarchy is forbidden 
 as well since Axon cannot know which one to invoke. 
 - In polymorphic aggregate hierarchy it is allowed to have only one `@AggregateIdentifier` and one `@AggregateVersion` 
