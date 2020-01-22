@@ -41,5 +41,7 @@ configurer.registerSubtype(AggregateC.class);
 configurer.registerSubtype(AggregateD.class);
 ```
 
+> **Polymorphic Aggregates in Spring**
+> 
 > If you are using Spring, polymorphic hierarchy will be automatically detected based on `@Aggregate` annotations and 
 class hierarchy.
