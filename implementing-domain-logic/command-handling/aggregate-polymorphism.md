@@ -31,7 +31,7 @@ field.
 ## Registering aggregate subtypes
 
 A polymorphic aggregate hierarchy can be registered via the `AggregateConfigurer` by invoking `AggregateConfigurer#registerSubtype(Class)`. Do note that 
-children of top aggregate that are not registered as a subtype will automatically be registered as a subtype. In the 
+children of the parent aggregate that are not registered as a sub-type will __automatically__ be registered as a sub-type. In the 
 following example `AggregateB` is transitively registered as a subtype of `AggregateA`. However, if there is an 
 `AggregateE extends AggregateD` defined, it will not be picked up (unless explicitly registered as a subtype).
 
