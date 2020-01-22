@@ -25,7 +25,7 @@ While modeling a polymorphic aggregate hierarchy it is important to keep these c
 is that an abstract aggregate can never be created.
 - Having creational command handlers of the same command name on different aggregates in the same hierarchy is forbidden 
 too, since Axon cannot derive which one to invoke. 
-- In polymorphic aggregate hierarchy it is allowed to have only one `@AggregateIdentifier` and one `@AggregateVersion` 
+- In a polymorphic aggregate hierarchy it is not allowed to have multiple `@AggregateIdentifier` and `@AggregateVersion` annotated fields.
 field.
 
 ## Registering aggregate subtypes
