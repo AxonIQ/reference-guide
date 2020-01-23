@@ -3,7 +3,7 @@
 Command handling functions are most often directly placed on the Aggregate
  (as described in more detail [here](aggregate.md)).
 There are situations however where it is not possible nor desired to route a command directly to an Aggregate instance. 
-Message handling functions, like Command Handlers, can however be pleased on any object.
+Message handling functions, like Command Handlers, can however be placed on any object.
 It is thus possible to instantiate a 'Command Handling Object'.
 
 A Command Handling Object is a simple \(regular\) object, which has `@CommandHandler` annotated methods. 
