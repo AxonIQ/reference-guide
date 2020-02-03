@@ -36,15 +36,13 @@ If you don't require the backup node to be fully up to date at any moment, you c
 To add a node as a backup node to a context you can use the Axon Dashboard, or you can use the following command line command:
 
 ```text
-java -jar axonserver-cli.jar add-node-to-context  -S http://axonserver:8024 -n my-backup-de -c my-context -r ACTIVE_BACKUP
+java -jar axonserver-cli.jar add-node-to-context  -S http://axonserver:8024 -n my-backup-node -c my-context -r ACTIVE_BACKUP
 ``` 
 
 or
 ```text
-java -jar axonserver-cli.jar add-node-to-context  -S http://axonserver:8024 -n my-backup-de -c my-context -r PASSIVE_BACKUP
+java -jar axonserver-cli.jar add-node-to-context  -S http://axonserver:8024 -n my-backup-node -c my-context -r PASSIVE_BACKUP
 ``` 
-
-_To decide: do we want to suppport changing node roles between PRIMARY to BACKUP and between ACTIVE_BACKUP and PASSIVE_BACKUP?_
 
 ## Messaging-only nodes
 
@@ -56,5 +54,24 @@ will clearly never become leader for a context.
 To add a node as a messaging-only node to a context you can use the Axon Dashboard, or you can use the following command line command:
 
 ```text
-java -jar axonserver-cli.jar add-node-to-context  -S http://axonserver:8024 -n my-backup-de -c my-context -r MESSAGING_ONLY
+java -jar axonserver-cli.jar add-node-to-context  -S http://axonserver:8024 -n my-backup-node -c my-context -r MESSAGING_ONLY
 ``` 
+
+## Changing node roles
+
+Sometimes you may want to change the role a node has for a specific context. This may happen when you have a pre-existing
+cluster context configuration (pre 4.3) and now you want to be able to start using the new roles. The way to do this is to 
+remove a node from a context and then add it again in the new role. 
+
+When you remove the node from the context you have an option to preserve the event store. Preserving the event store is
+recommended when you want to change the role for a node from PRIMARY to BACKUP, or vice versa, as it would prevent a full
+replication of the event store when the node is added again with the new role.
+Removing a node while preserving the event store can be done through the UI or through the command line:
+
+```text
+java -jar axonserver-cli.jar delete-node-from-context  -S http://axonserver:8024 -n my-backup-node -c my-context --preserve-event-store
+``` 
+
+ 
+
+ 
