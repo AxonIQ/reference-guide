@@ -93,3 +93,15 @@ public void on() {
     // handle the Deadline
 }
 ```
+
+## Using Time In Your  Application
+
+A global clock has been exposed that can be used for any necessary java util Date operations. 
+```java
+public void handle(PublishTime cmd) {
+    apply(new TimePublishedEvent(GenericEventMessage.clock.instant()));
+}
+```
+
+This clock defaults to `Clock.systemUTC()` in most runtime situations and is overriden during 
+[testing](../implementing-domain-logic/command-handling/testing.md) to be a constant value. 
