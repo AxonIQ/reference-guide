@@ -96,12 +96,18 @@ public void on() {
 
 ## Using Time In Your  Application
 
-A global clock has been exposed that can be used for any necessary java util Date operations. 
+In cases where applications need to access the clock, they can take advantage of the 
+clock used in the EventMessage, by accessing `GenericEventMessage.clock`. 
+This clock is set to Clock.systemUTC at runtime, and manipulated to simulate time during
+[testing](../implementing-domain-logic/command-handling/testing.md).
+
 ```java
 public void handle(PublishTime cmd) {
     apply(new TimePublishedEvent(GenericEventMessage.clock.instant()));
 }
 ```
 
-This clock defaults to `Clock.systemUTC()` in most runtime situations and is overriden during 
-[testing](../implementing-domain-logic/command-handling/testing.md) to be a constant value. 
+Note that the current timestamp is automatically added to the EventMessage.
+If handlers only need to rely on the timestamp the event was published, 
+they can access that timestamp directly, as described in 
+[Handling Events](../implementing-domain-logic/event-handling/handling-events.md).
