@@ -22,7 +22,7 @@ Commands always have exactly one destination. While the sender does not care whi
 
 Events are objects that describe something that has occurred in the application. A typical source of events is the aggregate. When something important has occurred within the aggregate, it will raise an event. In Axon Framework, events can be any object. You are highly encouraged to make sure all events are serializable.
 
-When Events are dispatched, Axon wraps them in an `EventMessage`. The actual type of Message used depends on the origin of the event. When an wvent is raised by an aggregate, it is wrapped in a `DomainEventMessage` \(which extends `EventMessage`\). All other events are wrapped in an `EventMessage` . Aside from common `Message` attributes like the unique Identifier an `EventMessage` also contains a timestamp. The `DomainEventMessage` additionally contains the type and identifier of the aggregate that raised the event. It also contains the sequence number of the event in the aggregate's event stream, which allows the order of events to be reproduced.
+When Events are dispatched, Axon wraps them in an `EventMessage`. The actual type of Message used depends on the origin of the event. When an event is raised by an aggregate, it is wrapped in a `DomainEventMessage` \(which extends `EventMessage`\). All other events are wrapped in an `EventMessage` . Aside from common `Message` attributes like the unique Identifier an `EventMessage` also contains a timestamp. The `DomainEventMessage` additionally contains the type and identifier of the aggregate that raised the event. It also contains the sequence number of the event in the aggregate's event stream, which allows the order of events to be reproduced.
 
 > **Note**
 >
