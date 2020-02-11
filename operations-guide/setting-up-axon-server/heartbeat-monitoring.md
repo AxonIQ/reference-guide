@@ -1,20 +1,20 @@
 # Heartbeat Monitoring
 
-You can enable the heartbeat monitoring in Axon Server in order to activate an high level monitoring of client connection availability.
+In certain situations, it is not desirable to exclusively use transport level heartbeats. The Axon Connector and Server
+supper application-level heartbeat monitoring, which validates end-to-end connectivity at the cost of some I/O overhead.
 
-As gRPC already provides an internal heartbeat,
- this feature is to cover the scenarios for which the gRPC implementation does not suffice.
+To use application-level heartbeats, the feature must be enabled on both AxonServer as the connected clients.
 
-This feature can be enabled by configuring the following property:
+In AxonServer, heartbeats are configured by adding the following property in `axonserver.properties`:
 
-```text
+```properties
 axoniq.axonserver.heartbeat.enabled=true
 ```
 
 Please note that, in order to have this feature properly working,
  also the client should enable the Heartbeat Monitoring functionality.
 
-The feature is disable by default; it can be enabled in the following way:
+The feature is disable by default; it can be enabled using the Configuration API:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -26,7 +26,7 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration()
 {% tab title="Spring Boot AutoConfiguration" %}
 by configuring the following property:
 
-```text
+```properties
 axon.axonserver.heartbeat.auto-configuration.enabled=true
 ```
 {% endtab %}
