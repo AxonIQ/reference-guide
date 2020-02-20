@@ -175,10 +175,9 @@ _register-context_
 
 Usage:
 
-    axonserver-cli.jar register_context -c name [-n nodes]
+    axonserver-cli.jar register_context -c name -n primary-nodes [-m messaging-only-nodes] [-a active-backup-nodes] [-p passive-backup-nodes]  
     
-Creates a new context, with the specified nodes assigned to it. If you do not specify nodes, all nodes will be assigned to 
-the context.     
+Creates a new context, with the specified nodes assigned to it. You have to specify at least one primary node. 
 
 _delete-context_
 
@@ -192,16 +191,17 @@ _add-node-to-context_
 
 Usage:
 
-    axonserver-cli.jar add-node-to-context -c context -n nodename
+    axonserver-cli.jar add-node-to-context -c context -n nodename [-r PRIMARY|ACTIVE_BACKUP|PASSIVE_BACKUP|MESSAGING_ONLY]
     
-Adds the node with name to the specified context.    
+Adds the node with name to the specified context. If no role (-r) is specified the node will be added as a primary node.    
 
 _delete-node-from-context_
 
 Usage:
 
-    axonserver-cli.jar delete-node-from-context -c context -n nodename
+    axonserver-cli.jar delete-node-from-context -c context -n nodename [--preserve-event-store]
     
-Deletes the node with name from the specified context.    
+Deletes the node with name from the specified context. Deletes the event store on the specified node by default.
+If the preserve-event-store option is specified it will not delete the event store.     
 
  

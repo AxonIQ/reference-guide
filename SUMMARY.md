@@ -68,6 +68,7 @@
     * [Access Control](operations-guide/setting-up-axon-server/access-control.md)
     * [Axon Server Clustering](operations-guide/setting-up-axon-server/axon-server-clustering.md)
     * [Multi-context](operations-guide/setting-up-axon-server/multi-context.md)
+    * [Backup and messaging-only nodes](operations-guide/setting-up-axon-server/node-roles.md)
     * [Command-line Interface](operations-guide/setting-up-axon-server/command-line.md)
     * [Tagging](operations-guide/setting-up-axon-server/tagging.md)
     * [Development Mode](operations-guide/setting-up-axon-server/development-mode.md)
