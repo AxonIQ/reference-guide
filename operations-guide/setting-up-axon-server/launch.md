@@ -163,7 +163,7 @@ Forwarding from 127.0.0.1:8124 -> 8124
 Forwarding from [::1]:8124 -> 8124
 ```
 
-You can now run the Giftcard app, which will connect throught the proxied gRPC port. To see the Axon Server Web GUI, use `minikube service --url axonserver-gui` to obtain the URL for your browser. Actually, if you leave out the `--url`, Minikube will open the the GUI in your default browser for you.
+You can now run the Giftcard app, which will connect through the proxied gRPC port. To see the Axon Server Web GUI, use `minikube service --url axonserver-gui` to obtain the URL for your browser. Actually, if you leave out the `--url`, Minikube will open the the GUI in your default browser for you.
 
 To clean up the deployment, use:
 
