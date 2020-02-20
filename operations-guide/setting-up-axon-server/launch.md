@@ -26,16 +26,36 @@ To run Axon Server in Docker you can use [the image provided on Docker Hub](http
 $ docker run -d --name my-axon-server -p 8024:8024 -p 8124:8124 axoniq/axonserver
 ```
 
-_Note:_ This is not a supported image for production purposes. Please use with caution.
+This starts Axon Server in a docker container, and exposes the HTTP and GRPC ports to the host. 
+The Axon Server docker image uses 2 volumes, /data and /eventdata. You want to preserve the data that is written on
+these volumes.
+You can mount these on the host using the --mount options:
+
+```bash
+
+docker volume create axonserver-data  
+docker volume create axonserver-eventdata  
+
+docker run --name my-axon-server -p 8024:8024 -p 8124:8124 \
+    --mount source=axonserver-data,target=/data \
+    --mount source=axonserver-eventdata,target=/eventdata axoniq/axonserver
+```
 
 If you want to run the clients in Docker containers as well, and are not using something like Kubernetes, use the `--hostname` option of the `docker` command to set a useful name like `axonserver`, and pass the `AXONSERVER_HOSTNAME` environment variable to adjust the properties accordingly:
 
 ```bash
-$ docker run -d --name my-axon-server -p 8024:8024 -p 8124:8124 
-         --hostname axonserver -e AXONSERVER_HOSTNAME=axonserver axoniq/axonserver
+$ docker run -d --name my-axon-server -p 8024:8024 -p 8124:8124 \
+         --hostname axonserver axoniq/axonserver
 ```
 
-When you start the client containers, you can now use `--link axonserver` to provide them with the correct DNS entry. The Axon Server-connector looks at the `axon.axonserver.servers` property to determine where Axon Server lives, so don't forget to set it to `axonserver` and pass it to your app. For more information on the environment variables you can use to tweak settings, see [Customizing the Docker image of Axon Server](https://hub.docker.com/r/axoniq/axonserver/#configuring-axon-server).
+When you start the client containers, you can now use `--link axonserver` to provide them with the correct DNS entry. 
+Alternatively you can define a network in docker and run axonserver and the clients in the same network.
+
+The Axon Server-connector looks at the `axon.axonserver.servers` property to determine where Axon Server lives, 
+so don't forget to set it to `axonserver` and pass it to your app. 
+
+For more information on the environment variables you can use to tweak settings, 
+see [Customizing the Docker image of Axon Server](https://hub.docker.com/r/axoniq/axonserver/#configuring-axon-server).
 
 ## Starting Axon Server in Kubernetes and Minikube
 
@@ -72,13 +92,33 @@ spec:
         - name: gui
           containerPort: 8024
           protocol: TCP
+        volumeMounts:
+        - name: eventstore
+          mountPath: /eventdata
+        - name: data
+          mountPath: /data
         readinessProbe:
           httpGet:
             port: 8024
-            path: /actuator/health
+            path: /actuator/info
           initialDelaySeconds: 5
           periodSeconds: 5
           timeoutSeconds: 1
+  volumeClaimTemplates:
+    - metadata:
+        name: eventstore
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 5Gi
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
@@ -134,26 +174,6 @@ $ kubectl delete svc axonserver
 service "axonserver" deleted
 $ kubectl delete svc axonserver-gui
 service "axonserver-gui" deleted
-```
-
-If you are using a 'real' Kubernetes cluster, you will naturally not want to use `localhost` as hostname for Axon Server, so you need to add three lines to the container spec to specify the `AXONSERVER_HOSTNAME`s setting:
-
-```yaml
-...
-        readinessProbe:
-          httpGet:
-            port: 8024
-            path: /actuator/health
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          timeoutSeconds: 1
-        env:
-        - name: AXONSERVER_HOSTNAME
-          value: axonserver
----
-apiVersion: v1
-kind: Service
-...
 ```
 
 Use `axonserver` \(as that is the name of the Kubernetes service\) if you're going to deploy the client next to the server in the cluster, which is what you'ld probably want. Running the client outside the cluster, with Axon Server _inside_, entails extra work to enable and secure this, and is definitely beyond the scope of this example.
