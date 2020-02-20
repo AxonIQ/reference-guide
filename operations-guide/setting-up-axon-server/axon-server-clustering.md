@@ -116,6 +116,29 @@ You can repeat this for the third node, and then you will see the following info
 
 ![Overview after next register-node](/.gitbook/assets/axonserver-overview3.png)
 
+## Automatic initialization
+
+> New in Axon Server 4.3
+
+You can bypass the manual configuration of the cluster by adding two additional properties in the axonserver.properties file:
+
+```
+axoniq.axonserver.autocluster.first=internal-hostname:internal-port
+axoniq.axonserver.autocluster.contexts=context1,context2
+```
+
+The *axoniq.axonserver.autocluster.first* property defines the first node in the cluster, by specifying its internal hostname 
+(the hostname used by other Axon Server nodes to connect to this host), and the internal port. If the internal port is default
+ (8224) it can be omitted. 
+
+*axoniq.axonserver.autocluster.contexts* defines the contexts to create on the first node and to join for the other nodes. All
+of these contexts will be joined as primary nodes. When you don't specify any contexts, the initial node will only create an
+admin context, the other nodes will join the cluster, but not be a member of any contexts.
+
+The autocluster properties will only take effect on a clean start of a node. If a node is already initialized, it will 
+not create any contexts anymore, nor join the cluster again.   
+
+
 ## Access control
 
 Axon Server nodes expect a common token on internal requests when access control is enabled. This token must be defined in the axonserver.properties file
