@@ -2,10 +2,10 @@
 
 The 'Deadline concept' in the Axon Framework is a mechanism which enables certain actions
  (in our case a `@DeadlineHandler` annotated method) to be executed after a certain amount of time. 
-The context of this execution is an Aggregate or a Saga in which the Deadline was scheduled. 
-If the Deadline becomes obsolete there is the possibility to cancel it as well.  
+The context of this execution is an aggregate or a saga in which the deadline was scheduled. 
+If the deadline becomes obsolete there is the possibility to cancel it as well.  
 
-Deadlines can be scheduled from Sagas and Aggregates. 
+Deadlines can be scheduled from sagas and aggregates. 
 The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`s when the deadline is met. 
 The `DeadlineManager` can be injected as a resource. 
 It has two flavors: `SimpleDeadlineManager` and `QuartzDeadlineManager`,
@@ -14,16 +14,22 @@ It has two flavors: `SimpleDeadlineManager` and `QuartzDeadlineManager`,
 ## Scheduling a Deadline
 
 A deadline can be scheduled by providing a `Duration` after which it will be triggered
- (or `Instance` at which it will be triggered) and a name.
+ (or `Instant` at which it will be triggered) and a _deadline name_.
 
-> **Scheduled Events or Scheduled Deadlines**
+> **Scheduled Events or Scheduled Deadlines?**
 >  
 > Unlike [Event Scheduling](../implementing-domain-logic/complex-business-transactions/deadline-handling.md),
->  when a Deadline is triggered there will be no storing of the published Message. 
-> Scheduling/Triggering a deadline does not involve an EventBus (or EventStore), hence the Message is not stored.
+>  when a deadline is triggered there will be no storing of the published message. 
+> Scheduling/Triggering a deadline does not involve an event bus (or event store), hence the message **is not** stored.
 
 ```java
-String deadlineId = deadlineManager.schedule(Duration.ofMillis(500), "myDeadline");
+class DeadlineSchedulingComponent {
+    void scheduleMyDeadline() {
+        String deadlineId = 
+            deadlineManager.schedule(Duration.ofMillis(500), "myDeadline");
+        // For example store the `deadlineId`
+    }
+}
 ```
 
 As a result we receive a `deadlineId` which can be used to cancel the deadline. 
@@ -33,18 +39,39 @@ Cancelling a deadline could for example come in handy when a certain event means
  but the client payed the amount which means that the deadline is obsolete and can be canceled).
 
 ```java
-deadlineManager.cancelSchedule("myDeadline", deadlineId);
+class DeadlineCancelingComponent {
+    void cancelMyDeadline(String deadlineId) {
+        deadlineManager.cancelSchedule("myDeadline", deadlineId);
+    }
+}
 ```
 
-> **Canceling Deadlines**
->
-> It is possible to cancel all deadlines of a given name by invoking `deadlineManager.cancelAll("myDeadline")`.
+Note that there are more options to cancel a deadline next to the previously mentioned:
 
-If you need some contextual data about the Deadline during the Deadline Handling,
- you can attach a Deadline Payload when scheduling a Deadline:
+ * `cancelAll(String deadlineName)`
+  Cancels _every_ scheduled deadline matching the given `deadlineName`.
+  Note that this thus also cancels deadlines from other aggregate and/or saga instances matching the name.
+ * `cancelAllWithinScope(String deadlineName)`
+  Cancels a scheduled deadline matching the given `deadlineName`, _within_ the scope the method is invoked in.
+  For example, if this operation is performed from within "aggregate instance X",
+   the `ScopeDescriptor` from "aggregate instance X" will be used to cancel. 
+ * `cancelAllWithinScope(String deadlineName, ScopeDescriptor scope)`
+  Cancels a scheduled deadline matching the given `deadlineName` _and_ `ScopeDescriptor`.
+  This allows canceling a deadline by name from differing scopes then the one it's executed in.
+
+If you need some contextual data about the deadline during the deadline handling,
+ you can attach a _deadline payload_ whilst scheduling:
 
 ```java
-String deadlineId = deadlineManager.schedule(Duration.ofMillis(500), "myDeadline", new MyDeadlinePayload(...));
+class DeadlineSchedulingWithPayloadComponent {
+    void scheduleMyDeadlineWithPayload() {
+        String deadlineId = deadlineManager.schedule(
+            Duration.ofMillis(500), "myDeadline", 
+            new MyDeadlinePayload(/* some user specific parameters */)
+        );
+        // For example store the `deadlineId`
+    }
+}
 ```
 
 ## Handling a Deadline

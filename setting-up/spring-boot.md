@@ -45,6 +45,7 @@ Whether these configuration classes will be applied or not, it will depend on co
 
  - `AxonServerAutoConfiguration` configures Axon Server as implementation for the Command Bus, Query Bus and Event Store. 
 It will be applied before `AxonAutoConfiguration`, and it will be applied only if the `org.axonframework.axonserver.connector.AxonServerConfiguration` class is available in the classpath.
+Axon Server auto configuration can be disabled by setting the `axon.axonserver.enabled` property to `false` in the `.properties`/`.yml` file.
 
  - `AxonAutoConfiguration` configures a 'non-axon-server' implementation of Command Bus, Query Bus,
  Event Store/Event Bus and other Axon components. 

@@ -75,11 +75,21 @@ To that end, the `TrackingEventProcessor` exposes the `processingStatus()` metho
 The Event Tracker Status exposes a couple of metrics:
 
  * The `Segment` it reflects the status of.
- * A Boolean specifying whether it is caught up with the Event Stream.
- * A Boolean specifying whether the given Segment is replaying.
+ * A Boolean through `isCaughtUp()` specifying whether it is caught up with the Event Stream.
+ * A Boolean through `isReplaying()` specifying whether the given Segment is
+  [replaying](../../configuring-infrastructure-components/event-processing/event-processors.md#replaying-events).
+ * A Boolean through `isMerging()` specifying whether the given Segment is
+  [merging](../../configuring-infrastructure-components/event-processing/event-processors.md#splitting-and-merging-tracking-tokens).
  * The `TrackingToken` of the given Segment.
- * A Boolean specifying whether the Segment is in an error state.
+ * A Boolean through `isErrorState()` specifying whether the Segment is in an error state.
  * An optional `Throwable` if the Event Tracker reached an error state.
+ * An optional `Long` through `getCurrentPosition` defining the current position of the `TrackingToken`.
+ * An optional `Long` through `getResetPosition` defining the position at reset of the `TrackingToken`. 
+  This field will be `null` in case the `isReplaying()` returns `false`.
+  It is possible to derive an estimated duration of replaying by comparing the current position with this field.
+ * An optional `Long` through `mergeCompletedPosition()` defining the position on the `TrackingToken` when merging will be completed. 
+  This field will be `null` in case the `isMerging()` returns `false`.
+  It is possible to derive an estimated duration of merging by comparing the current position with this field.
 
 ## Metrics
 

@@ -106,7 +106,7 @@ Below is an example configuration of a persistence context configuration:
     You may, however, choose to add the third line to any other persistence unit configuration.
 2. This line registers the `DomainEventEntry` \(the class used by the `JpaEventStore`\) with the persistence context.
 
-> **Note**
+> **Unique Key Constraint Consideration**
 >
 > Axon uses Locking to prevent two threads from accessing the same aggregate. 
 > However, if you have multiple JVMs on the same database, this won't help you. 
@@ -241,11 +241,6 @@ However, Axon will bind these connections to a unit of work, so that a single co
 This ensures that a single transaction is used to store all events,
  even when multiple units of work are nested in the same thread.
 
-> **Note**
->
-> Spring users are recommended to use the `SpringDataSourceConnectionProvider`
->  to attach a connection from a `DataSource` to an existing transaction.
-
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
@@ -271,7 +266,14 @@ public EmbeddedEventStore eventStore(EventStorageEngine storageEngine, AxonConfi
             .messageMonitor(configuration.messageMonitor(EventStore.class, "eventStore"))
             .build();
 }
+```
 
+> **Data sources providers with Spring**
+>
+> Spring users are recommended to use the `SpringDataSourceConnectionProvider`
+>  to attach a connection from a `DataSource` to an existing transaction.
+
+```java
 // EventStorageEngine implementation that uses JDBC to store and fetch events.
 @Bean
 public JdbcEventStorageEngine eventStorageEngine(ConnectionProvider connectionProvider) {
@@ -291,6 +293,16 @@ public JdbcEventStorageEngine eventStorageEngine(ConnectionProvider connectionPr
 
 {% endtab %}
 {% endtabs %}
+
+> **SQL Statement Customizability**
+>
+> Databases have slight deviations between what's the optimal SQL statement to perform in differing scenarios.
+> As optimizing for all possibilities out there is beyond the scope of the framework,
+>  it is possible to adjust the default statements being used.
+>
+> Check the `JdbcEventStorageEngineStatements` utility class for the default statements used by the `JdbcEventStorageEngine`.
+> Further more, the `org.axonframework.eventsourcing.eventstore.jdbc.statements` package contains the set of adjustable statements.
+> Each of these statement-builders can be customized through the `JdbcEventStorageEngine.Builder`.
 
 #### MongoEventStorageEngine
 

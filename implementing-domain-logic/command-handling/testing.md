@@ -111,6 +111,9 @@ Besides an Annotated Command Handler, you can register a wide variety of compone
    Registers a `MessageHandler` of `CommandMessage`.
  * `registerInjectableResource`:
    Registers a resource which can be injected in to message handling members.
+ * `registerParameterResolverFactory`:
+   Registers a [`ParameterResolverFactory`](../../appendices/message-handler-tuning/parameter-resolvers.md) to the test fixture. 
+   This method is used to complement the default `ParameterResolvers` with custom `ParameterResolver`. 
  * `registerCommandDispatchInterceptor`:
    Registers a command [`MessageDispatchInterceptor`](../../configuring-infrastructure-components/messaging-concepts/message-intercepting.md#command-dispatch-interceptors).
  * `registerCommandHandlerInterceptor`:
@@ -125,6 +128,9 @@ Besides an Annotated Command Handler, you can register a wide variety of compone
    Registers a field that should be ignored for a given class when state equality is performed. 
  * `registerHandlerDefinition`:
    Registers a custom [`HandlerDefinition`](../../appendices/message-handler-tuning/handler-definition.md) to the test fixture.
+ * `registerHandlerEnhancerDefinition`:
+   Registers a custom [`HandlerEnhancerDefinition`](../../appendices/message-handler-tuning/handler-definition.md) to the test fixture.
+   This method is used to complement the default `HandlerEnhancerDefinition` with a custom `HandlerEnhancerDefinition`.
  * `registerCommandTargetResolver`:
    Registers a `CommandTargetResolver` to the test fixture.
 
@@ -361,14 +367,36 @@ The following methods are available for validating Deadlines:
    Expect a deadline matching the `Matcher` to be scheduled after the specified `Duration`.
  * `expectScheduledDeadlineOfType(Duration, Class)`:
    Expect a deadline matching the given type to be scheduled after the specified `Duration`.
+ * `expectScheduledDeadlineWithName(Duration, String)`:
+   Expect a deadline matching the given deadline name to be scheduled after the specified `Duration`.
  * `expectScheduledDeadline(Instant, Object)`:
    Explicitly expect a given `deadline` to be scheduled at the specified `Instant`.
  * `expectScheduledDeadlineMatching(Instant, Matcher)`:
    Expect a deadline matching the `Matcher` to be scheduled at the specified `Instant`.
  * `expectScheduledDeadlineOfType(Instant, Class)`:
    Expect a deadline matching the given type to be scheduled at the specified `Instant`.
+ * `expectScheduledDeadlineWithName(Instant, String)`:
+   Expect a deadline matching the given deadline name to be scheduled at the specified `Instant`.
  * `expectNoScheduledDeadlines()`:
    Expect that no deadlines are scheduled at all.
+ * `expectNoScheduledDeadlineMatching(Matcher)`:
+   Expect no deadline matching the `Matcher` to be scheduled.
+ * `expectNoScheduledDeadlineMatching(Duration, Matcher)`:
+   Expect no deadline matching the `Matcher` to be scheduled after the specified `Duration`.
+ * `expectNoScheduledDeadline(Duration, Object)`
+   Explicitly expect no given `deadline` to be scheduled after the specified `Duration`.`
+ * `expectNoScheduledDeadlineOfType(Duration, Class)`
+   Expect no deadline matching the given type to be scheduled after the specified `Duration`.`
+ * `expectNoScheduledDeadlineWithName(Duration, String)`
+   Expect no deadline matching the given deadline name to be scheduled after the specified `Duration`.`
+ * `expectNoScheduledDeadlineMatching(Instant, Matcher)`:
+   Expect no deadline matching the `Matcher` to be scheduled at the specified `Instant`.
+ * `expectNoScheduledDeadline(Instant, Object)`
+   Explicitly expect no given `deadline` to be scheduled at the specified `Instant`.`
+ * `expectNoScheduledDeadlineOfType(Instant, Class)`
+   Expect no deadline matching the given type to be scheduled at the specified `Instant`.`
+ * `expectNoScheduledDeadlineWithName(Instant, String)`
+   Expect no deadline matching the given deadline name to be scheduled at the specified `Instant`.`
  * `expectDeadlinesMet(Object...)`:
    Explicitly expect a `deadline` or several deadlines to have been met.
  * `expectDeadlinesMetMatching(Matcher<List<DeadlineMessage>>)`:
