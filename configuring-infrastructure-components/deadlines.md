@@ -46,17 +46,17 @@ class DeadlineCancelingComponent {
 }
 ```
 
-There are more option to cancel a deadline nexted to through the received `deadlineId` and the used `deadlineName`:
+Note that there are more options to cancel a deadline next to the previously mentioned:
 
- * `cancelAll(String)`
-  Cancels _every_ scheduled deadline matching the given deadline name.
+ * `cancelAll(String deadlineName)`
+  Cancels _every_ scheduled deadline matching the given `deadlineName`.
   Note that this thus also cancels deadlines from other aggregate and/or saga instances matching the name.
- * `cancelAllWithinScope(String)`
-  Cancels a scheduled deadline matching the given deadline name, _within_ the scope the method is invoked in.
+ * `cancelAllWithinScope(String deadlineName)`
+  Cancels a scheduled deadline matching the given `deadlineName`, _within_ the scope the method is invoked in.
   For example, if this operation is performed from within "aggregate instance X",
    the `ScopeDescriptor` from "aggregate instance X" will be used to cancel. 
- * `cancelAllWithinScope(String, ScopeDescriptor)`
-  Cancels a scheduled deadline matching the given deadline name _and_ `ScopeDescriptor`.
+ * `cancelAllWithinScope(String deadlineName, ScopeDescriptor scope)`
+  Cancels a scheduled deadline matching the given `deadlineName` _and_ `ScopeDescriptor`.
   This allows canceling a deadline by name from differing scopes then the one it's executed in.
 
 If you need some contextual data about the deadline during the deadline handling,
