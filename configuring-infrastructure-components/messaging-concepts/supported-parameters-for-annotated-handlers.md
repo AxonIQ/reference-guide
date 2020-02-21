@@ -5,7 +5,7 @@ The parameters for any message handling function are resolved through an Axon Fr
  called the `ParameterResolver`.
 
 The set of `ParameterResolver`s can be extended if custom (or not yet) supported parameters should be injected in to your annotated handlers.
-For more specifics on configuring custom `ParameterResolver`s we suggest to read
+For more specifics on configuring custom `ParameterResolver`s we suggest reading
  [this](../../appendices/message-handler-tuning/parameter-resolvers.md) section.  
 
 ## Supported Parameters for Command Handlers

@@ -1,6 +1,6 @@
 # Dispatching Queries
 
-How to handle query message has been covered in more detail on the [previous page](handling-queries.md). 
+How to handle a query message has been covered in more detail on the [previous page](handling-queries.md). 
 Queries have to be dispatched, just like any type of message, before they can be handled.
 To that end Axon provides two interfaces:
 
@@ -16,7 +16,7 @@ How to configure and specifics on the the query gateway and bus implementations 
 The `QueryBus` is the mechanism that dispatches queries to query handlers. 
 Queries are registered using the combination of the query request name and query response type. 
 It is possible to register multiple handlers for the same request-response combination,
- which can be used to implement for instance the scatter-gather pattern. 
+which can be used to implement the scatter-gather pattern. 
 When dispatching queries, the client must indicate whether it wants a response from a single handler or from all handlers.
 
 The `QueryGateway` is a convenient interface towards the query dispatching mechanism. 
@@ -60,7 +60,7 @@ queryBus.query(query).thenAccept(System.out::println);
 
 1. It is also possible to state the query name when we are building the query message,
  by default this is the fully qualified class name of the query payload.
-2. The response of sending a query is a java `CompletableFuture`,
+2. The response of sending a query is a Java `CompletableFuture`,
  which depending on the type of the query bus may be resolved immediately. 
 However, if a `@QueryHandler` annotated function's return type is `CompletableFuture`,
  the result will be returned asynchronously regardless of the type of the query bus.
@@ -90,7 +90,7 @@ public List<String> query2(String criteria) {
 }
 ```
 
-Since they are query handlers that are possibly in different components we would like to get result from both of them. 
+These query handlers could possibly be in different components and we would like to get results from both of them. 
 So, we will use a scatter-gather query, like so:
 
 ```java
@@ -108,7 +108,7 @@ queryBus.scatterGather(query, 10, TimeUnit.SECONDS)
 
 The subscription query allows a client to get the initial state of the model it wants to query,
  and to stay up-to-date as the queried view model changes. 
-In short it is an invocation of the Direct Query with possibility to be updated when the initial state changes. 
+In short it is an invocation of the Direct Query with the possibility to be updated when the initial state changes. 
 To update a subscription with changes to the model, we will use the `QueryUpdateEmitter` component provided by Axon.
 
 Let's take a look at a snippet from the `CardSummaryProjection`:
@@ -146,17 +146,17 @@ public void on(RedeemedEvt evt) {
 1. First, we update our view model by updating the existing card.
 2. If there is a subscription query interested in updates about this specific GiftCard we emit an update. 
 The first parameter of the emission is the type of the query \(`FetchCardSummariesQuery` in our case\)
- which corresponds to the query type in previously defined query handler. 
+ which corresponds to the query type in a previously defined query handler. 
 The second parameter is a predicate which will select the subscription query to be updated. 
-In our case we will update only subscription queries interested in the GiftCard which has been updated. 
+In our case we will only update subscription queries interested in the GiftCard which has been updated. 
 The third parameter is the actual update, which in our case is the card summary. 
 There are several overloads of the emit method present, feel free to take a look at JavaDoc for more specifics on that. 
-Important thing to underline here is that an update is a message and that some overloads take
+The important thing to underline here is that an update is a message and that some overloads take
  the update message as a parameter \(in our case we just sent the payload which was wrapped in the message\) 
  which enables us to attach meta-data for example.
 
-Once we have query handling and emitting side implemented, 
- we can issue a subscription query to get initial state of the GiftCard and be updated once this GiftCard is redeemed:
+Once we have the query handling and the emitting side implemented, 
+ we can issue a subscription query to get the initial state of the GiftCard and be updated once this GiftCard is redeemed:
 
 ```java
 // 1.
@@ -183,7 +183,7 @@ commandGateway.sendAndWait(new RedeemCmd("gc1", amount));
 1. Issuing a GiftCard with `gc1` id and initial value of `amount`.
 2. Creating a subscription query message to get the list of GiftCards
  \(this initial state is multiple instances of `CardSummary`\) 
- and to be updated once the state of GiftCard with id `gc1` is changed \(in our case update means the card is redeemed\). 
+ and to be updated once the state of GiftCard with id `gc1` is changed \(in our case an update means the card is redeemed\). 
 The type of the update is a single instance of `CardSummary`. 
 Do note that the type of the update must match the type of the emission side.
 3. Once the message is created, we are sending it via the `QueryGateway`. 
@@ -194,7 +194,7 @@ In order to achieve 'reactiveness' we use [Project Reactor](https://projectreact
 > **Note** 
 >
 > Once the subscription query is issued, all updates are queued until the subscription to the `Flux` of `updates` is done. 
-> This behavior prevents losing of updates.
+> This behavior prevents the losing of updates.
 >
 > **Note**
 > 
@@ -202,7 +202,8 @@ In order to achieve 'reactiveness' we use [Project Reactor](https://projectreact
 > If it is necessary to be updated in several different places, create a new query message.
 >
 > **Note** 
-> `reactor-core` dependency is mandatory for usage of subscription queries. 
+>
+> The `reactor-core` dependency is mandatory for usage of subscription queries. 
 > However, it is a compile time dependency and it is not required for other Axon features.
 
 4. The `SubscriptionQueryResult#handle(Consumer<? super I>, Consumer<? super U>)`
@@ -221,6 +222,6 @@ Flux.using( () -> fetchQueryResult,
 ```
 6. When we issue a `RedeemCmd`, our event handler in the projection will eventually be triggered,
  which will result in the emission of an update. 
-Since we subscribed with the `println()` method to updates, the update will be printed out once it is received.
+Since we subscribed to updates with the `println()` method, the update will be printed out once it is received.
 
 [Axon Coding Tutorial #5: - Connecting the UI](https://youtu.be/lxonQnu1txQ)

@@ -1,9 +1,9 @@
 # Exceptions
 
 Exception handling is a well known concept when developing software.
-Dealing with exceptions in a distributed application landscape is however a little more challenging then we are typically used to.
-Especially when it comes to failures when handling a command or a query, messages that are bound to have a return value,
- we should be conscious about how we throw exceptions.
+Dealing with exceptions in a distributed application landscape is a little more challenging than we are typically used to.
+Especially when it comes to failures when handling a command or a query, messages that are intended to have a return value,
+we should be conscious about how we throw exceptions.
  
 ## Handler Execution Exception
 
@@ -15,11 +15,11 @@ As such,
 Axon provides a more concrete implementation of this exception for failed command and query handling,
  respectively the `CommandExecutionException` and `QueryExecutionException`. 
 
-The usefulness of a dedicated handler execution exception becomes clearer in a distributed application environment were,
+The usefulness of a dedicated handler execution exception becomes clearer in a distributed application environment where,
  for example, 
  there is a dedicated application for dealing with commands and another application tasked with the query side.
 Due to the application segregation, you loose any certainty that both applications can access the same classes,
- which thus also hold for any exception classes.
+ which thus holds for any exception classes.
 To support and encourage this decoupling,
  Axon will generify any exception which is a result of Command or Query handling.
  

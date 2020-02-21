@@ -1,6 +1,6 @@
 # JGroups
 
-JGroups is an alternative approach to distributing command bus (commands), besides Axon Server which is default.
+JGroups is an alternative approach to distributing command bus (commands), besides Axon Server which is the default.
 
 The `JGroupsConnector` uses \(as the name already gives away\) JGroups as the underlying discovery and dispatching mechanism. Describing the feature set of JGroups is a bit too much for this reference guide, so please refer to the [JGroups User Guide](http://www.jgroups.org/ug.html) for more details.
 
@@ -23,7 +23,7 @@ The `JGroupsConnector` has four mandatory configuration elements:
 >
 > When using a cache, it should be cleared out when the `ConsistentHash` changes to avoid potential data corruption \(e.g. when commands do not specify a `@TargetAggregateVersion` and a new member quickly joins and leaves the JGroup, modifying the aggregate while it is still cached elsewhere.\)
 
-Ultimately, the `JGroupsConnector` needs to actually connect, in order to dispatch messages to other segments. To do so, call the `connect()` method.
+Ultimately, the `JGroupsConnector` needs to actually connect in order to dispatch messages to other segments. To do so, call the `connect()` method.
 
 ```java
 JChannel channel = new JChannel("path/to/channel/config.xml");
@@ -61,12 +61,12 @@ connector.connect();
 
 ## Configuration in Spring Boot
 
-If you use Spring, you may want to consider using the `JGroupsConnectorFactoryBean`. It automatically connects the Connector when the `ApplicationContext` is started, and does a proper disconnect when the `ApplicationContext` is shut down. Furthermore, it uses sensible defaults for a testing environment \(but should not be considered production ready\) and autowiring for the configuration.
+If you use Spring, you may want to consider using the `JGroupsConnectorFactoryBean`. It automatically connects the connector when the `ApplicationContext` is started, and does a proper disconnect when the `ApplicationContext` is shut down. Furthermore, it uses sensible defaults for a testing environment \(but should not be considered production ready\) and autowiring for the configuration.
 
 The settings for the JGroups connector are all prefixed with `axon.distributed.jgroups`.
 
 ```text
-# the address to bind this instance to. By default, attempts to find the Global IP address
+# the address to bind this instance to. By default, it attempts to find the Global IP address
 axon.distributed.jgroups.bind-addr=GLOBAL
 # the port to bind the local instance to
 axon.distributed.jgroups.bind-port=7800

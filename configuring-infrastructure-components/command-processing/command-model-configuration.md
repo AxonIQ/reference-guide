@@ -1,7 +1,6 @@
 # Command Model Configuration
 
 This page aims to describe the suite of options for configuring the Command Model.
-In doing so
 
 ## Aggregate Configuration
 
@@ -21,7 +20,7 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration()
 {% endtab %}
 {% tab title="Spring Boot AutoConfiguration" %}
 
-The `@Aggregate` annotation \(in package `org.axonframework.spring.stereotype`\) triggers auto configuration to set up
+The `@Aggregate` annotation \(in the `org.axonframework.spring.stereotype` package\) triggers auto configuration to set up
  the necessary components to use the annotated type as an aggregate. 
 Note that only the aggregate root needs to be annotated.
 
@@ -60,7 +59,7 @@ When this approach is taken,
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 
-Taken the existence of the following Command Handler:
+Given the existence of the following Command Handler:
 ```java
 public class GiftCardCommandHandler {
     
@@ -105,7 +104,7 @@ public class GiftCardCommandHandler {
 >
 > As specified in the [Messaging Concepts](../messaging-concepts/messaging-concepts.md#commands) section,
 >  a command always has exactly one destination.
-> That thus means there should only be a single Command Handler method for a given command.
+> That means there should only be a single Command Handler method for any given command.
 >
 > By default, when a duplicate Command Handler method is registered,
 >  the last registration will be kept and a warning is logged.
@@ -116,10 +115,10 @@ public class GiftCardCommandHandler {
 
 The repository is the mechanism that provides access to aggregates. 
 The repository acts as a gateway to the actual storage mechanism used to persist the data. 
-In CQRS, the repositories only need to be able to find aggregates based on their unique identifier. 
+In CQRS, repositories only need to be able to find aggregates based on their unique identifier. 
 Any other types of queries should be performed against the query database.
 
-In the Axon Framework, all repositories must implement the `Repository` interface. 
+In Axon Framework, all repositories must implement the `Repository` interface. 
 This interface prescribes three methods:
  `load(identifier, version)`, `load(identifier)` and `newInstance(factoryMethod)`. 
 The `load` methods allows you to load aggregates from the repository. 

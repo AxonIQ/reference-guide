@@ -13,10 +13,10 @@ Load testing is ultimately the best way to discover which indices provide the be
   An index is automatically created on `"aggregateIdentifier"`, `"type"` and `"sequenceNumber"` in the domain events 
    \(default name: `"domainevents"`\) collection.
   Additionally, a non-unique index on `"timestamp"` and `"sequenceNumber"` is configured on the domain events 
-   \(default name: `"domainevents"`\) collection, for the tracking event processors.
+   \(default name: `"domainevents"`\) collection, for tracking event processors.
 * Snapshotting
 
-  An \(unique\) index on `"aggregateIdentifier"` and `"sequenceNumber"` is automatically created in the snapshot events 
+  A \(unique\) index on `"aggregateIdentifier"` and `"sequenceNumber"` is automatically created in the snapshot events 
    \(default name: `"snapshotevents"`\) collection.
 * Sagas
 

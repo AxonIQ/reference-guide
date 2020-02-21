@@ -6,9 +6,9 @@ Note, that a Query Handler is a (singleton) object containing `@QueryHandler` an
 ## Registering a Query Handler
 
 When you register a Query Handler,
- that in essence means you register a class containing annotated query handlers.
+that means you are registering a class containing annotated query handlers.
 Upon receiving such a class during configuration,
- Axon will scan it's contents for all the `@QueryHandler` annotated methods.
+Axon will scan its contents for all `@QueryHandler` annotated methods.
 In the registration process the following information defines a given query handling function:
 
  1. The first parameter of the method is the _query payload_.
@@ -16,7 +16,7 @@ In the registration process the following information defines a given query hand
  3. The value of the `queryName` field in the annotation as the query's _name_ (this is optional and in its absence will default to the query payload).    
 
 Note that it is possible to register multiple query handlers for the same query payload, response type and name. 
-Further more, when dispatching a query the client can indicate whether he/she wants the result from a
+Furthermore, when dispatching a query the client can indicate whether he/she wants the result from a
  [single handler](../../implementing-domain-logic/query-handling/dispatching-queries.md#point-to-point-queries) or the
  result from [all handlers](../../implementing-domain-logic/query-handling/dispatching-queries.md#scatter-gather-queries)
  corresponding to the query payload, name and response type combination.
@@ -26,7 +26,7 @@ The following snippets point out how a Query Handler can be registered:
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 
-Taken the existence of the following Query Handler:
+Given the existence of the following query handler:
 ```java
 public class CardSummaryProjection {
     
@@ -48,7 +48,7 @@ Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
 
 {% tab title="Spring Boot AutoConfiguration" %}
 
-When using Spring Boot, simply specifying the Query Handler as a bean is sufficient:
+When using Spring Boot, simply specifying the query handler as a bean is sufficient:
 ```java
 @Component
 public class CardSummaryProjection {
@@ -67,8 +67,8 @@ public class CardSummaryProjection {
 
 > **Identical Query Handling methods in a single Query Handler**
 > 
-> A Query Handler can currently contain several identical query handling methods in one Query Handler.
+> A query handler class can currently contain several identical query handling methods.
 > The outcome of which method will actually be called is however unspecified.
 > 
 > Note that this should be regarded as a _very_ uncommon scenario,
->  as typically identical query handling methods would be spread over several Query Handlers 
+> as typically identical query handling methods would be spread over several query handlers. 
