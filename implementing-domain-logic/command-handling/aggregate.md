@@ -47,7 +47,7 @@ There are a couple of noteworthy concepts from the given code snippets,
  marked with numbered Java comments referring to the following bullets: 
 
 1. The `@AggregateIdentifier` is the external reference point to into the `GiftCard` Aggregate. 
-This field is a hard requirement, as with out it Axon will not know to which Aggregate a given Command is targeted.
+This field is a hard requirement, as without it Axon will not know to which Aggregate a given Command is targeted.
 2. A `@CommandHandler` annotated constructor, or differently put the 'command handling constructor'. 
 This annotation tells the framework that the given constructor is capable of handling the `IssueCardCommand`.
 The `@CommandHandler` annotated functions are the place where you would put your _decision-making/business logic_. 

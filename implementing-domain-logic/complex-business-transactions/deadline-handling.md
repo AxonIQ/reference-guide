@@ -4,7 +4,7 @@ It is easy to make a saga take action when something happens.
 After all, there is an event to notify the saga. 
 But what if you want your saga to do something when _nothing_ happens? 
 That's what deadlines are used for. 
-In invoices, that is typically several weeks, while the confirmation of a credit card payment should occur within a few seconds.
+For invoices, that is typically several weeks, whereas the confirmation of a credit card payment should occur within a few seconds.
 
 At this point in time, the framework provides two solutions to scheduling and dealing with deadlines:
 
@@ -12,20 +12,20 @@ At this point in time, the framework provides two solutions to scheduling and de
 2. An `EventScheduler`
 
 For further reference on usage of the `DeadlineManager` approach,
- we refer to the [Deadlines](../../configuring-infrastructure-components/deadlines.md) topic.
+ refer to the [Deadlines](../../configuring-infrastructure-components/deadlines.md) section.
 The current section will proceed with a suggested course of action when utilizing the `EventScheduler` for dealing with deadlines.
 
 ## Scheduled Events as Deadlines  
 
 In Axon, you can use an `EventScheduler` to schedule an event for publication. 
-In the example of an Invoice, you would expect that invoice to be paid within thirty days. 
+In the example of an invoice, you would expect the invoice to be paid within thirty days. 
 A saga would, after sending the `CreateInvoiceCommand`, schedule an `InvoicePaymentDeadlineExpiredEvent` to be published in 30 days. 
 The `EventScheduler` returns a `ScheduleToken` after scheduling an event. 
 This token can be used to cancel the schedule, for example when a payment of an Invoice has been received.
 
 Axon provides two `EventScheduler` implementations: a pure Java one and one using Quartz 2 as a backing scheduling mechanism.
 
-This pure-Java implementation of the `EventScheduler` uses a `ScheduledExecutorService` to schedule event publication. 
+The pure-Java implementation of the `EventScheduler` uses a `ScheduledExecutorService` to schedule event publication. 
 Although the timing of this scheduler is very reliable, it is a pure in-memory implementation. 
 Once the JVM is shut down, all schedules are lost. 
 This makes this implementation unsuitable for long-term schedules.

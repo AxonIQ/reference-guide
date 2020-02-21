@@ -1,6 +1,6 @@
 # Handling Queries
 
-The handling of a query comes down to an annotated handler returning the queries response. 
+The handling of a query comes down to an annotated handler returning the query's response. 
 The goal of this chapter is to describe what such an `@QueryHandler` annotated method looks like,
  as well as describing the call order and response type options.
 For configuration of query handlers and the `QueryBus`,

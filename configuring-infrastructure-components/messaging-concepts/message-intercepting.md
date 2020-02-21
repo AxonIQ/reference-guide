@@ -1,9 +1,9 @@
 # Message Intercepting
 
-There are two different types of interceptors: dispatch Interceptors and handler Interceptors. 
+There are two different types of interceptors: dispatch interceptors and handler interceptors. 
 Dispatch interceptors are invoked before a message is dispatched to a message handler. 
-At that point, it may not even be sure that any handler exists for that message. 
-Handler Interceptors are invoked just before the message handler is invoked.
+At that point, it may not even be known that a handler exists for that message. 
+Handler interceptors are invoked just before the message handler is invoked.
 
 ## Command Interceptors
 
@@ -14,8 +14,8 @@ This is done using Interceptors.
 ### Command Dispatch Interceptors
 
 Message dispatch interceptors are invoked when a command is dispatched on a command bus. 
-They have the ability to alter the command message, by adding metadata, for example,
- or block the command by throwing an exception. 
+They have the ability to alter the command message by adding metadata. They can also 
+block the command by throwing an exception. 
 These interceptors are always invoked on the thread that dispatches the command.
 
 Let's create a `MessageDispatchInterceptor` which logs each command message being dispatched on a `CommandBus`.
@@ -52,7 +52,7 @@ public class CommandBusConfiguration {
 
 There is no point in processing a command if it does not contain all required information in the correct format. 
 In fact, a command that lacks information should be blocked as early as possible,
- preferably even before any transaction is started. 
+ preferably even before a transaction has been started. 
 Therefore, an interceptor should check all incoming commands for the availability of such information. 
 This is called structural validation.
 
@@ -66,8 +66,8 @@ While it uses sensible defaults, you can fine-tune it to your specific needs.
 > **Interceptor Ordering Tip**
 >
 > You want to spend as few resources on an invalid command as possible. 
-> Therefore, this interceptor is generally placed in the very front of the interceptor chain. 
-> In some cases, a `LoggingInterceptor` or `AuditingInterceptor` might need to be placed in front,
+> Therefore, this interceptor is generally placed at the very front of the interceptor chain. 
+> In some cases, a `LoggingInterceptor` or `AuditingInterceptor` might need to be placed first,
 >  with the validating interceptor immediately following it.
 
 The `BeanValidationInterceptor` also implements `MessageHandlerInterceptor`,
@@ -81,24 +81,24 @@ Interceptors can even block command processing altogether, for example for secur
 Interceptors must implement the `MessageHandlerInterceptor` interface. 
 This interface declares one method, `handle`, that takes three parameters:
  the command message, the current `UnitOfWork` and an `InterceptorChain`. 
-The `InterceptorChain` is used to continue the dispatching process,
- whereas the `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, 
+The `InterceptorChain` is used to continue the dispatching process.
+The `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, 
  during or after \(command\) message handling 
  \(see [Unit Of Work](unit-of-work.md) for more information about the phases\).
 
-Unlike dispatch interceptors, handler Interceptors are invoked in the context of the command handler. 
+Unlike dispatch interceptors, handler interceptors are invoked in the context of the command handler. 
 That means they can attach correlation data based on the message being handled to the unit of work, for example. 
 This correlation data will then be attached to messages being created in the context of that unit of work.
 
-Handler Interceptors are also typically used to manage transactions around the handling of a command. 
+Handler interceptors are also typically used to manage transactions around the handling of a command. 
 To do so, register a `TransactionManagingInterceptor`,
  which in turn is configured with a `TransactionManager` to start and commit \(or roll back\) the actual transaction.
 
 Let's create a Message Handler Interceptor which will only allow the handling of commands
  that contain `axonUser` as a value for the `userId` field in the `MetaData`. 
-If the `userId` is not present in the meta-data,
+If the `userId` is not present in the metadata,
  an exception will be thrown which will prevent the command from being handled. 
-And if the `userId`'s value does not match `axonUser`, we will also not proceed up the chain. 
+Additionally, if the value of `userId` does not match `axonUser`, we will also not proceed up the chain. 
 
 ```java
 public class MyCommandHandlerInterceptor implements MessageHandlerInterceptor<CommandMessage<?>> {
@@ -133,7 +133,7 @@ public class CommandBusConfiguration {
 
 #### `@CommandHandlerInterceptor` Annotation
 
-The framework has the possibility to add a Handler Interceptor as an `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. 
+The framework has the ability to add a Handler Interceptor as a `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. 
 The difference between a method on an Aggregate
  and a "[regular](message-intercepting.md#command-handler-interceptors)" Command Handler Interceptor,
  is that with the annotation approach you can make decisions based on the current state of the given Aggregate. 
@@ -141,12 +141,12 @@ Some properties of an annotated Command Handler Interceptor are:
 
 * The annotation can be put on entities within the Aggregate. 
 * It is possible to intercept a command on Aggregate Root level, whilst the command handler is in a child entity.
-* Command execution can be prevented by firing an exception from annotated command handler interceptor.
+* Command execution can be prevented by firing an exception from an annotated command handler interceptor.
 * It is possible to define an `InterceptorChain` as a parameter of the command handler interceptor method and use it to control command execution.
-* By using the `commandNamePattern` attribute of the `@CommandHandlerInterceptor` annotation we can intercept all commands matching provided regular expression.
-* Events can be applied from annotated command handler interceptor.
+* By using the `commandNamePattern` attribute of the `@CommandHandlerInterceptor` annotation we can intercept all commands matching the provided regular expression.
+* Events can be applied from an annotated command handler interceptor.
 
-In the listing below we can see a `@CommandHandlerInterceptor` method which prevents command execution if a command's
+In the example below we can see a `@CommandHandlerInterceptor` annotated method which prevents command execution if a command's
  `state` field does not match the Aggregate's `state` field:
 
 ```java
@@ -164,15 +164,15 @@ public class MyAggregate {
 ```
 ## Event Interceptors
 
-Similarly as with command messages,
+Similar to command messages,
  event messages can also be intercepted prior to publishing and handling to perform additional actions on all events. 
-This thus boils down to same two types of interceptors for messages: the Dispatch- and the Handler Interceptor.
+This boils down to the same two types of interceptors for messages: the dispatch interceptor and the handler interceptor.
 
 ### Event Dispatch Interceptors
 
 Any message dispatch interceptors registered to an event bus will be invoked when an event is published. 
-They have the ability to alter the event message, by adding metadata for example,
- or they can provide you with overall logging capabilities for when an event is published. 
+They have the ability to alter the event message by adding metadata.
+They can also provide you with overall logging capabilities for when an event is published. 
 These interceptors are always invoked on the thread that published the event.
 
 Let's create an event message dispatch interceptor which logs each event message being published on an `EventBus`.
@@ -219,19 +219,19 @@ Interceptors can even block event processing altogether, for example for securit
 Interceptors must implement the `MessageHandlerInterceptor` interface. 
 This interface declares one method, `handle()`, that takes three parameters: the \(event\) message,
  the current `UnitOfWork` and an `InterceptorChain`. 
-The `InterceptorChain` is used to continue the dispatching process, 
- whereas the `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, 
+The `InterceptorChain` is used to continue the dispatching process. 
+The `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, 
  during or after \(event\) message handling \(see [Unit Of Work](unit-of-work.md) for more information about the phases\).
 
 Unlike dispatch interceptors, handler interceptors are invoked in the context of the event handler. 
 That means they can attach correlation data based on the message being handled to the unit of work, for example. 
 This correlation data will then be attached to event messages being created in the context of that unit of work.
 
-Let's create a message handler Interceptor which will only allow the handling of events that contain
- `axonUser` as a value for the `userId` field in the `MetaData`. 
+Let's create a message handler interceptor which will only allow the handling of events that contain
+ `axonUser` as the value for the `userId` field in the `MetaData`. 
 If the `userId` is not present in the metadata,
  an exception will be thrown which will prevent the Event from being handled. 
-And if the `userId`'s value does not match `axonUser`, we will also not proceed up the chain. 
+And if the value of `userId` does not match `axonUser`, we will also not proceed up the chain. 
 Authenticating the event message like shown in this example is a regular use case of the `MessageHandlerInterceptor`.
 
 ```java
@@ -270,11 +270,11 @@ public class EventProcessorConfiguration {
 > **Interceptor Registration**
 >
 > Different from the `CommandBus` and `QueryBus`, which both can have handler interceptors and dispatch interceptors,
->  the `EventBus` can only have registered dispatch Interceptors. 
-> This is the case because the event publishing part, so the place which is in control of event message dispatching,
->  is the sole purpose of the event bus. 
-> The `EventProcessor`s are in charge of handling the event messages,
->  thus are the spot where the handler Interceptors are registered.
+> the `EventBus` can only register dispatch interceptors. 
+> This is because the sole purpose of the `EventBus` is event publishing/dispatching,
+> thus they are where event dispatch interceptors are registered.
+> `EventProcessor`s are in charge of handling event messages,
+> thus they are where event handler interceptors are registered.
 
 ## Query Interceptors
 
@@ -286,8 +286,8 @@ This is done using interceptors.
 
 Message dispatch interceptors are invoked when a query is dispatched on a query bus
  or when a subscription update to a query message is dispatched on a query update emitter. 
-They have the ability to alter the message, by adding metadata, for example,
- or block the handler execution by throwing an exception. 
+They have the ability to alter the message by adding metadata.
+They can also block the handler execution by throwing an exception. 
 These interceptors are always invoked on the thread that dispatches the message. 
 
 #### Structural validation
@@ -307,8 +307,8 @@ While it uses sensible defaults, you can fine-tune it to your specific needs.
 > **Interceptor Ordering Tip**
 >
 > You want to spend as few resources on an invalid queries as possible. 
-> Therefore, this interceptor is generally placed in the very front of the interceptor chain. 
-> In some cases, a logging or auditing interceptor might need to be placed in front,
+> Therefore, this interceptor is generally placed at the very front of the interceptor chain. 
+> In some cases, a logging or auditing interceptor might need to be placed first,
 >  with the validating interceptor immediately following it.
 
 The `BeanValidationInterceptor` also implements `MessageHandlerInterceptor`,
@@ -322,8 +322,8 @@ Interceptors can even block query processing altogether, for example for securit
 Interceptors must implement the `MessageHandlerInterceptor` interface. 
 This interface declares one method, `handle`, that takes three parameters:
  the query message, the current `UnitOfWork` and an `InterceptorChain`. 
-The `InterceptorChain` is used to continue the dispatching process,
- whereas the `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior,
+The `InterceptorChain` is used to continue the dispatching process.
+The `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior,
  during or after \(query\) message handling \(see [Unit Of Work](unit-of-work.md) for more information about the phases\).
 
 Unlike dispatch interceptors, handler interceptors are invoked in the context of the query handler. 

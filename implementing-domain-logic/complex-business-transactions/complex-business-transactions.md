@@ -1,7 +1,7 @@
 # Complex Business Transactions
 
-In one of the [previous sections](../../introduction/architecture-overview/architecture-overview.md) we introduced term
- Saga and briefly explained this pattern as a good mechanism to manage your BASE transactions.
+In one of the [previous sections](../../introduction/architecture-overview/architecture-overview.md) we introduced the term
+ Saga and briefly explained the pattern as a good mechanism for managing your BASE transactions.
 
-In next sections we focus on the implementation details, testing, error handling,
- deadline handling and how to make a good decision when to use Saga at first place.
+In the next sections we focus on Saga implementation details, testing, error handling, and 
+ deadline handling. Additionally, we explain how to make a good decision on when to use a Saga in the first place.

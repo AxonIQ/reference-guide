@@ -16,7 +16,7 @@ Sagas are managed by a single event processor \(Tracking or Subscribing\),
 ## Life cycle
 
 A single Saga instance is responsible for managing a single transaction. 
-That means you need to be able to indicate the start and end of a saga its life cycle.
+That means you need to be able to indicate the start and end of a saga's life cycle.
 
 In a saga, event handlers are annotated with `@SagaEventHandler`. 
 If a specific event signifies the start of a transaction, add another annotation to that same method: `@StartSaga`. 
@@ -66,7 +66,7 @@ This may either be exactly one, more than one, or even none at all.
 Sometimes, the name of the property you want to associate with is not the name of the association you want to use. 
 For example, you have a Saga that matches "Sell orders" against "Buy orders",
  you could have a transaction object that contains the "buyOrderId" and a "sellOrderId". 
-If you want the saga to associate that value as "orderId",
+If you want the saga to associate the "sellOrderId" value as "orderId",
  you can define a different `keyName` in the `@SagaEventHandler` annotation. 
 It would then become `@SagaEventHandler(associationProperty="sellOrderId", keyName="orderId")`
 
@@ -75,15 +75,15 @@ It would then become `@SagaEventHandler(associationProperty="sellOrderId", keyNa
 Sagas generally do more than just maintaining state based on events. 
 They interact with external components. 
 To do so, they need access to the resources necessary to address to components. 
-Usually, these resources aren't really part of the saga its state and should not be persisted as such. 
-But once a saga is reconstructed, these resources must be injected before an event is routed to that instance.
+Usually, these resources aren't really part of the saga and its state and these resources should not be persisted as such. 
+However, once a saga is reconstructed, these resources must be injected before an event is routed to that instance.
 
 For that purpose, there is the `ResourceInjector`. 
 It is used by the `SagaRepository` to inject resources into a saga. 
 Axon provides a `SpringResourceInjector`,
- which injects annotated fields and methods with resources from the Application Context, 
- and a `SimpleResourceInjector`, 
- which injects resources that have been registered with it into `@Inject` annotated methods and fields.
+which injects annotated fields and methods with resources from the Application Context. 
+Axon also provides a `SimpleResourceInjector`, 
+which injects resources that have been registered with it into `@Inject` annotated methods and fields.
 
 > **Tip**
 >
@@ -96,10 +96,10 @@ It scans the \(setter\) methods and fields of a Saga to find ones that are annot
 
 When using the Configuration API, Axon will default to the `ConfigurationResourceInjector`. 
 It will inject any resource available in the configuration. 
-Components like the `EventBus`, `EventStore`, `CommandBus` and `CommandGateway` are available by default,
- but you can also register your own components using `configurer.registerComponent()`.
+Components like the `EventBus`, `EventStore`, `CommandBus` and `CommandGateway` are available by default.
+You can also register your own components using `configurer.registerComponent()`.
 
-The `SpringResourceInjector` uses Spring's dependency injection mechanism to inject resources into an aggregate. 
+The `SpringResourceInjector` uses Spring's dependency injection mechanism to inject resources into a Saga. 
 This means you can use setter injection or direct field injection if you require. 
 The method or field to be injected needs to be annotated in order for Spring to recognize it as a dependency,
  for example with `@Autowired`.
@@ -113,8 +113,8 @@ The most important components are the `SagaManager` and the `SagaRepository`.
 ### Saga Manager
 
 Like any component that handles events, the processing is done by an event processor. 
-However, since sagas are not singleton instances handling events,
- but have individual life cycles, they need to be managed.
+However, sagas are not singleton instances handling events. They have individual 
+life cycles which need to be managed.
 
 Axon supports life cycle management through the `AnnotatedSagaManager`,
  which is provided to an event processor to perform the actual invocation of handlers. 
@@ -165,11 +165,11 @@ It is capable of retrieving specific saga instances by their identifier as well 
 There are some special requirements, however. 
 Since concurrency handling in sagas is a very delicate procedure,
  the repository must ensure that for each conceptual saga instance 
- \(with equal identifier\) only a single instance exists in the JVM.
+ \(with an equal identifier\) only a single instance exists in the JVM.
 
 Axon provides the `AnnotatedSagaRepository` implementation,
  which allows the lookup of saga instances while guaranteeing that only a single instance 
- of the saga is accessed at the same time. 
+ of the saga may be accessed at the same time. 
 It uses a `SagaStore` to perform the actual persistence of saga instances.
 
 The choice for the implementation to use depends mainly on the storage engine used by the application. 
@@ -186,7 +186,7 @@ Sagas themselves do not need any JPA annotations; Axon will serialize the sagas 
  \(similar to event serialization, 
  you can choose between an `XStreamSerializer`, `JacksonSerializer` or `JavaSerializer`, 
  which can be set by configuring the default `Serializer` in your application. 
- For more detail, check [Serializers](../../operations-guide/production-considerations/serializers.md)\).
+For more details, see [Serializers](../../operations-guide/production-considerations/serializers.md).
 
 The `JpaSagaStore` is configured with an `EntityManagerProvider`,
  which provides access to an `EntityManager` instance to use. 
@@ -206,13 +206,13 @@ While not required, when initializing with a `ConnectionProvider`,
 It will check the current Unit of Work for an already open database connection,
  to ensure that all activity within a unit of work is done on a single connection.
 
-Unlike JPA, the `JdbcSagaRepository` uses plain SQL statement to store and retrieve information. 
-This may mean that some operations depend on the Database specific SQL dialect. 
-It may also be the case that certain Database vendors provide non-standard features that you would like to use. 
+Unlike JPA, the `JdbcSagaRepository` uses plain SQL statements to store and retrieve information. 
+This may mean that some operations depend on the database specific SQL dialect. 
+It may also be the case that certain database vendors provide non-standard features that you would like to use. 
 To allow for this, you can provide your own `SagaSqlSchema`. 
 The `SagaSqlSchema` is an interface that defines all the operations the repository needs to perform 
- on the underlying database. 
-It allows you to customize the SQL statement executed for each one of them. 
+on the underlying database. 
+It allows you to customize the SQL statement executed for each operation. 
 The default is the `GenericSagaSqlSchema`. 
 Other implementations available are `PostgresSagaSqlSchema`, `Oracle11SagaSqlSchema` and `HsqlSagaSchema`.
 
@@ -220,7 +220,7 @@ Other implementations available are `PostgresSagaSqlSchema`, `Oracle11SagaSqlSch
 
 The `MongoSagaStore` stores the saga instances and their associations in a MongoDB database. 
 The `MongoSagaStore` stores all sagas in a single collection in a MongoDB database. 
-Per saga instance, a single document is created.
+For each saga instance, a single document is created.
 
 The `MongoSagaStore` also ensures that at any time,
  only a single Saga instance exists for any unique Saga in a single JVM. 
@@ -228,27 +228,30 @@ This ensures that no state changes are lost due to concurrency issues.
 
 The `MongoSagaStore` is initialized using a `MongoTemplate` and optionally a `Serializer`. 
 The `MongoTemplate` provides a reference to the collection to store the sagas in. 
-Axon provides the `DefaultMongoTemplate`, which takes the `MongoClient` instance as well as the database name
- and name of the collection to store the sagas in. 
+Axon provides the `DefaultMongoTemplate`, which takes a `MongoClient` instance as well as the database name
+and name of the collection to store the sagas in. 
 The database name and collection name may be omitted. 
 In that case, they default to `"axonframework"` and `"sagas"`, respectively.
 
 ### Caching
 
 If a database backed saga storage is used, saving and loading saga instances may be a relatively expensive operation. 
-Especially in situations where the same saga instance is invoked multiple times within a short time span,
- a cache can be beneficial to the application's performance.
+In situations where the same saga instance is invoked multiple times within a short time span,
+a cache can be especially beneficial to the application's performance.
 
 Axon provides the `CachingSagaStore` implementation. 
 It is a `SagaStore` that wraps another one, which does the actual storage. 
 When loading sagas or association values, the `CachingSagaStore` will first consult its caches,
- before delegating to the wrapped repository. 
-When storing information, all calls are always delegated,
- to ensure that the backing storage always has a consistent view on the saga its state.
+before delegating to the wrapped repository. 
+When storing information, all calls are always delegated to ensure that the backing storage always 
+has a consistent view on the saga's state.
 
 To configure caching, simply wrap any `SagaStore` in a `CachingSagaStore`. 
 The constructor of the `CachingSagaStore` takes three parameters:
- the repository to wrap and the caches to use for the association values and saga instances, respectively. 
+1. The `SagaStore` to wrap
+2. The cache to use for association values 
+3. The cache to use for saga instances 
+
 The latter two arguments may refer to the same cache, or to different ones. 
 This depends on the eviction requirements of your specific application.
 

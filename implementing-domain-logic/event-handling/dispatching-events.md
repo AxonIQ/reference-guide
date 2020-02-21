@@ -1,6 +1,6 @@
 # Dispatching Events
 
-Event publication from a couple of locations when your Axon Framework application.
+Event publication can from a couple of locations within your Axon Framework application.
 In general, these can be grouped in two major areas:
 
 1. Dispatching events from an Aggregate, and
@@ -44,13 +44,13 @@ The `AggregateLifecycle#apply(Object)` will go through a number of steps:
 3. The provided Event payload, the `Object`, will be wrapped in an `EventMessage`.
 The `EventMessage` will also receive the `sequenceNumber` from the previous step, as well as the Aggregate it's identifier.
 4. The Event Message will be published from here on. 
-The event will first be send to all the Event Handlers in the Aggregate which are interested.
+The event will first be sent to all the Event Handlers in the Aggregate which are interested.
 This is necessary for [Event Sourcing](../command-handling/aggregate.md#basic-aggregate-structure), to update the Aggregate's state accordingly.
 5. After the Aggregate itself has handled the event, it will be published on the `EventBus`. 
 
 > **MetaData in Aggregate Event Messages**
 >
-> The `AggregateLifecycle` also provides a `apply(Object, MetaData)` function.
+> The `AggregateLifecycle` also provides an `apply(Object, MetaData)` function.
 > This can be used to attach command-handler specific
 >  [MetaData](../../configuring-infrastructure-components/messaging-concepts/message-anatomy.md#meta-data).
 
