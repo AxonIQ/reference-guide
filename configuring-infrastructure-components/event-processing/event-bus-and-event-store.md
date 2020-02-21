@@ -216,6 +216,7 @@ public EventStorageEngine storageEngine(Serializer defaultSerializer,
             .build();
 }
 ```
+
 > **Excluding the Axon Server Connector**
 > 
 > If you exclude the `axon-server-connector` dependency from `axon-spring-boot-starter` the `EmbeddedEventStore` will
@@ -367,7 +368,6 @@ public EventStorageEngine storageEngine(MongoClient client) {
 > be auto-configured for you, if a concrete implementation of `EventStorageEngine` is available.
 > When it is desired to use Mongo as the Event Storage approach, this means providing a `MongoEventStorageEngine` bean. 
 
-
 {% endtab %}
 {% endtabs %}
 
@@ -408,6 +408,7 @@ public EventStorageEngine storageEngine() {
     return new InMemoryEventStorageEngine();
 }
 ```
+
 > **Excluding the Axon Server Connector**
 > 
 > If you exclude the `axon-server-connector` dependency from `axon-spring-boot-starter` the `EmbeddedEventStore` will

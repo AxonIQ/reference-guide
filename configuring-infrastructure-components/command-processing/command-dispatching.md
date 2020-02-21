@@ -186,10 +186,6 @@ Configure your application:
 // Returns a Configurer instance with default components configured. `AxonServerCommandBus` is configured as Command Bus by default.
 Configurer configurer = DefaultConfigurer.defaultConfiguration();
 ```
-> **Excluding the Axon Server Connector**
-> 
-> If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' command bus options,
->  the `SimpleCommandBus` (see [below](command-dispatching.md#simplecommandbus)).
 
 {% endtab %}
 
@@ -206,6 +202,12 @@ By simply declaring dependency to `axon-spring-boot-starter`,
 </dependency>
 
 ```
+
+> **Excluding the Axon Server Connector**
+> 
+> If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' command bus options,
+>  the `SimpleCommandBus` (see [below](command-dispatching.md#simplecommandbus)).
+
 {% endtab %}
 {% endtabs %}
 
@@ -251,6 +253,7 @@ public SimpleCommandBus commandBus(TransactionManager txManager, AxonConfigurati
 }
 
 ```
+
 > **Excluding the Axon Server Connector**
 >
 > If you exclude the `axon-server-connector` dependency from the `axon-spring-boot-starter` dependency, 

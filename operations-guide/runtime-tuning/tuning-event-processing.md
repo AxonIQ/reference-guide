@@ -74,8 +74,8 @@ CompletableFuture<Boolean> futureResult = trackingProcessor.mergeSegment(segment
 > If you have several instances of a given Axon application, that regularly means you have duplicated your Tracking Event Processors.
 > Such a set up is a regular scenario to require segment tuning.
 >
-> Note though that especially in such a set up you would need to delegate said split or merge to the correct instance.
-> Where "correct instance" is means the instance owning the segment you want to split and merge.
+> Note that, especially, in such a setup you would need to delegate said split or merge to the correct instance. 
+> The "correct instance", in this case, is the instance owning the segment you want to split and merge.
 
 ## Blacklisting Events
 

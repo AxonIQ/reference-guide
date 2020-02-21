@@ -73,13 +73,14 @@ By simply declaring dependency to `axon-spring-boot-starter`,
 </dependency>
 
 ```
-{% endtab %}
-{% endtabs %}
 
 > **Excluding the Axon Server Connector**
 > 
 > If you exclude the `axon-server-connector` dependency you will fallback to 'non-axon-server' query bus option,
 >  the `SimpleQueryBus` (see [below](query-dispatching.md#simplequerybus))
+
+{% endtab %}
+{% endtabs %}
 
 ### SimpleQueryBus
 
@@ -116,6 +117,7 @@ public SimpleQueryBus queryBus(AxonConfiguration axonConfiguration, TransactionM
 }
 
 ```
+
 > **Excluding the Axon Server Connector**
 >
 > If you exclude the `axon-server-connector` dependency from the `axon-spring-boot-starter` dependency, 

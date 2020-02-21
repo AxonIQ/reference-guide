@@ -52,7 +52,7 @@ Note that there are more options to cancel a deadline next to the previously men
   Cancels _every_ scheduled deadline matching the given `deadlineName`.
   Note that this thus also cancels deadlines from other aggregate and/or saga instances matching the name.
  * `cancelAllWithinScope(String deadlineName)`
-  Cancels a scheduled deadline matching the given `deadlineName`, _within_ the scope the method is invoked in.
+  Cancels a scheduled deadline matching the given `deadlineName`, _within_ the `Scope` the method is invoked in.
   For example, if this operation is performed from within "aggregate instance X",
    the `ScopeDescriptor` from "aggregate instance X" will be used to cancel. 
  * `cancelAllWithinScope(String deadlineName, ScopeDescriptor scope)`
@@ -88,9 +88,9 @@ A `@DeadlineHandler` is a message handler like any other in Axon -
 > Thus any `@DeadlineHandler` annotated function you wish to be called on a met deadline,
 >  must be in the same Aggregate/Saga from which is was scheduled.
 >
-> Axon calls this context a scope. 
-> If necessary, implementing and providing your own scope will allow you to schedule deadlines in your custom,
->  scoped components.
+> Axon calls this context a `Scope`. 
+> If necessary, implementing and providing your own `Scope` will allow you to schedule deadlines in your custom,
+>  'scoped' components.
 
 A `@DeadlineHandler` is matched based on the deadline name and the deadline payload. 
 

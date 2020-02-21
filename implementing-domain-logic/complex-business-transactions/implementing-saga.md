@@ -186,7 +186,7 @@ Sagas themselves do not need any JPA annotations; Axon will serialize the sagas 
  \(similar to event serialization, 
  you can choose between an `XStreamSerializer`, `JacksonSerializer` or `JavaSerializer`, 
  which can be set by configuring the default `Serializer` in your application. 
- *~~~~*For more details, see [Serializers](../../operations-guide/production-considerations/serializers.md).
+For more details, see [Serializers](../../operations-guide/production-considerations/serializers.md).
 
 The `JpaSagaStore` is configured with an `EntityManagerProvider`,
  which provides access to an `EntityManager` instance to use. 
