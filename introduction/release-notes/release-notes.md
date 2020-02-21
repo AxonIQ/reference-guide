@@ -7,6 +7,33 @@ This covers improvements to [Axon Framework](https://github.com/AxonFramework/Ax
  since all three follow the same release cadence.
 For bug fixes per project, we refer to [this](bug-fixes.md) page. 
 
+## Release 4.3
+
+ * Aggregate Polymorphism has been introduced, allowing for an aggregate hierarchy as would come natural from a domain model.
+   The set this up, the `AggregateConfigurer#withSubtypes(Class... aggregates)` method can be used.
+   In a Spring environment, an aggregate class hierarchy will be detected automatically.
+   For more details on this feature, read up on it [here](../../implementing-domain-logic/command-handling/aggregate-polymorphism.md).
+ * An Axon application will no shutdown more gracefully then it used to in previous releases.
+   This is achieved by marking specific methods in Axon's infrastructure components as a `@StartHandler` or `@ShutdownHandler`.
+   A 'phase' is required in those, specifying when the method should be executed.
+   If you want to add your own lifecycle handlers,
+    you can either register a component with the aforementioned annotations 
+    or register the methods directly through `Configurer#onInitialize`, `Configuration#onStart` and
+    `Configuration#onShutdown`.
+ * We have introduced the `@CreationPolicy` annotation which you can add to `@CommandHandler` annotated methods in your aggregate.
+   Through this, it is possible te define if such a command handler should 'never', 'always' or 'create' an aggregate 'if-missing'.
+   For further explanation read the [Aggregate Command Handler Creation Policy](../../implementing-domain-logic/command-handling/aggregate.md#aggregate-command-handler-creation-policy) section.
+ * Both the `XStreamSerializer` and `JacksonSerializer` provide a means to toggle on "lenient serialization" through their builders.
+ * Various test fixture improvements have been made, such as options to register a `HandlerEnhancerDefinition`,
+   a `ParameterResolverFactory` and a `ListenerInvocationErrorHandler`.
+   Additionally validations have been added too, revolving around asserting scheduled events and deadline message.
+   The [Test Fixture](../../implementing-domain-logic/command-handling/testing.md) page has been updated to define these new operations accordingly. 
+ * The `TrackingEventProcessor#processingStatus` method as of 4.3 exposes more status information.
+   The current token position, token-at-reset, is-merging and merge-completed position have been added to the set.
+   Read the [Event Tracker Status](../../operations-guide/production-considerations/monitoring-and-metrics.md#event-tracker-status) section for more specifics on this. 
+
+For a complete list of all the changes made in 4.3 you can check out [this](https://github.com/AxonFramework/AxonFramework/milestone/42?closed=1) page.
+
 ## Release 4.2
 
  * Axon Framework applications can now use tags to support a level of 'location awareness' between Axon clients and Axon Server instances.
