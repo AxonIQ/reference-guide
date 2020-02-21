@@ -5,6 +5,47 @@ This page aims to provide a dedicated overview of patch releases per project.
 
 ## Axon Framework
 
+### Release 4.3
+
+ * A `ConcurrencyException` was thrown when an aggregate was created at two distinct JVM's at the same time.
+   As `ConcurrencyException`s are typically retryable,
+    the creation command would be issued again if a `RetryScheduler` was in place.
+   Retrying this operation is however useless and hence has been replaced for an `AggregateStreamCreationException` in pull request [#1333](https://github.com/AxonFramework/AxonFramework/pull/1333). 
+ * The test fixtures for state-stored aggregates did unintentionally not allow resource injection.
+   This problem has been resolved in pull request [#1315](https://github.com/AxonFramework/AxonFramework/pull/1315).
+ * The `MultiStreamableMessageSource` did not deal well with one or several exceptional streams.
+   Hence exception handling has been improved on this matter in [#1325](https://github.com/AxonFramework/AxonFramework/pull/1325).
+
+For a complete list of all resolved bugs we refer to the
+ [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Release+4.3%22++label%3A%22Type%3A+Bug%22).
+
+### Release 4.2.2
+
+ * In a distributed setup, the `DisruptorCommandBus` was not always correctly identified as being the local segment.
+   Due to this, aggregate repositories weren't created by the `DisruptorCommandBus` as is required in such a configuration.
+   This was marked in [#874](https://github.com/AxonFramework/AxonFramework/issues/874) and resolved through [#1287](https://github.com/AxonFramework/AxonFramework/pull/1287).
+ * As described in [#1274](https://github.com/AxonFramework/AxonFramework/issues/1274),
+    a query handler with return type `Future` was not being returned at all but threw an exception.
+   Pull request [#1323](https://github.com/AxonFramework/AxonFramework/pull/1323) solved that in 4.2.2.
+ * An issue was solved where the `JdbcAutoConfiguration` unintentionally depended on a JPA specific class.
+
+For a complete list of all resolved bugs we refer to the
+ [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Release+4.2.2%22++label%3A%22Type%3A+Bug%22).
+
+### Release 4.2.1
+
+ * A one-to-many `Upcaster` instance tied to Axon Server would only use the first event result and ignore the rest.
+   This issue has been resolved in pull request [#1264](https://github.com/AxonFramework/AxonFramework/pull/1264).
+ * The `axon-legacy` module's `GapAwareTrackingToken` did not implement the `TrackingToken` interface. 
+   This was marked in issue [#1230](https://github.com/AxonFramework/AxonFramework/issues/1230) and resolved in [#1231](https://github.com/AxonFramework/AxonFramework/pull/1231).
+ * The builders of the `ExponentialBackOffIntervalRetryScheduler` and `IntervalRetryScheduler` previously
+    did not implement the `validate()` method correctly.
+   Through this a `NullPointerException` could occur on start-up,
+    as marked in [#1293](https://github.com/AxonFramework/AxonFramework/issues/1293).
+
+For a complete list of all resolved bugs we refer to the
+ [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Release+4.2.1%22++label%3A%22Type%3A+Bug%22).
+
 ### Release 4.2
 
  * An Aggregate's `Snapshotter` was not auto configured when Spring Boot is being used, as was filed under [#932](https://github.com/AxonFramework/AxonFramework/issues/932).
