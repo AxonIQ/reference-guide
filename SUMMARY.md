@@ -20,6 +20,7 @@
 * [Command handling](implementing-domain-logic/command-handling/command-handling.md)
     * [Aggregate](implementing-domain-logic/command-handling/aggregate.md)
     * [Multi-entity Aggregates](implementing-domain-logic/command-handling/multi-entity-aggregates.md)
+    * [Aggregate Polymorphism](implementing-domain-logic/command-handling/aggregate-polymorphism.md)
     * [External Command Handlers](implementing-domain-logic/command-handling/external-command-handler.md)
     * [State-Stored Aggregates](implementing-domain-logic/command-handling/state-stored-aggregates.md)
     * [Dispatching Commands](implementing-domain-logic/command-handling/dispatching-commands.md)
