@@ -244,3 +244,53 @@ Using this `isLive()` method, you can perform activity that should only be done 
 4. `markDeleted()`: Will mark the Aggregate instance calling the function as being 'deleted'.
 Useful if the domain specifies a given Aggregate can be removed/deleted/closed, after which it should no longer be allowed to handle any Commands.
 This function should be called from an `@EventSourcingHandler` annotated function to ensure that _being marked deleted_ is part of that Aggregate's state.
+
+## Aggregate Command Handler Creation Policy
+
+In the [Handling Commands In An Aggregate](#handling-commands-in-an-aggregate) section
+ we have depicted the `GiftCard` aggregate with roughly two types of command handlers:
+ 
+ 1. `@CommandHandler` annotated constructors
+ 2. `@CommandHandler` annotated methods
+ 
+Option 1 will always expect to be the instantiation of the `GiftCard` aggregate,
+ whilst option 2 expects to be targeted towards an existing aggregate instance.
+Although this may be the default, there is the option to define a _creation policy_ on a command handler.
+This can be achieved by adding the `@CreationPolicy` annotation to a command handler annotated method, like so:
+
+```java
+import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.modelling.command.CreationPolicy;
+import org.axonframework.modelling.command.AggregateCreationPolicy;
+
+public class GiftCard {
+
+    public GiftCard() {
+        // Required no-op constructor
+    }
+
+    @CommandHandler
+    @CreationPolicy(AggregateCreationPolicy.ALWAYS)
+    public void handle(IssueCardCommand cmd) {
+        // An `IssueCardCommand`-handler which will create a `GiftCard` aggregate 
+    }
+
+    @CommandHandler
+    @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
+    public void handle(CreateOrRechargeCardCommand cmd) {
+        // A 'CreateOrRechargeCardCommand'-handler which creates a `GiftCard` aggregate if it did not exist
+        // Otherwise, it will update an existing `GiftCard` aggregate.
+    }
+    // omitted aggregate state, command handling logic and event sourcing handlers
+}
+```
+
+As is shown above, the `@CreationPolicy` annotation requires stating the `AggregateCreationPolicy`.
+This enumeration has the following options available:
+
+ * `ALWAYS` - A creation policy of "always" will expect to instantiate the aggregate. 
+  This effectively works like a command handler annotated constructor.
+ * `CREATE_IF_MISSING` - A creation policy of "create if missing" can either create an aggregate or act on an existing instance.
+  This policy should be regarded as a create or update approach of an aggregate.
+ * `NEVER` - A creation policy of "never" will be handled on an existing aggregate instance.
+  This effectively works like any regular command handler annotated method.
