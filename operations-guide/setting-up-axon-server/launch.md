@@ -41,7 +41,8 @@ docker run --name my-axon-server -p 8024:8024 -p 8124:8124 \
     --mount source=axonserver-eventdata,target=/eventdata axoniq/axonserver
 ```
 
-If you want to run the clients in Docker containers as well, and are not using something like Kubernetes, use the `--hostname` option of the `docker` command to set a useful name like `axonserver`, and pass the `AXONSERVER_HOSTNAME` environment variable to adjust the properties accordingly:
+If you want to run the clients in Docker containers as well, and are not using something like Kubernetes, use the `--hostname` option of the `docker` 
+command to set a useful name like `axonserver`:
 
 ```bash
 $ docker run -d --name my-axon-server -p 8024:8024 -p 8124:8124 \
