@@ -1,4 +1,4 @@
-# Complex Business Transactions
+# Sagas
 
 In one of the [previous sections](../../architecture-overview/) we introduced the term Saga and briefly explained the pattern as a good mechanism for managing your BASE transactions.
 

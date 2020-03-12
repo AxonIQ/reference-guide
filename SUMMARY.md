@@ -18,7 +18,7 @@
 
 ## Application Development <a id="axon-application-development"></a>
 
-* [Command handling](axon-application-development/command-handling/README.md)
+* [Commands](axon-application-development/command-handling/README.md)
   * [Aggregate](axon-application-development/command-handling/aggregate.md)
   * [Multi-entity Aggregates](axon-application-development/command-handling/multi-entity-aggregates.md)
   * [Aggregate Polymorphism](axon-application-development/command-handling/aggregate-polymorphism.md)
@@ -28,13 +28,13 @@
   * [Testing](axon-application-development/command-handling/testing.md)
   * [Aggregate Creation from another Aggregate](axon-application-development/command-handling/aggregate-creation-from-aggregate.md)
   * [Conflict Resolution](axon-application-development/command-handling/conflict-resolution.md)
-* [Event handling](axon-application-development/event-handling/README.md)
+* [Events](axon-application-development/event-handling/README.md)
   * [Handling Events](axon-application-development/event-handling/handling-events.md)
   * [Dispatching Events](axon-application-development/event-handling/dispatching-events.md)
-* [Query Handling](axon-application-development/query-handling/README.md)
+* [Queries](axon-application-development/query-handling/README.md)
   * [Handling Queries](axon-application-development/query-handling/handling-queries.md)
   * [Dispatching Queries](axon-application-development/query-handling/dispatching-queries.md)
-* [Complex Business Transactions](axon-application-development/complex-business-transactions/README.md)
+* [Sagas](axon-application-development/complex-business-transactions/README.md)
   * [Implementing a Saga](axon-application-development/complex-business-transactions/implementing-saga.md)
   * [Deadline Handling](axon-application-development/complex-business-transactions/deadline-handling.md)
   * [Managing Associations](axon-application-development/complex-business-transactions/managing-associations.md)
