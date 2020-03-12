@@ -42,11 +42,7 @@ try {
 
 > **Note**
 >
-> The Unit of Work revolves around messages. It is always started with a message to be processed. 
-> As a result of a Unit-of-Work's execution (`executeWithResult(...)`) a `ResultMessage` will be returned and the actual 
-execution result will be the payload of that `ResultMessage`. 
-> If problems arose during message processing, we get an exceptional `ResultMessage` - `isExceptional()` will 
-return `true` and `exceptionResult()` will get us the actual `Throwable` indicating what went wrong.
+> The Unit of Work revolves around messages. It is always started with a message to be processed. As a result of a Unit-of-Work's execution \(`executeWithResult(...)`\) a `ResultMessage` will be returned and the actual execution result will be the payload of that `ResultMessage`. If problems arose during message processing, we get an exceptional `ResultMessage` - `isExceptional()` will return `true` and `exceptionResult()` will get us the actual `Throwable` indicating what went wrong.
 
 A `UnitOfWork` knows several phases. Each time it progresses to another phase, the listeners are notified.
 
@@ -61,3 +57,4 @@ It is possible to bind a transaction to a unit of work. Many components, such as
 When application components need resources at different stages of message processing, such as a database connection or an `EntityManager`, these resources can be attached to the `UnitOfWork`. The `unitOfWork.getResources()` method allows you to access the resources attached to the current unit of work. Several helper methods are available on the unit of work directly, to make working with resources easier.
 
 When nested units of work need to be able to access a resource, it is recommended to register it on the root unit of work, which can be accessed using `unitOfWork.root()`. If a unit of work is the root, it will simply return itself.
+

@@ -1,6 +1,6 @@
 # JGroups
 
-JGroups is an alternative approach to distributing command bus (commands), besides Axon Server which is the default.
+JGroups is an alternative approach to distributing command bus \(commands\), besides Axon Server which is the default.
 
 The `JGroupsConnector` uses \(as the name already gives away\) JGroups as the underlying discovery and dispatching mechanism. Describing the feature set of JGroups is a bit too much for this reference guide, so please refer to the [JGroups User Guide](http://www.jgroups.org/ug.html) for more details.
 
@@ -58,7 +58,6 @@ connector.connect();
 >
 > Note that it is not required that all segments have command handlers for the same type of commands. You may use different segments for different command types altogether. The distributed command bus will always choose a node to dispatch a command to that has support for that specific type of command.
 
-
 ## Configuration in Spring Boot
 
 If you use Spring, you may want to consider using the `JGroupsConnectorFactoryBean`. It automatically connects the connector when the `ApplicationContext` is started, and does a proper disconnect when the `ApplicationContext` is shut down. Furthermore, it uses sensible defaults for a testing environment \(but should not be considered production ready\) and autowiring for the configuration.
@@ -82,3 +81,4 @@ axon.distributed.jgroups.gossip.hosts=localhost[12001]
 # when true, will start an embedded Gossip Server on bound to the port of the first mentioned gossip host.
 axon.distributed.jgroups.gossip.auto-start=false
 ```
+

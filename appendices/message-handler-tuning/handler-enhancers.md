@@ -1,4 +1,4 @@
-# Handler Enhancers 
+# Handler Enhancers
 
 Handler Enhancers allow you to wrap handlers and add custom logic to the execution, or eligibility of handlers for a certain message. This differs from `HandlerInterceptor`s in that you have access to the aggregate member at the time of resolving, and it allows for more fine-grained control. You can use handler enhancers to intercept and perform checks on groups of `@CommandHandler`s or `@EventHandler`s.
 
@@ -80,3 +80,4 @@ public HandlerDefinition eventStorageEngine() {
 ```
 {% endtab %}
 {% endtabs %}
+
