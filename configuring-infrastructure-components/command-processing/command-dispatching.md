@@ -1,8 +1,8 @@
 # Command Dispatching
 
-Command dispatching, as exemplified in the [Dispatching Commands](../../axon-application-development/command-handling/dispatching-commands.md) page, has a number of advantages. First of all, there is a single object that clearly describes the intent of the client. By logging the command, you store both the intent and related data for future reference. Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. Testing also becomes a lot easier. You could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing](../../axon-application-development/command-handling/testing.md) for more on this\). The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
+Command dispatching, as exemplified in the [Dispatching Commands](../../axon-application-development/command-handling/dispatching-commands.md) page, has a number of advantages. First of all, there is a single object that clearly describes the intent of the client. By logging the command, you store both the intent and related data for future reference. Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. Testing also becomes a lot easier. You could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing](../../axon-application-development/testing/testing.md) for more on this\). The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
 
-This does not mean command dispatching using explicit command objects is the only way to do it. The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way, while providing best practices as the default behavior. It is still possible to use a service layer that you can invoke to execute commands. The method will just need to start a unit of work \(see [Unit of Work](../messaging-concepts/unit-of-work.md)\) and perform a commit or rollback on it when the method is finished.
+This does not mean command dispatching using explicit command objects is the only way to do it. The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way, while providing best practices as the default behavior. It is still possible to use a service layer that you can invoke to execute commands. The method will just need to start a unit of work \(see [Unit of Work](../../axon-application-development/messaging-concepts/unit-of-work.md)\) and perform a commit or rollback on it when the method is finished.
 
 The next sections provide an overview of the tasks related to setting up a command dispatching infrastructure with the Axon Framework.
 
@@ -197,7 +197,7 @@ By simply declaring dependency to `axon-spring-boot-starter`, Axon will automati
 
 The `SimpleCommandBus` is, as the name suggests, the simplest implementation. It does straightforward processing of commands in the thread that dispatches them. After a command is processed, the modified aggregate\(s\) are saved and generated events are published in that same thread. In most scenarios, such as web applications, this implementation will suit your needs.
 
-Like most `CommandBus` implementations, the `SimpleCommandBus` allows interceptors to be configured. `CommandDispatchInterceptor`s are invoked when a command is dispatched on the command bus. The `CommandHandlerInterceptor`s are invoked before the actual command handler method is, allowing you to do modify or block the command. See [Command Interceptors](../messaging-concepts/message-intercepting.md#command-interceptors) for more information.
+Like most `CommandBus` implementations, the `SimpleCommandBus` allows interceptors to be configured. `CommandDispatchInterceptor`s are invoked when a command is dispatched on the command bus. The `CommandHandlerInterceptor`s are invoked before the actual command handler method is, allowing you to do modify or block the command. See [Command Interceptors](../../axon-application-development/messaging-concepts/message-intercepting.md#command-interceptors) for more information.
 
 Since all command processing is done in the same thread, this implementation is limited to the JVM's boundaries. The performance of this implementation is good, but not extraordinary. To cross JVM boundaries, or to get the most out of your CPU cycles, check out the other `CommandBus` implementations.
 
@@ -300,7 +300,7 @@ While the `DisruptorCommandBus` easily outperforms the `SimpleCommandBus` by a f
 
    It shouldn't take more than a few milliseconds.
 
-To construct a `DisruptorCommandBus` instance, you need an `EventStore`. This component is explained in the [Event Bus and Event Store](../event-processing/event-bus-and-event-store.md) section.
+To construct a `DisruptorCommandBus` instance, you need an `EventStore`. This component is explained in the [Event Bus and Event Store](../../axon-application-development/event-handling/event-bus-and-event-store.md) section.
 
 Optionally, you can provide a `DisruptorConfiguration` instance, which allows you to tweak the configuration to optimize performance for your specific environment:
 

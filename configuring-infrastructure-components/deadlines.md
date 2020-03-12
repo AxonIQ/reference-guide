@@ -107,7 +107,7 @@ public void on() {
 
 ## Using Time In Your  Application
 
-In cases where applications need to access the clock, they can take advantage of the clock used in the EventMessage, by accessing `GenericEventMessage.clock`. This clock is set to Clock.systemUTC at runtime, and manipulated to simulate time during [testing](../axon-application-development/command-handling/testing.md).
+In cases where applications need to access the clock, they can take advantage of the clock used in the EventMessage, by accessing `GenericEventMessage.clock`. This clock is set to Clock.systemUTC at runtime, and manipulated to simulate time during [testing](../axon-application-development/testing/testing.md).
 
 ```java
 public void handle(PublishTime cmd) {

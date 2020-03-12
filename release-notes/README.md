@@ -39,7 +39,7 @@ All the enhancements and features which have been introduced to our major and mi
 
   Additionally validations have been added too, revolving around asserting scheduled events and deadline message.
 
-  The [Test Fixture](../axon-application-development/command-handling/testing.md) page has been updated to define these new operations accordingly. 
+  The [Test Fixture](../axon-application-development/testing/testing.md) page has been updated to define these new operations accordingly. 
 
 * The `TrackingEventProcessor#processingStatus` method as of 4.3 exposes more status information.
 

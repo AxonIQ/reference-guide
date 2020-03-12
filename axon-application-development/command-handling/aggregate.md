@@ -167,7 +167,7 @@ Within an Aggregate there is a specific location to perform business logic valid
 
 State changes should **not** occur in _any_ Command Handling function. The Event Sourcing Handlers should be the only methods where the Aggregate's state is updated. Failing to do so means the Aggregate would miss state changes when it is being sourced from it's events.
 
-The [Aggregate Test Fixture](testing.md) will guard from unintentional state changes in Command Handling functions. It is thus advised to provide thorough test cases for _any_ Aggregate implementation.
+The [Aggregate Test Fixture](../testing/testing.md) will guard from unintentional state changes in Command Handling functions. It is thus advised to provide thorough test cases for _any_ Aggregate implementation.
 
 > **When to handle an Event**
 >
@@ -191,7 +191,7 @@ There are a couple of operations which are desirable to be performed whilst in t
 
 1. `apply(Object)` and `apply(Object, MetaData)`: The `AggregateLifecycle#apply` will publish an Event message on an `EventBus` such that it is known to have originated from the Aggregate executing the operation. 
 
-   There is the possibility to provide just the Event `Object` or both the Event and some specific [MetaData](../../configuring-infrastructure-components/messaging-concepts/message-anatomy.md#meta-data).  
+   There is the possibility to provide just the Event `Object` or both the Event and some specific [MetaData](../messaging-concepts/message-anatomy.md#meta-data).  
 
 2. `createNew(Class, Callable)`: Instantiate a new Aggregate as a result of handling a Command. 
 
