@@ -1,4 +1,4 @@
-# Handling Events
+# Event Handlers
 
 In Axon, an object may declare a number of event handler methods, by annotating them with `@EventHandler`. The declared parameters of the method define which events it will receive.
 

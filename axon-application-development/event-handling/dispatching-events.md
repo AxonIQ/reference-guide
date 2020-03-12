@@ -1,11 +1,11 @@
-# Dispatching Events
+# Event Dispatchers
 
 Event publication can from a couple of locations within your Axon Framework application. In general, these can be grouped in two major areas:
 
 1. Dispatching events from an Aggregate, and
 2. Dispatching events from regular components 
 
-This page will describe how to get an event message on the event bus from both locations. For more specifics regarding event publication and storage implementations in Axon Framework, read [this](../../configuring-infrastructure-components/event-processing/event-bus-and-event-store.md) section.
+This page will describe how to get an event message on the event bus from both locations. For more specifics regarding event publication and storage implementations in Axon Framework, read [this](event-bus-and-event-store.md) section.
 
 ## Dispatching events from an Aggregate
 
@@ -46,7 +46,7 @@ The `AggregateLifecycle#apply(Object)` will go through a number of steps:
 
 > **MetaData in Aggregate Event Messages**
 >
-> The `AggregateLifecycle` also provides an `apply(Object, MetaData)` function. This can be used to attach command-handler specific [MetaData](../../configuring-infrastructure-components/messaging-concepts/message-anatomy.md#meta-data).
+> The `AggregateLifecycle` also provides an `apply(Object, MetaData)` function. This can be used to attach command-handler specific [MetaData](../messaging-concepts/message-anatomy.md#meta-data).
 
 ## Dispatching events from a Non-Aggregate
 
