@@ -32,6 +32,9 @@
   * [Dispatching Commands](axon-application-development/command-handling/dispatching-commands.md)
   * [Aggregate Creation from another Aggregate](axon-application-development/command-handling/aggregate-creation-from-aggregate.md)
   * [Conflict Resolution](axon-application-development/command-handling/conflict-resolution.md)
+  * [Command Model Configuration](axon-application-development/command-handling/command-model-configuration.md)
+  * [Optimizing Aggregate Loading](axon-application-development/command-handling/optimizing-aggregate-loading.md)
+  * [Command Dispatching](axon-application-development/command-handling/command-dispatching.md)
 * [Events](axon-application-development/event-handling/README.md)
   * [Event Dispatchers](axon-application-development/event-handling/dispatching-events.md)
   * [Event Handlers](axon-application-development/event-handling/handling-events.md)
@@ -42,25 +45,21 @@
 * [Queries](axon-application-development/query-handling/README.md)
   * [Handling Queries](axon-application-development/query-handling/handling-queries.md)
   * [Dispatching Queries](axon-application-development/query-handling/dispatching-queries.md)
+  * [Configuring Query Handlers](axon-application-development/query-handling/configuring-query-handlers.md)
+  * [Query Dispatching](axon-application-development/query-handling/query-dispatching.md)
 * [Sagas](axon-application-development/complex-business-transactions/README.md)
   * [Implementing a Saga](axon-application-development/complex-business-transactions/implementing-saga.md)
   * [Deadline Handling](axon-application-development/complex-business-transactions/deadline-handling.md)
   * [Managing Associations](axon-application-development/complex-business-transactions/managing-associations.md)
   * [Saga Infrastructure](axon-application-development/complex-business-transactions/saga-infrastructure.md)
+* [Deadlines](axon-application-development/deadlines.md)
 * [Testing](axon-application-development/testing/README.md)
   * [Commands/Events](axon-application-development/testing/testing.md)
   * [Sagas](axon-application-development/testing/testing-1.md)
 
-## Configuring Infrastructure Components
+## Axon Server <a id="axon-server-1"></a>
 
-* [Command Processing](configuring-infrastructure-components/command-processing/README.md)
-  * [Command Model Configuration](configuring-infrastructure-components/command-processing/command-model-configuration.md)
-  * [Command Dispatching](configuring-infrastructure-components/command-processing/command-dispatching.md)
-  * [Optimizing Aggregate Loading](configuring-infrastructure-components/command-processing/optimizing-aggregate-loading.md)
-* [Query Processing](configuring-infrastructure-components/query-processing/README.md)
-  * [Configuring Query Handlers](configuring-infrastructure-components/query-processing/configuring-query-handlers.md)
-  * [Query Dispatching](configuring-infrastructure-components/query-processing/query-dispatching.md)
-* [Deadlines](configuring-infrastructure-components/deadlines.md)
+* [Untitled](axon-server-1/untitled.md)
 
 ## Operations Guide
 
