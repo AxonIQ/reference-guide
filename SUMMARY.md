@@ -16,7 +16,7 @@
 * [Spring Boot](setting-up/spring-boot.md)
 * [Starting the Axon Server](setting-up/starting-the-axon-server.md)
 
-## Application Development <a id="axon-application-development"></a>
+## Axon Framework <a id="axon-application-development"></a>
 
 * [Introduction](axon-application-development/introduction.md)
 * [Messaging concepts](axon-application-development/messaging-concepts/README.md)
@@ -55,7 +55,6 @@
   * [Deadline Handling](axon-application-development/complex-business-transactions/deadline-handling.md)
   * [Managing Associations](axon-application-development/complex-business-transactions/managing-associations.md)
   * [Saga Infrastructure](axon-application-development/complex-business-transactions/saga-infrastructure.md)
-* [Deadlines](axon-application-development/deadlines.md)
 * [Testing](axon-application-development/testing/README.md)
   * [Commands/Events](axon-application-development/testing/testing.md)
   * [Sagas](axon-application-development/testing/testing-1.md)
@@ -68,6 +67,8 @@
 
 * [Introduction](axon-server-1/introduction.md)
 * [Installation](axon-server-1/installation/README.md)
+  * [Axon-SE](axon-server-1/installation/axon-se.md)
+  * [Axon-EE](axon-server-1/installation/axon-ee.md)
   * [Launch](axon-server-1/installation/launch.md)
   * [Development Mode](axon-server-1/installation/development-mode.md)
 * [Administration](axon-server-1/administration/README.md)
