@@ -36,6 +36,7 @@
   * [Command Model Configuration](axon-application-development/command-handling/command-model-configuration.md)
   * [Optimizing Aggregate Loading](axon-application-development/command-handling/optimizing-aggregate-loading.md)
   * [Command Dispatching](axon-application-development/command-handling/command-dispatching.md)
+  * [Exception Handling](axon-application-development/command-handling/exception-handling.md)
 * [Events](axon-application-development/event-handling/README.md)
   * [Event Dispatchers](axon-application-development/event-handling/dispatching-events.md)
   * [Event Handlers](axon-application-development/event-handling/handling-events.md)
@@ -48,6 +49,7 @@
   * [Dispatching Queries](axon-application-development/query-handling/dispatching-queries.md)
   * [Configuring Query Handlers](axon-application-development/query-handling/configuring-query-handlers.md)
   * [Query Dispatching](axon-application-development/query-handling/query-dispatching.md)
+  * [Exception Handling](axon-application-development/query-handling/exception-handling-1.md)
 * [Sagas](axon-application-development/complex-business-transactions/README.md)
   * [Implementing a Saga](axon-application-development/complex-business-transactions/implementing-saga.md)
   * [Deadline Handling](axon-application-development/complex-business-transactions/deadline-handling.md)
@@ -60,7 +62,6 @@
 * [Tuning](axon-application-development/tuning/README.md)
   * [Tuning Event Processing](axon-application-development/tuning/tuning-event-processing.md)
   * [Tuning Command Processing](axon-application-development/tuning/tuning-command-processing.md)
-* [Exception Handling](axon-application-development/exception-handling.md)
 * [Monitoring and Metrics](axon-application-development/monitoring-and-metrics.md)
 
 ## Axon Server <a id="axon-server-1"></a>
