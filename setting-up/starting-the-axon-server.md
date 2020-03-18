@@ -24,5 +24,5 @@ Axon provides a Docker image of Axon Server, which is [available on DockerHub](h
 
 Alternatively, you can use this image to run Axon Server in Docker container and deploy it to Kubernetes.
 
-See `Operations Guide` chapter \(section: [Setting up Axon Server/Launch](../operations-guide/setting-up-axon-server/launch.md)\) for more details.
+See `Operations Guide` chapter \(section: [Setting up Axon Server/Launch](../axon-server-1/installation/launch.md)\) for more details.
 

@@ -5,7 +5,7 @@ The [Aggregate](aggregate.md) and [External Command Handler](external-command-ha
 1. The [Command Bus](dispatching-commands.md#the-command-bus), and
 2. the [Command Gateway](dispatching-commands.md#the-command-gateway)
 
-This page will show how and when to use the command gateway and bus. How to configure and specifics on the the command gateway and bus implementations are discussed [here](../../configuring-infrastructure-components/command-processing/command-dispatching.md)
+This page will show how and when to use the command gateway and bus. How to configure and specifics on the the command gateway and bus implementations are discussed [here](command-dispatching.md)
 
 ## The Command Bus
 
@@ -51,7 +51,7 @@ The `CommandDispatcher` described above exemplifies a couple of important aspect
 
    To be able to dispatch a command on the `CommandBus`, you are required to wrap your own command object \(e.g. the 'command message payload'\) in a `CommandMessage`.
 
-   The `CommandMessage` also allows the addition of [MetaData](../../configuring-infrastructure-components/messaging-concepts/message-anatomy.md#meta-data) to the Command Message.
+   The `CommandMessage` also allows the addition of [MetaData](../messaging-concepts/message-anatomy.md#meta-data) to the Command Message.
 
 4. The `CommandBus#dispatch(CommandMessage)` function will dispatch the provided `CommandMessage` on the bus, for delivery to a command handler. 
 

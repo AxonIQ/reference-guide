@@ -45,7 +45,7 @@ All the enhancements and features which have been introduced to our major and mi
 
   The current token position, token-at-reset, is-merging and merge-completed position have been added to the set.
 
-  Read the [Event Tracker Status](../operations-guide/production-considerations/monitoring-and-metrics.md#event-tracker-status) section for more specifics on this. 
+  Read the [Event Tracker Status]() section for more specifics on this. 
 
 For a complete list of all the changes made in 4.3 you can check out [this](https://github.com/AxonFramework/AxonFramework/milestone/42?closed=1) page.
 
@@ -53,7 +53,7 @@ For a complete list of all the changes made in 4.3 you can check out [this](http
 
 * Axon Framework applications can now use tags to support a level of 'location awareness' between Axon clients and Axon Server instances.
 
-  This feature is further described [here](../operations-guide/setting-up-axon-server/tagging.md).
+  This feature is further described [here](../axon-server-1/administration/tagging.md).
 
 * Axon Server already supported several contexts, but Axon Framework application could no specify to which context message should be dispatched.
 

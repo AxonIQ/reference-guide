@@ -73,7 +73,7 @@ During the configuration phase \(i.e. before the first "given" is provided\), yo
 
 * `registerRepository`:
 
-  Registers a custom Aggregate [`Repository`](../../configuring-infrastructure-components/command-processing/command-model-configuration.md#command-model-repositories).
+  Registers a custom Aggregate [`Repository`](../command-handling/command-model-configuration.md#command-model-repositories).
 
 * `registerRepositoryProvider`:
 
@@ -81,7 +81,7 @@ During the configuration phase \(i.e. before the first "given" is provided\), yo
 
 * `registerAggregateFactory`:
 
-  Registers a custom [`AggregateFactory`](../../configuring-infrastructure-components/command-processing/command-model-configuration.md#aggregate-factories).
+  Registers a custom [`AggregateFactory`](../command-handling/command-model-configuration.md#aggregate-factories).
 
 * `registerAnnotatedCommandHandler`:
 
@@ -111,11 +111,11 @@ During the configuration phase \(i.e. before the first "given" is provided\), yo
 
 * `registerDeadlineDispatchInterceptor`: 
 
-  Registers a [`DeadlineMessage`](../../configuring-infrastructure-components/deadlines.md) `MessageDispatchInterceptor`.
+  Registers a [`DeadlineMessage`]() `MessageDispatchInterceptor`.
 
 * `registerDeadlineHandlerInterceptor`:
 
-  Registers a [`DeadlineMessage`](../../configuring-infrastructure-components/deadlines.md) `MessageHandlerInterceptor`.
+  Registers a [`DeadlineMessage`]() `MessageHandlerInterceptor`.
 
 * `registerFieldFilter`:
 
@@ -149,7 +149,7 @@ A last option for the "given" phase, is providing the state of an Aggregate dire
 
 The execution phase allows you two entry points towards the [validation phase](testing.md#validation-phase). Firstly, you can provide a Command to be executed against the command handling component. Similar as with the given Events, if the provided Command is of type `CommandMessage` it will be dispatched as is. The behavior of the invoked handler \(either on the aggregate or as an external handler\) is monitored and compared to the expectations registered in the validation phase.
 
-Secondly, it is possible to elapse a certain time span with the `whenThenTimeElapses(Duration)` and `whenThenTimeAdvancesTo(Instant)` handles. These support testing the publication of `DeadlineMessages`, as is further defined in [this](../../configuring-infrastructure-components/deadlines.md) chapter.
+Secondly, it is possible to elapse a certain time span with the `whenThenTimeElapses(Duration)` and `whenThenTimeAdvancesTo(Instant)` handles. These support testing the publication of `DeadlineMessages`, as is further defined in [this]() chapter.
 
 Note that only activities that occur during the test _execution_ phase are monitored. Any Events or side-effects generated during the "given" phase are not considered in the validation phase.
 
@@ -349,7 +349,7 @@ The `expectState` method takes a consumer of the Aggregate type. Use regular ass
 
 #### Validating Deadlines
 
-The validation phase also provides the option to verify scheduled and met [deadlines](../../configuring-infrastructure-components/deadlines.md) for a given Aggregate instance. You can expect scheduled deadlines both through a `Duration` or an `Instant`, using explicit equals, a `Matcher` or just a deadline type to verify the deadline message.  
+The validation phase also provides the option to verify scheduled and met [deadlines]() for a given Aggregate instance. You can expect scheduled deadlines both through a `Duration` or an `Instant`, using explicit equals, a `Matcher` or just a deadline type to verify the deadline message.  
 The following methods are available for validating Deadlines:
 
 * `expectScheduledDeadline(Duration, Object)`:

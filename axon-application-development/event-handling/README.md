@@ -1,6 +1,16 @@
 # Events
 
-Event handlers are the components that act on incoming events. They typically execute logic based on decisions that have been made by the command model. Usually, this involves updating view models or forwarding updates to other components, such as third party integrations. In some cases event handlers will throw events themselves based on \(patterns of\) events that they received, or even send commands to trigger further changes.
+The second type of "Messages" that an Axon application is associated with are _**Event Messages \(or simply Events\).**_  This section of the reference guide  intends to cover in detail the capabilities that the Axon Framework provides to help facilitate Event Message Development
 
-[Axon Coding Tutorial \#4: - The Query Model](https://youtu.be/jS1vfc5EohM)
+A summary of the various sub-sections is given below. It is recommended to read through the various sub-sections in the order provided below to get a complete understanding of this capability.
+
+| Sub-Section | Purpose |
+| :--- | :--- |
+| [Introduction]() | Overview of the  Event Message Components  within the Axon Framework |
+| [Functional Components]() | Axon Framework provided components to address functional concerns around Event Messages |
+| [Non Functional Components]() | Axon Framework provided components to address non-functional concerns around Event Messages |
+| [Event Serialization]() | Details on Event serialization capabilities provided by the Axon Framework |
+| [Configuration]() | Configuration Details for Event Messages within an Axon application \(Programmatic /  Non - Programmatic\) |
+
+This guide is complemented by a video tutorial which gives a practical demonstration of the concepts explained in this section. The tutorial is available at  -&gt; [Axon Coding Tutorial - Event Messages](https://www.youtube.com/watch?v=jS1vfc5EohM&feature=youtu.be)
 

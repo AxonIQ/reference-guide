@@ -5,7 +5,7 @@ How to handle a query message has been covered in more detail on the [previous p
 1. The [Query Bus](dispatching-queries.md#the-query-bus-and-query-gateway), and
 2. The [Query Gateway](dispatching-queries.md#the-query-bus-and-query-gateway)
 
-This page will show how and when to use the query gateway and bus. How to configure and specifics on the the query gateway and bus implementations are discussed [here](../../configuring-infrastructure-components/query-processing/)
+This page will show how and when to use the query gateway and bus. How to configure and specifics on the the query gateway and bus implementations are discussed [here]()
 
 ## The Query Bus and Query Gateway
 

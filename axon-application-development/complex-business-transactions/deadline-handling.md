@@ -7,7 +7,7 @@ At this point in time, the framework provides two solutions to scheduling and de
 1. A `DeadlineManager`
 2. An `EventScheduler`
 
-For further reference on usage of the `DeadlineManager` approach, refer to the [Deadlines](../../configuring-infrastructure-components/deadlines.md) section. The current section will proceed with a suggested course of action when utilizing the `EventScheduler` for dealing with deadlines.
+For further reference on usage of the `DeadlineManager` approach, refer to the [Deadlines]() section. The current section will proceed with a suggested course of action when utilizing the `EventScheduler` for dealing with deadlines.
 
 ## Scheduled Events as Deadlines
 

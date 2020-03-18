@@ -38,6 +38,7 @@
   * [Command Dispatching](axon-application-development/command-handling/command-dispatching.md)
   * [Exception Handling](axon-application-development/command-handling/exception-handling.md)
 * [Events](axon-application-development/event-handling/README.md)
+  * [Introduction](axon-application-development/event-handling/introduction.md)
   * [Event Dispatchers](axon-application-development/event-handling/dispatching-events.md)
   * [Event Handlers](axon-application-development/event-handling/handling-events.md)
   * [Event Processors](axon-application-development/event-handling/event-processors.md)
@@ -62,6 +63,7 @@
   * [Tuning Event Processing](axon-application-development/tuning/tuning-event-processing.md)
   * [Tuning Command Processing](axon-application-development/tuning/tuning-command-processing.md)
 * [Monitoring and Metrics](axon-application-development/monitoring-and-metrics.md)
+* [Configuration](axon-application-development/configuration.md)
 
 ## Axon Server <a id="axon-server-1"></a>
 
