@@ -70,7 +70,7 @@
   * [Tuning Event Processing](axon-application-development/tuning/tuning-event-processing.md)
   * [Tuning Command Processing](axon-application-development/tuning/tuning-command-processing.md)
 * [Monitoring and Metrics](axon-application-development/monitoring-and-metrics.md)
-* [Configuration](axon-application-development/configuration.md)
+* [Configuration \(TBD\)](axon-application-development/configuration.md)
 
 ## Axon Server <a id="axon-server-1"></a>
 
