@@ -80,7 +80,7 @@ Although Command Handlers can be placed in regular components \(as will be discu
 
 To define a Command Handler in an Aggregate, simply annotate the method which should handle the command with `@CommandHandler`. The `@CommandHandler` annotated method will become a Command Handler for Command Messages where the _command name_ matches fully qualified class name of the first parameter of that method. Thus, a method signature of `void handle(RedeemCardCommand cmd)` annotated with `@CommandHandler`, will be the Command Handler of the `RedeemCardCommand` Command Messages.
 
-Command Messages can also be [dispatched](../dispatching-commands.md) with different _command names_. To be able to handle those correctly, the `String commandName` value can be specified in the `@CommandHandler` annotation.
+Command Messages can also be [dispatched](../dispatching-commands/) with different _command names_. To be able to handle those correctly, the `String commandName` value can be specified in the `@CommandHandler` annotation.
 
 In order for Axon to know which instance of an Aggregate type should handle the Command Message, the property carrying the Aggregate Identifier in the command object **must** be annotated with `@TargetAggregateIdentifier`. The annotation may be placed on either the field or an accessor method \(e.g. a getter\) in the Command object.
 
@@ -159,7 +159,7 @@ If you prefer to use another mechanism for routing commands, the behavior can be
 >
 > When the `@CommandHandler` annotation is placed on an aggregate's constructor, the respective command will create a new instance of that aggregate and add it to the repository. Those commands do not require to target a specific aggregate instance. Therefore, those commands do not require any `@TargetAggregateIdentifier` or `@TargetAggregateVersion` annotations, nor will a custom `CommandTargetResolver` be invoked for these commands.
 >
-> However, regardless of the type of command, as soon as you are distributing your application through for example Axon Server, it is highly recommended to specify a routing key on the given message. The `@TargetAggregateIdentifier` doubles as such, but in absence of a field worthy of the annotation, the `@RoutingKey` annotation should be added to ensure the command can be routed. Additionally, a different `RoutingStrategy` can be configured, as is further specified in the [Command Dispatching section](../command-dispatching.md).
+> However, regardless of the type of command, as soon as you are distributing your application through for example Axon Server, it is highly recommended to specify a routing key on the given message. The `@TargetAggregateIdentifier` doubles as such, but in absence of a field worthy of the annotation, the `@RoutingKey` annotation should be added to ensure the command can be routed. Additionally, a different `RoutingStrategy` can be configured, as is further specified in the [Command Dispatching section](../dispatching-commands/command-dispatching.md).
 
 ## Business Logic and State Changes
 

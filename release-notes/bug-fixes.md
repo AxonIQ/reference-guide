@@ -65,7 +65,7 @@ For a complete list of all resolved bugs we refer to the [issue tracker](https:/
 ### Release 4.2
 
 * An Aggregate's `Snapshotter` was not auto configured when Spring Boot is being used, as was filed under [\#932](https://github.com/AxonFramework/AxonFramework/issues/932).
-* The `CommandResultMessage` was returned as `null` when using the [`DisruptorCommandBus`](../axon-application-development/command-handling/command-dispatching.md#disruptorcommandbus).
+* The `CommandResultMessage` was returned as `null` when using the [`DisruptorCommandBus`](../axon-application-development/command-handling/dispatching-commands/command-dispatching.md#disruptorcommandbus).
 
   This was solved in pull request [\#1169](https://github.com/AxonFramework/AxonFramework/pull/1169).
 
