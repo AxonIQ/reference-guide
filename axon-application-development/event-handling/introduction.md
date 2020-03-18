@@ -62,13 +62,11 @@ A summary of the representation of the non-functional components is depicted bel
 
 ## Event Versioning
 
-In the lifecycle of an Axon application, events _will_ typically change their format. As events are stored indefinitely the application should be able to cope with several versions of an event. The [Event Versioning ]()section will discuss what to keep in mind when developing your events, for backwards \(and forward\) compatibility. It will deep-dive into the upcasting process provided by the Axon Framework to help achieve this concern
+In the lifecycle of an Axon application, events _will_ typically change their format. As events are stored indefinitely the application should be able to cope with several versions of an event. The [Event Versioning ](versioning-events.md)section will discuss what to keep in mind when developing your events, for backwards \(and forward\) compatibility. It will deep-dive into the upcasting process provided by the Axon Framework to help achieve this concern
 
 ## Event Serialization
 
-Events are stored in Event stores and there needs to be a way to serialize the event message to prepare it for storage. The [Event Serialization]() section will detail the various serialization capabilities that the Axon Framework provides to help address this concern.
+Events are stored in Event stores and there needs to be a way to serialize the event message to prepare it for storage. The [Event Serialization ](serializers.md)section will detail the various serialization capabilities that the Axon Framework provides to help address this concern.
 
-## Configuration
 
-There are various aspects of Event Messages that can be configured. This includes Event Dispatching/Handling/Processing and Storage. The [Configuration]() section details the capabilities that the Axon Framework provides both in a programmatic/non-programmatic way to help achieve configuration within an Axon application.
 
