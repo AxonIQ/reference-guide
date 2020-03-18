@@ -76,7 +76,7 @@ There are a couple of noteworthy concepts from the given code snippets, marked w
 
 ## Handling Commands in an Aggregate
 
-Although Command Handlers can be placed in regular components \(as will be discussed [here](../external-command-handler.md), it is recommended to define the Command Handlers directly on the Aggregate that contains the state to process this command.
+Although Command Handlers can be placed in regular components \(as will be discussed [here](../command-handlers/external-command-handler.md), it is recommended to define the Command Handlers directly on the Aggregate that contains the state to process this command.
 
 To define a Command Handler in an Aggregate, simply annotate the method which should handle the command with `@CommandHandler`. The `@CommandHandler` annotated method will become a Command Handler for Command Messages where the _command name_ matches fully qualified class name of the first parameter of that method. Thus, a method signature of `void handle(RedeemCardCommand cmd)` annotated with `@CommandHandler`, will be the Command Handler of the `RedeemCardCommand` Command Messages.
 
