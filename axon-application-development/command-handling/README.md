@@ -6,9 +6,10 @@ A summary of the various sub-sections is given below. It is recommended to read 
 
 | Sub-Section | Purpose |
 | :--- | :--- |
-| [Introduction](../event-handling/introduction.md) | Overview of the  Event Message Components  within the Axon Framework |
-| [Event Dispatchers](../event-handling/dispatching-events.md) / [Event Handlers](../event-handling/handling-events.md) | Axon Framework provided components to address functional concerns around Event Messages |
-| [Event Processors](../event-handling/event-processors.md) / [Event Bus & Event Store](../event-handling/event-bus-and-event-store.md) | Axon Framework provided components to address non-functional concerns around Event Messages |
+| Introduction | Overview of the  Command Message Components  within the Axon Framework |
+| Modeling | Axon Framework provided components to address Aggregate Modeling concerns  |
+| Command Dispatchers / Command Handlers | Axon Framework provided components to address functional concerns around Command Messages |
+| Command Bus | Axon Framework provided components to address non-functional concerns around Command Messages |
 | [Event Serialization](../event-handling/serializers.md) | Details on Event serialization capabilities provided by the Axon Framework |
 
 This guide is complemented by a video tutorial which gives a practical demonstration of the concepts explained in this section. The tutorial is available at  -&gt; [Axon Coding Tutorial - Command Messages](https://www.youtube.com/watch?v=7oy4w5THFEU&feature=youtu.be)

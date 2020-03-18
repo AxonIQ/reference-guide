@@ -35,9 +35,9 @@
     * [Aggregate Polymorphism](axon-application-development/command-handling/modeling/aggregate-polymorphism.md)
     * [Conflict Resolution](axon-application-development/command-handling/modeling/conflict-resolution.md)
   * [Command Dispatchers](axon-application-development/command-handling/dispatching-commands.md)
+  * [Command Handlers](axon-application-development/command-handling/command-handlers.md)
   * [External Command Handlers](axon-application-development/command-handling/external-command-handler.md)
   * [Command Model Configuration](axon-application-development/command-handling/command-model-configuration.md)
-  * [Optimizing Aggregate Loading](axon-application-development/command-handling/optimizing-aggregate-loading.md)
   * [Command Dispatching](axon-application-development/command-handling/command-dispatching.md)
   * [Exception Handling](axon-application-development/command-handling/exception-handling.md)
 * [Events](axon-application-development/event-handling/README.md)
@@ -69,6 +69,7 @@
   * [Introduction \(TBD\)](axon-application-development/tuning/introduction-tbd.md)
   * [Tuning Event Processing](axon-application-development/tuning/tuning-event-processing.md)
   * [Tuning Command Processing](axon-application-development/tuning/tuning-command-processing.md)
+  * [Event Snapshots](axon-application-development/tuning/optimizing-aggregate-loading.md)
 * [Monitoring and Metrics](axon-application-development/monitoring-and-metrics.md)
 * [Configuration \(TBD\)](axon-application-development/configuration.md)
 
