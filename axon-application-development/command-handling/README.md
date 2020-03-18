@@ -1,6 +1,6 @@
 # Commands
 
-The second type of "Messages" that an Axon application is associated with are _**Event Messages \(or simply Events\).**_  This section of the reference guide  intends to cover in detail the capabilities that the Axon Framework provides to help facilitate Event Message Development
+The first type of "Messages" that an Axon application is associated with are _**Command Messages \(or simply Commands\).**_  This section of the reference guide  intends to cover in detail the capabilities that the Axon Framework provides to help facilitate Command Message Development
 
 A summary of the various sub-sections is given below. It is recommended to read through the various sub-sections in the order provided below to get a complete understanding of this capability.
 
