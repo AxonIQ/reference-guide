@@ -448,7 +448,7 @@ You can choose different flavor of this components that are available in one of 
 
 Configuring a distributed command bus can \(mostly\) be done without any modifications in configuration files.
 
-First of all, the starters for one of the Axon distributed command bus modules needs to be included \(e.g. [JGroups](../../setting-up/maven-dependencies.md#axon-jgroups-spring-boot-starter) or [Spring Cloud](../../setting-up/maven-dependencies.md#axon-spring-cloud-spring-boot-starter)\).
+First of all, the starters for one of the Axon distributed command bus modules needs to be included \(e.g. [JGroups](../../getting-started/maven-dependencies.md#axon-jgroups-spring-boot-starter) or [Spring Cloud](../../getting-started/maven-dependencies.md#axon-spring-cloud-spring-boot-starter)\).
 
 Once that is present, a single property needs to be added to the application context, to enable the distributed command bus:
 

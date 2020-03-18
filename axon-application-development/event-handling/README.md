@@ -6,11 +6,10 @@ A summary of the various sub-sections is given below. It is recommended to read 
 
 | Sub-Section | Purpose |
 | :--- | :--- |
-| [Introduction]() | Overview of the  Event Message Components  within the Axon Framework |
-| [Functional Components]() | Axon Framework provided components to address functional concerns around Event Messages |
-| [Non Functional Components]() | Axon Framework provided components to address non-functional concerns around Event Messages |
-| [Event Serialization]() | Details on Event serialization capabilities provided by the Axon Framework |
-| [Configuration]() | Configuration Details for Event Messages within an Axon application \(Programmatic /  Non - Programmatic\) |
+| [Introduction](introduction.md) | Overview of the  Event Message Components  within the Axon Framework |
+| [Event Dispatchers](dispatching-events.md) / [Event Handlers](handling-events.md) | Axon Framework provided components to address functional concerns around Event Messages |
+| [Event Processors](event-processors.md) / [Event Bus & Event Store](event-bus-and-event-store.md) | Axon Framework provided components to address non-functional concerns around Event Messages |
+| [Event Serialization](serializers.md) | Details on Event serialization capabilities provided by the Axon Framework |
 
 This guide is complemented by a video tutorial which gives a practical demonstration of the concepts explained in this section. The tutorial is available at  -&gt; [Axon Coding Tutorial - Event Messages](https://www.youtube.com/watch?v=jS1vfc5EohM&feature=youtu.be)
 
