@@ -1,2 +1,115 @@
 # Aggregate Command Handlers
 
+
+
+## Handling Commands in an Aggregate
+
+Although Command Handlers can be placed in regular components \(as will be discussed [here](external-command-handler.md), it is recommended to define the Command Handlers directly on the Aggregate that contains the state to process this command.
+
+To define a Command Handler in an Aggregate, simply annotate the method which should handle the command with `@CommandHandler`. The `@CommandHandler` annotated method will become a Command Handler for Command Messages where the _command name_ matches fully qualified class name of the first parameter of that method. Thus, a method signature of `void handle(RedeemCardCommand cmd)` annotated with `@CommandHandler`, will be the Command Handler of the `RedeemCardCommand` Command Messages.
+
+Command Messages can also be [dispatched](../dispatching-commands/) with different _command names_. To be able to handle those correctly, the `String commandName` value can be specified in the `@CommandHandler` annotation.
+
+In order for Axon to know which instance of an Aggregate type should handle the Command Message, the property carrying the Aggregate Identifier in the command object **must** be annotated with `@TargetAggregateIdentifier`. The annotation may be placed on either the field or an accessor method \(e.g. a getter\) in the Command object.
+
+Taking the `GiftCard` Aggregate as an example, we can identify two Command Handlers on the Aggregate:
+
+```java
+import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.modelling.command.AggregateIdentifier;
+
+import static org.axonframework.modelling.command.AggregateLifecycle.apply;
+
+public class GiftCard {
+
+    @AggregateIdentifier
+    private String id;
+    private int remainingValue;
+
+    @CommandHandler
+    public GiftCard(IssueCardCommand cmd) {
+        apply(new CardIssuedEvent(cmd.getCardId(), cmd.getAmount()));
+    }
+
+    @CommandHandler
+    public void handle(RedeemCardCommand cmd) {
+        if (cmd.getAmount() <= 0) {
+            throw new IllegalArgumentException("amount <= 0");
+        }
+        if (cmd.getAmount() > remainingValue) {
+            throw new IllegalStateException("amount > remaining value");
+        }
+        apply(new CardRedeemedEvent(id, cmd.getTransactionId(), cmd.getAmount()));
+    }
+    // omitted event sourcing handlers
+}
+```
+
+The Command objects, `IssueCardCommand` and `RedeemCardCommand`, which `GiftCard` handles have the following format:
+
+```java
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
+
+public class IssueCardCommand {
+
+    @TargetAggregateIdentifier
+    private final String cardId;
+    private final Integer amount;
+
+    public IssueCardCommand(String cardId, Integer amount) {
+        this.cardId = cardId;
+        this.amount = amount;
+    }
+    // omitted getters, equals/hashCode, toString functions
+}
+
+public class RedeemCardCommand {
+
+    @TargetAggregateIdentifier
+    private final String cardId;
+    private final String transactionId;
+    private final Integer amount;
+
+    public RedeemCardCommand(String cardId, String transactionId, Integer amount) {
+        this.cardId = cardId;
+        this.transactionId = transactionId;
+        this.amount = amount;
+    }
+    // omitted getters, equals/hashCode, toString functions
+}
+```
+
+The `cardId` present in both commands is the reference to a `GiftCard` instance and thus is annotated withe the `@TargetAggregateIdentifier` annotation. Commands that create an Aggregate instance do not need to identify the target aggregate identifier, as there is no Aggregate in existence yet. It is nonetheless recommended for consistency to annotate the Aggregate Identifier on them as well.
+
+If you prefer to use another mechanism for routing commands, the behavior can be overridden by supplying a custom `CommandTargetResolver`. This class should return the Aggregate Identifier and expected version \(if any\) based on a given command.
+
+> **Aggregate Creation Command Handlers**
+>
+> When the `@CommandHandler` annotation is placed on an aggregate's constructor, the respective command will create a new instance of that aggregate and add it to the repository. Those commands do not require to target a specific aggregate instance. Therefore, those commands do not require any `@TargetAggregateIdentifier` or `@TargetAggregateVersion` annotations, nor will a custom `CommandTargetResolver` be invoked for these commands.
+>
+> However, regardless of the type of command, as soon as you are distributing your application through for example Axon Server, it is highly recommended to specify a routing key on the given message. The `@TargetAggregateIdentifier` doubles as such, but in absence of a field worthy of the annotation, the `@RoutingKey` annotation should be added to ensure the command can be routed. Additionally, a different `RoutingStrategy` can be configured, as is further specified in the [Command Dispatching section](../dispatching-commands/command-dispatching.md).
+
+## Business Logic and State Changes
+
+Within an Aggregate there is a specific location to perform business logic validation and Aggregate state changes. The Command Handlers should _decide_ whether the Aggregate is in the correct state. If yes, an Event is published. If not, the Command might be ignored or an exception could be thrown, depending on the needs of the domain.
+
+State changes should **not** occur in _any_ Command Handling function. The Event Sourcing Handlers should be the only methods where the Aggregate's state is updated. Failing to do so means the Aggregate would miss state changes when it is being sourced from it's events.
+
+The [Aggregate Test Fixture](../../testing/testing.md) will guard from unintentional state changes in Command Handling functions. It is thus advised to provide thorough test cases for _any_ Aggregate implementation.
+
+> **When to handle an Event**
+>
+> The only state an Aggregate requires is the state it needs to make a decision. Handling an Event published by the Aggregate is thus only required if the state change the Event resembles is needed to drive future validation.
+
+## Applying Events from Event Sourcing Handlers
+
+In some cases, especially when the Aggregate structures grows beyond just a couple of Entities, it is cleaner to react on events being published in other Entities of the same Aggregate \(multi Entity Aggregates are explained in more detail [here](../modeling/multi-entity-aggregates.md)\). However, since the Event Handling methods are also invoked when reconstructing Aggregate state, special precautions must be taken.
+
+It is possible to `apply()` new events inside an Event Sourcing Handler method. This makes it possible for an Entity 'B' to apply an event in reaction to Entity 'A' doing something. Axon will ignore the `apply()`invocation when replaying historic events upon sourcing the given Aggregate. Do note that in the scenario where Event Messages are published from an Event Sourcing Handler, the Event of the inner `apply()` invocation is only published to the entities after all entities have received the first event. If more events need to be published, based on the state of an entity after applying an inner event, use `apply(...).andThenApply(...)`.
+
+> **Reacting to other Events**
+>
+> An Aggregate **cannot** handle events from other sources then itself. This is intentional as the Event Sourcing Handlers are used to recreate the state of the Aggregate. For this it only needs it's own events as those represent it's state changes.
+>
+> To make an Aggregate react on events from other Aggregate instances, [Sagas](../../complex-business-transactions/) or [Event Handling Components](../../event-handling/) should be leveraged
+
