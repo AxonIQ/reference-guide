@@ -1,4 +1,4 @@
-# Query Dispatching
+# Query Dispatching \(TBD - Merge & Eliminate\)
 
 When it comes to dispatching queries, as explained in the [Dispatching Queries](dispatching-queries.md) section, there are a couple of implementations when it comes to actually sending the query message in question. The next sections provide an overview of the possible implementations, as well as pointing out how to set up query dispatching infrastructure with Axon.
 
