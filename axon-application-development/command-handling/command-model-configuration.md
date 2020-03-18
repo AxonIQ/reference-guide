@@ -1,4 +1,4 @@
-# Command Model Configuration
+# Command Model Configuration \(TBD - Merge and Eliminate\)
 
 This page aims to describe the suite of options for configuring the Command Model.
 

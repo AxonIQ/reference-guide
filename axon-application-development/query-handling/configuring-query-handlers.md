@@ -1,4 +1,4 @@
-# Configuring Query Handlers
+# Configuring Query Handlers \(TBD - Merge and Eliminate\)
 
 This page describes the process when it comes to configuring a Query Handlers. Note, that a Query Handler is a \(singleton\) object containing `@QueryHandler` annotated functions.
 
