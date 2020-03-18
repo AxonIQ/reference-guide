@@ -1,4 +1,4 @@
-# Dispatching Queries
+# Query Dispatchers
 
 How to handle a query message has been covered in more detail on the [previous page](handling-queries.md). Queries have to be dispatched, just like any type of message, before they can be handled. To that end Axon provides two interfaces:
 

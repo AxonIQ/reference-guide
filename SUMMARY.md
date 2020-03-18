@@ -49,7 +49,7 @@
   * [Event Serialization](axon-application-development/event-handling/serializers.md)
 * [Queries](axon-application-development/query-handling/README.md)
   * [Introduction \(TBD\)](axon-application-development/query-handling/introduction-tbd.md)
-  * [Dispatching Queries](axon-application-development/query-handling/dispatching-queries.md)
+  * [Query Dispatchers](axon-application-development/query-handling/dispatching-queries.md)
   * [Handling Queries](axon-application-development/query-handling/handling-queries.md)
   * [Configuring Query Handlers](axon-application-development/query-handling/configuring-query-handlers.md)
   * [Query Dispatching](axon-application-development/query-handling/query-dispatching.md)
