@@ -39,6 +39,7 @@
   * [Command Handlers](axon-application-development/command-handling/command-handlers/README.md)
     * [Aggregate Command Handlers](axon-application-development/command-handling/command-handlers/aggregate-command-handlers.md)
     * [External Command Handlers](axon-application-development/command-handling/command-handlers/external-command-handler.md)
+  * [Command Bus / Command Gateway](axon-application-development/command-handling/command-bus-command-gateway.md)
   * [Command Model Configuration](axon-application-development/command-handling/command-model-configuration.md)
   * [Exception Handling](axon-application-development/command-handling/exception-handling.md)
 * [Events](axon-application-development/event-handling/README.md)
