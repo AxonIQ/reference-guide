@@ -1,7 +1,5 @@
 # Command Handlers
 
-
-
 ## Handling Commands in an Aggregate
 
 Although Command Handlers can be placed in regular components \(as will be discussed [here](), it is recommended to define the Command Handlers directly on the Aggregate that contains the state to process this command.
@@ -88,6 +86,58 @@ If you prefer to use another mechanism for routing commands, the behavior can be
 > When the `@CommandHandler` annotation is placed on an aggregate's constructor, the respective command will create a new instance of that aggregate and add it to the repository. Those commands do not require to target a specific aggregate instance. Therefore, those commands do not require any `@TargetAggregateIdentifier` or `@TargetAggregateVersion` annotations, nor will a custom `CommandTargetResolver` be invoked for these commands.
 >
 > However, regardless of the type of command, as soon as you are distributing your application through for example Axon Server, it is highly recommended to specify a routing key on the given message. The `@TargetAggregateIdentifier` doubles as such, but in absence of a field worthy of the annotation, the `@RoutingKey` annotation should be added to ensure the command can be routed. Additionally, a different `RoutingStrategy` can be configured, as is further specified in the [Command Dispatching section](dispatching-commands/command-dispatching.md).
+
+## 
+
+## Aggregate Command Handler Creation Policy
+
+In the [Handling Commands In An Aggregate](modeling/aggregate.md#handling-commands-in-an-aggregate) section we have depicted the `GiftCard` aggregate with roughly two types of command handlers:
+
+1. `@CommandHandler` annotated constructors
+2. `@CommandHandler` annotated methods
+
+Option 1 will always expect to be the instantiation of the `GiftCard` aggregate, whilst option 2 expects to be targeted towards an existing aggregate instance. Although this may be the default, there is the option to define a _creation policy_ on a command handler. This can be achieved by adding the `@CreationPolicy` annotation to a command handler annotated method, like so:
+
+```java
+import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.modelling.command.CreationPolicy;
+import org.axonframework.modelling.command.AggregateCreationPolicy;
+
+public class GiftCard {
+
+    public GiftCard() {
+        // Required no-op constructor
+    }
+
+    @CommandHandler
+    @CreationPolicy(AggregateCreationPolicy.ALWAYS)
+    public void handle(IssueCardCommand cmd) {
+        // An `IssueCardCommand`-handler which will create a `GiftCard` aggregate 
+    }
+
+    @CommandHandler
+    @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
+    public void handle(CreateOrRechargeCardCommand cmd) {
+        // A 'CreateOrRechargeCardCommand'-handler which creates a `GiftCard` aggregate if it did not exist
+        // Otherwise, it will update an existing `GiftCard` aggregate.
+    }
+    // omitted aggregate state, command handling logic and event sourcing handlers
+}
+```
+
+As is shown above, the `@CreationPolicy` annotation requires stating the `AggregateCreationPolicy`. This enumeration has the following options available:
+
+* `ALWAYS` - A creation policy of "always" will expect to instantiate the aggregate. 
+
+  This effectively works like a command handler annotated constructor.
+
+* `CREATE_IF_MISSING` - A creation policy of "create if missing" can either create an aggregate or act on an existing instance.
+
+  This policy should be regarded as a create or update approach of an aggregate.
+
+* `NEVER` - A creation policy of "never" will be handled on an existing aggregate instance.
+
+  This effectively works like any regular command handler annotated method.
 
 ## Business Logic and State Changes
 
