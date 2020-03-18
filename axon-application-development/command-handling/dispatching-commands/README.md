@@ -1,6 +1,6 @@
 # Command Dispatchers
 
-The [Aggregate](../modeling/aggregate.md) and [External Command Handler](../command-handlers/external-command-handler.md) pages provide the background on how to handle command messages in your application. The dispatching process is the starting point of such a command message. Axon provides two interface you can use to send the commands to your command handlers, being:
+The [Aggregate](../modeling/aggregate.md) and [External Command Handler]() pages provide the background on how to handle command messages in your application. The dispatching process is the starting point of such a command message. Axon provides two interface you can use to send the commands to your command handlers, being:
 
 1. The [Command Bus](./#the-command-bus), and
 2. the [Command Gateway](./#the-command-gateway)
