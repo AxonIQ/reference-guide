@@ -86,7 +86,7 @@ To that end the `TrackingEventProcessor` exposes the `processingStatus()` method
 
 ## Metrics
 
-Interesting metrics in a message centric system come in several forms and flavors, like count, capacity and latency for example. Axon Framework allows you to retrieve such measurements through the use of the `axon-metrics` or `axon-micrometer` module. With these modules you can register a number of `MessageMonitor` implementations to your messaging components, like the [`CommandBus`](command-handling/dispatching-commands/command-dispatching.md#the-command-bus), [`EventBus`](event-handling/event-bus-and-event-store.md#event-bus), [`QueryBus`](query-handling/query-dispatching.md#query-bus) and [`EventProcessors`](event-handling/event-processors.md#event-processors).
+Interesting metrics in a message centric system come in several forms and flavors, like count, capacity and latency for example. Axon Framework allows you to retrieve such measurements through the use of the `axon-metrics` or `axon-micrometer` module. With these modules you can register a number of `MessageMonitor` implementations to your messaging components, like the [`CommandBus`](), [`EventBus`](event-handling/event-bus-and-event-store.md#event-bus), [`QueryBus`](query-handling/query-dispatching.md#query-bus) and [`EventProcessors`](event-handling/event-processors.md#event-processors).
 
 `axon-metrics` module uses [Dropwizard Metrics](https://metrics.dropwizard.io/) for registering the measurements correctly. That means that `MessageMonitors` are registered against the Dropwizard `MetricRegistry`.
 
