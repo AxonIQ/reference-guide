@@ -34,7 +34,7 @@
     * [Aggregate Creation from another Aggregate](axon-application-development/command-handling/modeling/aggregate-creation-from-aggregate.md)
     * [Aggregate Polymorphism](axon-application-development/command-handling/modeling/aggregate-polymorphism.md)
     * [Conflict Resolution](axon-application-development/command-handling/modeling/conflict-resolution.md)
-  * [Dispatching Commands](axon-application-development/command-handling/dispatching-commands.md)
+  * [Command Dispatchers](axon-application-development/command-handling/dispatching-commands.md)
   * [External Command Handlers](axon-application-development/command-handling/external-command-handler.md)
   * [Command Model Configuration](axon-application-development/command-handling/command-model-configuration.md)
   * [Optimizing Aggregate Loading](axon-application-development/command-handling/optimizing-aggregate-loading.md)
