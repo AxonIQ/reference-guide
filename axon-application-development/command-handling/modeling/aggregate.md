@@ -74,8 +74,6 @@ There are a couple of noteworthy concepts from the given code snippets, marked w
 >
 > Most IDE's have an option to ignore "unused private method" warnings for methods with a specific annotation. Alternatively, you can add an `@SuppressWarnings("UnusedDeclaration")` annotation to the method to make sure you do not accidentally delete an event handler method.
 
-## .
-
 ## Aggregate Lifecycle Operations
 
 There are a couple of operations which are desirable to be performed whilst in the life cycle of an Aggregate. To that end, the `AggregateLifecycle` class in Axon provides a couple of static functions:
