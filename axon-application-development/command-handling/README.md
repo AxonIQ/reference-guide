@@ -1,6 +1,15 @@
 # Commands
 
-In this chapter we will cover the process of handling and dispatching commands within an Axon application in more detail. Topics like Aggregate modelling, external command handlers, command dispatching and testing will be covered here. For a more in depth explanation of what a Command Model or Aggregate is we recommend reading the [DDD and CQRS concepts](../../architecture-overview/ddd-cqrs-concepts.md) chapter.
+The second type of "Messages" that an Axon application is associated with are _**Event Messages \(or simply Events\).**_  This section of the reference guide  intends to cover in detail the capabilities that the Axon Framework provides to help facilitate Event Message Development
 
-[Axon Coding Tutorial \#3: - The Command Model](https://youtu.be/7oy4w5THFEU)
+A summary of the various sub-sections is given below. It is recommended to read through the various sub-sections in the order provided below to get a complete understanding of this capability.
+
+| Sub-Section | Purpose |
+| :--- | :--- |
+| [Introduction](../event-handling/introduction.md) | Overview of the  Event Message Components  within the Axon Framework |
+| [Event Dispatchers](../event-handling/dispatching-events.md) / [Event Handlers](../event-handling/handling-events.md) | Axon Framework provided components to address functional concerns around Event Messages |
+| [Event Processors](../event-handling/event-processors.md) / [Event Bus & Event Store](../event-handling/event-bus-and-event-store.md) | Axon Framework provided components to address non-functional concerns around Event Messages |
+| [Event Serialization](../event-handling/serializers.md) | Details on Event serialization capabilities provided by the Axon Framework |
+
+This guide is complemented by a video tutorial which gives a practical demonstration of the concepts explained in this section. The tutorial is available at  -&gt; [Axon Coding Tutorial - Command Messages](https://www.youtube.com/watch?v=7oy4w5THFEU&feature=youtu.be)
 
