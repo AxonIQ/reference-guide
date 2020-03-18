@@ -29,7 +29,7 @@ By default, `@CommandHandler` annotated methods allow the following parameter ty
 * A parameter of type `String` annotated with `@MessageIdentifier` will resolve the identifier of the `CommandMessage` being handled
 * Parameters of type `ConflictResolver` will resolve the configured `ConflictResolver` instance.
 
-  See the [Conflict Resolution](../command-handling/conflict-resolution.md) section for specifics on this topic. 
+  See the [Conflict Resolution](../command-handling/modeling/conflict-resolution.md) section for specifics on this topic. 
 
 * Parameters of type `InterceptorChain` will resolve the chain of `MessageHandlerInterceptor`s for a `CommandMessage`.
 

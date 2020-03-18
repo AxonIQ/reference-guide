@@ -10,7 +10,7 @@ All the enhancements and features which have been introduced to our major and mi
 
   In a Spring environment, an aggregate class hierarchy will be detected automatically.
 
-  For more details on this feature, read up on it [here](../axon-application-development/command-handling/aggregate-polymorphism.md).
+  For more details on this feature, read up on it [here](../axon-application-development/command-handling/modeling/aggregate-polymorphism.md).
 
 * An Axon application will no shutdown more gracefully then it used to in previous releases.
 
@@ -30,7 +30,7 @@ All the enhancements and features which have been introduced to our major and mi
 
   Through this, it is possible te define if such a command handler should 'never', 'always' or 'create' an aggregate 'if-missing'.
 
-  For further explanation read the [Aggregate Command Handler Creation Policy](../axon-application-development/command-handling/aggregate.md#aggregate-command-handler-creation-policy) section.
+  For further explanation read the [Aggregate Command Handler Creation Policy](../axon-application-development/command-handling/modeling/aggregate.md#aggregate-command-handler-creation-policy) section.
 
 * Both the `XStreamSerializer` and `JacksonSerializer` provide a means to toggle on "lenient serialization" through their builders.
 * Various test fixture improvements have been made, such as options to register a `HandlerEnhancerDefinition`,

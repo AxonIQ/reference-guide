@@ -4,7 +4,7 @@ This page aims to describe the suite of options for configuring the Command Mode
 
 ## Aggregate Configuration
 
-Core concepts within the Command Model are the [Aggregates](aggregate.md) which are implemented. To instantiate a default Aggregate configuration you simply do the following:
+Core concepts within the Command Model are the [Aggregates](modeling/aggregate.md) which are implemented. To instantiate a default Aggregate configuration you simply do the following:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -40,7 +40,7 @@ public class GiftCard {
 
 ## Registering a Command Handler
 
-Often times the command handler functions are placed directly on the [aggregate](aggregate.md). When this approach is taken, simply registering the Aggregate as described [above](command-model-configuration.md#aggregate-configuration) is sufficient for all its command handler methods to be registered too.
+Often times the command handler functions are placed directly on the [aggregate](modeling/aggregate.md). When this approach is taken, simply registering the Aggregate as described [above](command-model-configuration.md#aggregate-configuration) is sufficient for all its command handler methods to be registered too.
 
 [External Command Handlers](external-command-handler.md) however do require direct registration as being a command handler, which is shown in the following sample:
 
@@ -100,7 +100,7 @@ public class GiftCardCommandHandler {
 
 The repository is the mechanism that provides access to aggregates. The repository acts as a gateway to the actual storage mechanism used to persist the data. In CQRS, repositories only need to be able to find aggregates based on their unique identifier. Any other types of queries should be performed against the query database.
 
-In Axon Framework, all repositories must implement the `Repository` interface. This interface prescribes three methods: `load(identifier, version)`, `load(identifier)` and `newInstance(factoryMethod)`. The `load` methods allows you to load aggregates from the repository. The optional `version` parameter is used to detect concurrent modifications \(see [Conflict resolution](conflict-resolution.md)\). `newInstance` is used to register newly created aggregates in the repository.
+In Axon Framework, all repositories must implement the `Repository` interface. This interface prescribes three methods: `load(identifier, version)`, `load(identifier)` and `newInstance(factoryMethod)`. The `load` methods allows you to load aggregates from the repository. The optional `version` parameter is used to detect concurrent modifications \(see [Conflict resolution](modeling/conflict-resolution.md)\). `newInstance` is used to register newly created aggregates in the repository.
 
 Depending on your underlying persistence storage and auditing needs, there are a number of base implementations that provide basic functionality needed by most repositories. Axon Framework makes a distinction between repositories that save the current state of the aggregate \(see [Standard repositories](command-model-configuration.md#standard-repositories)\), and those that store the events of an aggregate \(see [Event Sourcing repositories](command-model-configuration.md#event-sourcing-repositories)\).
 

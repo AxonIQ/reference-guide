@@ -1,6 +1,6 @@
 # Dispatching Commands
 
-The [Aggregate](aggregate.md) and [External Command Handler](external-command-handler.md) pages provide the background on how to handle command messages in your application. The dispatching process is the starting point of such a command message. Axon provides two interface you can use to send the commands to your command handlers, being:
+The [Aggregate](modeling/aggregate.md) and [External Command Handler](external-command-handler.md) pages provide the background on how to handle command messages in your application. The dispatching process is the starting point of such a command message. Axon provides two interface you can use to send the commands to your command handlers, being:
 
 1. The [Command Bus](dispatching-commands.md#the-command-bus), and
 2. the [Command Gateway](dispatching-commands.md#the-command-gateway)
@@ -157,7 +157,7 @@ Dispatching commands will, generally speaking, have two possible outcomes:
 1. Command handled successfully, and
 2. command handled exceptionally
 
-The outcome to some extent depends on the dispatching process, but more so on the implementation of the command handler. Thus if the `@CommandHandler` annotated [function](aggregate.md#handling-commands-in-an-aggregate) throws an exception due to some business logic, it will be that exception which will be the result of dispatching the command.
+The outcome to some extent depends on the dispatching process, but more so on the implementation of the command handler. Thus if the `@CommandHandler` annotated [function](modeling/aggregate.md#handling-commands-in-an-aggregate) throws an exception due to some business logic, it will be that exception which will be the result of dispatching the command.
 
 The successful resolution of command handling intentionally _should not_ provide any return objects. Thus, if the `CommandBus`/`CommandGateway` provides a response \(either directly or through the `CommandResultMessage)`, then you should assume the result of successful command handling to return `null`.
 

@@ -9,7 +9,7 @@ This page will describe how to get an event message on the event bus from both l
 
 ## Dispatching events from an Aggregate
 
-The [Aggregate](../command-handling/aggregate.md) or it's [Entities](../command-handling/multi-entity-aggregates.md) are typically the starting point of all event messages. The Event Message simply is the notification that a decision has been made; a successful resolution of handling a command message.
+The [Aggregate](../command-handling/modeling/aggregate.md) or it's [Entities](../command-handling/modeling/multi-entity-aggregates.md) are typically the starting point of all event messages. The Event Message simply is the notification that a decision has been made; a successful resolution of handling a command message.
 
 To publish an event from an Aggregate, it is required to do this from the lifecycle of the Aggregate instance. This is mandatory as we want the Aggregate identifier to be tied to the Event message. It is also of the essence that the events originate in order. This is achieved by adding a sequence number to every event from an Aggregate.
 
@@ -40,7 +40,7 @@ The `AggregateLifecycle#apply(Object)` will go through a number of steps:
 
    The event will first be sent to all the Event Handlers in the Aggregate which are interested.
 
-   This is necessary for [Event Sourcing](../command-handling/aggregate.md#basic-aggregate-structure), to update the Aggregate's state accordingly.
+   This is necessary for [Event Sourcing](../command-handling/modeling/aggregate.md#basic-aggregate-structure), to update the Aggregate's state accordingly.
 
 5. After the Aggregate itself has handled the event, it will be published on the `EventBus`. 
 
