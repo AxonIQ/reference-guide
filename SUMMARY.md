@@ -76,8 +76,8 @@
 
 * [Introduction \(TBD\)](axon-server-1/introduction.md)
 * [Installation](axon-server-1/installation/README.md)
-  * [Axon-SE](axon-server-1/installation/axon-se.md)
-  * [Axon-EE](axon-server-1/installation/axon-ee.md)
+  * [Axon-SE \(TBD\)](axon-server-1/installation/axon-se.md)
+  * [Axon-EE \(TBD\)](axon-server-1/installation/axon-ee.md)
   * [Launch](axon-server-1/installation/launch.md)
   * [Development Mode](axon-server-1/installation/development-mode.md)
 * [Administration](axon-server-1/administration/README.md)
