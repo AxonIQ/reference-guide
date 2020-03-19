@@ -1,162 +1,12 @@
 # Command Bus / Command Gateway
 
-## The Command Bus
 
-The 'Command Bus' is the mechanism that dispatches commands to their respective command handlers. As such it is the infrastructure component that is aware which component can handle which command.
 
-Each command is always sent to exactly one command handler. If no command handler is available for the dispatched command, a `NoHandlerForCommandException` exception is thrown.
+Command dispatching, as exemplified in the [Dispatching Commands]() page, has a number of advantages. First of all, there is a single object that clearly describes the intent of the client. By logging the command, you store both the intent and related data for future reference. Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. Testing also becomes a lot easier. You could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing]() for more on this\). The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
 
-The `CommandBus` provides two methods to dispatch commands to their respective handler, being the `dispatch(CommandMessage)` and `dispatch(CommandMessage, CommandCallback)` methods:
+This does not mean command dispatching using explicit command objects is the only way to do it. The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way, while providing best practices as the default behavior. It is still possible to use a service layer that you can invoke to execute commands. The method will just need to start a unit of work \(see [Unit of Work]()\) and perform a commit or rollback on it when the method is finished.
 
-```java
-private CommandBus commandBus; // 1.
-
-public void dispatchCommands() {
-    String cardId = UUID.randomUUID().toString(); // 2.
-
-    // 3. & 4.
-    commandBus.dispatch(GenericCommandMessage.asCommandMessage(new IssueCardCommand(cardId, 100, "shopId")));
-
-    // 5. & 6.
-    commandBus.dispatch(
-            GenericCommandMessage.asCommandMessage(new IssueCardCommand(cardId, 100, "shopId")),
-            (CommandCallback<IssueCardCommand, String>) (cmdMsg, cmdResultMsg) -> {
-                // 7.
-                if (cmdResultMsg.isExceptional()) {
-                    Throwable throwable = cmdResultMsg.exceptionResult();
-                } else {
-                    String commandResult = cmdResultMsg.getPayload();
-                }
-            }
-    );
-}
-// omitted class, constructor and result usage
-```
-
-The `CommandDispatcher` described above exemplifies a couple of important aspects and capabilities of the dispatching commands:
-
-1. The `CommandBus` interface providing the functionality to dispatch command messages.
-2. The aggregate identifier is, per best practice, initialized as the String of a random unique identifier.
-
-   Typed identifier objects are also possible, as long as the object implements a sensible `toString()` function.
-
-3. The `GenericCommandMessage#asCommandMessage(Object)` method is used to create a `CommandMessage`. 
-
-   To be able to dispatch a command on the `CommandBus`, you are required to wrap your own command object \(e.g. the 'command message payload'\) in a `CommandMessage`.
-
-   The `CommandMessage` also allows the addition of [MetaData](../messaging-concepts/message-anatomy.md#meta-data) to the Command Message.
-
-4. The `CommandBus#dispatch(CommandMessage)` function will dispatch the provided `CommandMessage` on the bus, for delivery to a command handler. 
-
-   If an application isn't directly interested in the outcome of a command, this method can be used.
-
-5. If the outcome of command handling is relevant for your application, the optional second parameter can be provided, the `CommandCallback`.
-
-   The `CommandCallback` allows the dispatching component to be notified when command handling is completed.
-
-6. The Command Callback has one function, `onResult(CommandMessage, CommandResultMessage)`, which is called when command handling has finished. 
-
-   The first parameter is the dispatched command, whilst the second is execution result of the dispatched command.
-
-   Lastly, the `CommandCallback` is a 'functional interface' due to `onResult` being its only method.
-
-   As such, `commandBus.dispatch(commandMessage, (cmdMsg, commandResultMessage) -> { /* ... */ })` would also be possible.
-
-7. The `CommandResultMessage` provides the API to verify whether command execution was exceptional or successful. 
-
-   If `CommandResultMessage#isExceptional` returns true, you can assume that the `CommandResultMessage#exceptionResult` will return a `Throwable` instance containing the actual exception.
-
-   Otherwise, the `CommandResultMessage#getPayload` method _may_ provide you with an actual result or `null`, as further specified [here](dispatching-commands.md#command-dispatching-results).     
-
-> **Command Callback consideration**
->
-> In the case that `dispatch(CommandMessage, CommandCallback)` is used, the calling component may _not_ assume that the callback is invoked in the same thread that dispatched the command. If the calling thread depends on the result before continuing, you can use the `FutureCallback`. The `FutureCallback` is a combination of a `Future` \(as defined in the java.concurrent package\) and Axon's `CommandCallback`. Alternatively, consider using a `CommandGateway`.
-
-## The Command Gateway
-
-The 'Command Gateway' is a convenience approach towards dispatching commands. It does so by abstracting certain aspects for you when dispatching a command on the `CommandBus`. It this uses the `CommandBus` underneath to perform the actual dispatching of the message.  
-While you are not required to use a gateway to dispatch commands, it is generally the easiest option to do so.
-
-The `CommandGateway` interface can be separated in two sets of methods, namely `send` and `sendAndWait`:
-
-```java
-private CommandGateway commandGateway; // 1.
-
-public void sendCommand() {
-    String cardId = UUID.randomUUID().toString(); // 2.
-
-    // 3.
-    CompletableFuture<String> futureResult = commandGateway.send(new IssueCardCommand(cardId, 100, "shopId"));
-}
-// omitted class, constructor and result usage
-```
-
-The `send` API as shown above introduces a couple of concepts, marked with numbered comments:
-
-1. The `CommandGateway` interface providing the functionality to dispatch command messages. 
-
-   It does so by internally leveraging the `CommandBus` interface [dispatch messages](dispatching-commands.md#the-command-bus).
-
-2. The aggregate identifier is, per best practice, initialized as the String of a random unique identifier.
-
-   Typed identifier objects are also possible, as long as the object implements a sensible `toString()` function.
-
-3. The `send(Object)` function requires a single parameter, the command object.
-
-   This is an asynchronous approach to dispatching commands.
-
-   As such the response of the `send` method is a `CompletableFuture`.
-
-   This allows for chaining of follow up operations _after_ the command [result](dispatching-commands.md#command-dispatching-results) has been returned.
-
-> **Callback when using `send(Object)`**
->
-> The `CommandGateway#send(Object)` method uses the `FutureCallback` under the hood to unblock the command dispatching thread from the command handling thread.
-
-A synchronous approach to sending messages can also be achieved, by using the `sendAndWait` methods:
-
-```java
-private CommandGateway commandGateway;
-
-public void sendCommandAndWaitOnResult() {
-    IssueCardCommand commandPayload = new IssueCardCommand(UUID.randomUUID().toString(), 100, "shopId");
-    // 1.
-    String result = commandGateway.sendAndWait(commandPayload);
-
-    // 2.
-    result = commandGateway.sendAndWait(commandPayload, 1000, TimeUnit.MILLISECONDS);
-}
-// omitted class, constructor and result usage
-```
-
-1. The `CommandGateway#sendAndWait(Object)` function takes in a single parameter, your command object.
-
-   It will wait indefinitely until the command dispatching and handling process has been resolved.
-
-   The result returned by this method can either be successful or exceptional, as will be explained [here](dispatching-commands.md#command-dispatching-results).
-
-2. If waiting indefinitely is not desirable, a 'timeout' paired with the 'time unit' can be provided along side the command object.
-
-   Doing so will ensure that the command dispatching thread will not wait longer than specified. 
-
-   If command dispatching/handling was interrupted or the timeout was reached whilst using this approach, the command result will be `null`. 
-
-   In all other scenarios, the result follows the [referenced](dispatching-commands.md#command-dispatching-results) approach.
-
-## Command Dispatching Results
-
-Dispatching commands will, generally speaking, have two possible outcomes:
-
-1. Command handled successfully, and
-2. command handled exceptionally
-
-The outcome to some extent depends on the dispatching process, but more so on the implementation of the command handler. Thus if the `@CommandHandler` annotated [function](modeling/aggregate.md#handling-commands-in-an-aggregate) throws an exception due to some business logic, it will be that exception which will be the result of dispatching the command.
-
-The successful resolution of command handling intentionally _should not_ provide any return objects. Thus, if the `CommandBus`/`CommandGateway` provides a response \(either directly or through the `CommandResultMessage)`, then you should assume the result of successful command handling to return `null`.
-
-While it is possible to return results from command handlers, this should be used sparsely. The intent of the Command should never be to retrieve a value, as that would be an indication that the message should be designed as a [Query Message](../query-handling/). Exceptions to this would be the identifier of the Aggregate Root, or identifiers of entities the Aggregate Root has instantiated. The framework has one such exception build in, on the `@CommandHandler` annotated constructor of an Aggregate. In case the 'command handling constructor' has executed successfully, instead of the Aggregate itself, the value of the `@AggregateIdentifier` annotated field will be returned.
-
-[Axon Coding Tutorial \#5: - Connecting the UI](https://youtu.be/lxonQnu1txQ)
+The next sections provide an overview of the tasks related to setting up a command dispatching infrastructure with the Axon Framework.
 
 ## The Command Gateway
 
@@ -293,11 +143,11 @@ MyGateway myGateway = factory.createGateway(MyGateway.class);
 
 ## The Command Bus
 
-The Command Bus is the mechanism that dispatches commands to their respective command handlers within an Axon application. Suggestions on how to use the `CommandBus` can be found [here](dispatching-commands.md#the-command-bus). Several flavors of the command bus, with differing characteristics, exist within the framework:
+The Command Bus is the mechanism that dispatches commands to their respective command handlers within an Axon application. Suggestions on how to use the `CommandBus` can be found [here](). Several flavors of the command bus, with differing characteristics, exist within the framework:
 
 ### AxonServerCommandBus
 
-Axon provides a command bus out of the box, the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server](../../axon-server.md) to submit and receive Commands.
+Axon provides a command bus out of the box, the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server]() to submit and receive Commands.
 
 `AxonServerCommandBus` is a [distributed command bus](). It uses a [`SimpleCommandBus`]() to handle incoming commands on different JVM's by default.
 
@@ -349,7 +199,7 @@ By simply declaring dependency to `axon-spring-boot-starter`, Axon will automati
 
 The `SimpleCommandBus` is, as the name suggests, the simplest implementation. It does straightforward processing of commands in the thread that dispatches them. After a command is processed, the modified aggregate\(s\) are saved and generated events are published in that same thread. In most scenarios, such as web applications, this implementation will suit your needs.
 
-Like most `CommandBus` implementations, the `SimpleCommandBus` allows interceptors to be configured. `CommandDispatchInterceptor`s are invoked when a command is dispatched on the command bus. The `CommandHandlerInterceptor`s are invoked before the actual command handler method is, allowing you to do modify or block the command. See [Command Interceptors](../messaging-concepts/message-intercepting.md#command-interceptors) for more information.
+Like most `CommandBus` implementations, the `SimpleCommandBus` allows interceptors to be configured. `CommandDispatchInterceptor`s are invoked when a command is dispatched on the command bus. The `CommandHandlerInterceptor`s are invoked before the actual command handler method is, allowing you to do modify or block the command. See [Command Interceptors]() for more information.
 
 Since all command processing is done in the same thread, this implementation is limited to the JVM's boundaries. The performance of this implementation is good, but not extraordinary. To cross JVM boundaries, or to get the most out of your CPU cycles, check out the other `CommandBus` implementations.
 
@@ -452,7 +302,7 @@ While the `DisruptorCommandBus` easily outperforms the `SimpleCommandBus` by a f
 
    It shouldn't take more than a few milliseconds.
 
-To construct a `DisruptorCommandBus` instance, you need an `EventStore`. This component is explained in the [Event Bus and Event Store](../event-handling/event-bus-and-event-store.md) section.
+To construct a `DisruptorCommandBus` instance, you need an `EventStore`. This component is explained in the [Event Bus and Event Store]() section.
 
 Optionally, you can provide a `DisruptorConfiguration` instance, which allows you to tweak the configuration to optimize performance for your specific environment:
 
@@ -568,15 +418,13 @@ public DisruptorCommandBus commandBus(TransactionManager txManager, AxonConfigur
 
 Sometimes, you want multiple instances of command buses in different JVMs to act as one. Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM while sending back any results.
 
-That is where the concept of 'distributing the command bus' comes in. The default implementation of a distributed command bus is the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server](../../axon-server.md) to submit and receive Commands. Unlike the other `CommandBus` implementations, the `AxonServerCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between command bus implementations on different JVM's.
+That is where the concept of 'distributing the command bus' comes in. The default implementation of a distributed command bus is the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server]() to submit and receive Commands. Unlike the other `CommandBus` implementations, the `AxonServerCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between command bus implementations on different JVM's.
 
 By default, [`SimpleCommandBus`]() is configured to handle incoming commands on the different JVM's. You can configure `AxonServerCommandBus` to use other command bus implementations for this purposes: [`AsynchronousCommandBus`](), [`DisruptorCommandBus`]().
 
 ### DistributedCommandBus
 
 `DistributedCommandBus` is an alternative approach to distributing command bus \(commands\). Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
-
-![Structure of the Distributed Command Bus](../../.gitbook/assets/distributed-command-bus-1.png)
 
 The `DistributedCommandBus` relies on two components: a `CommandBusConnector`, which implements the communication protocol between the JVM's, and the `CommandRouter`, which chooses a destination for each incoming command. This router defines which segment of the `DistributedCommandBus` should be given a \`command, based on a routing key calculated by a routing strategy. Two commands with the same routing key will always be routed to the same segment, as long as there is no change in the number and configuration of the segments. Generally, the identifier of the targeted aggregate is used as a routing key.
 
@@ -595,12 +443,12 @@ By default, the `RoutingStrategy` implementations will throw an exception when n
 
 You can choose different flavor of this components that are available in one of the extension modules:
 
-* [SpringCloud](../../extensions/spring-cloud.md) or 
-* [JGroups](../../extensions/jgroups.md).
+* [SpringCloud]() or 
+* [JGroups]().
 
 Configuring a distributed command bus can \(mostly\) be done without any modifications in configuration files.
 
-First of all, the starters for one of the Axon distributed command bus modules needs to be included \(e.g. [JGroups](../../getting-started/maven-dependencies.md#axon-jgroups-spring-boot-starter) or [Spring Cloud](../../getting-started/maven-dependencies.md#axon-spring-cloud-spring-boot-starter)\).
+First of all, the starters for one of the Axon distributed command bus modules needs to be included \(e.g. [JGroups]() or [Spring Cloud]()\).
 
 Once that is present, a single property needs to be added to the application context, to enable the distributed command bus:
 
