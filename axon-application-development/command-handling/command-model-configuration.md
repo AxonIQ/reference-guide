@@ -2,42 +2,6 @@
 
 This page aims to describe the suite of options for configuring the Command Model.
 
-## Aggregate Configuration
-
-Core concepts within the Command Model are the [Aggregates](modeling/aggregate.md) which are implemented. To instantiate a default Aggregate configuration you simply do the following:
-
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-       .configureAggregate(GiftCard.class);
-}
-```
-{% endtab %}
-
-{% tab title="Spring Boot AutoConfiguration" %}
-The `@Aggregate` annotation \(in the `org.axonframework.spring.stereotype` package\) triggers auto configuration to set up the necessary components to use the annotated type as an aggregate. Note that only the aggregate root needs to be annotated.
-
-Axon will automatically register all the `@CommandHandler` annotated methods with the command bus and set up a repository if none is present.
-
-```java
-// ...
-import org.axonframework.spring.stereotype.Aggregate;
-// ...
-@Aggregate
-public class GiftCard {
-    @AggregateIdentifier
-    private String id;
-
-    @CommandHandler
-    public GiftCard(IssueCardCommand cmd) {
-       apply(new CardIssuedEvent(cmd.getCardId(), cmd.getAmount()));
-    }
-}
-```
-{% endtab %}
-{% endtabs %}
-
 ## Registering a Command Handler
 
 Often times the command handler functions are placed directly on the [aggregate](modeling/aggregate.md). When this approach is taken, simply registering the Aggregate as described [above](command-model-configuration.md#aggregate-configuration) is sufficient for all its command handler methods to be registered too.

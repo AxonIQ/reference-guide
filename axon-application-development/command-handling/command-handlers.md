@@ -1,8 +1,8 @@
 # Command Handlers
 
-## Handling Commands in an Aggregate
+## Aggregate Command Handlers
 
-Although Command Handlers can be placed in regular components \(as will be discussed [here](), it is recommended to define the Command Handlers directly on the Aggregate that contains the state to process this command.
+Although Command Handlers can be placed in regular components, it is recommended to define the Command Handlers directly on the Aggregate that contains the state to process this command.
 
 To define a Command Handler in an Aggregate, simply annotate the method which should handle the command with `@CommandHandler`. The `@CommandHandler` annotated method will become a Command Handler for Command Messages where the _command name_ matches fully qualified class name of the first parameter of that method. Thus, a method signature of `void handle(RedeemCardCommand cmd)` annotated with `@CommandHandler`, will be the Command Handler of the `RedeemCardCommand` Command Messages.
 
@@ -87,9 +87,45 @@ If you prefer to use another mechanism for routing commands, the behavior can be
 >
 > However, regardless of the type of command, as soon as you are distributing your application through for example Axon Server, it is highly recommended to specify a routing key on the given message. The `@TargetAggregateIdentifier` doubles as such, but in absence of a field worthy of the annotation, the `@RoutingKey` annotation should be added to ensure the command can be routed. Additionally, a different `RoutingStrategy` can be configured, as is further specified in the [Command Dispatching section]().
 
-## 
+### Aggregate Configuration
 
-## Aggregate Command Handler Creation Policy
+Core concepts within the Command Model are the [Aggregates](modeling/aggregate.md) which are implemented. To instantiate a default Aggregate configuration you simply do the following:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+       .configureAggregate(GiftCard.class);
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+The `@Aggregate` annotation \(in the `org.axonframework.spring.stereotype` package\) triggers auto configuration to set up the necessary components to use the annotated type as an aggregate. Note that only the aggregate root needs to be annotated.
+
+Axon will automatically register all the `@CommandHandler` annotated methods with the command bus and set up a repository if none is present.
+
+```java
+// ...
+import org.axonframework.spring.stereotype.Aggregate;
+// ...
+@Aggregate
+public class GiftCard {
+    @AggregateIdentifier
+    private String id;
+
+    @CommandHandler
+    public GiftCard(IssueCardCommand cmd) {
+       apply(new CardIssuedEvent(cmd.getCardId(), cmd.getAmount()));
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+### Aggregate Command Handler Creation Policy
 
 In the [Handling Commands In An Aggregate](modeling/aggregate.md#handling-commands-in-an-aggregate) section we have depicted the `GiftCard` aggregate with roughly two types of command handlers:
 
@@ -139,7 +175,7 @@ As is shown above, the `@CreationPolicy` annotation requires stating the `Aggreg
 
   This effectively works like any regular command handler annotated method.
 
-## Business Logic and State Changes
+### Business Logic and State Changes
 
 Within an Aggregate there is a specific location to perform business logic validation and Aggregate state changes. The Command Handlers should _decide_ whether the Aggregate is in the correct state. If yes, an Event is published. If not, the Command might be ignored or an exception could be thrown, depending on the needs of the domain.
 
@@ -151,7 +187,7 @@ The [Aggregate Test Fixture](../testing/testing.md) will guard from unintentiona
 >
 > The only state an Aggregate requires is the state it needs to make a decision. Handling an Event published by the Aggregate is thus only required if the state change the Event resembles is needed to drive future validation.
 
-## Applying Events from Event Sourcing Handlers
+### Applying Events from Event Sourcing Handlers
 
 In some cases, especially when the Aggregate structures grows beyond just a couple of Entities, it is cleaner to react on events being published in other Entities of the same Aggregate \(multi Entity Aggregates are explained in more detail [here](modeling/multi-entity-aggregates.md)\). However, since the Event Handling methods are also invoked when reconstructing Aggregate state, special precautions must be taken.
 
