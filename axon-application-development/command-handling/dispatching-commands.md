@@ -1,4 +1,4 @@
-# Command Dispatchers \(TBD\)
+# Command Dispatchers
 
 The [Aggregate]() and [External Command Handler]() pages provide the background on how to handle command messages in your application. The dispatching process is the starting point of such a command message. Axon provides two interface you can use to send the commands to your command handlers, being:
 
