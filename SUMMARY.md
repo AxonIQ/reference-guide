@@ -51,7 +51,7 @@
   * [Introduction \(TBD\)](axon-application-development/query-handling/introduction-tbd.md)
   * [Query Dispatchers](axon-application-development/query-handling/dispatching-queries.md)
   * [Query Handlers](axon-application-development/query-handling/handling-queries.md)
-  * [Configuring Query Handlers](axon-application-development/query-handling/configuring-query-handlers.md)
+  * [Configuration](axon-application-development/query-handling/configuring-query-handlers.md)
   * [Implementations](axon-application-development/query-handling/query-dispatching.md)
   * [Exception Handling](axon-application-development/query-handling/exception-handling-1.md)
 * [Sagas \(TBD\)](axon-application-development/complex-business-transactions/README.md)
