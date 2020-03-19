@@ -87,19 +87,9 @@ If you prefer to use another mechanism for routing commands, the behavior can be
 >
 > However, regardless of the type of command, as soon as you are distributing your application through for example Axon Server, it is highly recommended to specify a routing key on the given message. The `@TargetAggregateIdentifier` doubles as such, but in absence of a field worthy of the annotation, the `@RoutingKey` annotation should be added to ensure the command can be routed. Additionally, a different `RoutingStrategy` can be configured, as is further specified in the [Command Dispatching section]().
 
-### Aggregate Configuration
-
-Core concepts within the Command Model are the [Aggregates](modeling/aggregate.md) which are implemented. To instantiate a default Aggregate configuration you simply do the following:
+### 
 
 {% tabs %}
-{% tab title="Axon Configuration API" %}
-```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-       .configureAggregate(GiftCard.class);
-}
-```
-{% endtab %}
-
 {% tab title="Spring Boot AutoConfiguration" %}
 The `@Aggregate` annotation \(in the `org.axonframework.spring.stereotype` package\) triggers auto configuration to set up the necessary components to use the annotated type as an aggregate. Note that only the aggregate root needs to be annotated.
 

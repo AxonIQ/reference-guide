@@ -100,5 +100,19 @@ There are a couple of operations which are desirable to be performed whilst in t
 
    This function should be called from an `@EventSourcingHandler` annotated function to ensure that _being marked deleted_ is part of that Aggregate's state.
 
-## 
+
+
+### Aggregate Configuration
+
+Core concepts within the Command Model are the [Aggregates](aggregate.md) which are implemented. To instantiate a default Aggregate configuration you simply do the following:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+       .configureAggregate(GiftCard.class);
+}
+```
+{% endtab %}
+{% endtabs %}
 
