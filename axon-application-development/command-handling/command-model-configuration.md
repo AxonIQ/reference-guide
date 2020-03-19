@@ -1,4 +1,4 @@
-# Command Model Configuration \(TBD - Merge and Eliminate\)
+# Command Model Configuration
 
 ## Registering a Command Handler
 
