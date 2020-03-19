@@ -37,7 +37,7 @@
   * [Command Dispatchers](axon-application-development/command-handling/dispatching-commands.md)
   * [Command Handlers](axon-application-development/command-handling/command-handlers.md)
   * [Implementations](axon-application-development/command-handling/command-bus-command-gateway.md)
-  * [Command Model Configuration](axon-application-development/command-handling/command-model-configuration.md)
+  * [Configuration](axon-application-development/command-handling/command-model-configuration.md)
   * [Exception Handling](axon-application-development/command-handling/exception-handling.md)
 * [Events](axon-application-development/event-handling/README.md)
   * [Introduction](axon-application-development/event-handling/introduction.md)

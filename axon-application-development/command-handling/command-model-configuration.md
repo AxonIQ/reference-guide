@@ -1,4 +1,4 @@
-# Command Model Configuration
+# Configuration
 
 ## Registering a Command Handler
 
