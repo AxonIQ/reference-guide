@@ -5,6 +5,24 @@ This page aims to provide a dedicated overview of patch releases per project.
 
 ## Axon Framework
 
+### Release 4.3.1
+
+ * Through the new [Create-or-Update](../../implementing-domain-logic/command-handling/aggregate.md#aggregate-command-handler-creation-policy)
+    feature a bug was introduced which didn't allow non-String aggregate identifiers.
+   This problem was quickly resolved in [#1363](https://github.com/AxonFramework/AxonFramework/pull/1363),
+    allowing the usage of "complex" aggregate identifiers once more.  
+ * The graceful shutdown process introduced in 4.3 had a couple of minor problems. 
+   One of which was the shutdown order within the `AxonServerCommandBus` and `AxonServerQueryBus`,
+    which basically made it so that the approach prior to 4.3 was maintained.
+   We also noticed that the `AxonServerConnectionManager` never shutdown nicely.
+   All of these, plus some other minor fixes, have been performed in [#1372](https://github.com/AxonFramework/AxonFramework/pull/1372).   
+ * The `AggregateCreationPolicy#ALWAYS` did not behave as expected, resulting in faulty behaviour when used.
+   Pull request [#1371](https://github.com/AxonFramework/AxonFramework/pull/1371) saw an end to this problem,
+    ensuring the desired usage of all newly introduced creation policies.
+
+For a complete list of all resolved bugs we refer to the
+ [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?q=is%3Aclosed+milestone%3A%22Release+4.3.1%22++label%3A%22Type%3A+Bug%22+).
+
 ### Release 4.3
 
  * A `ConcurrencyException` was thrown when an aggregate was created at two distinct JVM's at the same time.
