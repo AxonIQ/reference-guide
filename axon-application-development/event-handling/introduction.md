@@ -38,6 +38,8 @@ The [Event Handlers](handling-events.md) section details the capabilities that t
 
 A summary of the representation of the functional components is depicted below.
 
+![](../../.gitbook/assets/axon-event-components.jpg)
+
 ### Non-Functional Components
 
 The Non-Functional Components help address the _**technical concerns**_ around Event Publishing and Handling i.e. the "_**How**_" \(e.g. Which is the protocol we need to use to publish/deliver Event Messages ? How should errors be handled ? How do we implement the threading mode for processing Events ? How should we sequence the processing of Events?\) 
@@ -59,6 +61,8 @@ The [Event Processors](event-processors.md) section details the capabilities tha
 In both cases, these components are backed by an actual physical infrastructure \(e.g. [Axon Server ](../../axon-server.md)or Other Servers\)
 
 A summary of the representation of the non-functional components is depicted below.
+
+![](../../.gitbook/assets/axon-event-infrastructure.jpg)
 
 ## Event Versioning
 
