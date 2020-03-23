@@ -53,7 +53,7 @@ This approach ensures failure to publish to Kafka enforces failure of the initia
  This approach ensures the event has been published on the event bus regardless of whether publication to Kafka works
 
 When setting up event publication it is also important to take into account which `ConfirmationMode` is used.
-The `ConfirumationMode` influences the process of actually producing an event message on a Kafka topic,
+The `ConfirmationMode` influences the process of actually producing an event message on a Kafka topic,
  but also what kind of `Producer` the `ProducerFactory` will instantiate:
 
 * **TRANSACTIONAL** - This will require the `Producer` to start, commit and (in case of failure) rollback the
