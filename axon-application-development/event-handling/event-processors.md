@@ -1,4 +1,4 @@
-# Event Processors
+# Event Processors \(TBD - Add Diagram\)
 
 Event handlers define the business logic to be performed when an event is received. Event processors are the components that take care of the technical aspects of that processing. They start a unit of work and possibly a transaction. However, they also ensure that correlation data can be correctly attached to all messages created during event processing.
 
