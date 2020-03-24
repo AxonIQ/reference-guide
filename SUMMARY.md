@@ -21,8 +21,7 @@
 ## Axon Framework <a id="axon-application-development"></a>
 
 * [Introduction](axon-application-development/introduction.md)
-* [Messaging Concepts \(TBD\)](axon-application-development/messaging-concepts/README.md)
-  * [Introduction](axon-application-development/messaging-concepts/introduction.md)
+* [Messaging Concepts](axon-application-development/messaging-concepts/README.md)
   * [Anatomy of a Message](axon-application-development/messaging-concepts/message-anatomy.md)
   * [Message Intercepting](axon-application-development/messaging-concepts/message-intercepting.md)
   * [Supported Parameters for Annotated Handlers](axon-application-development/messaging-concepts/supported-parameters-for-annotated-handlers.md)
