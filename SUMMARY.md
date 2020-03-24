@@ -27,7 +27,7 @@
   * [Unit of Work](axon-application-development/messaging-concepts/unit-of-work.md)
 * [Commands](axon-application-development/command-handling/README.md)
   * [Introduction \(TBD\)](axon-application-development/command-handling/introduction-tbd.md)
-  * [Modeling \(TBD\)](axon-application-development/command-handling/modeling/README.md)
+  * [Modeling](axon-application-development/command-handling/modeling/README.md)
     * [Aggregate](axon-application-development/command-handling/modeling/aggregate.md)
     * [Multi-entity Aggregates](axon-application-development/command-handling/modeling/multi-entity-aggregates.md)
     * [State-Stored Aggregates](axon-application-development/command-handling/modeling/state-stored-aggregates.md)

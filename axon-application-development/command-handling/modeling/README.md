@@ -1,2 +1,2 @@
-# Modeling \(TBD\)
+# Modeling
 

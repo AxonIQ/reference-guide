@@ -1,11 +1,11 @@
 # Command Dispatchers
 
-The [Aggregate]() and [External Command Handler]() pages provide the background on how to handle command messages in your application. The dispatching process is the starting point of such a command message. Axon provides two interface you can use to send the commands to your command handlers, being:
+The [Command Handlers](command-handlers.md) pages provide the background on how to handle command messages in your application. The dispatching process is the starting point of such a command message. Axon provides two interfaces you can use to send the commands to your command handlers, being:
 
-1. The [Command Bus](), and
-2. the [Command Gateway]()
+1. The Command Bus, and
+2. The Command Gateway
 
-This page will show how and when to use the command gateway and bus. How to configure and specifics on the the command gateway and bus implementations are discussed [here]()
+This page will show how and when to use the command gateway and bus. How to configure and specifics on the the command gateway and bus implementations are discussed [here](command-bus-command-gateway.md)
 
 ## The Command Bus
 
@@ -51,7 +51,7 @@ The `CommandDispatcher` described above exemplifies a couple of important aspect
 
    To be able to dispatch a command on the `CommandBus`, you are required to wrap your own command object \(e.g. the 'command message payload'\) in a `CommandMessage`.
 
-   The `CommandMessage` also allows the addition of [MetaData]() to the Command Message.
+   The `CommandMessage` also allows the addition of [MetaData](../messaging-concepts/message-anatomy.md) to the Command Message.
 
 4. The `CommandBus#dispatch(CommandMessage)` function will dispatch the provided `CommandMessage` on the bus, for delivery to a command handler. 
 
@@ -73,7 +73,7 @@ The `CommandDispatcher` described above exemplifies a couple of important aspect
 
    If `CommandResultMessage#isExceptional` returns true, you can assume that the `CommandResultMessage#exceptionResult` will return a `Throwable` instance containing the actual exception.
 
-   Otherwise, the `CommandResultMessage#getPayload` method _may_ provide you with an actual result or `null`, as further specified [here]().     
+   Otherwise, the `CommandResultMessage#getPayload` method _may_ provide you with an actual result or `null`, as further specified here.     
 
 > **Command Callback consideration**
 >
