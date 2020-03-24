@@ -1,5 +1,7 @@
 # Configuration
 
+There are several configuration options for the Axon Server that can be done to optimize your configur
+
 ## Names and ports
 
 * `axoniq.axonserver.name` - unique node name of the Axon Server node is taken from the hostname of the server.
@@ -7,7 +9,7 @@
 * `axoniq.axonserver.port` - gRPC port for clients to connect is set to 8124 by default
 * `server.port` - HTTP port for REST clients to connect is set to 8024 by default
 
-## Data directory
+## Data Directory
 
 ### Events and Snapshot Events
 
