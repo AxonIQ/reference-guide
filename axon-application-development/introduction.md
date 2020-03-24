@@ -6,7 +6,7 @@ A summary of the various sub-sections is given below. It is recommended to read 
 
 | Sub-Section | Purpose |
 | :--- | :--- |
-| [Messaging Concepts](messaging-concepts/) | Overview of "Messages" which is a central concept within the Axon Framework |
+| [Messaging Concepts](messaging-concepts/) | Conceptual overview of "Messages" within the Axon Framework |
 | [Commands](command-handling/) | Command Message Development using the Axon Framework  |
 | [Events](event-handling/) | Event Message Development using the Axon Framework |
 | [Queries](query-handling/) | Query Message Development using the Axon Framework |
