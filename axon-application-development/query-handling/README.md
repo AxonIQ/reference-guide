@@ -10,7 +10,7 @@ A summary of the various sub-sections is given below.
 | [Query Dispatchers](../command-handling/dispatching-commands.md) / [Query Handlers](../command-handling/command-handlers.md) | Functional Development concerns for Query Messages using the Axon Framework |
 | [Implementations](query-dispatching.md) | Non-Functional Development concerns for Query Messages using the Axon Framework |
 | [Configuration](configuring-query-handlers.md) | Configuration concerns for Query Messages using the Axon Framework |
-| [Exception Handling](../command-handling/exception-handling.md) | Details on Command Messages Exception Handling capabilities provided by the Axon Framework |
+| [Exception Handling]() | Details on Command Messages Exception Handling capabilities provided by the Axon Framework |
 
 This guide is complemented by a video tutorial which gives a practical demonstration of the concepts explained in this section. The tutorial is available at  -&gt; [Axon Coding Tutorial - Query Messages](https://www.youtube.com/watch?v=jS1vfc5EohM&feature=youtu.be)
 
