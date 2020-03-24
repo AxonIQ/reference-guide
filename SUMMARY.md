@@ -20,7 +20,7 @@
 ## Axon Framework <a id="axon-application-development"></a>
 
 * [Introduction \(TBD\)](axon-application-development/introduction.md)
-* [Messages \(TBD\)](axon-application-development/messaging-concepts/README.md)
+* [Messaging Concepts \(TBD\)](axon-application-development/messaging-concepts/README.md)
   * [Introduction](axon-application-development/messaging-concepts/introduction.md)
   * [Anatomy of a Message](axon-application-development/messaging-concepts/message-anatomy.md)
   * [Message Intercepting](axon-application-development/messaging-concepts/message-intercepting.md)
