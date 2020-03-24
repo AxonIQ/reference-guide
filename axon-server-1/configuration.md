@@ -1,6 +1,8 @@
 # Configuration
 
-There are several configuration options for the Axon Server that can be done to optimize your configur
+There are several configuration options for the Axon Server that can be done to optimize your Axon Server deployment. 
+
+A list of the important ones is provided below.
 
 ## Names and ports
 
@@ -49,15 +51,15 @@ Flow control is the process of managing the rate of data transmission between tw
 
 In the messaging platform flow control is possible both between the messaging platform and the message handlers, and between the nodes in the messaging platform cluster.
 
-Messaging platform - message handler:
+Messaging Platform - Messaging Handler:
 
-The client needs to set the following properties to configure flow control:
+The client \(i.e. the Axon Application\) needs to set the following properties to configure flow control:
 
 * `axon.axonserver.initial-nr-of-permits` \[1000\] - number of messages that the server can initially send to client.
 * `axon.axonserver.nr-of-new-permits` \[500\] - additional number of messages that the server can send to client.
 * `axon.axonserver.new-permits-threshold` \[500\] -  when client reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
 
-Axon Server nodes:
+Axon Server Nodes:
 
 Set the following properties to set flow control on the synchronization between nodes in an Axon Server cluster:
 
