@@ -64,7 +64,7 @@
 * [Testing](axon-application-development/testing/README.md)
   * [Commands/Events](axon-application-development/testing/testing.md)
   * [Sagas](axon-application-development/testing/testing-1.md)
-* [Tuning \(TBD\)](axon-application-development/tuning/README.md)
+* [Tuning](axon-application-development/tuning/README.md)
   * [Event Snapshots](axon-application-development/tuning/optimizing-aggregate-loading.md)
 * [Monitoring and Metrics](axon-application-development/monitoring-and-metrics.md)
 
