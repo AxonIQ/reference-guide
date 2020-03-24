@@ -6,7 +6,6 @@
   * [DDD & CQRS Concepts](architecture-overview/ddd-cqrs-concepts.md)
   * [Event Sourcing \(TBD\)](architecture-overview/event-sourcing-tbd.md)
   * [Event-Driven Microservices](architecture-overview/event-driven-microservices.md)
-* [Axon Framework](axon-framework.md)
 * [Axon Server](axon-server.md)
 * [Release Notes](release-notes/README.md)
   * [Bug Fixes](release-notes/bug-fixes.md)
