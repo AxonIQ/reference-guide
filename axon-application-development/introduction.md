@@ -1,4 +1,4 @@
-# Introduction \(TBD\)
+# Introduction
 
 The Axon Framework provides the building blocks for applications that are based on architectural principles like [CQRS/Domain-Driven Design](../architecture-overview/ddd-cqrs-concepts.md) and [Event Sourcing](../architecture-overview/event-sourcing-tbd.md). The framework provides a proven set of technology concerns that enables developers to easily build their applications following these patterns without having to worry about the non-functional aspects required while adopting these patterns.
 
