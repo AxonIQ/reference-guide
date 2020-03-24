@@ -65,8 +65,6 @@
   * [Commands/Events](axon-application-development/testing/testing.md)
   * [Sagas](axon-application-development/testing/testing-1.md)
 * [Tuning \(TBD\)](axon-application-development/tuning/README.md)
-  * [Tuning Event Processing](axon-application-development/tuning/tuning-event-processing.md)
-  * [Tuning Command Processing](axon-application-development/tuning/tuning-command-processing.md)
   * [Event Snapshots](axon-application-development/tuning/optimizing-aggregate-loading.md)
 * [Monitoring and Metrics](axon-application-development/monitoring-and-metrics.md)
 
@@ -91,7 +89,8 @@
 * [Security](axon-server-1/security/README.md)
   * [Access Control](axon-server-1/security/access-control.md)
 * [Performance](axon-server-1/performance/README.md)
-  * [Tuning](axon-server-1/performance/tuning.md)
+  * [Tuning Event Processing](axon-server-1/performance/tuning-event-processing.md)
+  * [Tuning Command Processing](axon-server-1/performance/tuning-command-processing.md)
 * [Configuration](axon-server-1/configuration.md)
 
 ## Extensions

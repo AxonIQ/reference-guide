@@ -94,7 +94,7 @@ public class GiftCardCommandHandler {
 >
 > As specified in the [Messaging Concepts](../messaging-concepts/#commands) section, a command always has exactly one destination. That means there should only be a single Command Handler method for any given command.
 >
-> By default, when a duplicate Command Handler method is registered, the last registration will be kept and a warning is logged. This behaviour can be adjusted by specifying a different `DuplicateCommandHandlerResolver`, as is described in the [Runtime Tuning](../tuning/tuning-command-processing.md#duplicate-command-handler-registration) section.
+> By default, when a duplicate Command Handler method is registered, the last registration will be kept and a warning is logged. This behaviour can be adjusted by specifying a different `DuplicateCommandHandlerResolver`, as is described in the [Runtime Tuning](../../axon-server-1/performance/tuning-command-processing.md#duplicate-command-handler-registration) section.
 
 ## Command Model Repositories
 
