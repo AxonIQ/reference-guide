@@ -1,4 +1,4 @@
-# Managing Associations
+# Associations
 
 When a saga manages a transaction across multiple domain concepts, such as Order, Shipment, Invoice, etc, that saga needs to be associated with instances of those concepts. An association requires two parameters: the key, which identifies the type of association \(Order, Shipment, etc\) and a value, which represents the identifier of that concept.
 

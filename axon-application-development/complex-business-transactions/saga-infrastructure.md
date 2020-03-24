@@ -1,4 +1,4 @@
-# Saga Infrastructure
+# Infrastructure
 
 Events need to be redirected to the appropriate saga instances. To do so, some infrastructure classes are required. The most important components are the `SagaManager` and the `SagaRepository`.
 
