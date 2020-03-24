@@ -4,7 +4,7 @@ Exception handling is a well known concept when developing software. Dealing wit
 
 ## Handler Execution Exception
 
-The `HandlerExecutionException` marks an exception which originates from a message handling member. Since an [Event]() message is unidirectional, handling an event does not include any return values. As such, the `HandlerExecutionException` should only be returned as an exceptional result from handling a command or a query. Axon provides a more concrete implementation of this exception for failed command and query handling, respectively the `CommandExecutionException` and `QueryExecutionException`.
+The `HandlerExecutionException` marks an exception which originates from a message handling member. Since an[ Event](../event-handling/) message is unidirectional, handling an event does not include any return values. As such, the `HandlerExecutionException` should only be returned as an exceptional result from handling a command or a query. Axon provides a more concrete implementation of this exception for failed command and query handling, respectively the `CommandExecutionException` and `QueryExecutionException`.
 
 The usefulness of a dedicated handler execution exception becomes clearer in a distributed application environment where, for example, there is a dedicated application for dealing with commands and another application tasked with the query side. Due to the application segregation, you loose any certainty that both applications can access the same classes, which thus holds for any exception classes. To support and encourage this decoupling, Axon will generify any exception which is a result of Command or Query handling.
 
