@@ -6,5 +6,5 @@ A summary of the various sub-sections is given below.
 
 | Sub-Section | Purpose |
 | :--- | :--- |
-| Event Snapshots | Overview of the  Query Message Components  within the Axon Framework |
+| [Event Snapshots](optimizing-aggregate-loading.md) | Axon Framework provided capabilities to create event snapshots |
 
