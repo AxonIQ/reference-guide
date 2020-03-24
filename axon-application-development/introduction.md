@@ -2,7 +2,7 @@
 
 This section of the reference guide  intends to cover in detail the capabilities that the Axon Framework provides to help build applications based on [CQRS/DDD](../architecture-overview/ddd-cqrs-concepts.md) and [Event Sourcing](../architecture-overview/event-sourcing-tbd.md)
 
-A summary of the various sub-sections is given below. It is recommended to read through the various sub-sections in the order provided below to get a complete understanding of this capability.
+A summary of the various sub-sections is given below.
 
 | Sub-Section | Purpose |
 | :--- | :--- |
