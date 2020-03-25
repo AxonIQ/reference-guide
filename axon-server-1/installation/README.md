@@ -1,2 +1,2 @@
-# Installation \(TBD\)
+# Installation
 
