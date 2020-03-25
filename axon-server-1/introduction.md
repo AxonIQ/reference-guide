@@ -1,6 +1,6 @@
 # Introduction
 
-This section of the reference guide covers all aspects around Setup/Administration/Security/Tuning and Configuration of your Axon Server deployment
+This section of the reference guide covers all aspects around Setup/Administration/Security/Tuning and Configuration of your Axon Server deployment.
 
 A summary of the various sub-sections is given below.
 
