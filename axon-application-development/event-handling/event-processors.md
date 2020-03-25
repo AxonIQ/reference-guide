@@ -1,10 +1,10 @@
-# Event Processors \(TBD - Add Diagram\)
+# Event Processors
 
 Event handlers define the business logic to be performed when an event is received. Event processors are the components that take care of the technical aspects of that processing. They start a unit of work and possibly a transaction. However, they also ensure that correlation data can be correctly attached to all messages created during event processing.
 
 A representation of the organization of Event Processors and Event Handlers is depicted below.
 
-![Event Processor organization](../../.gitbook/assets/check.png)
+![Organization of Event Processors and Event Handlers](../../.gitbook/assets/event-processors.png)
 
 Event Processors come in roughly two forms: Subscribing and Tracking. Subscribing Event Processors subscribe themselves to a source of Events and are invoked by the thread managed by the publishing mechanism. Tracking Event Processors, on the other hand, pull their messages from a source using a thread that it manages itself.
 

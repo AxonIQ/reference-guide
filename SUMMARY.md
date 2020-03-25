@@ -40,7 +40,7 @@
 * [Events](axon-application-development/event-handling/README.md)
   * [Event Dispatchers](axon-application-development/event-handling/dispatching-events.md)
   * [Event Handlers](axon-application-development/event-handling/handling-events.md)
-  * [Event Processors \(TBD - Add Diagram\)](axon-application-development/event-handling/event-processors.md)
+  * [Event Processors](axon-application-development/event-handling/event-processors.md)
   * [Event Bus & Event Store](axon-application-development/event-handling/event-bus-and-event-store.md)
   * [Event Versioning](axon-application-development/event-handling/versioning-events.md)
   * [Event Serialization](axon-application-development/event-handling/serializers.md)
