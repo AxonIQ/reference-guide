@@ -6,7 +6,7 @@ A summary of the various sub-sections is given below.
 
 | Sub-Section | Purpose |
 | :--- | :--- |
-| [Introduction](introduction-tbd.md) | Overview of the  Command Message Components  within the Axon Framework |
+| [Introduction]() | Overview of the  Command Message Components  within the Axon Framework |
 | [Modeling](modeling/) | Axon Framework provided components to address Aggregate Modeling concerns  |
 | [Command Dispatchers](dispatching-commands.md) / [Command Handlers](command-handlers.md) | Functional Development concerns for Command Messages using the Axon Framework |
 | [Implementations](command-bus-command-gateway.md) | Non-Functional Development concerns for Command Messages using the Axon Framework |
