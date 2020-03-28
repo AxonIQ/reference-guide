@@ -74,7 +74,7 @@ Events retain value. Where the value of Commands and Queries reduce significantl
 
 Events provide a very good level of granularity for an audit trail. However, for an audit trail to be 100% reliable it should not only be generated as a side-effect, one must also be able to ensure any decisions are correctly reflected by the audit trail.
 
-Event Sourcing is the process where Events are not only generated as the side-effects of a Command, but also form the source of the state. While the current state of the application isn't explicitly stored in the database, it is implicitly stored as a series of events which can be used to derive the current state. On receipt of a Command the state of the application is dynamically derived from the events stored in the database and then decides which side-effects to apply.
+[Event Sourcing](event-sourcing-tbd.md) is the process where Events are not only generated as the side-effects of a Command, but also form the source of the state. While the current state of the application isn't explicitly stored in the database, it is implicitly stored as a series of events which can be used to derive the current state. On receipt of a Command the state of the application is dynamically derived from the events stored in the database and then decides which side-effects to apply.
 
 Event Sourcing can be immensely complex to implement yourself. Axon provides the APIs necessary to make it very easy and even a more natural approach to building a command model. Axon's test fixtures help ensure that certain guidelines and requirements are properly followed.
 

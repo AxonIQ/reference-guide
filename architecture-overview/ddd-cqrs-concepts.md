@@ -85,7 +85,7 @@ In CQRS, View Models \(also known as Projections or Query Models\) are used to e
 
 A representation of the CQRS architectural concept is depicted below
 
-![CQRS concept](../.gitbook/assets/cqrs.jpeg)
+![CQRS architectural concept](../.gitbook/assets/cqrs.jpeg)
 
 
 

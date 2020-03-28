@@ -4,7 +4,7 @@ In a traditional way of storing an application’s state, we capture the current
 
 Event Sourcing is a way of storing an application’s state through the history of events that have happened in the past. The current state is reconstructed based on the full history of events, where each event represents a change or fact in our application. Events give us a single source of truth about what happened in our application. It is especially beneficial in applications that need to provide a full audit log to external reviewers. The current state is called _Materialized state_ in some resources \(see _Figure 1_\).
 
-![Event Sourcing](../.gitbook/assets/materialized-state-1.jpeg)
+![Events as the source to construct state](../.gitbook/assets/materialized-state-1.jpeg)
 
 Let's see on an example how Event Sourcing differs from Traditional Storage \(see Figure 2\). In Traditional Storage system we only know that we have ordered a pizza and a cola. In Event Sourcing, we see that a user selected a pizza, selected a cola, selected an ice cream and deselected an ice cream. Information about selection/deselection of an ice cream is not present in Traditional Storage. With Event Sourcing we can reason about why a user deselected an ice cream, was the price too high, or some other reason. The point is that we didn't lose that information and we can benefit from it in various ways. Later on we can see that a user confirmed the order.
 
@@ -54,6 +54,6 @@ Integration with external systems can be done using events. In such scenarios, e
 
 _\* If we are applying CQRS \(Command Query Responsibility Segregation\) practices, we could rebuild our command model and query model as well_
 
-Axon’s product suite provides an easy way to start up and scale event-sourced Java applications.  
+[Axon Server](../axon-server.md) provides an easy way to start up and scale event-sourced Java applications.  
 
 
