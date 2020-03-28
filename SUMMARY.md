@@ -37,6 +37,7 @@
   * [Command Handlers](axon-application-development/command-handling/command-handlers.md)
   * [Implementations](axon-application-development/command-handling/command-bus-command-gateway.md)
   * [Configuration](axon-application-development/command-handling/command-model-configuration.md)
+  * [Exception Handling](axon-application-development/command-handling/exception-handling.md)
 * [Events](axon-application-development/event-handling/README.md)
   * [Event Dispatchers](axon-application-development/event-handling/dispatching-events.md)
   * [Event Handlers](axon-application-development/event-handling/handling-events.md)
@@ -49,6 +50,7 @@
   * [Query Handlers](axon-application-development/query-handling/handling-queries.md)
   * [Configuration](axon-application-development/query-handling/configuring-query-handlers.md)
   * [Implementations](axon-application-development/query-handling/query-dispatching.md)
+  * [Exception Handling](axon-application-development/query-handling/exception-handling.md)
 * [Sagas](axon-application-development/complex-business-transactions/README.md)
   * [Implementation](axon-application-development/complex-business-transactions/implementing-saga.md)
   * [Associations](axon-application-development/complex-business-transactions/managing-associations.md)
@@ -61,9 +63,7 @@
   * [Sagas](axon-application-development/testing/testing-1.md)
 * [Tuning](axon-application-development/tuning/README.md)
   * [Event Snapshots](axon-application-development/tuning/optimizing-aggregate-loading.md)
-* [Production Considerations](axon-application-development/untitled/README.md)
-  * [Exception Handling](axon-application-development/untitled/exceptions.md)
-  * [Monitoring and Metrics](axon-application-development/untitled/monitoring-and-metrics.md)
+* [Monitoring and Metrics](axon-application-development/monitoring-and-metrics.md)
 
 ## Axon Server <a id="axon-server-1"></a>
 

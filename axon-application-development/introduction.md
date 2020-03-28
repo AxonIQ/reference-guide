@@ -13,5 +13,5 @@ A summary of the various sub-sections is given below.
 | [Sagas](complex-business-transactions/) | Long Running Transaction development using the Axon Framework |
 | [Testing](testing/) | Testing capabilities provided by the Axon Framework |
 | [Tuning](tuning/) | Tuning capabilities provided by the Axon Framework |
-| [Monitoring and Metrics](untitled/monitoring-and-metrics.md) | Monitoring and Metric capabilities provided by the Axon Framework |
+| [Monitoring and Metrics](monitoring-and-metrics.md) | Monitoring and Metric capabilities provided by the Axon Framework |
 
