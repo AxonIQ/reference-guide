@@ -12,7 +12,9 @@ Let's see on an example how Event Sourcing differs from Traditional Storage \(se
 
 ## Event Store
 
-Event Sourcing require an Event Store to store events. Since events are not to be modified \(an event is a fact that something happened and facts cannot be modified\), an Event Store should be optimized for appends. Event ordering plays a really important role in event-sourced systems - as many times as we are reconstructing our materialized state, we want to arrive at the same result. [Axon Server](../axon-server.md) is the default choice within Axon and it offers an _**enterprise grade**_ _**purpose-built event store**_ which is highly optimized for storing/retrieving events. The Server is available either as a Standard Edition or an Enterprise Edition.
+Event Sourcing require an Event Store to store events. Since events are not to be modified \(an event is a fact that something happened and facts cannot be modified\), an Event Store should be optimized for appends. Event ordering plays a really important role in event-sourced systems - as many times as we are reconstructing our materialized state, we want to arrive at the same result. 
+
+[Axon Server](../axon-server.md) is the default choice within Axon and it offers an _**enterprise grade**_ _**purpose-built event store**_ which is highly optimized for storing/retrieving events. The Server is available as a Standard Edition or an Enterprise Edition.
 
 Alternatively, the Axon Framework provides support for an RDBMS or a NoSQL database as an Event Store.
 
