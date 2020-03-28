@@ -30,11 +30,17 @@ Instead of reconstructing the entire command model state, which would be a lengt
 
 A summary of the benefits of Event Sourcing are listed below
 
+_Naturalized Audit Trail_
+
+In order to comply with certain regulations, it is required from a software system to provide a full audit log. Event-sourced systems give us exactly that, full audit log and we don’t have to provide any additional information to the reviewer. One additional report that is built up from the event stream and we’re ready to go.
+
+_Analytics_
+
 The full history of interactions with our application is stored in the Event Store. We could apply various machine learning algorithms to extract information from these interactions that matter to our business.
 
 Agile approach to building software systems requires that we should be able to adapt to any change coming along the way. Ability to replay the event stream from the beginning of time with new business logic means that we don’t have to worry about decisions we make \(apart from which events are important to be stored\), we can always fix the behaviour later. Introducing new views to our event stream means adding a new component with event listeners to the solution.
 
-In order to comply with certain regulations, it is required from a software system to provide a full audit log. Event-sourced systems give us exactly that, full audit log and we don’t have to provide any additional information to the reviewer. One additional report that is built up from the event stream and we’re ready to go.
+\_\_
 
 We all know how difficult it is to investigate an incident that happened in production. It requires a lot of logs digging and reasoning about the state that the system was at that point in time. Event sourcing gives us a way to replay events to a certain point in time and debug the application in a state in which the incident occurred. We don’t have to worry about whether we put the correct log level or whether we logged all necessary paths to figure the incident out.
 
