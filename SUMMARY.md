@@ -62,7 +62,6 @@
 * [Tuning](axon-application-development/tuning/README.md)
   * [Event Snapshots](axon-application-development/tuning/optimizing-aggregate-loading.md)
 * [Production Considerations](axon-application-development/untitled/README.md)
-  * [Deadlines](axon-application-development/untitled/deadlines.md)
   * [Exception Handling](axon-application-development/untitled/exceptions.md)
   * [Monitoring and Metrics](axon-application-development/untitled/monitoring-and-metrics.md)
 
