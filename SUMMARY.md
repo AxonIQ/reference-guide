@@ -4,7 +4,7 @@
 * [Quick Start](quick-start.md)
 * [Architecture Overview](architecture-overview/README.md)
   * [DDD & CQRS Concepts](architecture-overview/ddd-cqrs-concepts.md)
-  * [Event Sourcing \(TBD\)](architecture-overview/event-sourcing-tbd.md)
+  * [Event Sourcing](architecture-overview/event-sourcing-tbd.md)
   * [Event-Driven Microservices](architecture-overview/event-driven-microservices.md)
 * [Axon Server](axon-server.md)
 * [Release Notes](release-notes/README.md)

@@ -1,4 +1,4 @@
-# Event Sourcing \(TBD\)
+# Event Sourcing
 
 In a traditional way of storing an application’s state, we capture the current state and store it in some relational or [NoSQL](https://en.wikipedia.org/wiki/NoSQL) database. While this approach is really straightforward, it does not provide a way of deducting how we got to that current state. Of course, one may argue that we can have a separate model for keeping the history of actions that lead to the current state, but besides the additional complexity, these two models could easily go different paths and start being inconsistent
 
