@@ -83,3 +83,9 @@ In CQRS, Sagas can be used to manage these BASE transactions. They respond to ev
 
 In CQRS, View Models \(also known as Projections or Query Models\) are used to efficiently expose information about the application's state. Unlike Command Models, view models focus on data, rather than behavior. View models are generally modeled to accommodate information needs of a specific audience. These models should clearly express the intended audience of the model, to prevent 'distraction' and scope creep, which ultimately leads to loss of maintainability and even performance.
 
+A representation of the CQRS architectural concept is depicted below
+
+![CQRS concept](../.gitbook/assets/cqrs.jpeg)
+
+
+
