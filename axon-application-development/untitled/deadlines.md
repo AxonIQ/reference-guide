@@ -2,7 +2,7 @@
 
 The 'Deadline' concept in Axon Framework is a mechanism which enables certain actions \(in our case a `@DeadlineHandler` annotated method\) to be executed after a certain amount of time. The context of this execution is an aggregate or a saga in which the deadline was scheduled. If the deadline becomes obsolete there is the possibility to cancel it as well.
 
-Deadlines can be scheduled from sagas and aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`s when the deadline is met. The `DeadlineManager` can be injected as a resource. It has two flavors: `SimpleDeadlineManager` and `QuartzDeadlineManager`, just like the [Event Scheduling](../complex-business-transactions/deadline-handling.md) mechanism for Sagas.
+Deadlines can be scheduled from sagas and aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`s when the deadline is met. The `DeadlineManager` can be injected as a resource. It has two flavors: `SimpleDeadlineManager` and `QuartzDeadlineManager`, just like the [Event Scheduling](../deadlines/deadline-handling.md) mechanism for Sagas.
 
 ## Scheduling a Deadline <a id="scheduling-a-deadline"></a>
 
@@ -10,7 +10,7 @@ A deadline can be scheduled by providing a `Duration` after which it will be tri
 
 > **Scheduled Events or Scheduled Deadlines**
 >
-> Unlike [Event Scheduling](../complex-business-transactions/deadline-handling.md), when a deadline is triggered there will be no storing of the published message. Scheduling/Triggering a deadline does not involve an `EventBus` \(or `EventStore`\), hence the message **is not** stored.
+> Unlike [Event Scheduling](../deadlines/deadline-handling.md), when a deadline is triggered there will be no storing of the published message. Scheduling/Triggering a deadline does not involve an `EventBus` \(or `EventStore`\), hence the message **is not** stored.
 
 ```text
 class DeadlineSchedulingComponent {    void scheduleMyDeadline() {        String deadlineId =             deadlineManager.schedule(Duration.ofMillis(500), "myDeadline");        // For example store the `deadlineId`    }}

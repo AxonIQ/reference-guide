@@ -7,7 +7,7 @@ A summary of the various sub-sections is given below.
 | Sub-Section | Purpose |
 | :--- | :--- |
 | [Implementation](implementing-saga.md) | Implementing Sagas using the Axon Framework |
-| [Deadline Handling](deadline-handling.md) | Deadline Handling capabilities within the Axon Framework |
+| [Deadline Handling](../deadlines/deadline-handling.md) | Deadline Handling capabilities within the Axon Framework |
 | [Associations](managing-associations.md) | Managing Saga associations using the Axon Framework |
 | [Infrastructure](saga-infrastructure.md) | Non-Functional Development concerns for Sagas using the Axon Framework |
 
