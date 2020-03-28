@@ -12,7 +12,9 @@ Let's see on an example how Event Sourcing differs from Traditional Storage \(se
 
 ## Event Store
 
-The Event Store is responsible for storing events. Since events are not to be modified \(an event is a fact that something happened and facts cannot be modified\), an Event Store should be optimized for appends. Event ordering plays a really important role in event-sourced systems - as many times as we are reconstructing our materialized state, we want to arrive at the same result. Axon Server is the default choice in Axon and the best way to start. It is highly optimized for storing/retrieving events. If you really want, alternatively, you might consider an RDBMS or a NoSQL database. Axon has out-of-the-box implementations that support JPA, JDBC and Mongo.
+Event Sourcing require an Event Store to store events. Since events are not to be modified \(an event is a fact that something happened and facts cannot be modified\), an Event Store should be optimized for appends. Event ordering plays a really important role in event-sourced systems - as many times as we are reconstructing our materialized state, we want to arrive at the same result. [Axon Server](../axon-server.md) is the default choice within Axon and it offers an _**enterprise grade**_ _**purpose-built event store**_ which is highly optimized for storing/retrieving events. The Server is available either as a Standard Edition or an Enterprise Edition.
+
+Alternatively, the Axon Framework provides support for an RDBMS or a NoSQL database as an Event Store.
 
 ## Event Sourcing and CQRS
 
@@ -20,11 +22,11 @@ Event Sourcing is a natural fit with [CQRS](https://axoniq.io/resources/cqrs). T
 
 Instead of reconstructing the entire command model state, which would be a lengthy process, we separate the model in aggregates; parts of the model that need to be strongly consistent. This separation in aggregates makes models easier to reason about, more adaptable to change, and more importantly, it makes applications more scalable.
 
-Reloading an aggregate state reliably involves re-applying all past events to an aggregate. You can imagine that, after appending a large number of events, this can become a lengthy process. To reduce loading time you can [take a snapshot](https://docs.axoniq.io/reference-guide/configuring-infrastructure-components/command-processing/optimizing-aggregate-loading#snapshotting) after a certain amount of time, or a number of events, or some other criteria. A snapshot in this context represents a current state of an aggregate. Next time we want to do a replay, we’d start from a snapshot and replay only the events that came after taking the snapshot. Snapshotting is usually an asynchronous process, so it does not interfere with regular event processing. In Axon, building snapshots is a matter of configuring when they should be taken. _Figure 3_ shows how snapshots relate to the events in the Event Store.
+![Event Sourcing and CQRS](../.gitbook/assets/image%20%281%29.png)
 
 ## Benefits
 
-The benefits of Event Sourcing are a bit scattered around this article, so it wouldn’t hurt to sum them up in this chapter.
+A summary of the benefits of Event Sourcing are listed below
 
 The full history of interactions with our application is stored in the Event Store. We could apply various machine learning algorithms to extract information from these interactions that matter to our business.
 
@@ -35,8 +37,6 @@ In order to comply with certain regulations, it is required from a software syst
 We all know how difficult it is to investigate an incident that happened in production. It requires a lot of logs digging and reasoning about the state that the system was at that point in time. Event sourcing gives us a way to replay events to a certain point in time and debug the application in a state in which the incident occurred. We don’t have to worry about whether we put the correct log level or whether we logged all necessary paths to figure the incident out.
 
 If we figure out that the problem is in our business logic, fixing of the problem may be difficult. The event history that is already there is not meant to be altered, so if we want to change that we might want to use upcasters to change the event structure in the way it fixes the incident.
-
-## 
 
 ## Conclusion
 
