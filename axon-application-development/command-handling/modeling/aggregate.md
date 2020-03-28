@@ -4,7 +4,7 @@ This chapter will cover the basics on how to implement an ['Aggregate'](../../..
 
 ## Basic Aggregate Structure
 
-An Aggregate is a regular object, which contains state and methods to alter that state. When creating the Aggregate object, you are effectively creating the 'Aggregate Root', typically carrying the name of the entire Aggregate. For the purpose of this description the 'Gift Card' domain will be used, which brings us the `GiftCard` as the Aggregate \(Root\). By default, Axon will configure your Aggregate as an 'Event Sourced' Aggregate \(as described [here](../../../architecture-overview/#event-sourcing)\). Henceforth our basic `GiftCard` Aggregate structure will focus on the Event Sourcing approach:
+An Aggregate is a regular object, which contains state and methods to alter that state. When creating the Aggregate object, you are effectively creating the 'Aggregate Root', typically carrying the name of the entire Aggregate. For the purpose of this description the 'Gift Card' domain will be used, which brings us the `GiftCard` as the Aggregate \(Root\). By default, Axon will configure your Aggregate as an 'Event Sourced' Aggregate \(as described [here](../../../architecture-overview/event-sourcing-tbd.md)\). Henceforth our basic `GiftCard` Aggregate structure will focus on the Event Sourcing approach:
 
 ```java
 import org.axonframework.commandhandling.CommandHandler;
@@ -99,20 +99,4 @@ There are a couple of operations which are desirable to be performed whilst in t
    Useful if the domain specifies a given Aggregate can be removed/deleted/closed, after which it should no longer be allowed to handle any Commands.
 
    This function should be called from an `@EventSourcingHandler` annotated function to ensure that _being marked deleted_ is part of that Aggregate's state.
-
-
-
-### Aggregate Configuration
-
-Core concepts within the Command Model are the [Aggregates](aggregate.md) which are implemented. To instantiate a default Aggregate configuration you simply do the following:
-
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-       .configureAggregate(GiftCard.class);
-}
-```
-{% endtab %}
-{% endtabs %}
 
