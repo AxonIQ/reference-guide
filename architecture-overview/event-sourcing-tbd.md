@@ -8,7 +8,7 @@ Event Sourcing is a way of storing an application’s state through the history 
 
 Let's see on an example how Event Sourcing differs from Traditional Storage \(see Figure 2\). In Traditional Storage system we only know that we have ordered a pizza and a cola. In Event Sourcing, we see that a user selected a pizza, selected a cola, selected an ice cream and deselected an ice cream. Information about selection/deselection of an ice cream is not present in Traditional Storage. With Event Sourcing we can reason about why a user deselected an ice cream, was the price too high, or some other reason. The point is that we didn't lose that information and we can benefit from it in various ways. Later on we can see that a user confirmed the order.
 
-
+![Traditional Storage v/s Event Sourcing](../.gitbook/assets/screen-shot-2020-03-28-at-2.02.45-pm.png)
 
 ## Event Store
 
