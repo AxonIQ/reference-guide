@@ -8,7 +8,7 @@ A deadline can be scheduled by providing a `Duration` after which it will be tri
 
 > **Scheduled Events or Scheduled Deadlines**
 >
-> Unlike [Event Scheduling](), when a deadline is triggered there will be no storing of the published message. Scheduling/Triggering a deadline does not involve an `EventBus` \(or `EventStore`\), hence the message **is not** stored.
+> Unlike [Event Scheduling](deadline-handling.md), when a deadline is triggered there will be no storing of the published message. Scheduling/Triggering a deadline does not involve an `EventBus` \(or `EventStore`\), hence the message **is not** stored.
 
 ```java
 class DeadlineSchedulingComponent {
