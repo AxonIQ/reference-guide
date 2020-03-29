@@ -1,6 +1,6 @@
 # Query Handlers
 
-The handling of a query comes down to an annotated handler returning the query's response. The goal of this chapter is to describe what such an `@QueryHandler` annotated method looks like, as well as describing the call order and response type options. For configuration of query handlers and the `QueryBus`, it is recommended to read the [Query Processing]() section.
+The handling of a query comes down to an annotated handler returning the query's response. The goal of this chapter is to describe what such an `@QueryHandler` annotated method looks like, as well as describing the call order and response type options. For configuration of query handlers and the `QueryBus`, it is recommended to read the [Configuration](configuring-query-handlers.md) section.
 
 ## Writing a Query Handler
 

@@ -105,7 +105,7 @@ public void on() {
 
 ## Using Time In Your  Application
 
-In cases where applications need to access the clock, they can take advantage of the clock used in the EventMessage, by accessing `GenericEventMessage.clock`. This clock is set to Clock.systemUTC at runtime, and manipulated to simulate time during [testing]().
+In cases where applications need to access the clock, they can take advantage of the clock used in the EventMessage, by accessing `GenericEventMessage.clock`. This clock is set to Clock.systemUTC at runtime, and manipulated to simulate time during [testing](../testing/).
 
 ```java
 public void handle(PublishTime cmd) {
@@ -113,5 +113,5 @@ public void handle(PublishTime cmd) {
 }
 ```
 
-Note that the current timestamp is automatically added to the EventMessage. If handlers only need to rely on the timestamp the event was published, they can access that timestamp directly, as described in [Handling Events]().
+Note that the current timestamp is automatically added to the EventMessage. If handlers only need to rely on the timestamp the event was published, they can access that timestamp directly, as described in [Handling Events](../event-handling/handling-events.md).
 
