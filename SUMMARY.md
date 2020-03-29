@@ -46,6 +46,7 @@
   * [Event Versioning](axon-application-development/event-handling/versioning-events.md)
   * [Event Serialization](axon-application-development/event-handling/serializers.md)
 * [Queries](axon-application-development/query-handling/README.md)
+  * [Query Processing](axon-application-development/query-handling/query-processing.md)
   * [Query Dispatchers](axon-application-development/query-handling/dispatching-queries.md)
   * [Query Handlers](axon-application-development/query-handling/handling-queries.md)
   * [Configuration](axon-application-development/query-handling/configuring-query-handlers.md)
