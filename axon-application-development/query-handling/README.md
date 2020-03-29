@@ -6,6 +6,7 @@ A summary of the various sub-sections is given below.
 
 | Sub-Section | Purpose |
 | :--- | :--- |
+| [Query Processing](query-processing.md) | Short introduction to the Query Processing capabilities provided by the Axon Framework |
 | [Query Dispatchers](../command-handling/dispatching-commands.md) / [Query Handlers](../command-handling/command-handlers.md) | Functional Development concerns for Query Messages using the Axon Framework |
 | [Implementations](query-dispatching.md) | Non-Functional Development concerns for Query Messages using the Axon Framework |
 | [Configuration](configuring-query-handlers.md) | Configuration concerns for Query Messages using the Axon Framework |
