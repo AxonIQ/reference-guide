@@ -42,7 +42,7 @@ public class GiftCard {
 
 Often times the command handler functions are placed directly on the [aggregate](modeling/aggregate.md). When this approach is taken, simply registering the Aggregate as described [above](command-model-configuration.md#aggregate-configuration) is sufficient for all its command handler methods to be registered too.
 
-[External Command Handlers]() however do require direct registration as being a command handler, which is shown in the following sample:
+[External Command Handlers](command-handlers.md#external-command-handlers) however do require direct registration as being a command handler, which is shown in the following sample:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
