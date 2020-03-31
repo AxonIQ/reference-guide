@@ -65,11 +65,14 @@ Set the following properties to set flow control on the synchronization between 
 * `axoniq.axonserver.queryFlowControl.nr-of-new-permits` \[5000\] - additional number of messages that the master can send to replica.
 * `axoniq.axonserver.queryFlowControl.new-permits-threshold` \[5000\] - when replica reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
 
-## SSL
+## Transport Layer Security (TLS)
 
-Requires private key and public certificate. The same certificate is used to connect to all event store servers.
+The communcation between clients and Axon Server can use TLS. To enable this, Axon Server needs a private key and a 
+public certificate. The client needs to set the SSL enabled property in its configuration. When the Axon Server certificate
+is a self-signed certificate, the client also needs to add the certificate to its configuration as it will not be 
+trusted by default. 
 
-For gRPC communication add file locations to the `axonserver.properties` file:
+On Axon Server side add key and certificate file locations to the `axonserver.properties` file:
 
 * `axoniq.axonserver.ssl.cert-chain-file` - location of the public certificate file
 * `axoniq.axonserver.ssl.private-key-file` - location of the private key file
@@ -80,6 +83,14 @@ Sample:
 axoniq.axonserver.ssl.enabled=true 
 axoniq.axonserver.ssl.cert-chain-file=./resources/axoniq-public.crt
 axoniq.axonserver.ssl.private-key-file=./resources/axoniq-private.pem
+```
+
+On the client side you need to specify *axon.axonserver.ssl-enabled* and if the certificate is self-signed *axon.axonserver.cert-file*.
+
+Sample:
+```test
+axon.axonserver.ssl-enabled=true
+axon.axonserver.cert-file=./resources/axoniq-public.crt
 ```
 
 For HTTPs configuration the certificate and key need to be installed in a p12 keystore. To install the keys use the following command:
