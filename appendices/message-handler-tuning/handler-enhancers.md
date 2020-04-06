@@ -6,47 +6,39 @@ To create a handler enhancer you start by implementing `HandlerEnhancerDefinitio
 
 You can then sort these handlers based on their annotations by using the `annotationAttributes(Annotation annotation)` method. This will filter out only those handlers that use that `Annotation`.
 
-For your handler enhancer to run you'll need to create a `META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition` file containing the fully qualified class name of the handler enhancer you have created.
+For your handler enhancer to run you'll need to either create a `META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition` file containing the fully qualified class name of the handler enhancer you have created, or register it explicitly in the Configurer.
 
-Example:
+Example of a Handler Enhancer that filters messages based on an expected Meta-Data key and value.
 
 ```java
 // 1
-public class MethodCommandHandlerDefinition implements HandlerEnhancerDefinition { 
+public class ExampleHandlerDefinition implements HandlerEnhancerDefinition { 
 
     @Override // 2
     public <T> MessageHandlingMember<T> wrapHandler(MessageHandlingMember<T> original) {
-        return original.annotationAttributes(CommandHandler.class) // 3
+        return original.annotationAttributes(MyAnnotation.class) // 3
                 .map(attr -> (MessageHandlingMember<T>) 
-                             new MethodCommandMessageHandlingMember(original, attr))
+                             new ExampleMessageHandlingMember<>(original, attr))
                 .orElse(original); // 5
     }
 
-    private static class MethodCommandMessageHandlingMember<T> 
+    private static class ExampleMessageHandlingMember<T> 
                              extends WrappedMessageHandlingMember<T>{
 
-        private final String commandName;
+        private final String metaDataKey;
+        private final String expectedValue;
 
-        private MethodCommandMessageHandlingMember(
+        private ExampleMessageHandlingMember(
                              MessageHandlingMember<T> delegate,
                              Map<String, Object> annotationAttributes) {
             super(delegate);
-
-            if ("".equals(annotationAttributes.get("commandName"))) {
-                commandName = delegate.payloadType().getName();
-            } else {
-                commandName = (String) annotationAttributes.get("commandName");
-            }
+            metaDataKey = (String) annotationAttributes.get("metaDataKey");
+            expectedValue = (String) annotationAttributes.get("expectedValue");
         }
 
         @Override
         public boolean canHandle(Message<?> message) {
-            return super.canHandle(message) && commandName.equals(
-                             ((CommandMessage) message).getCommandName()); // 4
-        }
-
-        public String commandName() {
-            return commandName;
+            return super.canHandle(message) && expectedValue.equals(message.getMetaData().get(metaDataKey)); // 4
         }
     }
 }
@@ -54,11 +46,9 @@ public class MethodCommandHandlerDefinition implements HandlerEnhancerDefinition
 
 1. Implement the `HandlerEnhancerDefinition` interface
 2. Override the `wrapHandler` method to perform your own logic.
-3. Sort out the types of messages you want to handle, for example any `CommandHandler`s or your own custom annotation even.
-4. Handle the method inside of a `MessageHandlingMember`
-5. If you would like to skip handling just return the original that was passed into the `wrapHandler` method.
-
-To skip all handling of the handler then just throw an exception.
+3. Sort out the types of handlers you want to wrap, for example any handlers with a `MyAnnotation`.
+4. Handle the method inside of a `MessageHandlingMember`, in this case, indicating the handler is only suitable if the meta-data key matches a value.
+5. If you are not interested in wrapping the handler, just return the original that was passed into the `wrapHandler` method.
 
 It is possible to configure `HandlerDefinition` with Axon `Configuration`. If you are using Spring Boot defining `HandlerDefintion`s and `HandlerEnhancerDefinition`s as beans is sufficient \(Axon autoconfiguration will pick them up and configure within Axon `Configuration`\).
 
@@ -66,16 +56,31 @@ It is possible to configure `HandlerDefinition` with Axon `Configuration`. If yo
 {% tab title="Axon Configuration API" %}
 ```java
 Configurer configurer = DefaultConfigurer.defaultConfiguration();
-configurer.registerHandlerDefinition(c -> new MethodCommandHandlerDefinition());
+configurer.registerHandlerDefinition((c, clazz) ->
+                                             MultiHandlerDefinition.ordered(
+                                                     MultiHandlerEnhancerDefinition.ordered(
+                                                             ClasspathHandlerEnhancerDefinition.forClass(clazz),
+                                                             new MyCustomEnhancerDefinition()
+                                                     ),
+                                                     new MyCustomHandlerDefinition(),
+                                                     ClasspathHandlerDefinition.forClass(clazz)
+                                             ));
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
 // somewhere in configuration
+// for a HandlerDefinition
 @Bean
-public HandlerDefinition eventStorageEngine() {
-    return new MethodCommandHandlerDefinition(); 
+public HandlerDefinition myCustomHandlerDefinition() {
+    return new CustomHandlerDefinition(); 
+}
+
+// or to define a handler enhancer
+@Bean
+public HandlerEnhancerDefinition myCustomHandlerEnhancerDefinition() {
+    return new MyCustomEnhancerDefinition(); 
 }
 ```
 {% endtab %}
