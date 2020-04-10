@@ -101,3 +101,4 @@
     * [Handler Enhancers](appendices/message-handler-tuning/handler-enhancers.md)
 * [C. Meta Annotations](appendices/meta-annotations.md)
 * [D. Identifier Generation](appendices/identifier-generation.md)
+* [E. Axon Server Query Language](appendices/query-reference.md)
