@@ -6,7 +6,7 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ### Release 4.3.1
 
-* Through the new [Create-or-Update](../implementing-domain-logic/command-handling/aggregate.md#aggregate-command-handler-creation-policy)
+* Through the new [Create-or-Update]()
 
    feature a bug was introduced which didn't allow non-String aggregate identifiers.
 
@@ -93,7 +93,7 @@ For a complete list of all resolved bugs we refer to the [issue tracker](https:/
 ### Release 4.2
 
 * An Aggregate's `Snapshotter` was not auto configured when Spring Boot is being used, as was filed under [\#932](https://github.com/AxonFramework/AxonFramework/issues/932).
-* The `CommandResultMessage` was returned as `null` when using the [`DisruptorCommandBus`](../configuring-infrastructure-components/command-processing/command-dispatching.md#disruptorcommandbus).
+* The `CommandResultMessage` was returned as `null` when using the [`DisruptorCommandBus`]().
 
   This was solved in pull request [\#1169](https://github.com/AxonFramework/AxonFramework/pull/1169).
 
@@ -121,7 +121,7 @@ For a complete list of all resolved bugs we refer to the [issue tracker](https:/
 
 ### Release 4.1.1
 
-* Query Dispatch Interceptors were no called correctly when a [subscription query](../implementing-domain-logic/query-handling/dispatching-queries.md#subscription-queries) was performed when Axon Server was used as the `QueryBus`.
+* Query Dispatch Interceptors were no called correctly when a [subscription query]() was performed when Axon Server was used as the `QueryBus`.
 
   This issue was marked [here](https://github.com/AxonFramework/AxonFramework/issues/1013) and resolved in pull request [\#1042](https://github.com/AxonFramework/AxonFramework/pull/1042).
 

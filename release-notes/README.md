@@ -10,7 +10,7 @@ All the enhancements and features which have been introduced to our major and mi
 
   In a Spring environment, an aggregate class hierarchy will be detected automatically.
 
-  For more details on this feature, read up on it [here](../implementing-domain-logic/command-handling/aggregate-polymorphism.md).
+  For more details on this feature, read up on it [here]().
 
 * An Axon application will no shutdown more gracefully then it used to in previous releases.
 
@@ -30,7 +30,7 @@ All the enhancements and features which have been introduced to our major and mi
 
   Through this, it is possible te define if such a command handler should 'never', 'always' or 'create' an aggregate 'if-missing'.
 
-  For further explanation read the [Aggregate Command Handler Creation Policy](../implementing-domain-logic/command-handling/aggregate.md#aggregate-command-handler-creation-policy) section.
+  For further explanation read the [Aggregate Command Handler Creation Policy]() section.
 
 * Both the `XStreamSerializer` and `JacksonSerializer` provide a means to toggle on "lenient serialization" through their builders.
 * Various test fixture improvements have been made, such as options to register a `HandlerEnhancerDefinition`,
@@ -39,13 +39,13 @@ All the enhancements and features which have been introduced to our major and mi
 
   Additionally validations have been added too, revolving around asserting scheduled events and deadline message.
 
-  The [Test Fixture](../implementing-domain-logic/command-handling/testing.md) page has been updated to define these new operations accordingly. 
+  The [Test Fixture]() page has been updated to define these new operations accordingly. 
 
 * The `TrackingEventProcessor#processingStatus` method as of 4.3 exposes more status information.
 
   The current token position, token-at-reset, is-merging and merge-completed position have been added to the set.
 
-  Read the [Event Tracker Status](../operations-guide/production-considerations/monitoring-and-metrics.md#event-tracker-status) section for more specifics on this. 
+  Read the [Event Tracker Status]() section for more specifics on this. 
 
 For a complete list of all the changes made in 4.3 you can check out [this](https://github.com/AxonFramework/AxonFramework/milestone/42?closed=1) page.
 
@@ -53,7 +53,7 @@ For a complete list of all the changes made in 4.3 you can check out [this](http
 
 * Axon Framework applications can now use tags to support a level of 'location awareness' between Axon clients and Axon Server instances.
 
-  This feature is further described [here](../operations-guide/setting-up-axon-server/tagging.md).
+  This feature is further described [here]().
 
 * Axon Server already supported several contexts, but Axon Framework application could no specify to which context message should be dispatched.
 
