@@ -1,4 +1,4 @@
-# RDBMS Tuning
+# A. RDBMS Tuning
 
 This chapter will cover several considerations in regards to tuning the database for events.
 
@@ -61,3 +61,4 @@ To override these settings, create a file called `/META-INF/orm.xml` on the clas
 ```
 
 It is important to specify `metadata-complete="false"`. This indicates this file should be used to override existing annotations, instead of replacing them. For the best results, ensure that the `DomainEventEntry` table uses its own sequence. This can be ensured by specifying a different sequence generator for that entity only.
+

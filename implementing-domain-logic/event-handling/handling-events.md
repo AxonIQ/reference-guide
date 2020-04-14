@@ -36,7 +36,7 @@ public class TopListener {
     @EventHandler
     public void handle(EventC event) {
     }
-    
+
 }
 
 public class SubListener extends TopListener {
@@ -44,7 +44,7 @@ public class SubListener extends TopListener {
     @EventHandler
     public void handle(EventB event) {
     }
-    
+
 }
 ```
 
@@ -52,10 +52,7 @@ In the example above, the handler methods of `SubListener` will be invoked for a
 
 ## Registering event handlers
 
-Event handling components are defined using an `EventProcessingConfigurer`, which can be accessed from the global Axon 
-`Configurer`. `EventProcessingConfigurer` is used to configure an `EventProcessingConfiguration`. Typically, an 
-application will have a single `EventProcessingConfiguration` defined, but larger more modular applications may choose 
-to define one per module.
+Event handling components are defined using an `EventProcessingConfigurer`, which can be accessed from the global Axon `Configurer`. `EventProcessingConfigurer` is used to configure an `EventProcessingConfiguration`. Typically, an application will have a single `EventProcessingConfiguration` defined, but larger more modular applications may choose to define one per module.
 
 To register objects with `@EventHandler` methods, use the `registerEventHandler()` method on the `EventProcessingConfigurer`:
 
@@ -65,13 +62,16 @@ To register objects with `@EventHandler` methods, use the `registerEventHandler(
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
                                          .registerEventHandler(conf -> new MyEventHandlerClass()));
 ```
+
 or with configuring the event processor
+
 ```java
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
                                          .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer
                                              .registerEventHandler(conf -> new MyEventHandlerClass()));
 ```
 {% endtab %}
+
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
 @Component
@@ -81,3 +81,4 @@ public class MyEventHandlerClass {
 ```
 {% endtab %}
 {% endtabs %}
+

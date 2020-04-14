@@ -44,16 +44,13 @@ The `AggregateSnapshotter` provides one more property:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
-
 ```java
-
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
                 .configureAggregate(AggregateConfigurer.defaultConfiguration(GiftCard.class).configureSnapshotTrigger(c -> new EventCountSnapshotTriggerDefinition(AggregateSnapshotter.builder().eventStore(c.eventStore()).build(),300)));
-
 ```
 {% endtab %}
-{% tab title="Spring Boot AutoConfiguration" %}
 
+{% tab title="Spring Boot AutoConfiguration" %}
 It is possible to define a custom `SnapshotTriggerDefinition` for an aggregate as a Spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows how to define a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot every 500 events.
 
 Note that a `Snapshotter` instance, if not explicitly defined as a bean already, will be automatically configured for you. This means you can simply pass the `Snapshotter` as a parameter to your `SnapshotTriggerDefinition`.
@@ -90,7 +87,7 @@ A snapshot event is an event like any other. That means a snapshot event is hand
 public class MyAggregate extends AbstractAnnotatedAggregateRoot {
 
     // ... 
-    
+
     @EventHandler
     protected void handleSomeStateChangeEvent(MyDomainEvent event) {
         // ...
@@ -128,3 +125,4 @@ Here are a few guidelines that help you get the most out of your caching solutio
 * Cache data in-memory.
 
   For true optimization, caches should keep data in-memory \(and preferably on-heap\) for best performance. This prevents the need to \(re\)serialize aggregates when storing to disk and even off-heap.
+

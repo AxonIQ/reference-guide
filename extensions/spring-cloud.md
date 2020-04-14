@@ -1,6 +1,6 @@
-# Spring cloud
+# Spring Cloud
 
-Spring Cloud is an alternative approach to distributing command bus (commands), besides Axon Server which is the default.
+Spring Cloud is an alternative approach to distributing command bus \(commands\), besides Axon Server which is the default.
 
 The Spring Cloud connector setup uses the service registration and discovery mechanism described by [Spring Cloud](https://spring.io/projects/spring-cloud) for distributing the command bus. You are thus left free to choose which Spring Cloud implementation to use to distribute your commands. An example implementations is the Eureka Discovery/Eureka Server combination.
 
@@ -22,7 +22,9 @@ The `SpringCloudCommandRouter` has to be created by providing the following:
 
 * A "discovery client" of type `DiscoveryClient` - This can be provided by annotating your Spring Boot application with `@EnableDiscoveryClient`, which will look for a Spring Cloud implementation on your classpath.
 * A "routing strategy" of type `RoutingStrategy` - The `axon-messaging` module currently provides several implementations, but a function call can suffice as well. 
-If you want to route the commands based on the 'aggregate identifier' for example, you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
+
+  If you want to route the commands based on the 'aggregate identifier' for example, you would use the `AnnotationRoutingStrategy` and annotate the field on the payload that identifies the aggregate with `@TargetAggregateIdentifier`.
+
 * A "local service instance" of type `Registration` - If you're Spring Boot application is annotated with the aforementioned `@EnableDiscoveryClient`, it will automatically create a `Registration` bean referencing the instance itself. 
 
 Other optional parameters for the `SpringCloudCommandRouter` are:
@@ -116,14 +118,14 @@ public class MyApplicationConfiguration {
     public CommandRouter springCloudHttpBackupCommandRouter(
                              DiscoveryClient discoveryClient, 
                              RestTemplate restTemplate,
-                             Registration localServiceInstance,							 
+                             Registration localServiceInstance,                             
                              @Value("${axon.distributed.spring-cloud.fallback-url}") 
                                          String messageRoutingInformationEndpoint) {
         return SpringCloudHttpBackupCommandRouter.builder()
                                                  .discoveryClient(discoveryClient)
                                                  .routingStrategy(new AnnotationRoutingStrategy())
                                                  .restTemplate(restTemplate)
-												 .localServiceInstance(localServiceInstance)
+                                                 .localServiceInstance(localServiceInstance)
                                                  .messageRoutingInformationEndpoint(messageRoutingInformationEndpoint)
                                                  .build();
     }
@@ -144,3 +146,4 @@ axon.distributed.spring-cloud.fallback-to-http-get=true
 # the URL on which to publish local data and retrieve from other nodes.
 axon.distributed.spring-cloud.fallback-url=/message-routing-information
 ```
+

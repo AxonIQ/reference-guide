@@ -53,3 +53,4 @@ axon.eventhandling.processors.name.source=myQueueMessageSource
 ```
 
 Note that tracking processors are not compatible with the `SpringAMQPMessageSource`.
+

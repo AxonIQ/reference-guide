@@ -6,16 +6,9 @@ Associating a saga with a concept is done in several ways. First of all, when a 
 
 > Note
 >
-> The API to associate domain concepts within a Saga intentionally only allows a `String` or a `Number` as the identifying value, 
-> since a `String` representation of the identifier is required for the association value entry which is stored. 
-> Using simple identifier values in the API with a straightforward `String` representation is by design, as a `String` 
-> column entry in the database makes the comparison between database engines simpler. It is intentional that there 
-> is no `associateWith(String, Object)` for example, as the result of an `Object#toString()` call might provide unwieldy identifiers.
+> The API to associate domain concepts within a Saga intentionally only allows a `String` or a `Number` as the identifying value, since a `String` representation of the identifier is required for the association value entry which is stored. Using simple identifier values in the API with a straightforward `String` representation is by design, as a `String` column entry in the database makes the comparison between database engines simpler. It is intentional that there is no `associateWith(String, Object)` for example, as the result of an `Object#toString()` call might provide unwieldy identifiers.
 
-Imagine a saga that has been created for a transaction around an Order. The saga is automatically associated with the Order, 
-as the method is annotated with `@StartSaga`. The saga is responsible for creating an Invoice for that Order, and tell 
-Shipping to create a Shipment for it. Once both the Shipment has arrived and the Invoice has been paid, the transaction 
-is completed and the saga is closed.
+Imagine a saga that has been created for a transaction around an Order. The saga is automatically associated with the Order, as the method is annotated with `@StartSaga`. The saga is responsible for creating an Invoice for that Order, and tell Shipping to create a Shipment for it. Once both the Shipment has arrived and the Invoice has been paid, the transaction is completed and the saga is closed.
 
 Here is the code for such a Saga:
 
@@ -57,7 +50,5 @@ public class OrderManagementSaga {
 }
 ```
 
-By allowing clients to generate an identifier, a saga can be easily associated with a concept, without the need for a 
-request-response type command. We associate the event with these concepts before publishing the command. This way, 
-we are guaranteed to also catch events generated as part of this command. This will end the saga once the invoice is 
-paid and the shipment has arrived.
+By allowing clients to generate an identifier, a saga can be easily associated with a concept, without the need for a request-response type command. We associate the event with these concepts before publishing the command. This way, we are guaranteed to also catch events generated as part of this command. This will end the saga once the invoice is paid and the shipment has arrived.
+

@@ -14,7 +14,8 @@
 AxonServer stores all Events and Snapshot Events in segmented files on disk. By default, these files are stored in the ./data directory.
 
 The following settings define an alternative storage location:
-* `axoniq.axonserver.event.storage` - path where (regular) events are stored
+
+* `axoniq.axonserver.event.storage` - path where \(regular\) events are stored
 * `axoniq.axonserver.snapshot.storage` - path where Snapshot Events are stored
 
 ### Control database
@@ -65,12 +66,9 @@ Set the following properties to set flow control on the synchronization between 
 * `axoniq.axonserver.queryFlowControl.nr-of-new-permits` \[5000\] - additional number of messages that the master can send to replica.
 * `axoniq.axonserver.queryFlowControl.new-permits-threshold` \[5000\] - when replica reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
 
-## Transport Layer Security (TLS)
+## Transport Layer Security \(TLS\)
 
-The communcation between clients and Axon Server can use TLS. To enable this, Axon Server needs a private key and a 
-public certificate. The client needs to set the SSL enabled property in its configuration. When the Axon Server certificate
-is a self-signed certificate, the client also needs to add the certificate to its configuration as it will not be 
-trusted by default. 
+The communcation between clients and Axon Server can use TLS. To enable this, Axon Server needs a private key and a public certificate. The client needs to set the SSL enabled property in its configuration. When the Axon Server certificate is a self-signed certificate, the client also needs to add the certificate to its configuration as it will not be trusted by default.
 
 On Axon Server side add key and certificate file locations to the `axonserver.properties` file:
 
@@ -85,10 +83,11 @@ axoniq.axonserver.ssl.cert-chain-file=./resources/axoniq-public.crt
 axoniq.axonserver.ssl.private-key-file=./resources/axoniq-private.pem
 ```
 
-On the client side you need to specify *axon.axonserver.ssl-enabled* and if the certificate is self-signed *axon.axonserver.cert-file*.
+On the client side you need to specify _axon.axonserver.ssl-enabled_ and if the certificate is self-signed _axon.axonserver.cert-file_.
 
 Sample:
-```test
+
+```text
 axon.axonserver.ssl-enabled=true
 axon.axonserver.cert-file=./resources/axoniq-public.crt
 ```
@@ -140,3 +139,4 @@ Run the command `axonserver-migration.jar`
 When the source event store is requiring a specific JDBC driver, you should put the required JDBC driver jar files in the libs directory.
 
 Note that the migration tool only migrates the event store data to Axon Server. It does not update the tracking token values in token\_entry tables. Tracking tokens are highly dependent on the implementation of the actual event store used. Migrating them is case specific and error prone. Our recommendation is to reset the tracking processors after the migration.
+
