@@ -6,7 +6,7 @@ Complex business logic often requires more than what an Aggregate with only an A
 >
 > A common misinterpretation of the rule that aggregates should not expose state, is that none of the entities should contain any property accessor methods. This is not the case. In fact, an aggregate will probably benefit a lot if the entities _within_ the aggregate expose state to the other entities in that same aggregate. However, is is recommended not to expose the state _outside_ of the aggregate.
 
-Within the 'Gift Card' domain, the `GiftCard` aggregate root was defined in [this]() section. Let's leverage this domain to introduce entities:
+Within the 'Gift Card' domain, the `GiftCard` aggregate root was defined in [this](aggregate.md) section. Let's leverage this domain to introduce entities:
 
 ```java
 import org.axonframework.modelling.command.AggregateIdentifier;
@@ -59,7 +59,7 @@ Entities are, just like the aggregate root, simple objects, as is shown with the
 
 2. The `@EntityId` annotation specifying the identifying field of an Entity. 
 
-   Required to be able to route a command \(or [event]()\) message to the correct entity instance.
+   Required to be able to route a command \(or [event](multi-entity-aggregates.md#event-sourcing-handlers-in-entities)\) message to the correct entity instance.
 
    The property on the payload that will be used to find the entity that the message should be routed to, defaults to the name of the `@EntityId` annotated field.
 
@@ -231,5 +231,5 @@ public class GiftCard {
 }
 ```
 
-By setting the `eventForwardingMode` to `ForwardMatchingInstances` an Event Message will only be forwarded if it contains a field/getter which matches the name of the `@EntityId` annotated field on the entity. This routing behaviour can be further specified with the `routingKey` field on the `@EntityId` annotation, mirroring that of [routing commands in entities](). Other forwarding modes which can be used are `ForwardAll` \(the default\) and `ForwardNone`, which respectively forward all events to all entities or no events at all.
+By setting the `eventForwardingMode` to `ForwardMatchingInstances` an Event Message will only be forwarded if it contains a field/getter which matches the name of the `@EntityId` annotated field on the entity. This routing behaviour can be further specified with the `routingKey` field on the `@EntityId` annotation, mirroring that of [routing commands in entities](multi-entity-aggregates.md#command-handling-in-entities). Other forwarding modes which can be used are `ForwardAll` \(the default\) and `ForwardNone`, which respectively forward all events to all entities or no events at all.
 
