@@ -14,7 +14,7 @@ Let's see on an example how Event Sourcing differs from Traditional Storage \(se
 
 Event Sourcing require an Event Store to store events. Since events are not to be modified \(an event is a fact that something happened and facts cannot be modified\), an Event Store should be optimized for appends. Event ordering plays a really important role in event-sourced systems - as many times as we are reconstructing our materialized state, we want to arrive at the same result. 
 
-[Axon Server]() is the default choice within Axon and it offers an _**enterprise grade**_ _**purpose-built event store**_ which is highly optimized for storing/retrieving events. The Server is available as a Standard Edition or an Enterprise Edition.
+[Axon Server ](../axon-server-introduction.md)is the default choice within Axon and it offers an _**enterprise grade**_ _**purpose-built event store**_ which is highly optimized for storing/retrieving events. The Server is available as a Standard Edition or an Enterprise Edition.
 
 Alternatively, the Axon Framework provides support for an RDBMS or a NoSQL database as an Event Store.
 
@@ -54,6 +54,6 @@ Integration with external systems can be done using events. In such scenarios, e
 
 _\* If we are applying CQRS \(Command Query Responsibility Segregation\) practices, we could rebuild our command model and query model as well_
 
-[Axon Server]() provides an easy way to start up and scale event-sourced Java applications.  
+[Axon Server](../axon-server-introduction.md) provides an easy way to start up and scale event-sourced Java applications.  
 
 
