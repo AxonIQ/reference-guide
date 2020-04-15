@@ -424,6 +424,8 @@ By default, [`SimpleCommandBus`]() is configured to handle incoming commands on 
 
 `DistributedCommandBus` is an alternative approach to distributing command bus \(commands\). Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
 
+![Structure of the Distributed Command Bus](../../.gitbook/assets/distributed-command-bus.png)
+
 The `DistributedCommandBus` relies on two components: a `CommandBusConnector`, which implements the communication protocol between the JVM's, and the `CommandRouter`, which chooses a destination for each incoming command. This router defines which segment of the `DistributedCommandBus` should be given a \`command, based on a routing key calculated by a routing strategy. Two commands with the same routing key will always be routed to the same segment, as long as there is no change in the number and configuration of the segments. Generally, the identifier of the targeted aggregate is used as a routing key.
 
 Two implementations of the `RoutingStrategy` are provided: the `MetaDataRoutingStrategy`, which uses a metadata property in the command message to find the routing key, and the `AnnotationRoutingStrategy`, which uses the `@TargetAggregateIdentifier` annotation on the Command Messages payload to extract the routing key. Obviously, you can also provide your own implementation.

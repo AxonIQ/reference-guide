@@ -7,7 +7,6 @@ A summary of the various sub-sections is given below.
 | Sub-Section | Purpose |
 | :--- | :--- |
 | ​[Implementation](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/sagas/implementing-saga)​ | Implementing Sagas using the Axon Framework |
-| ​[Deadline Handling](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/deadlines/deadline-handling)​ | Deadline Handling capabilities within the Axon Framework |
 | ​[Associations](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/sagas/managing-associations)​ | Managing Saga associations using the Axon Framework |
 | ​[Infrastructure](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/sagas/saga-infrastructure)​ | Non-Functional Development concerns for Sagas using the Axon Framework |
 
