@@ -6,7 +6,7 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ### Release 4.3.1
 
-* Through the new [Create-or-Update]()
+* Through the new [Create-or-Update](../axon-framework/axon-framework-commands/command-handlers.md#aggregate-command-handler-creation-policy)
 
    feature a bug was introduced which didn't allow non-String aggregate identifiers.
 

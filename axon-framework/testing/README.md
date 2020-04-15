@@ -6,6 +6,6 @@ A summary of the various sub-sections is given below.
 
 | Sub-Section | Purpose |
 | :--- | :--- |
-| ​[Commands / Events](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/testing/testing)​ | Capabilities provided by the Axon Framework to test Commands/Events |
-| ​[Sagas](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/testing/testing-1)​ | Capabilities provided by the Axon Framework to test Sagas |
+| ​[Commands / Events​](commands-events.md) | Capabilities provided by the Axon Framework to test Commands/Events |
+| ​[Sagas​](sagas-1.md) | Capabilities provided by the Axon Framework to test Sagas |
 

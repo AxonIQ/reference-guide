@@ -30,7 +30,7 @@ All the enhancements and features which have been introduced to our major and mi
 
   Through this, it is possible te define if such a command handler should 'never', 'always' or 'create' an aggregate 'if-missing'.
 
-  For further explanation read the [Aggregate Command Handler Creation Policy]() section.
+  For further explanation read the [Aggregate Command Handler Creation Policy](../axon-framework/axon-framework-commands/command-handlers.md#aggregate-command-handler-creation-policy) section.
 
 * Both the `XStreamSerializer` and `JacksonSerializer` provide a means to toggle on "lenient serialization" through their builders.
 * Various test fixture improvements have been made, such as options to register a `HandlerEnhancerDefinition`,
@@ -39,7 +39,7 @@ All the enhancements and features which have been introduced to our major and mi
 
   Additionally validations have been added too, revolving around asserting scheduled events and deadline message.
 
-  The [Test Fixture]() page has been updated to define these new operations accordingly. 
+  The [Test Fixture ](../axon-framework/testing/)page has been updated to define these new operations accordingly. 
 
 * The `TrackingEventProcessor#processingStatus` method as of 4.3 exposes more status information.
 
