@@ -1,6 +1,6 @@
 # State Stored Aggregates
 
-In the [Aggregate]() main page we have seen how to create an Aggregate backed by Event Sourcing. In other words, the storage method for an Event Sourced Aggregate is by replaying the events which constitute the changes on the Aggregate.
+In the [Aggregate](aggregate.md) main page we have seen how to create an Aggregate backed by Event Sourcing. In other words, the storage method for an Event Sourced Aggregate is by replaying the events which constitute the changes on the Aggregate.
 
 An Aggregate can however be stored as-is too. When doing so, the `Repository` used to save and load the Aggregate, is the `GenericJpaRepository`. The structure of a state-stored Aggregate is a little different from an Event Sourced Aggregate:
 
@@ -86,7 +86,7 @@ The above exert shows an state stored Aggregate from a 'Gift Card Service'. The 
 
    Since the Aggregate is an entity, the `@Id` annotation is a hard requirement.
 
-3. This Aggregate has several ['Aggregate Members']().
+3. This Aggregate has several '[Aggregate Members](multi-entity-aggregates.md)'.
 
    Since the Aggregate is stored as is, correct mapping of the entities should be taking into account. 
 
@@ -110,5 +110,5 @@ The above exert shows an state stored Aggregate from a 'Gift Card Service'. The 
 
 > **Adjusting state in Command Handlers**
 >
-> Differently from [Event Sourced Aggregates](), State-Stored Aggregates can pair the decision making logic and state changes in a Command Handler. There are no consequences for State-Stored Aggregates in following this paradigm as there are no Event Sourcing Handlers which drive it's state.
+> Differently from [Event Sourced Aggregates](aggregate.md), State-Stored Aggregates can pair the decision making logic and state changes in a Command Handler. There are no consequences for State-Stored Aggregates in following this paradigm as there are no Event Sourcing Handlers which drive it's state.
 

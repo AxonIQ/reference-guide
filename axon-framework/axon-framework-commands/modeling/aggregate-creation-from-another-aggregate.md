@@ -1,6 +1,6 @@
 # Aggregate Creation from another Aggregate
 
-Regularly, instantiating a new Aggregate is done by issuing a creation command which is handled by a `@CommandHandler` annotated Aggregate constructor. Such commands could for example be published by a simple [REST endpoint](https://github.com/domaincomponents/reference-guide/tree/7ae838faa2d2d8045603b108c1e042f7452f59dc/implementing-domain-logic/connecting-the-ui/command-publishing-use-cases.md) or an [Event Handling Component]() as a reaction to a certain event. Sometimes the Domain however describes certain Entities to be created from another Entity. In this scenario it would thus be more faithful to the domain to instantiate an Aggregate from it's parent Aggregate.
+Regularly, instantiating a new Aggregate is done by issuing a creation command which is handled by a `@CommandHandler` annotated Aggregate constructor. Such commands could for example be published by a simple [REST endpoint](https://github.com/domaincomponents/reference-guide/tree/7ae838faa2d2d8045603b108c1e042f7452f59dc/implementing-domain-logic/connecting-the-ui/command-publishing-use-cases.md) or an [Event Handling Component ](../../events/event-handlers.md)as a reaction to a certain event. Sometimes the Domain however describes certain Entities to be created from another Entity. In this scenario it would thus be more faithful to the domain to instantiate an Aggregate from it's parent Aggregate.
 
 > **Aggregate-from-Aggregate Use Case**
 >

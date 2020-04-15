@@ -1,11 +1,11 @@
 # Command Dispatchers
 
-The [Command Handlers]() pages provide the background on how to handle command messages in your application. The dispatching process is the starting point of such a command message. Axon provides two interfaces you can use to send the commands to your command handlers, being:
+The [Command Handlers](command-handlers.md) pages provide the background on how to handle command messages in your application. The dispatching process is the starting point of such a command message. Axon provides two interfaces you can use to send the commands to your command handlers, being:
 
 1. The Command Bus, and
 2. The Command Gateway
 
-This page will show how and when to use the command gateway and bus. How to configure and specifics on the the command gateway and bus implementations are discussed [here]()
+This page will show how and when to use the command gateway and bus. How to configure and specifics on the the command gateway and bus implementations are discussed [here](implementations.md)
 
 ## The Command Bus
 
@@ -51,7 +51,7 @@ The `CommandDispatcher` described above exemplifies a couple of important aspect
 
    To be able to dispatch a command on the `CommandBus`, you are required to wrap your own command object \(e.g. the 'command message payload'\) in a `CommandMessage`.
 
-   The `CommandMessage` also allows the addition of [MetaData]() to the Command Message.
+   The `CommandMessage` also allows the addition of [MetaData](../messaging-concepts/anatomy-message.md#meta-data) to the Command Message.
 
 4. The `CommandBus#dispatch(CommandMessage)` function will dispatch the provided `CommandMessage` on the bus, for delivery to a command handler. 
 
@@ -102,7 +102,7 @@ The `send` API as shown above introduces a couple of concepts, marked with numbe
 
 1. The `CommandGateway` interface providing the functionality to dispatch command messages. 
 
-   It does so by internally leveraging the `CommandBus` interface [dispatch messages]().
+   It does so by internally leveraging the `CommandBus` interface [dispatch messages](command-dispatchers.md#the-command-bus).
 
 2. The aggregate identifier is, per best practice, initialized as the String of a random unique identifier.
 
@@ -114,7 +114,7 @@ The `send` API as shown above introduces a couple of concepts, marked with numbe
 
    As such the response of the `send` method is a `CompletableFuture`.
 
-   This allows for chaining of follow up operations _after_ the command [result]() has been returned.
+   This allows for chaining of follow up operations _after_ the command [result](command-dispatchers.md#command-dispatching-results) has been returned.
 
 > **Callback when using `send(Object)`**
 >
@@ -140,7 +140,7 @@ public void sendCommandAndWaitOnResult() {
 
    It will wait indefinitely until the command dispatching and handling process has been resolved.
 
-   The result returned by this method can either be successful or exceptional, as will be explained [here]().
+   The result returned by this method can either be successful or exceptional, as will be explained [here](command-dispatchers.md#command-dispatching-results).
 
 2. If waiting indefinitely is not desirable, a 'timeout' paired with the 'time unit' can be provided along side the command object.
 
@@ -148,7 +148,7 @@ public void sendCommandAndWaitOnResult() {
 
    If command dispatching/handling was interrupted or the timeout was reached whilst using this approach, the command result will be `null`. 
 
-   In all other scenarios, the result follows the [referenced]() approach.
+   In all other scenarios, the result follows the [referenced](command-dispatchers.md#command-dispatching-results) approach.
 
 ## Command Dispatching Results
 
@@ -161,7 +161,7 @@ The outcome to some extent depends on the dispatching process, but more so on th
 
 The successful resolution of command handling intentionally _should not_ provide any return objects. Thus, if the `CommandBus`/`CommandGateway` provides a response \(either directly or through the `CommandResultMessage)`, then you should assume the result of successful command handling to return `null`.
 
-While it is possible to return results from command handlers, this should be used sparsely. The intent of the Command should never be to retrieve a value, as that would be an indication that the message should be designed as a [Query Message.]() Exceptions to this would be the identifier of the Aggregate Root, or identifiers of entities the Aggregate Root has instantiated. The framework has one such exception build in, on the `@CommandHandler` annotated constructor of an Aggregate. In case the 'command handling constructor' has executed successfully, instead of the Aggregate itself, the value of the `@AggregateIdentifier` annotated field will be returned.
+While it is possible to return results from command handlers, this should be used sparsely. The intent of the Command should never be to retrieve a value, as that would be an indication that the message should be designed as a [Query Message](../queries/). Exceptions to this would be the identifier of the Aggregate Root, or identifiers of entities the Aggregate Root has instantiated. The framework has one such exception build in, on the `@CommandHandler` annotated constructor of an Aggregate. In case the 'command handling constructor' has executed successfully, instead of the Aggregate itself, the value of the `@AggregateIdentifier` annotated field will be returned.
 
 [Axon Coding Tutorial \#5: - Connecting the UI](https://youtu.be/lxonQnu1txQ)
 
