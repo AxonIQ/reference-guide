@@ -1,10 +1,10 @@
 # Aggregate
 
-This chapter will cover the basics on how to implement an ['Aggregate'](). For more details on what an Aggregate is read the [DDD and CQRS concepts]() page.
+This chapter will cover the basics on how to implement an '[Aggregate](../../../architecture-overview/ddd-cqrs-concepts.md#aggregates)'. For more details on what an Aggregate is read the [DDD and CQRS concepts](../../../architecture-overview/ddd-cqrs-concepts.md) page.
 
 ## Basic Aggregate Structure
 
-An Aggregate is a regular object, which contains state and methods to alter that state. When creating the Aggregate object, you are effectively creating the 'Aggregate Root', typically carrying the name of the entire Aggregate. For the purpose of this description the 'Gift Card' domain will be used, which brings us the `GiftCard` as the Aggregate \(Root\). By default, Axon will configure your Aggregate as an 'Event Sourced' Aggregate \(as described [here]()\). Henceforth our basic `GiftCard` Aggregate structure will focus on the Event Sourcing approach:
+An Aggregate is a regular object, which contains state and methods to alter that state. When creating the Aggregate object, you are effectively creating the 'Aggregate Root', typically carrying the name of the entire Aggregate. For the purpose of this description the 'Gift Card' domain will be used, which brings us the `GiftCard` as the Aggregate \(Root\). By default, Axon will configure your Aggregate as an 'Event Sourced' Aggregate \(as described [here](../../../architecture-overview/event-sourcing.md)\). Henceforth our basic `GiftCard` Aggregate structure will focus on the Event Sourcing approach:
 
 ```java
 import org.axonframework.commandhandling.CommandHandler;
@@ -60,7 +60,7 @@ There are a couple of noteworthy concepts from the given code snippets, marked w
 
    This is usually the creation event. Lastly, `@EventSourcingHandler` annotated functions are resolved using specific rules.
 
-   These rules are the same for the `@EventHandler` annotated methods, and are thoroughly explained in [Annotated Event Handler]().
+   These rules are the same for the `@EventHandler` annotated methods, and are thoroughly explained in [Annotated Event Handler.](../../events/event-handlers.md)
 
 5. A no-arg constructor, which is required by Axon.
 
@@ -80,11 +80,11 @@ There are a couple of operations which are desirable to be performed whilst in t
 
 1. `apply(Object)` and `apply(Object, MetaData)`: The `AggregateLifecycle#apply` will publish an Event message on an `EventBus` such that it is known to have originated from the Aggregate executing the operation. 
 
-   There is the possibility to provide just the Event `Object` or both the Event and some specific [MetaData]().  
+   There is the possibility to provide just the Event `Object` or both the Event and some specific [MetaData](../../messaging-concepts/anatomy-message.md#meta-data).  
 
 2. `createNew(Class, Callable)`: Instantiate a new Aggregate as a result of handling a Command. 
 
-   Read [this]() for more details on this.
+   Read [this](aggregate-creation-from-another-aggregate.md) for more details on this.
 
 3. `isLive()`: Check to verify whether the Aggregate is in a 'live' state. 
 

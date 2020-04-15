@@ -56,7 +56,7 @@ The `BeanValidationInterceptor` also implements `MessageHandlerInterceptor`, all
 
 Message handler interceptors can take action both before and after command processing. Interceptors can even block command processing altogether, for example for security reasons.
 
-Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle`, that takes three parameters: the command message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process. The `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(command\) message handling \(see [Unit Of Work]() for more information about the phases\).
+Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle`, that takes three parameters: the command message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process. The `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(command\) message handling \(see [Unit Of Work](unit-of-work.md) for more information about the phases\).
 
 Unlike dispatch interceptors, handler interceptors are invoked in the context of the command handler. That means they can attach correlation data based on the message being handled to the unit of work, for example. This correlation data will then be attached to messages being created in the context of that unit of work.
 
@@ -97,7 +97,7 @@ public class CommandBusConfiguration {
 
 #### `@CommandHandlerInterceptor` Annotation
 
-The framework has the ability to add a Handler Interceptor as a `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. The difference between a method on an Aggregate and a "[regular]()" Command Handler Interceptor, is that with the annotation approach you can make decisions based on the current state of the given Aggregate. Some properties of an annotated Command Handler Interceptor are:
+The framework has the ability to add a Handler Interceptor as a `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. The difference between a method on an Aggregate and a "[regular](message-intercepting.md#command-handler-interceptors)" Command Handler Interceptor, is that with the annotation approach you can make decisions based on the current state of the given Aggregate. Some properties of an annotated Command Handler Interceptor are:
 
 * The annotation can be put on entities within the Aggregate. 
 * It is possible to intercept a command on Aggregate Root level, whilst the command handler is in a child entity.
@@ -170,7 +170,7 @@ public class EventBusConfiguration {
 
 Message handler interceptors can take action both before and after event processing. Interceptors can even block event processing altogether, for example for security reasons.
 
-Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle()`, that takes three parameters: the \(event\) message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process. The `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(event\) message handling \(see [Unit Of Work]() for more information about the phases\).
+Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle()`, that takes three parameters: the \(event\) message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process. The `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(event\) message handling \(see [Unit Of Work](unit-of-work.md) for more information about the phases\).
 
 Unlike dispatch interceptors, handler interceptors are invoked in the context of the event handler. That means they can attach correlation data based on the message being handled to the unit of work, for example. This correlation data will then be attached to event messages being created in the context of that unit of work.
 
@@ -237,7 +237,7 @@ The `BeanValidationInterceptor` also implements `MessageHandlerInterceptor`, all
 
 Message handler interceptors can take action both before and after query processing. Interceptors can even block query processing altogether, for example for security reasons.
 
-Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle`, that takes three parameters: the query message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process. The `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(query\) message handling \(see [Unit Of Work]() for more information about the phases\).
+Interceptors must implement the `MessageHandlerInterceptor` interface. This interface declares one method, `handle`, that takes three parameters: the query message, the current `UnitOfWork` and an `InterceptorChain`. The `InterceptorChain` is used to continue the dispatching process. The `UnitOfWork` gives you \(1\) the message being handled and \(2\) provides the possibility to tie in logic prior, during or after \(query\) message handling \(see[ Unit Of Work ](unit-of-work.md)for more information about the phases\).
 
 Unlike dispatch interceptors, handler interceptors are invoked in the context of the query handler. That means they can attach correlation data based on the message being handled to the unit of work, for example. This correlation data will then be attached to messages being created in the context of that unit of work.
 

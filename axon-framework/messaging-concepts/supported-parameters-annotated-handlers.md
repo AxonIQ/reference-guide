@@ -2,7 +2,7 @@
 
 This chapter provides an exhaustive list of all the possible parameters for annotated message handling functions. The parameters for any message handling function are resolved through an Axon Framework internal mechanism, called the `ParameterResolver`.
 
-The set of `ParameterResolver`s can be extended if custom \(or not yet\) supported parameters should be injected in to your annotated handlers. For more specifics on configuring custom `ParameterResolver`s we suggest reading [this]() section.
+The set of `ParameterResolver`s can be extended if custom \(or not yet\) supported parameters should be injected in to your annotated handlers. For more specifics on configuring custom `ParameterResolver`s we suggest reading [this](../../appendices/message-handler-tuning/parameter-resolvers.md) section.
 
 ## Supported Parameters for Command Handlers
 
@@ -29,13 +29,13 @@ By default, `@CommandHandler` annotated methods allow the following parameter ty
 * A parameter of type `String` annotated with `@MessageIdentifier` will resolve the identifier of the `CommandMessage` being handled
 * Parameters of type `ConflictResolver` will resolve the configured `ConflictResolver` instance.
 
-  See the [Conflict Resolution]() section for specifics on this topic. 
+  See the [Conflict Resolution](../axon-framework-commands/modeling/conflict-resolution.md) section for specifics on this topic. 
 
 * Parameters of type `InterceptorChain` will resolve the chain of `MessageHandlerInterceptor`s for a `CommandMessage`.
 
   This feature should be used in conjunction with a `@CommandHandlerInterceptor` annotated method.
 
-  For more specifics on this it is recommend to read [this]() section.
+  For more specifics on this it is recommend to read [this](message-intercepting.md#commandhandlerinterceptor-annotation) section.
 
 * If the application is run in a Spring environment, any Spring Bean can be resolved.
 
