@@ -77,6 +77,24 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration()
             .messageMonitor(c.messageMonitor(SimpleQueryBus.class, "queryBus"))
             .build()
     );
+    
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```
+@Bean
+public SimpleQueryBus queryBus(AxonConfiguration axonConfiguration, TransactionManager transactionManager) {
+    return SimpleQueryBus.builder()
+                         .messageMonitor(axonConfiguration.messageMonitor(QueryBus.class, "queryBus"))
+                         .transactionManager(transactionManager)
+                         .errorHandler(axonConfiguration.getComponent(
+                                 QueryInvocationErrorHandler.class,
+                                 () -> LoggingQueryInvocationErrorHandler.builder().build()
+                         ))
+                         .queryUpdateEmitter(axonConfiguration.getComponent(QueryUpdateEmitter.class))
+                         .build();
+}
 ```
 {% endtab %}
 {% endtabs %}
