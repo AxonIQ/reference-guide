@@ -1,6 +1,6 @@
 # Query Handlers
 
-The handling of a query comes down to an annotated handler returning the query's response. The goal of this chapter is to describe what such an `@QueryHandler` annotated method looks like, as well as describing the call order and response type options. For configuration of query handlers and the `QueryBus`, it is recommended to read the [Configuration]() section.
+The handling of a query comes down to an annotated handler returning the query's response. The goal of this chapter is to describe what such an `@QueryHandler` annotated method looks like, as well as describing the call order and response type options. For configuration of query handlers and the `QueryBus`, it is recommended to read the [Configuration](configuration.md) section.
 
 ## Writing a Query Handler
 
@@ -20,7 +20,7 @@ public class FetchCardSummaryQuery {
 }
 ```
 
-As shown, we have a regular POJO that will fetch a `CardSummary` based on the `cardSummaryId` field. This `FetchCardSummaryQuery` will be [dispatched]() to a handler that defines the given message as its first declared parameter. The handler will likely be contained in an object which is in charge of or has access to the `CardSummary` model in question:
+As shown, we have a regular POJO that will fetch a `CardSummary` based on the `cardSummaryId` field. This `FetchCardSummaryQuery` will be [dispatched](query-dispatchers.md) to a handler that defines the given message as its first declared parameter. The handler will likely be contained in an object which is in charge of or has access to the `CardSummary` model in question:
 
 ```java
 import org.axonframework.queryhandling.QueryHandler;
@@ -94,9 +94,9 @@ In the example above, the handler method of `SubQueryHandler` will be invoked fo
 
 ## Query Handler Return Values
 
-Axon allows a multitude of return types for a query handler method, as defined [earlier]() on this page. You should think of single objects and collections of objects, taking into account wildcards or generics too. Below we share a list of all the options which are supported and tested in the framework.
+Axon allows a multitude of return types for a query handler method, as defined [earlier](query-handlers.md#writing-a-query-handler) on this page. You should think of single objects and collections of objects, taking into account wildcards or generics too. Below we share a list of all the options which are supported and tested in the framework.
 
-For clarity we make a deviation between single instance and multiple instances of a response type. This follows the requirement to specify the `ResponseType` when [dispatching a query](), which expects the user to state if either a single result or multiple results are desired. Axon will use this `ResponseType` object to match a query with a query handler method, along side the query payload and query name.
+For clarity we make a deviation between single instance and multiple instances of a response type. This follows the requirement to specify the `ResponseType` when [dispatching a query](query-dispatchers.md), which expects the user to state if either a single result or multiple results are desired. Axon will use this `ResponseType` object to match a query with a query handler method, along side the query payload and query name.
 
 ### Supported Single Instance Return Values
 

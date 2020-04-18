@@ -10,7 +10,7 @@ When you register a Query Handler, that means you are registering a class contai
 2. The methods response type is the query's _response type_.
 3. The value of the `queryName` field in the annotation as the query's _name_ \(this is optional and in its absence will default to the query payload\).    
 
-Note that it is possible to register multiple query handlers for the same query payload, response type and name. Furthermore, when dispatching a query the client can indicate whether he/she wants the result from a [single handler]() or the result from [all handlers]() corresponding to the query payload, name and response type combination.
+Note that it is possible to register multiple query handlers for the same query payload, response type and name. Furthermore, when dispatching a query the client can indicate whether he/she wants the result from a [single handler ](query-dispatchers.md#point-to-point-queries)or the result from [all handlers](query-dispatchers.md#scatter-gather-queries) corresponding to the query payload, name and response type combination.
 
 The following snippets point out how a Query Handler can be registered:
 
