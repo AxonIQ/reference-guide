@@ -4,7 +4,7 @@ This page aims to describe the suite of options for configuring the Command Mode
 
 ## Aggregate Configuration
 
-Core concepts within the Command Model are the [Aggregates ]()which are implemented. To instantiate a default Aggregate configuration you simply do the following:
+Core concepts within the Command Model are the [Aggregates](modeling/aggregate.md) which are implemented. To instantiate a default Aggregate configuration you simply do the following:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -40,9 +40,9 @@ public class GiftCard {
 
 ## Registering a Command Handler
 
-Often times the command handler functions are placed directly on the [aggregate](). When this approach is taken, simply registering the Aggregate as described [above]() is sufficient for all its command handler methods to be registered too.
+Often times the command handler functions are placed directly on the [aggregate](modeling/aggregate.md). When this approach is taken, simply registering the Aggregate as described above is sufficient for all its command handler methods to be registered too.
 
-[External Command Handlers]() however do require direct registration as being a command handler, which is shown in the following sample:
+[External Command Handlers](command-handlers.md#external-command-handlers) however do require direct registration as being a command handler, which is shown in the following sample:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -92,17 +92,17 @@ public class GiftCardCommandHandler {
 
 > **Duplicate Command Handling Functions**
 >
-> As specified in the [Messaging Concepts]() section, a command always has exactly one destination. That means there should only be a single Command Handler method for any given command.
+> As specified in the [Messaging Concepts](../messaging-concepts/) section, a command always has exactly one destination. That means there should only be a single Command Handler method for any given command.
 >
-> By default, when a duplicate Command Handler method is registered, the last registration will be kept and a warning is logged. This behaviour can be adjusted by specifying a different `DuplicateCommandHandlerResolver`, as is described in the [Runtime Tuning]() section.
+> By default, when a duplicate Command Handler method is registered, the last registration will be kept and a warning is logged. This behaviour can be adjusted by specifying a different `DuplicateCommandHandlerResolver`, as is described in the [Runtime Tuning](../tuning/) section.
 
 ## Command Model Repositories
 
 The repository is the mechanism that provides access to aggregates. The repository acts as a gateway to the actual storage mechanism used to persist the data. In CQRS, repositories only need to be able to find aggregates based on their unique identifier. Any other types of queries should be performed against the query database.
 
-In Axon Framework, all repositories must implement the `Repository` interface. This interface prescribes three methods: `load(identifier, version)`, `load(identifier)` and `newInstance(factoryMethod)`. The `load` methods allows you to load aggregates from the repository. The optional `version` parameter is used to detect concurrent modifications \(see [Conflict resolution]()\). `newInstance` is used to register newly created aggregates in the repository.
+In Axon Framework, all repositories must implement the `Repository` interface. This interface prescribes three methods: `load(identifier, version)`, `load(identifier)` and `newInstance(factoryMethod)`. The `load` methods allows you to load aggregates from the repository. The optional `version` parameter is used to detect concurrent modifications \(see [Conflict resolution](modeling/conflict-resolution.md)\). `newInstance` is used to register newly created aggregates in the repository.
 
-Depending on your underlying persistence storage and auditing needs, there are a number of base implementations that provide basic functionality needed by most repositories. Axon Framework makes a distinction between repositories that save the current state of the aggregate \(see [Standard repositories]()\), and those that store the events of an aggregate \(see [Event Sourcing repositories]()\).
+Depending on your underlying persistence storage and auditing needs, there are a number of base implementations that provide basic functionality needed by most repositories. Axon Framework makes a distinction between repositories that save the current state of the aggregate \(see [Standard repositories](configuration.md#standard-repositories)\), and those that store the events of an aggregate \(see [Event Sourcing repositories](configuration.md#event-sourcing-repositories)\).
 
 Note that the Repository interface does not prescribe a `delete(identifier)` method. Deleting aggregates is done by invoking the `AggregateLifecycle.markDeleted()` method from within an aggregate. Deleting an aggregate is a state migration like any other, with the only difference that it is irreversible in many cases. You should create your own meaningful method on your aggregate which sets the aggregate's state to "deleted". This also allows you to register any events that you would like to have published.
 
@@ -148,7 +148,7 @@ You can also easily implement your own repository. In that case, it is best to e
 
 Aggregate roots that are able to reconstruct their state based on events may also be configured to be loaded by an event sourcing repository. Those repositories do not store the aggregate itself, but the series of events generated by the aggregate. Based on these events, the state of an aggregate can be restored at any time.
 
-The `EventSourcingRepository` implementation provides the basic functionality needed by any event sourcing repository in the Axon Framework. It depends on an `EventStore` \(see [Event store implementations]()\), which abstracts the actual storage mechanism for the events.
+The `EventSourcingRepository` implementation provides the basic functionality needed by any event sourcing repository in the Axon Framework. It depends on an `EventStore` \(see [Event store implementations](../events/event-bus-and-event-store.md)\), which abstracts the actual storage mechanism for the events.
 
 ## Aggregate Factories
 

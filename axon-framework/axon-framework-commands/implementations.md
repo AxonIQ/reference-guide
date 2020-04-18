@@ -1,8 +1,8 @@
 # Implementations
 
-Command dispatching, as exemplified in the [Dispatching Commands]() page, has a number of advantages. First of all, there is a single object that clearly describes the intent of the client. By logging the command, you store both the intent and related data for future reference. Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. Testing also becomes a lot easier. You could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing]() for more on this\). The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
+Command dispatching, as exemplified in the [Dispatching Commands](command-dispatchers.md) page, has a number of advantages. First of all, there is a single object that clearly describes the intent of the client. By logging the command, you store both the intent and related data for future reference. Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. Testing also becomes a lot easier. You could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing](../testing/) for more on this\). The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
 
-This does not mean command dispatching using explicit command objects is the only way to do it. The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way, while providing best practices as the default behavior. It is still possible to use a service layer that you can invoke to execute commands. The method will just need to start a unit of work \(see [Unit of Work]()\) and perform a commit or rollback on it when the method is finished.
+This does not mean command dispatching using explicit command objects is the only way to do it. The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way, while providing best practices as the default behavior. It is still possible to use a service layer that you can invoke to execute commands. The method will just need to start a unit of work \(see [Unit of Work](../messaging-concepts/unit-of-work.md)\) and perform a commit or rollback on it when the method is finished.
 
 The next sections provide an overview of the tasks related to setting up a command dispatching infrastructure with the Axon Framework.
 
@@ -141,13 +141,13 @@ MyGateway myGateway = factory.createGateway(MyGateway.class);
 
 ## The Command Bus
 
-The Command Bus is the mechanism that dispatches commands to their respective command handlers within an Axon application. Suggestions on how to use the `CommandBus` can be found [here](). Several flavors of the command bus, with differing characteristics, exist within the framework:
+The Command Bus is the mechanism that dispatches commands to their respective command handlers within an Axon application. Suggestions on how to use the `CommandBus` can be found [here](command-dispatchers.md#the-command-bus). Several flavors of the command bus, with differing characteristics, exist within the framework:
 
 ### AxonServerCommandBus
 
-Axon provides a command bus out of the box, the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server]() to submit and receive Commands.
+Axon provides a command bus out of the box, the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server](../../axon-server-introduction.md) to submit and receive Commands.
 
-`AxonServerCommandBus` is a [distributed command bus](). It uses a [`SimpleCommandBus`]() to handle incoming commands on different JVM's by default.
+`AxonServerCommandBus` is a [distributed command bus](command-dispatchers.md#the-command-bus). It uses a [`SimpleCommandBus`]() to handle incoming commands on different JVM's by default.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -197,7 +197,7 @@ By simply declaring dependency to `axon-spring-boot-starter`, Axon will automati
 
 The `SimpleCommandBus` is, as the name suggests, the simplest implementation. It does straightforward processing of commands in the thread that dispatches them. After a command is processed, the modified aggregate\(s\) are saved and generated events are published in that same thread. In most scenarios, such as web applications, this implementation will suit your needs.
 
-Like most `CommandBus` implementations, the `SimpleCommandBus` allows interceptors to be configured. `CommandDispatchInterceptor`s are invoked when a command is dispatched on the command bus. The `CommandHandlerInterceptor`s are invoked before the actual command handler method is, allowing you to do modify or block the command. See [Command Interceptors]() for more information.
+Like most `CommandBus` implementations, the `SimpleCommandBus` allows interceptors to be configured. `CommandDispatchInterceptor`s are invoked when a command is dispatched on the command bus. The `CommandHandlerInterceptor`s are invoked before the actual command handler method is, allowing you to do modify or block the command. See [Command Interceptors](../messaging-concepts/message-intercepting.md#command-interceptors) for more information.
 
 Since all command processing is done in the same thread, this implementation is limited to the JVM's boundaries. The performance of this implementation is good, but not extraordinary. To cross JVM boundaries, or to get the most out of your CPU cycles, check out the other `CommandBus` implementations.
 
@@ -300,7 +300,7 @@ While the `DisruptorCommandBus` easily outperforms the `SimpleCommandBus` by a f
 
    It shouldn't take more than a few milliseconds.
 
-To construct a `DisruptorCommandBus` instance, you need an `EventStore`. This component is explained in the [Event Bus and Event Store]() section.
+To construct a `DisruptorCommandBus` instance, you need an `EventStore`. This component is explained in the [Event Bus and Event Store](../events/event-bus-and-event-store.md) section.
 
 Optionally, you can provide a `DisruptorConfiguration` instance, which allows you to tweak the configuration to optimize performance for your specific environment:
 
@@ -416,7 +416,7 @@ public DisruptorCommandBus commandBus(TransactionManager txManager, AxonConfigur
 
 Sometimes, you want multiple instances of command buses in different JVMs to act as one. Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM while sending back any results.
 
-That is where the concept of 'distributing the command bus' comes in. The default implementation of a distributed command bus is the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server]() to submit and receive Commands. Unlike the other `CommandBus` implementations, the `AxonServerCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between command bus implementations on different JVM's.
+That is where the concept of 'distributing the command bus' comes in. The default implementation of a distributed command bus is the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server ](../../axon-server-introduction.md)to submit and receive Commands. Unlike the other `CommandBus` implementations, the `AxonServerCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between command bus implementations on different JVM's.
 
 By default, [`SimpleCommandBus`]() is configured to handle incoming commands on the different JVM's. You can configure `AxonServerCommandBus` to use other command bus implementations for this purposes: [`AsynchronousCommandBus`](), [`DisruptorCommandBus`]().
 
@@ -443,12 +443,12 @@ By default, the `RoutingStrategy` implementations will throw an exception when n
 
 You can choose different flavor of this components that are available in one of the extension modules:
 
-* [SpringCloud]() or 
-* [JGroups]().
+* [SpringCloud](../../extensions/spring-cloud.md) or 
+* [JGroups](../../extensions/jgroups.md).
 
 Configuring a distributed command bus can \(mostly\) be done without any modifications in configuration files.
 
-First of all, the starters for one of the Axon distributed command bus modules needs to be included \(e.g. [JGroups]() or [Spring Cloud]()\).
+First of all, the starters for one of the Axon distributed command bus modules needs to be included \(e.g. [JGroups](../../extensions/jgroups.md) or [Spring Cloud](../../extensions/spring-cloud.md)\).
 
 Once that is present, a single property needs to be added to the application context, to enable the distributed command bus:
 
