@@ -20,7 +20,7 @@ Note that Kafka is a perfectly fine event distribution mechanism, but it is not 
 
 When Event Messages are published to an Event Bus \(or Event Store\), they can be forwarded to a Kafka topic using the `KafkaPublisher`. To achieve this it will utilize a Kafka `Producer`, retrieved through Axon's `ProducerFactory`. The `KafkaPublisher` in turn receives the events to publish from a `KafkaEventPublisher`.
 
-Since the `KafkaEventPublisher` is an event message handler in Axon terms, we can provide it to any [Event Processor]() to receive the published events. The choice of event processor which brings differing characteristics for event publication to Kafka:
+Since the `KafkaEventPublisher` is an event message handler in Axon terms, we can provide it to any [Event Processor](../axon-framework/events/event-processors.md) to receive the published events. The choice of event processor which brings differing characteristics for event publication to Kafka:
 
 * **Subscribing Event Processor** - publication of messages to Kafka will occur in the same thread \(and Unit of Work\)
 
@@ -169,7 +169,7 @@ public class KafkaEventConsumptionConfiguration {
 
 Using the `SubscribableKafkaMessageSource` means you are inclined to use a `SubscribingEventProcessor` to consume the events in your event handlers.
 
-When using this source, Kafka's idea of pairing `Consumer` instances into "Consumer Groups" is used. This is strengthened by making the `groupId` upon source construction a _hard requirement_. To use a common `groupId` essentially means that the event-stream-workload can be shared on Kafka's terms, whereas a `SubscribingEventProcessor` typically works on it's own accord regardless of the number of instances. The workload sharing can be achieved by having several application instances with the same `groupId` or by adjusting the consumer count through the `SubscribableKafkaMessageSource`'s builder. The same benefit holds for [resetting]() an event stream, which in Axon is reserved to the `TrackingEventProcessor`, but is now opened up through Kafka's own API's.
+When using this source, Kafka's idea of pairing `Consumer` instances into "Consumer Groups" is used. This is strengthened by making the `groupId` upon source construction a _hard requirement_. To use a common `groupId` essentially means that the event-stream-workload can be shared on Kafka's terms, whereas a `SubscribingEventProcessor` typically works on it's own accord regardless of the number of instances. The workload sharing can be achieved by having several application instances with the same `groupId` or by adjusting the consumer count through the `SubscribableKafkaMessageSource`'s builder. The same benefit holds for [resetting ](../axon-framework/events/event-processors.md#replaying-events)an event stream, which in Axon is reserved to the `TrackingEventProcessor`, but is now opened up through Kafka's own API's.
 
 Although the `SubscribableKafkaMessageSource` thus provides the niceties the tracking event processor normally provides, it does come with two catches:
 
@@ -238,7 +238,7 @@ If only a single subscribing event processor will be subscribed to the kafka mes
 
 Using the `StreamableKafkaMessageSource` means you are inclined to use a `TrackingEventProcessor` to consume the events in your event handlers.
 
-Where as the [subscribable kafka message source](kafka.md#consuming-events-with-a-subscribable-message-source) uses Kafka's idea of sharing the workload through multiple `Consumer` instances in the same "Consumer Group", the streamable approach enforces a **unique** consumer group per `Consumer` instance. Axon requires uniquely identified consumer group/`Consumer` pairs to \(1\) ensure event ordering and \(2\) to guarantee that each instance/thread receives the correct portion of the event stream during [parallel processing](). The distinct group id is derived by the `StreamableKafkaMessageSource` through a `groupIdPrefix` and a `groupdIdSuffixFactory`, which are adjustable through the source's builder.
+Where as the [subscribable kafka message source](kafka.md#consuming-events-with-a-subscribable-message-source) uses Kafka's idea of sharing the workload through multiple `Consumer` instances in the same "Consumer Group", the streamable approach enforces a **unique** consumer group per `Consumer` instance. Axon requires uniquely identified consumer group/`Consumer` pairs to \(1\) ensure event ordering and \(2\) to guarantee that each instance/thread receives the correct portion of the event stream during [parallel processing](../axon-framework/events/event-processors.md#parallel-processing). The distinct group id is derived by the `StreamableKafkaMessageSource` through a `groupIdPrefix` and a `groupdIdSuffixFactory`, which are adjustable through the source's builder.
 
 ```java
 public class KafkaEventConsumptionConfiguration {
@@ -284,7 +284,7 @@ Albeit the default, this implementation allows for some customization, such as h
 
 The `SequencingPolicy` can be adjusted to change the behaviour of the record key being used. The default sequencing policy is the `SequentialPerAggregatePolicy`, which leads to the aggregate identifier of an event being the key of a `ProducerRecord` and `ConsumerRecord`.
 
-Lastly, the `Serializer` used by the converter can be adjusted. See the [Serializer]() section for more details on this.
+Lastly, the `Serializer` used by the converter can be adjusted. See the [Serializer](../axon-framework/events/event-serialization.md) section for more details on this.
 
 ```java
 public class KafkaMessageConversationConfiguration {
