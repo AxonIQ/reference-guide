@@ -6,7 +6,7 @@ A summary of the various sub-sections is given below.
 
 | Sub-Section | Purpose |
 | :--- | :--- |
-| ​[Implementation](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/sagas/implementing-saga)​ | Implementing Sagas using the Axon Framework |
-| ​[Associations](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/sagas/managing-associations)​ | Managing Saga associations using the Axon Framework |
-| ​[Infrastructure](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/sagas/saga-infrastructure)​ | Non-Functional Development concerns for Sagas using the Axon Framework |
+| [​Implementation​](implementation.md) | Implementing Sagas using the Axon Framework |
+| [​Associations​](associations.md) | Managing Saga associations using the Axon Framework |
+| [​Infrastructure​](infrastructure.md) | Non-Functional Development concerns for Sagas using the Axon Framework |
 
