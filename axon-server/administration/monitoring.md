@@ -11,11 +11,7 @@ In particular, you will find following actuator endpoints enabled:‌
 * `/actuator/prometheus` endpoint exposes metrics data in a format that can be scraped by a [Prometheus server \(Monitoring system & time series database\)](https://prometheus.io/)​
 * `/actuator/env` endpoint exposes the current environment properties
 
-‌
-
-## Application level metrics <a id="application-level-metrics"></a>
-
-‌
+## Application level metrics‌ <a id="application-level-metrics"></a>
 
 Specific AxonServer metrics is available under `/actuator/metrics` endpoint:‌
 
@@ -24,8 +20,6 @@ Specific AxonServer metrics is available under `/actuator/metrics` endpoint:‌
 * `/actuator/metrics/axon.queries.count` current number of queries stored in a node
 * `/actuator/metrics/axon.snapshots.count` current number of snapshots stored in a node
 * `/actuator/metrics/axon.commands.active` current number of active commands in a node
-
-‌
 
 Other, AxonServer-specific endpoints can be browsed through `/swagger-ui.html`.
 
