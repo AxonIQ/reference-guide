@@ -1,4 +1,2 @@
 # Installation
 
-This is atest
-
