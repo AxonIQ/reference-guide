@@ -1,11 +1,11 @@
 # Query Dispatchers
 
-How to handle a query message has been covered in more detail on the [previous page](). Queries have to be dispatched, just like any type of message, before they can be handled. To that end Axon provides two interfaces:
+How to handle a query message has been covered in more detail in the [Query Handling section](query-handlers.md). Queries have to be dispatched, just like any type of message, before they can be handled. To that end Axon provides two interfaces:
 
-1. The [Query Bus](), and
-2. The [Query Gateway]()
+1. The Query Bus, and
+2. The Query Gateway
 
-This page will show how and when to use the query gateway and bus. How to configure and specifics on the the query gateway and bus implementations are discussed [here]()
+This page will show how and when to use the query gateway and bus. How to configure and specifics on the the query gateway and bus implementations are discussed [here](implementations.md)
 
 ## The Query Bus and Query Gateway
 
@@ -15,9 +15,9 @@ The `QueryGateway` is a convenient interface towards the query dispatching mecha
 
 Regardless whether you choose to use the `QueryBus` or the `QueryGateway`, both provide several types of queries. Axon Framework makes a distinction between three types, being:
 
-1. [Point-to-Point queries](),
-2. [Scatter-Gather queries](), and
-3. [Subscription queries]()
+1. [Point-to-Point queries](query-dispatchers.md#point-to-point-queries),
+2. [Scatter-Gather queries](query-dispatchers.md#scatter-gather-queries), and
+3. [Subscription queries](query-dispatchers.md#subscription-queries)
 
 ### Point-to-Point queries
 
