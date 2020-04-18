@@ -6,7 +6,7 @@ In particular, you will find following actuator endpoints enabled:‌
 
 * `/actuator/health` endpoint is used to check the health or state of the AxonServer
 * `/actuator/info` endpoint informs you about some basic attributes of an AxonServer \(name, description, version\)
-* `/actuator/metrics` endpoint publishes information about OS, JVM as well as [application level metrics](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-server-1/administration/monitoring#application-level-metrics)​
+* `/actuator/metrics` endpoint publishes information about OS, JVM as well as [application level metrics​](monitoring.md#application-level-metrics)
 * `/actuator/loggers` endpoint exposes detailed view of the loggers configuration
 * `/actuator/prometheus` endpoint exposes metrics data in a format that can be scraped by a [Prometheus server \(Monitoring system & time series database\)](https://prometheus.io/)​
 * `/actuator/env` endpoint exposes the current environment properties

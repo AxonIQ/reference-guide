@@ -8,7 +8,7 @@ For the Axon Server Standard edition the only supported commands are:‌
 * users
 * register-user
 * delete-user
-* purge-events \(only in [Development Mode](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-server-1/installation/development-mode)\)
+* purge-events \(only in [Development Mode](../installation/development-mode.md)\)
 
 ‌
 
