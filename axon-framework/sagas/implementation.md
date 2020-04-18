@@ -20,7 +20,7 @@ Event handling in a saga is quite comparable to that of a regular event listener
 
 Instead of publishing all events to all saga instances \(which would be a complete waste of resources\), Axon will only publish events containing properties that the saga has been associated with. This is done using `AssociationValue`s. An `AssociationValue` consists of a key and a value. The key represents the type of identifier used, for example "orderId" or "order". The value represents the corresponding value, "1" or "2" in the previous example.
 
-The order in which `@SagaEventHandler` annotated methods are evaluated is identical to that of `@EventHandler` methods \(see [Annotated event handler]()\). A method matches if the parameters of the handler method match the incoming event, and if the saga has an association with the property defined on the handler method.
+The order in which `@SagaEventHandler` annotated methods are evaluated is identical to that of `@EventHandler` methods \(see [Annotated event handler](../events/event-handlers.md)\). A method matches if the parameters of the handler method match the incoming event, and if the saga has an association with the property defined on the handler method.
 
 The `@SagaEventHandler` annotation has two attributes, of which `associationProperty` is the most important one. This is the name of the property on the incoming event that should be used to find associated sagas. The key of the association value is the name of the property. The value is the value returned by property its getter method.
 
@@ -99,7 +99,7 @@ In some cases, applications benefit from caching saga instances. In that case, t
 
 #### JpaSagaStore
 
-The `JpaSagaStore` uses JPA to store the state and association values of sagas. Sagas themselves do not need any JPA annotations; Axon will serialize the sagas using a `Serializer` \(similar to event serialization, you can choose between an `XStreamSerializer`, `JacksonSerializer` or `JavaSerializer`, which can be set by configuring the default `Serializer` in your application. For more details, see [Serializers]().
+The `JpaSagaStore` uses JPA to store the state and association values of sagas. Sagas themselves do not need any JPA annotations; Axon will serialize the sagas using a `Serializer` \(similar to event serialization, you can choose between an `XStreamSerializer`, `JacksonSerializer` or `JavaSerializer`, which can be set by configuring the default `Serializer` in your application. For more details, see [Serializers](../events/event-serialization.md).
 
 The `JpaSagaStore` is configured with an `EntityManagerProvider`, which provides access to an `EntityManager` instance to use. This abstraction allows for the use of both application managed and container managed `EntityManager`s. Optionally, you can define the serializer to serialize the Saga instances with. Axon defaults to the `XStreamSerializer`.
 

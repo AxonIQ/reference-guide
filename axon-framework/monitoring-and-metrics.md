@@ -12,7 +12,7 @@ Monitoring a message centric application will require you to be able to see wher
 
 
 
-One import aspect in regards to this is tracing a given message. To that end the framework provides the `CorrelationDataProvider`, as described briefly [here](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/messaging-concepts/message-intercepting). This interface and its implementations provide you the means to populate the meta-data of your messages with specific fields, like a 'trace-id', 'correlation-id' or any other field you might be interested in.‌
+One import aspect in regards to this is tracing a given message. To that end the framework provides the `CorrelationDataProvider`, as described briefly [here](messaging-concepts/message-intercepting.md). This interface and its implementations provide you the means to populate the meta-data of your messages with specific fields, like a 'trace-id', 'correlation-id' or any other field you might be interested in.‌
 
 For configuring the `MessageOriginProvider` you can do the following:
 
@@ -42,13 +42,13 @@ public class MonitoringConfiguration {
 
 ‌
 
-Another good approach to track the flow of messages throughout an Axon application is by setting up the right interceptors in your application. There are two flavors of interceptors, the Dispatch and Handler Interceptors \(as discussed [here](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/messaging-concepts/message-intercepting)\), which intercept a message prior to publishing \(Dispatch Interceptor\) or while it is being handled \(Handler Interceptor\). The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled. The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J, but also provides a simple overridable template to set up your own desired logging format. We refer to the command, event and query sections for the specifics on how to configure message interceptors.‌
+Another good approach to track the flow of messages throughout an Axon application is by setting up the right interceptors in your application. There are two flavors of interceptors, the Dispatch and Handler Interceptors \(as discussed [here](messaging-concepts/message-intercepting.md)\), which intercept a message prior to publishing \(Dispatch Interceptor\) or while it is being handled \(Handler Interceptor\). The interceptor mechanism lends itself quite nicely to introduce a way to consistently log when a message is being dispatched/handled. The `LoggingInterceptor` is an out of the box solution to log any type of message to SLF4J, but also provides a simple overridable template to set up your own desired logging format. We refer to the command, event and query sections for the specifics on how to configure message interceptors.‌
 
 ### Event Tracker Status <a id="event-tracker-status"></a>
 
 ‌
 
-Since [Tracking Tokens](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/event-handling/event-processors#token-store) "track" the progress of a given Tracking Event Processor, they provide a sensible monitoring hook in any Axon application. Such a hook proves its usefulness when we want to rebuild our view model and we want to check when the processor has caught up with all the events.‌
+Since [Tracking Tokens](events/event-processors.md#token-store) "track" the progress of a given Tracking Event Processor, they provide a sensible monitoring hook in any Axon application. Such a hook proves its usefulness when we want to rebuild our view model and we want to check when the processor has caught up with all the events.‌
 
 To that end the `TrackingEventProcessor` exposes the `processingStatus()` method. It returns a map where the key is the segment identifier and the value is an "Event Tracker Status". The Event Tracker Status exposes a couple of metrics:‌
 
