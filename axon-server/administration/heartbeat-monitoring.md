@@ -10,15 +10,26 @@ This feature can be enabled by configuring the following property:
 axoniq.axonserver.heartbeat.enabled=true
 ```
 
-‌
-
 Please note that, in order to have this feature properly working, also the client should enable the Heartbeat Monitoring functionality.‌
 
-The feature is disable by default; it can be enabled in the following way:Spring Boot AutoConfiguration
+The feature is disabled by default; it can be enabled in the following way:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+                                         .registerModule(new HeartbeatConfiguration());
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+by configuring the following property:
 
 ```text
-Configurer configurer = DefaultConfigurer.defaultConfiguration()                                         .registerModule(new HeartbeatConfiguration());
+axon.axonserver.heartbeat.auto-configuration.enabled=true
 ```
+{% endtab %}
+{% endtabs %}
 
 > **Axon Framework Compatibility**
 >
