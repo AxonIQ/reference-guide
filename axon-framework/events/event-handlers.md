@@ -71,5 +71,14 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration()
                                              .registerEventHandler(conf -> new MyEventHandlerClass()));
 ```
 {% endtab %}
+
+{% tab title="Spring Boot Autoconfiguration" %}
+```java
+@Component
+public class MyEventHandlerClass {
+    // contains @EventHandler(s)
+}
+```
+{% endtab %}
 {% endtabs %}
 
