@@ -8,6 +8,6 @@ A summary of the various sub-sections is given below.
 
 | Sub-Section | Purpose |
 | :--- | :--- |
-| ​[Deadline Managers](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/deadlines/deadline-managers)​ | Deadline Handling using Deadline Managers |
-| ​[Event Schedulers](https://app.gitbook.com/@domain-components/s/axon-reference-guide-master-temp/axon-application-development/deadlines/deadline-handling)​ | Deadline Handling using Event Schedulers |
+| ​[Deadline Managers​](deadline-managers.md) | Deadline Handling using Deadline Managers |
+| ​[Event Schedulers​](event-schedulers.md) | Deadline Handling using Event Schedulers |
 
