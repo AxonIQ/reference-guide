@@ -6,9 +6,9 @@ A summary of the various sub-sections is given below.
 
 | Sub-Section | Purpose |
 | :--- | :--- |
-| [Installation]() | Installing Axon Server |
-| [Administration]() | Administrating an Axon Server  |
-| [Security]() | Securing an Axon Server deployment |
-| [Performance]() | Tuning an Axon Server deployment |
-| [Configuration]() | Configuration aspects of an Axon Server deployment |
+| [Installation](installation/) | Installing Axon Server |
+| [Administration](administration/) | Administrating an Axon Server  |
+| [Security](security/) | Securing an Axon Server deployment |
+| [Performance](performance/) | Tuning an Axon Server deployment |
+| [Configuration](configuration.md) | Configuration aspects of an Axon Server deployment |
 
