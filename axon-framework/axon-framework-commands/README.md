@@ -10,6 +10,7 @@ A summary of the various sub-sections is given below.
 | [Command Dispatchers ](command-dispatchers.md)/ [Command Handlers](command-handlers.md) | Functional Development concerns for Command Messages using the Axon Framework |
 | [Implementations](implementations.md) | Non-Functional Development concerns for Command Messages using the Axon Framework |
 | [Configuration](configuration.md) | Configuration concerns for Command Messages using the Axon Framework |
+| [Exception Handling](exception-handling.md) | Exception Handling concerns for Command Messages using the Axon Framework |
 
 This guide is complemented by a video tutorial which gives a practical demonstration of the concepts explained in this section. The tutorial is available at  -&gt; [Axon Coding Tutorial - Command Messages](https://www.youtube.com/watch?v=7oy4w5THFEU&feature=youtu.be)
 
