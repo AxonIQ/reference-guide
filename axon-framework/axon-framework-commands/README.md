@@ -1,6 +1,6 @@
 # Commands
 
-The first type of "Messages" that an Axon application is associated with are _**Command Messages \(or simply Commands\).**_  This section of the reference guide  intends to cover in detail the capabilities that the Axon Framework provides to help facilitate Command Message Development
+The first type of "Messages" that an Axon application is associated with are _**Command Messages \(or simply Commands\).**_  This section of the reference guide  intends to cover in detail the capabilities that the Axon Framework provides to help facilitate Command Message Development.
 
 A summary of the various sub-sections is given below. 
 
@@ -13,4 +13,3 @@ A summary of the various sub-sections is given below.
 | [Exception Handling](exception-handling.md) | Exception Handling concerns for Command Messages using the Axon Framework |
 
 This guide is complemented by a video tutorial which gives a practical demonstration of the concepts explained in this section. The tutorial is available at  -&gt; [Axon Coding Tutorial - Command Messages](https://www.youtube.com/watch?v=7oy4w5THFEU&feature=youtu.be)
-
