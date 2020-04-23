@@ -1,6 +1,6 @@
 # Configuration
 
-There are several configuration options for the Axon Server that can be done to streamine and optimize your Axon Server deployment. 
+There are several configuration options for the Axon Server that can be done to streamline and optimize your Axon Server deployment. 
 
 A list of the important ones is provided below. The configuration is maintained in the _axonserver.properties_ file which is available as part of the server distribution.
 
@@ -134,6 +134,5 @@ Run the command `axonserver-migration.jar`
 When the source event store is requiring a specific JDBC driver, you should put the required JDBC driver jar files in the libs directory.
 
 Note that the migration tool only migrates the event store data to Axon Server. It does not update the tracking token values in token\_entry tables. Tracking tokens are highly dependent on the implementation of the actual event store used. Migrating them is case specific and error prone. Our recommendation is to reset the tracking processors after the migration.
-
 
 
