@@ -14,6 +14,7 @@ In order to run this quick start you will need Java 11 installed on your machine
 1. [Axon Coding Tutorial #1: - The Structure of an Axon Application](https://youtu.be/tqn9p8Duy54)
 
 Quick Start Demo app can run on Java 8 with a small change in the `pom.xml` file
+
 1. From the extracted folder, open `giftcard-demo\pom.xml` with your favourite editor
 1. Replace `<java.version>11</java.version>` occurrency with `<java.version>1.8</java.version>`
 1. Find the `maven-compiler-plugin` plugin block
