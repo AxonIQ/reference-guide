@@ -24,6 +24,8 @@ If both client and server are tagged with multiple tags
  then the connection that is made will be based on the highest number of matches. 
 If multiple nodes have a equal number of matching tags then the node with the lightest load is chosen.
 
+If no matching tags are available at all, it will connect to any available node.
+
 ## Enabling tagging
 
 To enable tagging you must configure both the client and server.
