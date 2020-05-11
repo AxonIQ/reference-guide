@@ -27,5 +27,4 @@ The migration tool maintains the state of its migration, so it can be run multip
 ### Notes
 
 * The migration tool only migrates the event store data to Axon Server. It does not update the tracking token values in token\_entry tables. Tracking tokens are highly dependent on the implementation of the actual event store used. Migrating them is case specific and error prone. Our recommendation is to reset the tracking processors after the migration.
-* The migration tool is like a regular Axon framework application so properties can be setup accordingly \(e.g. Access Control/Tokens\)
-
+* The migration tool is like a regular Axon Framework application so properties can be setup accordingly \(e.g. Access Control/Tokens\).
