@@ -22,7 +22,7 @@ The migration tool maintains the state of its migration, so it can be run multip
 
 ### Verification
 
-* Logon to the Axon Server EE console and query the store to check if the migrated event data is present
+* Logon to the Axon Server EE console and query the store to check if the migrated event data is present.
 
 ### Notes
 
