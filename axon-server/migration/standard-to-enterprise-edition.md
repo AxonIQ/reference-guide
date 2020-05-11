@@ -15,7 +15,7 @@ There are multiple benefits of moving from an Axon Server SE based deployment to
 
 ### Verification
 
-* Logon to the Axon Server EE console and query the store to check if the migrated event data is present
+* Logon to the Axon Server EE console and query the store to check if the migrated event data is present.
 
 ### Notes
 
