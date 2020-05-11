@@ -69,6 +69,18 @@
 ## Axon Server
 
 * [Introduction](axon-server/introduction.md)
+* [Standard Edition](axon-server/standard-edition/README.md)
+  * [Installation](axon-server/standard-edition/installation-1.md)
+  * [Security](axon-server/standard-edition/security/README.md)
+    * [Access Control](axon-server/standard-edition/security/access-control.md)
+  * [Administration](axon-server/standard-edition/administration/README.md)
+    * [Command Line Interface](axon-server/standard-edition/administration/command-line-interface.md)
+  * [Configuration](axon-server/standard-edition/configuration-1.md)
+* [Enterprise Edition](axon-server/enterprise-edition/README.md)
+  * [Installation](axon-server/enterprise-edition/installation-1.md)
+  * [Administration](axon-server/enterprise-edition/administration.md)
+  * [Security](axon-server/enterprise-edition/security.md)
+  * [Configuration](axon-server/enterprise-edition/configuration-1.md)
 * [Installation](axon-server/installation/README.md)
   * [Launch](axon-server/installation/launch.md)
   * [Development Mode](axon-server/installation/development-mode.md)
@@ -88,6 +100,10 @@
   * [Tuning Event Processing](axon-server/performance/tuning-event-processing.md)
   * [Tuning Command Processing](axon-server/performance/tuning-command-processing.md)
 * [Configuration](axon-server/configuration.md)
+* [Migration](axon-server/migration/README.md)
+  * [Standard to Enterprise Edition](axon-server/migration/axon-se-to-ee.md)
+  * [Non-Axon Server\(s\) to Axon EE Server](axon-server/migration/non-axon-server-to-axon-server.md)
+* [API Documentation](axon-server/api-documentation.md)
 
 ## Extensions
 
