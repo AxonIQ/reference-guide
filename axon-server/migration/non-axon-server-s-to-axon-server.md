@@ -12,7 +12,7 @@ The migration tool maintains the state of its migration, so it can be run multip
   * `axoniq.datasource.eventstore.url` - url of the JDBC data store containing the existing event store
   * `axoniq.datasource.eventstore.username` - username to connect to the JDBC data store containing the existing event store
   * `axoniq.datasource.eventstore.password` - password to connect to the JDBC data store containing the existing event store
-  * `axon.serializer.events*=jackson`- The default settings expect the data in the current event store to be serialized using the `XstreamSerializer`. When the data is serialized using the JacksonSerializer add the following property
+  * `axon.serializer.events*=jackson`- The default settings expect the data in the current event store to be serialized using the `XstreamSerializer`. Add this property if the data is serialized using the JacksonSerializer.
 * Create a folder called libs under the ${axon\_ee\_server\_home}. Depending upon the type of Database \(Postgres/MySql\), the required JDBC driver jar files should be placed in this directory.
 
 ### Upgrade process
