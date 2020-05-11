@@ -18,7 +18,7 @@ The migration tool maintains the state of its migration, so it can be run multip
 ### Upgrade process
 
 * Run the command `axonserver-migration.jar`
-* The time to migrate data will vary depending upon the size of the existing data store and the number of nodes setup within the cluster
+* The time to migrate data will vary depending upon the size of the existing data store and the number of nodes setup within the cluster.
 
 ### Verification
 
