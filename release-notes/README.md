@@ -10,7 +10,7 @@ All the enhancements and features which have been introduced to our major and mi
 
   In a Spring environment, an aggregate class hierarchy will be detected automatically.
 
-  For more details on this feature, read up on it [here]().
+  For more details on this feature, read up on it [here](./).
 
 * An Axon application will no shutdown more gracefully then it used to in previous releases.
 
@@ -20,11 +20,11 @@ All the enhancements and features which have been introduced to our major and mi
 
   If you want to add your own lifecycle handlers,
 
-   you can either register a component with the aforementioned annotations 
+  you can either register a component with the aforementioned annotations
 
-   or register the methods directly through `Configurer#onInitialize`, `Configuration#onStart` and
+  or register the methods directly through `Configurer#onInitialize`, `Configuration#onStart` and
 
-   `Configuration#onShutdown`.
+  `Configuration#onShutdown`.
 
 * We have introduced the `@CreationPolicy` annotation which you can add to `@CommandHandler` annotated methods in your aggregate.
 
@@ -39,13 +39,13 @@ All the enhancements and features which have been introduced to our major and mi
 
   Additionally validations have been added too, revolving around asserting scheduled events and deadline message.
 
-  The [Test Fixture](../axon-framework/testing/) page has been updated to define these new operations accordingly. 
+  The [Test Fixture](../axon-framework/testing/) page has been updated to define these new operations accordingly.
 
 * The `TrackingEventProcessor#processingStatus` method as of 4.3 exposes more status information.
 
   The current token position, token-at-reset, is-merging and merge-completed position have been added to the set.
 
-  Read the [Event Tracker Status](../axon-framework/monitoring-and-metrics.md#event-tracker-status) section for more specifics on this. 
+  Read the [Event Tracker Status](../axon-framework/monitoring-and-metrics.md#event-tracker-status) section for more specifics on this.
 
 For a complete list of all the changes made in 4.3 you can check out [this](https://github.com/AxonFramework/AxonFramework/milestone/42?closed=1) page.
 
@@ -100,7 +100,7 @@ We refer to [this](https://github.com/AxonFramework/AxonFramework/milestone/31?c
 
   These repositories are called the [Axon Framework Extensions](https://github.com/AxonFramework?utf8=%E2%9C%93&q=extensions&type=&language=).
 
-* The configuration of Event Processor has been replaced and greatly fine tuned with the addition of the `EventProcessingConfigurer`.     
+* The configuration of Event Processor has been replaced and greatly fine tuned with the addition of the `EventProcessingConfigurer`.
 * Some new defaults have been introduced in release 4.0, like a bias towards expecting a connection with Axon Server.
 
   Another important chance is the switch from defaulting to Tracking Processors instead of Subscribing Processors.
@@ -108,7 +108,7 @@ We refer to [this](https://github.com/AxonFramework/AxonFramework/milestone/31?c
 * The notion of a `CommandResultMessage` has been introduced as a dedicated message towards the result of command handling.
 * To simplify configuration and more easily overcome deprecation,
 
-   the [Builder pattern](https://en.wikipedia.org/wiki/Builder_pattern) has been implemented for all infrastructure components.
+  the [Builder pattern](https://en.wikipedia.org/wiki/Builder_pattern) has been implemented for all infrastructure components.
 
 For more details, check the list of issues [here](https://github.com/AxonFramework/AxonFramework/milestone/28?closed=1).
 

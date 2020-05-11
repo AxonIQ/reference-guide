@@ -110,7 +110,7 @@ _delete\_user_‌
 Usage:
 
 ```text
-axonserver-cli.jar delete-user -u username 
+axonserver-cli.jar delete-user -u username
 ```
 
 ‌
@@ -234,7 +234,7 @@ _register-context_‌
 Usage:
 
 ```text
-axonserver-cli.jar register_context -c name -n primary-nodes [-m messaging-only-nodes] [-a active-backup-nodes] [-p passive-backup-nodes]  
+axonserver-cli.jar register_context -c name -n primary-nodes [-m messaging-only-nodes] [-a active-backup-nodes] [-p passive-backup-nodes]
 ```
 
 ‌

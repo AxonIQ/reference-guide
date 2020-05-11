@@ -87,8 +87,6 @@ If you prefer to use another mechanism for routing commands, the behavior can be
 >
 > However, regardless of the type of command, as soon as you are distributing your application through for example Axon Server, it is highly recommended to specify a routing key on the given message. The `@TargetAggregateIdentifier` doubles as such, but in absence of a field worthy of the annotation, the `@RoutingKey` annotation should be added to ensure the command can be routed. Additionally, a different `RoutingStrategy` can be configured, as is further specified in the [Command Dispatching section.](command-dispatchers.md)
 
-### 
-
 ### Business Logic and State Changes
 
 Within an Aggregate there is a specific location to perform business logic validation and Aggregate state changes. The Command Handlers should _decide_ whether the Aggregate is in the correct state. If yes, an Event is published. If not, the Command might be ignored or an exception could be thrown, depending on the needs of the domain.
@@ -112,8 +110,6 @@ It is possible to `apply()` new events inside an Event Sourcing Handler method. 
 > An Aggregate **cannot** handle events from other sources then itself. This is intentional as the Event Sourcing Handlers are used to recreate the state of the Aggregate. For this it only needs it's own events as those represent it's state changes.
 >
 > To make an Aggregate react on events from other Aggregate instances, [Sagas](../sagas/) or [Event Handling Components](../events/event-handlers.md) should be leveraged
-
-
 
 ### Aggregate Command Handler Creation Policy
 
@@ -153,7 +149,7 @@ public class GiftCard {
 
 As is shown above, the `@CreationPolicy` annotation requires stating the `AggregateCreationPolicy`. This enumeration has the following options available:
 
-* `ALWAYS` - A creation policy of "always" will expect to instantiate the aggregate. 
+* `ALWAYS` - A creation policy of "always" will expect to instantiate the aggregate.
 
   This effectively works like a command handler annotated constructor.
 
@@ -192,17 +188,17 @@ public class GiftCardCommandHandler {
 
 In the above snippet we have decided that the `RedeemCardCommand` should no longer be directly handled on the `GiftCard`. Instead, we load the `GiftCard` manually and execute the desired method on it:
 
-1. The `Repository` for the `GiftCard` Aggregate, used for retrieval and storage of an Aggregate. 
+1. The `Repository` for the `GiftCard` Aggregate, used for retrieval and storage of an Aggregate.
 
-   If `@CommandHandler` methods are placed directly on the Aggregate, Axon will automatically know to call the `Repository` to load a given instance. 
+   If `@CommandHandler` methods are placed directly on the Aggregate, Axon will automatically know to call the `Repository` to load a given instance.
 
    It is thus _not_ mandatory to directly access the `Repository`, but a [design choice](../../architecture-overview/#separation-of-business-logic-and-infrastructure).
 
-2. To load the intended `GiftCard` Aggregate instance, the `Repository#load(String)` method is used. 
+2. To load the intended `GiftCard` Aggregate instance, the `Repository#load(String)` method is used.
 
    The provided parameter should be the Aggregate identifier.
 
 3. After that Aggregate has been loaded, the `Aggregate#execute(Consumer)` function should be invoked to perform an operation on the Aggregate.
 
-   Using the `execute` function ensure that the Aggregate life cycle is correctly started. 
+   Using the `execute` function ensure that the Aggregate life cycle is correctly started.
 

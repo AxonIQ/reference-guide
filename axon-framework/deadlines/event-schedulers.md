@@ -1,6 +1,6 @@
 # Event Schedulers
 
-This  section will proceed with a suggested course of action when utilizing the `EventScheduler` for dealing with deadlines.
+This section will proceed with a suggested course of action when utilizing the `EventScheduler` for dealing with deadlines.
 
 To help understand this better lets take the scenario of a saga. It is easy to make a saga take action when something happens. After all, there is an event to notify the saga. But what if you want your saga to do something when _nothing_ happens? That's what deadlines are used for. For invoices, that is typically several weeks, whereas the confirmation of a credit card payment should occur within a few seconds.
 

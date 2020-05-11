@@ -97,7 +97,7 @@ $ java -jar axonserver-cli.jar init-cluster -S http://[node]:[port]
 
 With \[node\] being the hostname of the first node and \[port\] the HTTP port. When you run this command from the first node and you are using default ports, you can omit the -S option.‌
 
-Once you have run this command and look at the Axon Dashboard \(at [http://\[node\]:\[port](http://[node]:[port/)\]\), you will see something like this in the overview page:​![](https://gblobscdn.gitbook.com/assets%2F-M2EZHCQjtTN2AhEo25Y%2F-M2E_JZXiOKr0S0qqtaq%2F-M2E_KuV_84EcxT5F29f%2Faxonserver-overview1.png?generation=1584030678004616&alt=media)‌
+Once you have run this command and look at the Axon Dashboard \(at \[[http://\[node\]:\[port\]\(http://\[node\]:\[port/\)\]\](http://[node]:[port]%28http://[node]:[port/%29]\)\), you will see something like this in the overview page:​![](https://gblobscdn.gitbook.com/assets%2F-M2EZHCQjtTN2AhEo25Y%2F-M2E_JZXiOKr0S0qqtaq%2F-M2E_KuV_84EcxT5F29f%2Faxonserver-overview1.png?generation=1584030678004616&alt=media)‌
 
 The next step is to add the other nodes to the cluster, using the register-node command:
 

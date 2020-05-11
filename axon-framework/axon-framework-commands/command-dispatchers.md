@@ -47,13 +47,13 @@ The `CommandDispatcher` described above exemplifies a couple of important aspect
 
    Typed identifier objects are also possible, as long as the object implements a sensible `toString()` function.
 
-3. The `GenericCommandMessage#asCommandMessage(Object)` method is used to create a `CommandMessage`. 
+3. The `GenericCommandMessage#asCommandMessage(Object)` method is used to create a `CommandMessage`.
 
    To be able to dispatch a command on the `CommandBus`, you are required to wrap your own command object \(e.g. the 'command message payload'\) in a `CommandMessage`.
 
    The `CommandMessage` also allows the addition of [MetaData](../messaging-concepts/anatomy-message.md#meta-data) to the Command Message.
 
-4. The `CommandBus#dispatch(CommandMessage)` function will dispatch the provided `CommandMessage` on the bus, for delivery to a command handler. 
+4. The `CommandBus#dispatch(CommandMessage)` function will dispatch the provided `CommandMessage` on the bus, for delivery to a command handler.
 
    If an application isn't directly interested in the outcome of a command, this method can be used.
 
@@ -61,7 +61,7 @@ The `CommandDispatcher` described above exemplifies a couple of important aspect
 
    The `CommandCallback` allows the dispatching component to be notified when command handling is completed.
 
-6. The Command Callback has one function, `onResult(CommandMessage, CommandResultMessage)`, which is called when command handling has finished. 
+6. The Command Callback has one function, `onResult(CommandMessage, CommandResultMessage)`, which is called when command handling has finished.
 
    The first parameter is the dispatched command, whilst the second is execution result of the dispatched command.
 
@@ -69,11 +69,11 @@ The `CommandDispatcher` described above exemplifies a couple of important aspect
 
    As such, `commandBus.dispatch(commandMessage, (cmdMsg, commandResultMessage) -> { /* ... */ })` would also be possible.
 
-7. The `CommandResultMessage` provides the API to verify whether command execution was exceptional or successful. 
+7. The `CommandResultMessage` provides the API to verify whether command execution was exceptional or successful.
 
    If `CommandResultMessage#isExceptional` returns true, you can assume that the `CommandResultMessage#exceptionResult` will return a `Throwable` instance containing the actual exception.
 
-   Otherwise, the `CommandResultMessage#getPayload` method _may_ provide you with an actual result or `null`, as further specified here.     
+   Otherwise, the `CommandResultMessage#getPayload` method _may_ provide you with an actual result or `null`, as further specified here.
 
 > **Command Callback consideration**
 >
@@ -100,7 +100,7 @@ public void sendCommand() {
 
 The `send` API as shown above introduces a couple of concepts, marked with numbered comments:
 
-1. The `CommandGateway` interface providing the functionality to dispatch command messages. 
+1. The `CommandGateway` interface providing the functionality to dispatch command messages.
 
    It does so by internally leveraging the `CommandBus` interface [dispatch messages](command-dispatchers.md#the-command-bus).
 
@@ -144,9 +144,9 @@ public void sendCommandAndWaitOnResult() {
 
 2. If waiting indefinitely is not desirable, a 'timeout' paired with the 'time unit' can be provided along side the command object.
 
-   Doing so will ensure that the command dispatching thread will not wait longer than specified. 
+   Doing so will ensure that the command dispatching thread will not wait longer than specified.
 
-   If command dispatching/handling was interrupted or the timeout was reached whilst using this approach, the command result will be `null`. 
+   If command dispatching/handling was interrupted or the timeout was reached whilst using this approach, the command result will be `null`.
 
    In all other scenarios, the result follows the [referenced](command-dispatchers.md#command-dispatching-results) approach.
 

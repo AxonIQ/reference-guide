@@ -36,7 +36,7 @@ public class MonitoringConfiguration {
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
-```
+```text
 public class MonitoringConfiguration {
 
     // When using Spring Boot, simply defining a CorrelationDataProvider bean is sufficient
@@ -130,8 +130,10 @@ public class MetricsConfiguration {
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
-    # The default value is `true`. Thus you will have Metrics configured if `axon-metrics` and `io.dropwizard.metrics` are on your classpath.
-    axon.metrics.auto-configuration.enabled=true
+```text
+# The default value is `true`. Thus you will have Metrics configured if `axon-metrics` and `io.dropwizard.metrics` are on your classpath.
+axon.metrics.auto-configuration.enabled=true
+```
 {% endtab %}
 {% endtabs %}
 

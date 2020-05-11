@@ -10,6 +10,8 @@ Each of these messages requires a different strategy, all supported by Axon Serv
 
 Applications connect to the messaging platform and register their capabilities. One application may be able to execute a specific set of commands, another may handle a number of queries. There may be multiple instances of the same application connected to the messaging platform, each instance having the same capabilities.
 
+Axon Server provides an _**enterprise-ready, production-grade, purpose-built**_ Event Store to help organizations roll out a robust Event Sourcing Infrastructure.
+
 ## Message patterns
 
 A client or application sends a request to the messaging platform. The platform finds the appropriate connected application\(s\) to send the request to, and forwards the request. It receives the reply, or replies, and forwards that to the caller. Commands are always sent to exactly one application. Commands for the same aggregate are always sent to the same application instance, to avoid problems with concurrent updates of the aggregate. Queries are sent to all applications capable of answering the query. If there are multiple instances of the same application, the query is only sent to one of the instances. Events are stored in the event store and sent to all registered listeners.

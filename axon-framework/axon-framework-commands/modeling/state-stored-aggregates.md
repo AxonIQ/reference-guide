@@ -76,11 +76,11 @@ public class GiftCard {
 The above exert shows an state stored Aggregate from a 'Gift Card Service'. The numbered comments in the snippet point out Axon specifics which are explained here:
 
 1. As the Aggregate is stored in a JPA repository, it is required to annotated the class with `@Entity`.  
-2. An Aggregate Root must declare a field that contains the Aggregate Identifier. 
+2. An Aggregate Root must declare a field that contains the Aggregate Identifier.
 
-   This identifier must be initialized at the latest when the first event is published. 
+   This identifier must be initialized at the latest when the first event is published.
 
-   This identifier field must be annotated by the `@AggregateIdentifier` annotation. 
+   This identifier field must be annotated by the `@AggregateIdentifier` annotation.
 
    When using JPA to store the Aggregate, Axon knows to use the `@Id` annotation provided by JPA.
 
@@ -88,23 +88,23 @@ The above exert shows an state stored Aggregate from a 'Gift Card Service'. The 
 
 3. This Aggregate has several '[Aggregate Members](multi-entity-aggregates.md)'.
 
-   Since the Aggregate is stored as is, correct mapping of the entities should be taking into account. 
+   Since the Aggregate is stored as is, correct mapping of the entities should be taking into account.
 
-4. A `@CommandHandler` annotated constructor, or differently put the 'command handling constructor'. 
+4. A `@CommandHandler` annotated constructor, or differently put the 'command handling constructor'.
 
    This annotation tells the framework that the given constructor is capable of handling the `IssueCardCommand`.
 
-5. The static `AggregateLifecycle#apply(Object...)` may be used to publish an Event Message. 
+5. The static `AggregateLifecycle#apply(Object...)` may be used to publish an Event Message.
 
    Upon calling this function the provided `Object`s will be published as `EventMessage`s within the scope of the Aggregate they are applied in.
 
-6. The Command Handling method will first decide whether the incoming Command is valid to handle at this point. 
+6. The Command Handling method will first decide whether the incoming Command is valid to handle at this point.
 7. After the business logic has been validated, the state of the Aggregate may be adjusted
-8. Entities within an Aggregate can listen to the events the Aggregate publishes, by defining an `@EventHandler` annotated method. 
+8. Entities within an Aggregate can listen to the events the Aggregate publishes, by defining an `@EventHandler` annotated method.
 
    These methods will be invoked when an Event Message is published prior to being handled by any external handlers.
 
-9. A no-arg constructor, which is required by JPA. 
+9. A no-arg constructor, which is required by JPA.
 
    Failure to provide this constructor will result in an exception when loading the Aggregate.
 

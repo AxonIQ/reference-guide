@@ -24,13 +24,13 @@ Since the `KafkaEventPublisher` is an event message handler in Axon terms, we ca
 
 * **Subscribing Event Processor** - publication of messages to Kafka will occur in the same thread \(and Unit of Work\)
 
-  which published the events to the event bus. 
+  which published the events to the event bus.
 
   This approach ensures failure to publish to Kafka enforces failure of the initial event publication on the event bus
 
 * **Tracking Event Processor** - publication of messages to Kafka is run in a different thread \(and Unit of Work\)
 
-  then the one which published the events to the event bus. 
+  then the one which published the events to the event bus.
 
   This approach ensures the event has been published on the event bus regardless of whether publication to Kafka works
 
@@ -38,7 +38,7 @@ When setting up event publication it is also important to take into account whic
 
 * **TRANSACTIONAL** - This will require the `Producer` to start, commit and \(in case of failure\) rollback the
 
-  transaction of publishing an event message. 
+  transaction of publishing an event message.
 
   Alongside this, it will create a pool of `Producer` instances in the `ProducerFactory` to avoid continuous creation of
 
@@ -48,7 +48,7 @@ When setting up event publication it is also important to take into account whic
 
   a default of 1 second \(configurable on the `KafkaPublisher`\) until the event message publication has been acknowledged.
 
-  Alongside this, it will create a single, shareable `Producer` instance from within the `ProducerFactory`.  
+  Alongside this, it will create a single, shareable `Producer` instance from within the `ProducerFactory`.
 
 * **NONE** - This is the _default_ mode, which only ensures a single,
 
@@ -173,11 +173,11 @@ When using this source, Kafka's idea of pairing `Consumer` instances into "Consu
 
 Although the `SubscribableKafkaMessageSource` thus provides the niceties the tracking event processor normally provides, it does come with two catches:
 
-1. Axon's approach of the `SequencingPolicy` to deduce which thread receives which events is entirely lost. 
+1. Axon's approach of the `SequencingPolicy` to deduce which thread receives which events is entirely lost.
 
    It is thus dependent on which topic-partition pairs are given to a `Consumer` for the events your handlers receives.
 
-   From a usage perspective this means event message ordering is no longer guaranteed by Axon. 
+   From a usage perspective this means event message ordering is no longer guaranteed by Axon.
 
    It is thus the user's job to ensure events are published in the right topic-partition pair.
 
@@ -326,15 +326,15 @@ This extension can be added as a Spring Boot starter dependency to your project 
 
   If the `axon.kafka.producer.transaction-id-prefix` is non-null and non-empty,
 
-  it is assumed a "TRANSACTIONAL" confirmation mode is desired 
+  it is assumed a "TRANSACTIONAL" confirmation mode is desired
 
-* A `KafkaPublisher`. 
+* A `KafkaPublisher`.
 
   Uses a `Producer` instance from the `ProducerFactory` to publish events to the configured Kafka topic.
 
 * A `KafkaEventPublisher`. Used to provide events to the `KafkaPublisher` and to assign a processor name
 
-  and processing group called `__axon-kafka-event-publishing-group` to it. Defaults to  a `SubscribingEventProcessor`.
+  and processing group called `__axon-kafka-event-publishing-group` to it. Defaults to a `SubscribingEventProcessor`.
 
   If a `TrackingEventProcessor` is desired, the `axon.kafka.producer.event-processor-mode` should be set to `tracking`
 

@@ -8,7 +8,7 @@ The following sections describe how the different principles relate and how Axon
 
 ## Dealing with complexity
 
-Axon originated in an attempt to find a solution to the ever-increasing accidental  complexity. Applying concepts from Domain-Driven Design will help to a very large degree, even the most well-designed model will not run by itself in production.
+Axon originated in an attempt to find a solution to the ever-increasing accidental complexity. Applying concepts from Domain-Driven Design will help to a very large degree, even the most well-designed model will not run by itself in production.
 
 While Axon is opinionated on how the interaction with a domain model should take place, it tries to avoid any restrictions on the modelling freedom that one has. Even when your opinion differs from that of Axon, there are enough hooks, configuration options and triggers to change certain aspects of Axon's behavior. You will find those throughout the reference guide.
 

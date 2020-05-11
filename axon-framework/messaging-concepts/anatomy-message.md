@@ -32,9 +32,9 @@ EventMessage eventMessage =
 ```
 
 1. Create an EventMessage with "myPayload" as the payload
-2. `withMetaData` replaces any Meta Data in the message with the given Map. 
+2. `withMetaData` replaces any Meta Data in the message with the given Map.
 
-    In this case `java.util.Collections.singletonMap()` is used to define a single entry.
+   In this case `java.util.Collections.singletonMap()` is used to define a single entry.
 
 3. `andMetaData` adds the entries from the given Map to the Message's metadata. Existing entries with equal keys are overwritten.
 
