@@ -14,5 +14,5 @@ A summary of the various sub-sections is given below.
 | [Axon SE](standard-edition/) | Standard Edition of Axon Server |
 | [Axon EE](enterprise-edition/) | Enterprise Edition of Axon Server |
 | [Migration](migration/) | Migrating from non-Axon Server Deployments to Axon Server |
-| [API Documentation](api-documentation.md) | API Documentation for Axon Server |
+| [API Documentation]() | API Documentation for Axon Server |
 
