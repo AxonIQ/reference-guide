@@ -7,5 +7,17 @@ We have also provided a Postman collection to run these against your deployment 
 | Object | API Purpose |  |
 | :--- | :--- | :--- |
 | _applications_ | Perform operations against registered Axon Framework applications | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
-| _backup_ | Take backups of the control database and  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _backup_ | Take backups of the control database | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _cluster_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _commands_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _components_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _context_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _events_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _local_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _processors_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _public_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _queries_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _roles_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _snapshots_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
+| _users_ |  | [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/67c1bdfd23e5498a9cb8) |
 
