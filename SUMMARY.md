@@ -103,6 +103,7 @@
 * [Migration](axon-server/migration/README.md)
   * [Standard to Enterprise Edition](axon-server/migration/axon-se-to-ee.md)
   * [Non-Axon Server\(s\) to Axon EE Server](axon-server/migration/non-axon-server-to-axon-server.md)
+* [Axon Server API\(s\)](axon-server/axon-server-api-s.md)
 
 ## Extensions
 
