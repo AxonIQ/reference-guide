@@ -83,6 +83,7 @@
     * [Tagging](axon-server/enterprise-edition/administration/tagging.md)
   * [Security](axon-server/enterprise-edition/security.md)
   * [Configuration](axon-server/enterprise-edition/configuration-1.md)
+  * [Performance Tuning](axon-server/enterprise-edition/performance-tuning.md)
 * [Migration](axon-server/migration/README.md)
   * [Standard to Enterprise Edition](axon-server/migration/axon-se-to-ee.md)
   * [Non-Axon Server\(s\) to Axon EE Server](axon-server/migration/non-axon-server-to-axon-server.md)
