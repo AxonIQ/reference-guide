@@ -53,7 +53,7 @@ For a complete list of all the changes made in 4.3 you can check out [this](http
 
 * Axon Framework applications can now use tags to support a level of 'location awareness' between Axon clients and Axon Server instances.
 
-  This feature is further described [here](../axon-server/administration/tagging.md).
+  This feature is further described [here]().
 
 * Axon Server already supported several contexts, but Axon Framework application could no specify to which context message should be dispatched.
 
