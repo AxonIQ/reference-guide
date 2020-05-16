@@ -23,7 +23,7 @@ The init-cluster commands creates 2 contexts \("\_admin" and "default"\). The de
 
 Next you can add more nodes to the cluster. For these nodes, you do not call the init-cluster command, you must add them to the cluster using the register-node command. When you register a node in the cluster it will be added to all contexts by default. If you want to add it to specific contexts you can specify this in the command. You can always assign or unassign nodes from a context later, but when you have a large event store synchronizing the data to the new member may take some time.‌
 
-All communication between Axon Server nodes uses a dedicated port \(8223 by default\). When nodes are in different locations you have to make sure that this ports is accessible for all Axon Server nodes.‌
+All communication between Axon Server nodes uses a dedicated port \(8224 by default\). When nodes are in different locations you have to make sure that this ports is accessible for all Axon Server nodes.‌
 
 ## Properties <a id="properties"></a>
 
