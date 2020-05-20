@@ -16,11 +16,11 @@ A client or application sends a request to the messaging platform. The platform 
 
 ## High Available
 
-Axon Server can operate in a clustered mode. Each node in the cluster is active and applications are dynamically load balanced over the nodes. Instances of the same application will connect to the same messaging node to optimize performance. Instances of different applications are distributed over the nodes to spread the load.
+Axon Server can operate in clustered mode. Each node in the cluster is active and applications are dynamically load balanced over the nodes. Instances of the same application will connect to the same messaging node to optimize performance. Instances of different applications are distributed over the nodes to spread the load.
 
 ## Flow control
 
-Axon Server controls the flow of messages being sent to the message handlers. The message handlers sent a number of permits to the messing platform, indicating the number of messages the messaging platform may send. Once the handler is ready for more request it sends another message with a number of additional permits. Axon Server queues messages when there are no permits for the handler left. When a handler is disconnected while there are still queued messages, these are re-routed to another handler \(if possible\).
+Axon Server controls the flow of messages sent to the message handlers. The message handlers sent a number of permits to the messing platform, indicating the number of messages the messaging platform may send. Once the handler is ready for more request it sends another message with a number of additional permits. Axon Server queues messages when there are no permits for the handler left. When a handler is disconnected while there are still queued messages, these are re-routed to another handler \(if possible\).
 
 ## QoS Messages
 
