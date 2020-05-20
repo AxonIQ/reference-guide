@@ -108,7 +108,6 @@ _Optional parameters_
 * _**-t**_  refers to the access token to authenticate at server
 * _**--preserve-event-store**_ removes the node from the context but leaves the event store files on that node.
 
-_\*\*\*\*_
 
 _**List all contexts**_
 
