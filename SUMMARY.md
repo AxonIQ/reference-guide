@@ -1,6 +1,7 @@
 # Table of contents
 
 * [Introduction](README.md)
+* [Introduction](introduction.md)
 * [Quick Start](quick-start.md)
 * [Architecture Overview](architecture-overview/README.md)
   * [DDD & CQRS Concepts](architecture-overview/ddd-cqrs-concepts.md)
@@ -78,10 +79,10 @@
   * [Multi-Context](axon-server/administration/multi-context.md)
   * [Tagging](axon-server/administration/tagging.md)
   * [Monitoring](axon-server/administration/monitoring.md)
-  * [Backups](axon-server/administration/backups.md)
   * [Recovery](axon-server/administration/recovery.md)
   * [Heartbeat Monitoring](axon-server/administration/heartbeat-monitoring.md)
-  * [Backup and Messaging only Nodes](axon-server/administration/backup-and-messaging-only-nodes.md)
+  * [Backup and Messaging-only Nodes](axon-server/administration/backup-and-messaging-only-nodes.md)
+  * [Backups](axon-server/administration/backups.md)
 * [Security](axon-server/security/README.md)
   * [Access Control](axon-server/security/access-control.md)
 * [Performance](axon-server/performance/README.md)
@@ -107,4 +108,5 @@
 * [C. Meta Annotations](appendices/meta-annotations.md)
 * [D. Identifier Generation](appendices/identifier-generation.md)
 * [E. Axon Server Query Language](appendices/query-reference.md)
+* [F. Axon Server APIs](appendices/axon-server-apis.md)
 
