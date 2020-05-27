@@ -38,11 +38,10 @@ In addition, you may choose to backup the current segment file that is being wri
 
 ### _Log Entry Segments \(only for Axon Server EE\)_
 
-Unlike the event stream segments, the log entry segments backup should not be done incrementally. All the files are replaced by next backup. The log entry segments backup is supported by the GET endpoint `http:[server]/v1/backup/log/filenames`. It takes the context name and returns a list of file names that completely replace the previous backup for that context.‌ The _\[server\]_ could be any node that is a PRIMARY member node for the context that needs to be backed up.
+Unlike the event stream segments, the log entry segments backup should not be done incrementally. All the files are replaced by the next backup. The log entry segments backup is supported by the GET endpoint `http:[server]/v1/backup/log/filenames`. It takes the context name and returns a list of file names that completely replace the previous backup for that context.‌ The _\[server\]_ could be any node that is a PRIMARY member node for the context that needs to be backed up.
 
 Even if the recent file has incomplete data, a node will be able to recover a consistent state from such a file and will initialize itself at the position immediately after the last complete write. The replication process \(if present\) will ensure subsequent entries are automatically synchronized.‌
 
 Because the control database contains a pointer to the last log entry that is known to be stored safely on the cluster \(the commit index\), the proper order of doing this is to first create the control database backup and then backing up the log entry segments and the event stream segments. 
 
 This will ensure that the log entry segments may have entries beyond the commit index \(which is ok\) but there are not missing entries before the commit index \(which would be bad\). The log entries segments must be backed up within _**30 minutes**_ after the backup of the controlDB, to prevent the log compaction procedure causes data inconsistencies.
-
