@@ -1,7 +1,6 @@
 # Table of contents
 
 * [Introduction](README.md)
-* [Introduction](introduction.md)
 * [Quick Start](quick-start.md)
 * [Architecture Overview](architecture-overview/README.md)
   * [DDD & CQRS Concepts](architecture-overview/ddd-cqrs-concepts.md)
