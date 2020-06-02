@@ -150,7 +150,7 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left"></td>
       <td style="text-align:left">controldb-path</td>
       <td style="text-align:left">Path where Axon Server&apos;s control database (axonserver-controldb)
-        is createed</td>
+        is created</td>
       <td style="text-align:left">./data directory</td>
     </tr>
     <tr>
@@ -400,7 +400,7 @@ A list of all the configuration properties by area is denoted below. Unless expl
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">queryFlowControl.new-permits-threshold</td>
-      <td style="text-align:left">When a replica reaches this threshold in remaining command messages, it
+      <td style="text-align:left">When a replica reaches this threshold in remaining query messages, it
         sends a request with this additional number of query messages to receive.</td>
       <td
       style="text-align:left">5000</td>

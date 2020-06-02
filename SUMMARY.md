@@ -63,7 +63,9 @@
   * [Commands / Events](axon-framework/testing/commands-events.md)
   * [Sagas](axon-framework/testing/sagas-1.md)
 * [Tuning](axon-framework/tuning/README.md)
+  * [Command Processing](axon-framework/tuning/command-processing.md)
   * [Event Snapshots](axon-framework/tuning/event-snapshots.md)
+  * [Event Processing](axon-framework/tuning/event-processing.md)
 * [Monitoring and Metrics](axon-framework/monitoring-and-metrics.md)
 
 ## Axon Server
