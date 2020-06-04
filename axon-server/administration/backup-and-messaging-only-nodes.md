@@ -1,59 +1,132 @@
-# Backup and Messaging only Nodes
+# Backup and Messaging-only Nodes
 
 > **Note**
 >
 > This feature is only available in Axon Server Enterprise versions 4.3 and higher.
 
-When you have larger clusters and specific requirements, you may want to have nodes acting in a different way within a context. For this reason, we have introduced a number of new roles for nodes in Axon Server Enterprise 4.3:‌
+When you have larger clusters and specific requirements, you may want to have nodes acting in a different way within a context. For this reason, in Axon Server Enterprise 4.3, we have introduced a number of new roles that can be assigned to a node.
 
-* Primary node, this is the role for nodes prior to 4.3. Primary nodes handle client connections and messages, store events
+These are:
 
-  and may act as the leader for a context.
+* _Primary nodes -&gt;_ This is the role for nodes prior to 4.3. Primary nodes handle client connections and messages, store events and may act as the leader for a context.
+* _Backup nodes -&gt;_ These nodes maintain a copy of the event store, but will never become the leader of a context. There are two types of Backup nodes - [Active Backup](backup-and-messaging-only-nodes.md#active-backup-node) and [Passive Backup](backup-and-messaging-only-nodes.md#passive-backup-node)
+* _Messaging-only nodes_ -&gt;  They handle client connections and all types of messages \(Commands/Queries/Events\) but they do not have an event store.
 
-* Backup node, maintain a copy of the event store, but will never become the leader.
-* Messaging-only node, handle client connections and messages but does not have an event store.
-
-Each context needs at least one primary node. This node is capable of becoming a leader and coordinating transactions across the context. Even if you are not using Axon Server as an event store, you still need a leader as transactions also include making changes to the context configuration and access control lists.‌
+Each context needs to have at least one Primary node. This node is capable of becoming a leader and coordinating transactions across the context between the different member nodes. Even if you are not using Axon Server as an event store, you still need a leader as transactions also include making changes to the context configuration and access control lists.‌ It is also possible to [change the role](backup-and-messaging-only-nodes.md#changing-node-roles) that a particular node plays within a context.
 
 ## Backup nodes‌ <a id="backup-nodes"></a>
 
-You can use backup nodes for instance when you want to ensure that you have a copy of your event store in another data center. As clients will never connect to a backup node and the backup node will never become the leader for a context it reduces the risk of high latency, compared to having a normal \(primary\) node in another data center.‌
+You can use backup nodes for instance when you want to ensure that you have a copy of your event store in another data center. As clients will never connect to a backup node and the backup node will never become the leader for a context it reduces the risk of high latency, compared to having a normal \(Primary\) node in another data center.‌ Just to reiterate, clients will never connect directly to a backup node.‌
 
-Clients will never connect directly to a backup node.‌
+Backup nodes come in two flavors,
 
-Backup nodes come in two flavors, active and passive backup nodes. Active backup nodes participate in transactions, so when you store an event it is guaranteed to be in at least one backup node, before it is committed. This means that if you have active backup nodes, at least one of them needs to be up at any time. Since you may want to be able to perform maintenance on backup nodes without impacting the availability of your Axon Server cluster you should always have more than one active backup node if you decide to use active backup nodes.‌
+### _**Active Backup node**_
 
-Passive backup nodes follow the primary nodes with on a best effort base. If they are disconnected for some time, it will not impact the overall availability of the context. Once the passive backup nodes are connected again, they will update their event stores with the events that were added while they were gone. If you don't require the backup node to be fully up to date at any moment, you can configure one passive backup node.‌
+Active backup nodes participate in transactions, so when you store an event it is guaranteed to be in at least one Active Backup node, before it is committed. This means that if you have Active Backup nodes, at least one of them needs to be up at any time. Since you may want to be able to perform maintenance on backup nodes without impacting the availability of your Axon Server cluster you should always have more than one active backup node if you decide to use active backup nodes.‌
 
-To add a node as a backup node to a context you can use the Axon Dashboard, or you can use the following command-line command:
+There are three possible ways to assign the ACTIVE\_BACKUP role to a node within a context:
 
-```text
-java -jar axonserver-cli.jar add-node-to-context  -S http://axonserver:8024 -n my-backup-node -c my-context -r ACTIVE_BACKUP
-```
+A\) The Axon Server EE UI Console. Navigate to the Contexts icon on the navigation menu of the console which will open up the context maintenance screen. The nodes can be added as an ACTIVE\_BACKUP role within a context.
 
-or
+B\) The _add-node-to-context_ command with the role option as ACTIVE\_BACKUP
 
 ```text
-java -jar axonserver-cli.jar add-node-to-context  -S http://axonserver:8024 -n my-backup-node -c my-context -r PASSIVE_BACKUP
+$ java -jar axonserver-cli.jar add-node-to-context  -S http://[node]:[port] -n [node name]‌ -c [context-name] -r PASSIVE_BACKUP
 ```
+
+_Mandatory parameters_
+
+* _**-c**_ refers to an existing context
+* _**-n**_ refers to the node name that should be a member of this context
+* _**-r as PASSIVE\_BACKUP**_ refers to the role of this node within the context 
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to http://localhost:8024. If supplied, it should be any node serving the _\_admin_ context 
+* _**-t**_  refers to the access token to authenticate at server
+
+C\) Axon Server EE provided REST API \(http:\[server\]:\[port\]/swagger-ui.html\) which offers the _context-rest-controller_ to help perform role maintenance operations
+
+### _**Passive Backup node**_
+
+Passive Backup nodes follow the primary nodes with on a best effort base. If they are disconnected for some time, it will not impact the overall availability of the context. Once the Passive backup nodes are connected again, they will update their event stores with the events that were added while they were gone. If you don't require the backup node to be fully up to date at any moment, you can configure one passive backup node.‌
+
+There are three possible ways to assign the PASSIVE\_BACKUP role to a node within a context:
+
+A\) The Axon Server EE UI Console. Navigate to the Contexts icon on the navigation menu of the console which will open up the context maintenance screen. The nodes can be added as a PASSIVE\_BACKUP role within a context.
+
+B\) The _add-node-to-context_ command with the role option as PASSIVE\_BACKUP
+
+```text
+$ java -jar axonserver-cli.jar add-node-to-context  -S http://[node]:[port] -n [node name]‌ -c [context-name] -r PASSIVE_BACKUP
+```
+
+_Mandatory parameters_
+
+* _**-c**_ refers to an existing context
+* _**-n**_ refers to the node name that should be a member of this context
+* _**-r as PASSIVE\_BACKUP**_ refers to the role of this node within the context 
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to http://localhost:8024. If supplied, it should be any node serving the _\_admin_ context 
+* _**-t**_  refers to the access token to authenticate at server
+
+C\) Axon Server EE provided REST API \(http:\[server\]:\[port\]/swagger-ui.html\) which offers the _context-rest-controller_ to help perform role maintenance operations
 
 ## Messaging-only nodes <a id="messaging-only-nodes"></a>
 
 You can add nodes as messaging-only nodes to a context, if you don't want to use Axon Server as an event store, or if you want to have a large number of Axon Server nodes for a single context, without storing the events on each node. As the name already suggests, messaging-only nodes only route messages, they do not store events themselves. They do not participate in transactions and will clearly never become the leader for a context.‌
 
-To add a node as a messaging-only node to a context you can use the Axon Dashboard, or you can use the following command line command:
+There are three possible ways to assign the MESSAGING\_ONLY role to a node within a context:
+
+A\) The Axon Server EE UI Console. Navigate to the Contexts icon on the navigation menu of the console which will open up the context maintenance screen. The nodes can be added as a MESSAGING\_ONLY role within a context.
+
+B\) The _add-node-to-context_ command with the role option as MESSAGING\_ONLY
 
 ```text
-java -jar axonserver-cli.jar add-node-to-context  -S http://axonserver:8024 -n my-backup-node -c my-context -r MESSAGING_ONLY
+$ java -jar axonserver-cli.jar add-node-to-context  -S http://[node]:[port] -n [node name]‌ -c [context-name] -r MESSAGING_ONLY
 ```
+
+_Mandatory parameters_
+
+* _**-c**_ refers to an existing context
+* _**-n**_ refers to the node name that should be a member of this context
+* _**-r as MESSAGING\_ONLY**_ refers to the role of this node within the context 
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to http://localhost:8024. If supplied, it should be any node serving the _\_admin_ context 
+* _**-t**_  refers to the access token to authenticate at server
+
+C\) Axon Server EE provided REST API \(http:\[server\]:\[port\]/swagger-ui.html\) which offers the _context-rest-controller_ to help perform role maintenance operations
 
 ## Changing node roles <a id="changing-node-roles"></a>
 
 Sometimes you may want to change the role a node has for a specific context. This may happen when you have a pre-existing cluster context configuration \(pre 4.3\) and now you want to be able to start using the new roles. The way to do this is to remove a node from a context and then add it again in the new role.‌
 
-When you remove the node from the context you have an option to preserve the event store. Preserving the event store is recommended when you want to change the role for a node from PRIMARY to BACKUP, or vice versa, as it would prevent a full replication of the event store when the node is added again with the new role. Removing a node while preserving the event store can be done through the UI or through the command line:
+When you remove the node from the context you have an option to preserve the event store. Preserving the event store is recommended when you want to change the role for a node from _PRIMARY_ to _BACKUP_, or vice versa, as it would prevent a full replication of the event store when the node is added again with the new role. 
+
+There are three possible ways to change the role of a node within a context:
+
+A\) The Axon Server EE UI Console. Navigate to the Contexts icon on the navigation menu of the console which will open up the context maintenance screen. You can choose to delete the specific node from the context \(using the delete icon\). In case you would like to preserve the event store, click on the check-box in the pop-up.
+
+B\) The _delete-node-from-context_ command
 
 ```text
-java -jar axonserver-cli.jar delete-node-from-context  -S http://axonserver:8024 -n my-backup-node -c my-context --preserve-event-store
+$ java -jar ./axonserver-cli.jar delete-node-from-context -S http://[node]:[port] -c [context-name] -n [node name]‌
 ```
+
+_Mandatory parameters_
+
+* _**-c**_ refers to an existing context
+* _**-n**_ refers to the node name that should be a member of this context
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to http://localhost:8024. If supplied, it should be any node serving the _\_admin_ context 
+* _**-t**_  refers to the access token to authenticate at server
+* _**--preserve-event-store**_ removes the node from the context but leaves the event store files on that node.
+
+C\) Axon Server EE provided REST API \(http:\[server\]:\[port\]/swagger-ui.html\) which offers the _context-rest-controller_ to help perform role maintenance operations
 
