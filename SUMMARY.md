@@ -79,7 +79,7 @@
   * [Command Line Interface](axon-server/administration/command-line-interface.md)
   * [Multi-Context](axon-server/administration/multi-context.md)
   * [Tagging](axon-server/administration/tagging.md)
-  * [Monitoring](axon-server/administration/README.md)
+  * [Monitoring](axon-server/administration/monitoring/README.md)
     * [Actuator Endpoints](axon-server/administration/monitoring/actuator-endpoints.md)
     * [Heartbeat Monitoring](axon-server/administration/monitoring/heartbeat-monitoring.md)
   * [Recovery](axon-server/administration/recovery.md)
