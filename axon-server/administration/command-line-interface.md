@@ -17,7 +17,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
   <tbody>
     <tr>
       <td style="text-align:left">
-        <p><em>&lt;b&gt;&lt;/b&gt;</em><a href="command-line-interface.md#user"><em><b>Users</b></em></a><em><b> </b></em>
+        <p><a href="command-line-interface.md#user"><em><b>Users</b></em></a><em><b> </b></em>
         </p>
         <p><em>(Standard/Enterprise)</em>
         </p>
@@ -42,7 +42,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
     </tr>
     <tr>
       <td style="text-align:left">
-        <p><em>&lt;b&gt;&lt;/b&gt;</em><a href="command-line-interface.md#metrics"><em><b>Metrics</b></em></a><em><b> </b></em>
+        <p><a href="command-line-interface.md#metrics"><em><b>Metrics</b></em></a><em><b> </b></em>
         </p>
         <p><em>(Standard/Enterprise)</em>
         </p>
@@ -57,7 +57,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
     </tr>
     <tr>
       <td style="text-align:left">
-        <p><em>&lt;b&gt;&lt;/b&gt;</em><a href="command-line-interface.md#application-enterprise-edition-only"><em><b>Applications</b></em></a><em><b> </b></em>
+        <p><a href="command-line-interface.md#application-enterprise-edition-only"><em><b>Applications</b></em></a><em><b> </b></em>
         </p>
         <p><em>(Enterprise Only)</em>
         </p>
@@ -83,7 +83,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
     </tr>
     <tr>
       <td style="text-align:left">
-        <p><em>&lt;b&gt;&lt;/b&gt;</em><a href="command-line-interface.md#cluster-enterprise-edition-only"><em><b>Cluster</b></em></a><em><b> </b></em>
+        <p><a href="command-line-interface.md#cluster-enterprise-edition-only"><em><b>Cluster</b></em></a><em><b> </b></em>
         </p>
         <p><em>(Enterprise Only)</em>
         </p>
@@ -113,7 +113,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
     </tr>
     <tr>
       <td style="text-align:left">
-        <p><em>&lt;b&gt;&lt;/b&gt;</em><a href="command-line-interface.md#context-enterprise-edition-only"><em><b>Context</b></em></a><em><b> </b></em>
+        <p><a href="command-line-interface.md#context-enterprise-edition-only"><em><b>Context</b></em></a><em><b> </b></em>
         </p>
         <p><em>(Enterprise<b> </b>Only)</em>
         </p>
