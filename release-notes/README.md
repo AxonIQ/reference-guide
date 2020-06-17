@@ -1,15 +1,9 @@
-# Axon Server
+# Release Notes
 
-The release notes section for the Axon framework for all major/minor releases
+This section details out all the release notes for the Major/Minor versions released upto date for both the Axon Framework and Axon Server
 
-| Release Type | Version |
+| Section |  |
 | :--- | :--- |
-| _**Major**_ | [4.3](rn-as-major-releases.md#release-4-3) |
-|  | [4.2](rn-as-major-releases.md#release-4-2) |
-|  | [4.1](rn-as-major-releases.md#release-4-1) |
-| _**Minor**_ | [4.3](rn-as-minor-releases.md#release-4-3) |
-|  | [4.2](rn-as-minor-releases.md#release-4-2) |
-|  | [4.1](rn-as-minor-releases.md#release-4-1) |
-
-### 
+| [Axon Framework](rn-axon-framework/) | Release notes for all Major/Minor versions of the Axon Framework |
+| [Axon Server](rn-axon-server/) | Release notes for all Major/Minor versions of the Axon Server |
 
