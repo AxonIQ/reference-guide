@@ -1,6 +1,6 @@
 # Axon Server
 
-The release notes section for the Axon framework for all major/minor releases
+The release notes section for the Axon Server for all major/minor releases
 
 | Release Type | Version |
 | :--- | :--- |

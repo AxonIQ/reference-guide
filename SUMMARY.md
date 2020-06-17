@@ -8,7 +8,13 @@
   * [Event-Driven Microservices](architecture-overview/event-driven-microservices.md)
 * [Axon Server](axon-server-introduction.md)
 * [Release Notes](release-notes/README.md)
-  * [Bug Fixes](release-notes/bug-fixes.md)
+  * [Axon Framework](release-notes/rn-axon-framework/README.md)
+    * [Major Releases](release-notes/rn-axon-framework/rn-af-major-releases.md)
+    * [Minor Releases](release-notes/rn-axon-framework/rn-af-minor-releases.md)
+  * [Axon Server](release-notes/rn-axon-server/README.md)
+    * [Major Releases](release-notes/rn-axon-server/rn-as-major-releases.md)
+    * [Minor Releases](release-notes/rn-axon-server/rn-as-minor-releases.md)
+  * [Axon Framework Extensions](release-notes/axon-framework-extensions.md)
 
 ## Getting Started
 
@@ -90,6 +96,9 @@
 * [Performance](axon-server/performance/README.md)
   * [Tuning Event Processing](axon-server/performance/tuning-event-processing.md)
   * [Tuning Command Processing](axon-server/performance/tuning-command-processing.md)
+* [Migration](axon-server/migration/README.md)
+  * [Standard to Enterprise Edition](axon-server/migration/standard-to-enterprise-edition.md)
+  * [Non-Axon Server to Axon Server](axon-server/migration/non-axon-server-to-axon-server.md)
 * [Configuration](axon-server/configuration.md)
 
 ## Extensions
