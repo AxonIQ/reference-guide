@@ -14,7 +14,7 @@ All the enhancements and features which have been introduced to our major releas
 
   For more details on this feature, read up on it [here](../).
 
-* An Axon application will no shutdown more gracefully then it used to in previous releases.
+* An Axon application will now shutdown more gracefully then it used to in previous releases.
 
   This is achieved by marking specific methods in Axon's infrastructure components as a `@StartHandler` or `@ShutdownHandler`.
 
