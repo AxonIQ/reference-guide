@@ -83,7 +83,7 @@ For a complete list of all the changes made in 4.3 you can check out [this](http
 
 * A new implementation of the `StreamablbeMessageSource` has been implemented: the `MultiStreamableMessageSource`.
 
-  This implementation allow pairing several "streamable" message sources into a single source.
+  This implementation allows pairing several "streamable" message sources into a single source.
 
   This can in turn be used to for example read events from several distinct contexts for a single Tracking Event Processor.
 
