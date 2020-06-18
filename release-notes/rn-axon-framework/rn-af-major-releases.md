@@ -77,7 +77,7 @@ For a complete list of all the changes made in 4.3 you can check out [this](http
 
   This feature is further described [here](../../axon-server/administration/tagging.md).
 
-* Axon Server already supported several contexts, but Axon Framework application could no specify to which context message should be dispatched.
+* Axon Server already supported several contexts, but Axon Framework application could not specify to which context message should be dispatched.
 
   The Axon Server Connector has been expanded with a `TargetContextResolver` to allow just this.
 
