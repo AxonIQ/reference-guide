@@ -146,6 +146,4 @@ For a complete list of all resolved bugs we refer to the [issue tracker](https:/
 
 For a complete list of all resolved bugs we refer to the [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Release+4.0.1%22++label%3A%22Type%3A+Bug%22).
 
-### Release 4.0
-
 
