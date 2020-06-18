@@ -92,7 +92,7 @@ For a complete list of all resolved bugs we refer to the [issue tracker](https:/
 
 ### Release 4.1.1
 
-* Query Dispatch Interceptors were no called correctly when a [subscription query](../../axon-framework/queries/query-dispatchers.md#subscription-queries) was performed when Axon Server was used as the `QueryBus`.
+* Query Dispatch Interceptors were not called correctly when a [subscription query](../../axon-framework/queries/query-dispatchers.md#subscription-queries) was performed when Axon Server was used as the `QueryBus`.
 
   This issue was marked [here](https://github.com/AxonFramework/AxonFramework/issues/1013) and resolved in pull request [\#1042](https://github.com/AxonFramework/AxonFramework/pull/1042).
 
@@ -147,6 +147,5 @@ For a complete list of all resolved bugs we refer to the [issue tracker](https:/
 For a complete list of all resolved bugs we refer to the [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Release+4.0.1%22++label%3A%22Type%3A+Bug%22).
 
 ### Release 4.0
-
 
 
