@@ -8,7 +8,7 @@ All the enhancements and features which have been introduced to our major releas
 
 * Aggregate Polymorphism has been introduced, allowing for an aggregate hierarchy as would come natural from a domain model.
 
-  The set this up, the `AggregateConfigurer#withSubtypes(Class... aggregates)` method can be used.
+  To set this up, the `AggregateConfigurer#withSubtypes(Class... aggregates)` method can be used.
 
   In a Spring environment, an aggregate class hierarchy will be detected automatically.
 
@@ -161,4 +161,3 @@ We refer to [this](https://github.com/AxonFramework/AxonFramework/milestone/31?c
 The bugs marked for release 4.0 were issues introduced to new features or enhancements. As such they should not have impacted users in any way. Regardless, the full list can be found [here](https://github.com/AxonFramework/AxonFramework/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Release+4.0%22++label%3A%22Type%3A+Bug%22).
 
 For more details, check the list of issues [here](https://github.com/AxonFramework/AxonFramework/milestone/28?closed=1).
-
