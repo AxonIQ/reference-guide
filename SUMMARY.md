@@ -81,6 +81,7 @@
   * [Tagging](axon-server/administration/tagging.md)
   * [Monitoring](axon-server/administration/monitoring/README.md)
     * [Actuator Endpoints](axon-server/administration/monitoring/actuator-endpoints.md)
+    * [gRPC Metrics](axon-server/administration/monitoring/grpc-metrics.md)
     * [Heartbeat Monitoring](axon-server/administration/monitoring/heartbeat-monitoring.md)
   * [Recovery](axon-server/administration/recovery.md)
   * [Backup and Messaging-only Nodes](axon-server/administration/backup-and-messaging-only-nodes.md)
