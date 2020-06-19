@@ -1,8 +1,8 @@
 # Monitoring
 
-AxonServer provides a set of [actuator endpoints](actuator-endpoints.md) that help monitor vital aspects of an AxonServer SE/EE deployment. 
+AxonServer provides a set of [actuator endpoints](actuator-endpoints.md), [gRPC metrics](grpc-metrics.md) and [heartbeat monitoring](heartbeat-monitoring.md) capabilities that help monitor vital aspects of an AxonServer SE/EE deployment. 
 
-The endpoints help in :
+These help in :
 
 * Retrieving basic information about the AxonServer 
 * Monitoring the general health of the AxonServer
