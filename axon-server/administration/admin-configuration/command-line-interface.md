@@ -1,6 +1,6 @@
 # Command Line Interface
 
-The Axon Server provides a _command line utility_ allows for updating the Axon Server configuration through scripts or from the command line interface.‌ The utility is available as a jar file \(axonserver-cli.jar\) which is available as part of the Axon Server distributable \(SE/EE\).
+The Axon Server provides a _command line utility_ which allows for updating the Axon Server configuration through scripts or from the command line interface.‌ The utility is available as a jar file \(axonserver-cli.jar\) which is available as part of the Axon Server distributable \(SE/EE\).
 
 ## Quick Summary
 
@@ -472,4 +472,3 @@ _Optional parameters_
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context 
 * _**-t**_  refers to the access token to authenticate at server
 * _**--preserve-event-store**_ removes the node from the context but leaves the event store files on that node.
-
