@@ -399,7 +399,7 @@ _Optional parameters_
 
 _**register-context**_**‌**
 
-The register-context command helps in the registration and creation of a new context. A sample of the command with the mandatory parameters is depicted below
+The register-context command helps in the registration and creation of a new context. A sample of the command with the mandatory parameters is depicted below:
 
 ```text
 $ java -jar ./axonserver-cli.jar register-context  -c [context-name] -n [members]‌ -a [members] -m [members] -p [members] -S http://[node]:[port] [-t token]
