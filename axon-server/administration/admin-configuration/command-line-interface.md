@@ -428,7 +428,7 @@ $ java -jar ./axonserver-cli.jar delete-context  -c [context-name] -S http://[no
 
 _Mandatory parameters_
 
-* _**-c**_ refers to the context that needs to be deleted
+* _**-c**_ refers to the context that needs to be deleted.
 
 _Optional parameters_
 
