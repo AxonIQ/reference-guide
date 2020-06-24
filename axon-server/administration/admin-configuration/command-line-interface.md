@@ -408,7 +408,7 @@ $ java -jar ./axonserver-cli.jar register-context  -c [context-name] -n [members
 _Mandatory parameters_
 
 * _**-c**_ refers to the context name. The context name must match the following regular expression "\[a-zA-Z\]\[a-zA-Z\_-0-9\]\*", so it should start with a letter \(uppercase or lowercase\), followed by a combination of letters, digits, hyphens and underscores.
-* _**-n**_ refers to the comma separated list of node names that should be members of the new context. This parameter registers them as "PRIMARY" member nodes of that context
+* _**-n**_ refers to the comma separated list of node names that should be members of the new context. This parameter registers them as "PRIMARY" member nodes of that context.
 
 _Optional parameters_
 
