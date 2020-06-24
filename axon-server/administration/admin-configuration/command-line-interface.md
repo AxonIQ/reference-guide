@@ -237,7 +237,7 @@ $ java -jar axonserver-cli.jar delete-user -u username -S http://[node]:[port] [
 
 _Mandatory parameters_
 
-* _**-u**_ refers to the username of the user that needs to be deleted
+* _**-u**_ refers to the username of the user that needs to be deleted.
 
 _Optional parameters_
 
