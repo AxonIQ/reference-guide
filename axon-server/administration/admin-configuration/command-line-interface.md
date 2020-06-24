@@ -294,7 +294,7 @@ _Optional parameters_
 * _**-d**_ refers to the description of the application.
 * _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
-* _**-T**_ in case you want to define the token yourself for newly registered application
+* _**-T**_ in case you want to define the token yourself for newly registered application.
 
 _**delete-application**_**‌**
 
