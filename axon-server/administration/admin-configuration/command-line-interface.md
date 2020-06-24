@@ -4,7 +4,7 @@ The Axon Server provides a _command line utility_ which allows for updating the 
 
 ## Quick Summary
 
-A quick summary of the various commands is depicted below. Each command has a specific [format](command-line-interface.md#format) to it and also can be [access control](command-line-interface.md#access-control) enabled for security purposes.
+A quick summary of the various commands is depicted below. Each command has a specific [format](command-line-interface.md#format) to it and [access control](command-line-interface.md#access-control) can also be enabled on it for security purposes.
 
 <table>
   <thead>
