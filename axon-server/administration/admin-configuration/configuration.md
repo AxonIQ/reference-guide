@@ -809,7 +809,7 @@ A list of all the configuration properties by area is denoted below. Unless expl
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">keep-alive-time</td>
-      <td style="text-align:left">Interval at which AxonServer will send timeout messages. Set to 0 to disbable
+      <td style="text-align:left">Interval at which AxonServer will send timeout messages. Set to 0 to disable
         gRPC timeout checks.</td>
       <td style="text-align:left">2500</td>
     </tr>
