@@ -374,7 +374,7 @@ $ java -jar axonserver-cli.jar unregister-node -n nodename‌ -S http://[node]:[
 
 _Mandatory parameters_
 
-* _**-n**_ refers to the name of the node that needs to be removed from the cluster
+* _**-n**_ refers to the name of the node that needs to be removed from the cluster.
 
 _Optional parameters_
 
