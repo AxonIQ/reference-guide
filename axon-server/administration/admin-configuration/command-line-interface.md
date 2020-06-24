@@ -451,8 +451,8 @@ _Mandatory parameters_
 
 _Optional parameters_
 
-* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context 
-* _**-t**_  refers to the access token to authenticate at server
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
 
 _**delete-node-from-context**_**‌**
 
