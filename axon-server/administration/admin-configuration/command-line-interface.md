@@ -464,8 +464,8 @@ $ java -jar ./axonserver-cli.jar delete-node-from-context  -c [context-name] -n 
 
 _Mandatory parameters_
 
-* _**-c**_ refers to an existing context
-* _**-n**_ refers to the node name that should no longer be a member of this context
+* _**-c**_ refers to an existing context.
+* _**-n**_ refers to the node name that should no longer be a member of this context.
 
 _Optional parameters_
 
