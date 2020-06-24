@@ -354,7 +354,7 @@ If you specify a context, the new node will be a member of the specified context
 
 _Mandatory parameters_
 
-* _**-h**_ refers to the internal host name of the node that needs to be added to the cluster
+* _**-h**_ refers to the internal host name of the node that needs to be added to the cluster.
 
 _Optional parameters_
 
