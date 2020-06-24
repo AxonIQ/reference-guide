@@ -24,7 +24,7 @@ Configuration values can also be supplied using environment variables. The param
 
 There are some recommendations around Axon Server EE/SE configuration,
 
-* Use “./axonserver.properties” for common settings 
+* Use “./axonserver.properties” for common settings.
 * Use “./config/axonserver.properties” for environment/node-specific overrides. 
 * Use “-D” or environment variables for one-time settings
 
@@ -1069,4 +1069,3 @@ A list of all the configuration properties by area is denoted below. Unless expl
     </tr>
   </tbody>
 </table>
-
