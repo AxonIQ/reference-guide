@@ -26,7 +26,7 @@ There are some recommendations around Axon Server EE/SE configuration,
 
 * Use “./axonserver.properties” for common settings.
 * Use “./config/axonserver.properties” for environment/node-specific overrides. 
-* Use “-D” or environment variables for one-time settings
+* Use “-D” or environment variables for one-time settings.
 
 ## Configuration Properties
 
