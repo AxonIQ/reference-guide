@@ -445,9 +445,9 @@ $ java -jar ./axonserver-cli.jar add-node-to-context -c [context-name] -r [role 
 
 _Mandatory parameters_
 
-* _**-c**_ refers to an existing context
-* _**-n**_ refers to the node name that should be a member of this context
-* _**-r**_ refers to the role of this node within the context \(PRIMARY/MESSAGING\_ONLY/ACTIVE\_BACKUP/PASSIVE\_BACKUP\)
+* _**-c**_ refers to an existing context.
+* _**-n**_ refers to the node name that should be a member of this context.
+* _**-r**_ refers to the role of this node within the context \(PRIMARY/MESSAGING\_ONLY/ACTIVE\_BACKUP/PASSIVE\_BACKUP\).
 
 _Optional parameters_
 
