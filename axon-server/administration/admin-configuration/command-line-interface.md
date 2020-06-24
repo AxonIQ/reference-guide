@@ -395,7 +395,7 @@ _Optional parameters_
 
 * _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
-* _**-o json**_ will display the output in a json format
+* _**-o json**_ will display the output in a json format.
 
 _**register-context**_**‌**
 
