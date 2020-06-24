@@ -456,7 +456,7 @@ _Optional parameters_
 
 _**delete-node-from-context**_**‌**
 
-The delete-node-from-context command helps in the deletion member node from an existing context. A sample of the command with the mandatory parameters is depicted below
+The delete-node-from-context command helps in the deletion member node from an existing context. A sample of the command with the mandatory parameters is depicted below:
 
 ```text
 $ java -jar ./axonserver-cli.jar delete-node-from-context  -c [context-name] -n [node name] -S http://[node]:[port] [-t token]‌
