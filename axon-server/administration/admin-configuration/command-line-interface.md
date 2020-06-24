@@ -420,7 +420,7 @@ _Optional parameters_
 
 _**delete-context**_**‌**
 
-The delete-context command helps in the deletion of a context and its associated data from all member nodes of that context. A sample of the command with the mandatory parameters is depicted below
+The delete-context command helps in the deletion of a context and its associated data from all member nodes of that context. A sample of the command with the mandatory parameters is depicted below:
 
 ```text
 $ java -jar ./axonserver-cli.jar delete-context  -c [context-name] -S http://[node]:[port]
