@@ -181,7 +181,7 @@ The option -S with the url to the Axon Server is optional, if it is omitted it d
 
 ### Access control
 
-When running Axon Server with access control enabled, executing commands remotely requires an access token. This has to provided with the -t option. When you run a command on the Axon Server node itself from the directory where Axon Server was started, you don't have to provide a token.‌
+When running Axon Server with access control enabled, executing commands remotely requires an access token. This needs to be provided with the -t option. When you run a command on the Axon Server node itself from the directory where Axon Server was started, you don't have to provide a token.‌
 
 For Axon Server Standard Edition the token is specified in the axonserver.properties file \(property name = _axoniq.axonserver.token_\). In Enterprise Edition you need to register an application with ADMIN role, and you can use that application's token to perform command line commands remotely.‌ The token needs to be supplied using the _**-t**_ option in any of the commands.
 
