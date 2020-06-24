@@ -218,7 +218,7 @@ $ java -jar axonserver-cli.jar register-user -u username -r roles [-p password] 
 
 _Mandatory parameters_
 
-* _**-u**_ refers to the username
+* _**-u**_ refers to the username.
 * _**-r**_ refers to the role of the user. Specify multiple roles by giving a comma separated list \(without spaces\), e.g. READ,ADMIN. 
 * _**-p**_ refers to the password of the user. If you do not specify a password with the -p option, the command line interface will prompt you for one.‌
 
