@@ -8,7 +8,7 @@ The system configuration can be maintained/supplied in three ways.
 
 ### _Configuration File_
 
-The most commonly and preferred way is to have an _axonserver.properties_ or _\_ \_axonserver.yml_ _\*\*_file which contains the desired configuration parameters. The location of the file should be the current working directory or alternatively can be placed within a "_config"_ subdirectory \(relative to the current working directory\).
+The most commonly and preferred way is to have an _axonserver.properties_ or _\_ \_axonserver.yml __\*\*_file which contains the desired configuration parameters. The location of the file should be the current working directory or alternatively can be placed within a "\_config"_ subdirectory \(relative to the current working directory\).
 
 An important note - In case both files are detected by Axon Server, it will read from both.
 
@@ -115,7 +115,7 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">devmode.enabled</td>
       <td style="text-align:left">Development mode which allows deleting all events from event store.<em>(Axon SE only)</em>
       </td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">false</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
@@ -686,15 +686,15 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left"></td>
       <td style="text-align:left">replication.heartbeat-timeout</td>
       <td style="text-align:left">Leader sends a heartbeat to followers if it has not sent any other messages
-        to a follower for this time.</td>
+        to a follower for this time (in ms)</td>
       <td style="text-align:left">300</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">replication.initial-election-timeout</td>
-      <td style="text-align:left">Extra time that follower waits initially before moving to candidate state.</td>
-      <td
-      style="text-align:left">0</td>
+      <td style="text-align:left">Extra time (in ms) that follower waits initially before moving to candidate
+        state.</td>
+      <td style="text-align:left">0</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
@@ -728,19 +728,36 @@ A list of all the configuration properties by area is denoted below. Unless expl
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">replication.max-indexes-in-memory</td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">Number of index files for replication segments that Axon Server keeps
+        in memory</td>
       <td style="text-align:left">10</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">replication.max-replication-round</td>
+      <td style="text-align:left">storage.event.max-indexes-in-memory</td>
+      <td style="text-align:left">Number of index files for event segments that Axon Server keeps in memory</td>
+      <td
+      style="text-align:left">50</td>
+    </tr>
+    <tr>
       <td style="text-align:left"></td>
+      <td style="text-align:left">snapshot.max-indexes-in-memory</td>
+      <td style="text-align:left">Number of index files for snapshot segments that Axon Server keeps in
+        memory</td>
+      <td style="text-align:left">50</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">replication.max-replication-round</td>
+      <td style="text-align:left">The number of attempts the log replication process will do during the
+        replication a snapshot until the follower is caught up.</td>
       <td style="text-align:left">10</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">replication.max-snapshot-chunks-per-batch</td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">Maximum number of objects that can be sent in a single install snapshot
+        message</td>
       <td style="text-align:left">1000</td>
     </tr>
     <tr>
@@ -794,8 +811,8 @@ A list of all the configuration properties by area is denoted below. Unless expl
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">replication.wait-for-leader-timeout</td>
-      <td style="text-align:left">Timeout to wait for leader when requesting access to event store while
-        leader change in progress, if not set defaults to maxElectionTimeout.</td>
+      <td style="text-align:left">Timeout (in ms.) to wait for leader when requesting access to event store
+        while leader change in progress, if not set defaults to maxElectionTimeout.</td>
       <td
       style="text-align:left">-1</td>
     </tr>
@@ -816,39 +833,43 @@ A list of all the configuration properties by area is denoted below. Unless expl
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">keep-alive-timeout</td>
-      <td style="text-align:left">Timeout for keep alive messages on gRPC connections.</td>
-      <td style="text-align:left">5000</td>
-    </tr>
-    <tr>
-      <td style="text-align:left"></td>
-      <td style="text-align:left">min-keep-alive-time</td>
-      <td style="text-align:left">Minimum keep alive interval accepted by this end of the gRPC connection.</td>
-      <td
-      style="text-align:left">1000</td>
-    </tr>
-    <tr>
-      <td style="text-align:left"></td>
-      <td style="text-align:left">client-heartbeat-timeout</td>
-      <td style="text-align:left">Timeout on application level heartbeat between client and Axon Server.</td>
+      <td style="text-align:left">Timeout (in ms.) for keep alive messages on gRPC connections.</td>
       <td
       style="text-align:left">5000</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">client-heartbeat-check-initial-delay</td>
+      <td style="text-align:left">min-keep-alive-time</td>
+      <td style="text-align:left">Minimum keep alive interval (in ms.) accepted by this end of the gRPC
+        connection.</td>
+      <td style="text-align:left">1000</td>
+    </tr>
+    <tr>
       <td style="text-align:left"></td>
+      <td style="text-align:left">client-heartbeat-timeout</td>
+      <td style="text-align:left">Timeout (in ms.) on application level heartbeat between client and Axon
+        Server.</td>
+      <td style="text-align:left">5000</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">client-heartbeat-check-initial-delay</td>
+      <td style="text-align:left">Initial time delay (in ms.) before Axon Server checks for heartbeats from
+        clients.</td>
       <td style="text-align:left">10000</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">client-heartbeat-check-rate</td>
-      <td style="text-align:left"></td>
-      <td style="text-align:left">1000</td>
+      <td style="text-align:left">How often (in ms.) does Axon Server check for heartbeats from clients.</td>
+      <td
+      style="text-align:left">1000</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">heartbeat.enabled</td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">If this is set Axon Server will respond to heartbeats from clients and
+        send heartbeat</td>
       <td style="text-align:left">false</td>
     </tr>
     <tr>
@@ -861,8 +882,9 @@ A list of all the configuration properties by area is denoted below. Unless expl
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">cluster.connection-check-delay</td>
-      <td style="text-align:left"></td>
-      <td style="text-align:left">1000</td>
+      <td style="text-align:left">Delay before the first run of the connection checker (in ms.)</td>
+      <td
+      style="text-align:left">1000</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
@@ -911,21 +933,9 @@ A list of all the configuration properties by area is denoted below. Unless expl
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">cache-close-rate</td>
-      <td style="text-align:left">Interval at which to check for timed out queries and commands.</td>
+      <td style="text-align:left">Interval (in ms.) at which to check for timed out queries and commands.</td>
       <td
       style="text-align:left">5000</td>
-    </tr>
-    <tr>
-      <td style="text-align:left"></td>
-      <td style="text-align:left">cluster.connectionCheckRetries</td>
-      <td style="text-align:left"></td>
-      <td style="text-align:left">5</td>
-    </tr>
-    <tr>
-      <td style="text-align:left"></td>
-      <td style="text-align:left">cluster.connectionCheckRetryWait</td>
-      <td style="text-align:left"></td>
-      <td style="text-align:left">1000</td>
     </tr>
     <tr>
       <td style="text-align:left"><em><b>Performance</b></em>
@@ -1026,13 +1036,13 @@ A list of all the configuration properties by area is denoted below. Unless expl
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">default-command-timeout</td>
-      <td style="text-align:left">Timeout for commands sent to command handler</td>
+      <td style="text-align:left">Timeout (in ms.) for commands sent to command handler</td>
       <td style="text-align:left">300000</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">default-query-timeout</td>
-      <td style="text-align:left">Timeout for queries sent to query handler</td>
+      <td style="text-align:left">Timeout (in ms.) for queries sent to query handler</td>
       <td style="text-align:left">300000</td>
     </tr>
     <tr>
@@ -1043,15 +1053,19 @@ A list of all the configuration properties by area is denoted below. Unless expl
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">websocket-update.initial-delay</td>
-      <td style="text-align:left"></td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">websocket-update.rate</td>
+      <td style="text-align:left">Settings to influence how often Axon Server (in ms.) sends updates to
+        the dashboard for updated metrics or tracking event processor status.</td>
+      <td
+      style="text-align:left">1000</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">websocket-update.rate</td>
-      <td style="text-align:left"></td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">websocket-update.initial-delay</td>
+      <td style="text-align:left">On start, it will wait &quot;initial-delay&quot; (in ms.) before sending
+        any updates. After that it will check every &quot;rate&quot; milliseconds.</td>
+      <td
+      style="text-align:left">10000</td>
     </tr>
     <tr>
       <td style="text-align:left"><em><b>Recovery</b></em>
@@ -1069,3 +1083,4 @@ A list of all the configuration properties by area is denoted below. Unless expl
     </tr>
   </tbody>
 </table>
+
