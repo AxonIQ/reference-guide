@@ -18,11 +18,12 @@ Each context needs to have at least one Primary node. This node is capable of be
 
 You can use backup nodes for instance when you want to ensure that you have a copy of your event store in another data center. As clients will never connect to a backup node and the backup node will never become the leader for a context it reduces the risk of high latency, compared to having a normal \(Primary\) node in another data center.‌ Just to reiterate, clients will never connect directly to a backup node.‌
 
-Backup nodes come in two flavors,
+Backup nodes come in two flavors
 
 ### _**Active Backup node**_
 
 Active backup nodes maintain a real time copy of the Event Store by being _active_ _participants_ in transactions. To expand this, suppose a context within an Axon Server EE cluster has Active Backup nodes assigned to it \(in addition to the Primary nodes\). When an event is raised within a context the transaction to commit it in the Event Store is ready only if it receives a successful acknowledgement from at-least a certain number of those Active Backup nodes.
+
 
 It is possible to customize the number of active backup nodes involved in the transactions by changing the value of the property `axoniq.axonserver.replication.min-active-backups` . The default value of this parameter is _**"1"**_ which means that if you have Active Backup nodes, at least one of them needs to be up at any time. The higher the value set for this property, the higher the number of Active backup member nodes that need to be available for a successful transaction, so this property affects the availability of the cluster and hence needs to be carefully managed.
 
