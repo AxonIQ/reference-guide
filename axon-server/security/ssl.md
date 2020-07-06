@@ -2,7 +2,7 @@
 
 Axon Server supports TLS/SSL \(Transport Layer Security/Secure Sockets Layer\) to encrypt all of Axon Server's network traffic - From Axon Framework client applications to Axon Server \(SE/EE\) as well as between Axon Server nodes within a cluster \(EE only\).
 
-Axon Server \(SE/EE\) has two ports \(HTTP/gRPC\) that need to be enabled for SSL and hence there are two different groups of settings to use, once for each port. The HTTP port uses the generic Spring-Boot configuration settings, and requires a Java compatible keystore. For the gRPC port we use standard PEM files. 
+Axon Server \(SE/EE\) has two ports \(HTTP/gRPC\) that need to be enabled for SSL and hence there are two different groups of settings to use, one for each port. The HTTP port uses the generic Spring Boot configuration settings, and requires a Java compatible keystore. For the gRPC port we use standard PEM files. 
 
 The following properties need to be setup in axonserver.properties for both SE/EE
 
@@ -99,4 +99,3 @@ The second is for a \(PEM\) keystore that certifies the other certificates, whic
 #### Downtime Considerations
 
 A thing to remember is that enabling SSL on an Axon Server cluster will require downtime, as the “...ssl.enabled” setting controls both server and client side code. This is intentional, as it is unreasonable to expect all nodes to have individual settings per node showing which ones communicate using SSL and which do not, so it is recommended to get this done in the beginning during the installation phase of Axon Server
-
