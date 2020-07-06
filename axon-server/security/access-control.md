@@ -118,7 +118,7 @@ AxonIQ-Access-Token: my-token-value-here
 
 When using Axon Server with access control enabled, users need to be defined to access the Axon Server EE Dashboard. The _**first user**_ has to be created using the command line interface on an Axon Server node and the CLI has to be necessarily run from the installation directory of Axon Server.
 
-To do this execute the _"register-user"_ command,
+To do this execute the _"register-user"_ command:
 
 ```text
 $ java -jar axonserver-cli.jar register-user -u username -r roles [-p password] -S http://[node]:[port] [-t token]
