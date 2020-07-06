@@ -35,7 +35,7 @@ AxonIQ-Access-Token: my-token-value-here
 
 ### **Users - Axon Server SE UI Console**
 
-You can create users either through the command line or through the dashboard web application. The _**initial user**_ has to be created through the command line as you would not be able to login tp the dashboard. 
+You can create users either through the command line or through the dashboard web application. The _**initial user**_ has to be created through the command line as you would not be able to login to the dashboard otherwise.
 
 To do this execute the _"register-user"_ command,
 
@@ -140,5 +140,4 @@ Users can also be added using the REST API / UI Console that Axon Server EE prov
 ### Axon Server cluster <a id="axon-server-cluster"></a>
 
 If access control is enabled, the nodes in the cluster also need to attach a token with the messages sent between them. This token must be defined in the `axonserver.properties`file on each node with property `axoniq.axonserver.accesscontrol.internal-token`. The value of this property must be the same for all nodes. and is comparable to the token for SE. If you have a running cluster and want to enable access control, be sure to first configure this token on all nodes, before you start enabling access control. That way you can keep the restarts limited to a single node at a time, and never lose full cluster availability.
-
 
