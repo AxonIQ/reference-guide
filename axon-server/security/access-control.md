@@ -54,7 +54,7 @@ _Optional parameters_
 * _**-S**_ refers to the server to send the command to. If this is not supplied it connects to [http://localhost:8024](http://localhost:8024) by default. For Axon Server SE, the URL for the Axon Server SE will be the single running node.
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to. This should be the same as the token setup in the `axonserver.properties` file.
 
-Users can also be added using the REST API / UI Console that Axon Server SE provides. The CLI also allows the capabilities to [list all users](../administration/admin-configuration/command-line-interface.md#users) as well as[ delete specific users](../administration/admin-configuration/command-line-interface.md#users).
+Users can also be added using the REST API / UI Console that Axon Server SE provides. The CLI also allows the capabilities to [list all users](../administration/admin-configuration/command-line-interface.md#users) as well as [delete specific users](../administration/admin-configuration/command-line-interface.md#users).
 
 ## Axon Server Enterprise Edition <a id="axon-server-enterprise-edition"></a>
 
