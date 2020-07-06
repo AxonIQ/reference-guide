@@ -86,7 +86,7 @@ A summary of the various roles is depicted below
 
 Instead of setting a single token in `axonserver.properties`, you must now register applications with specific roles. Since every request requires a token or a valid user, there is a _**special way**_ of creating the first application and/or user. This first application can be created using the command line interface on an Axon Server node and the CLI has to be necessarily run from the installation directory of Axon Server.
 
-To register an application and get an access token use the "register-application" command. This command returns the generated token to use. Note that this token is only generated once, if you lose it you must delete the application and register it again to get a new token. If you want to define the token yourself, you can provide one in the command line command using the `-T` flag
+To register an application and get an access token use the "register-application" command. This command returns the generated token to use. Note that this token is only generated once, if you lose it you must delete the application and register it again to get a new token. If you want to define the token yourself, you can provide one in the command line command using the `-T` flag:
 
 ```text
 $ java -jar axonserver-cli.jar register-application -a name -r roles  [-d description] [-T apptoken] -S http://[node]:[port] [-t token]
