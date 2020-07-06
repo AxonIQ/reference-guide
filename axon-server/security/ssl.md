@@ -4,7 +4,7 @@ Axon Server supports TLS/SSL \(Transport Layer Security/Secure Sockets Layer\) t
 
 Axon Server \(SE/EE\) has two ports \(HTTP/gRPC\) that need to be enabled for SSL and hence there are two different groups of settings to use, one for each port. The HTTP port uses the generic Spring Boot configuration settings, and requires a Java compatible keystore. For the gRPC port we use standard PEM files. 
 
-The following properties need to be setup in axonserver.properties for both SE/EE
+The following properties need to be setup in `axonserver.properties` for both SE and EE:
 
 <table>
   <thead>
