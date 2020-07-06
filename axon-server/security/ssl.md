@@ -98,4 +98,4 @@ The second is for a \(PEM\) keystore that certifies the other certificates, whic
 
 #### Downtime Considerations
 
-A thing to remember is that enabling SSL on an Axon Server cluster will require downtime, as the “...ssl.enabled” setting controls both server and client side code. This is intentional, as it is unreasonable to expect all nodes to have individual settings per node showing which ones communicate using SSL and which do not, so it is recommended to get this done in the beginning during the installation phase of Axon Server
+A thing to remember is that enabling SSL on an Axon Server cluster will require downtime, as the “...ssl.enabled” setting controls both server and client side code. This is intentional, as it is unreasonable to expect all nodes to have individual settings per node showing which ones communicate using SSL and which do not, so it is recommended to get this done in the beginning during the installation phase of Axon Server.
