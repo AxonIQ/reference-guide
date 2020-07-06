@@ -58,7 +58,7 @@ Users can also be added using the REST API / UI Console that Axon Server SE prov
 
 ## Axon Server Enterprise Edition <a id="axon-server-enterprise-edition"></a>
 
-Axon Server Enterprise Edition provides a fine-grained access control mechanism for
+Axon Server Enterprise Edition provides a fine-grained access control mechanism for:
 
 * Client Applications connecting to Axon Server SE.
 * Users accessing the Axon Server UI Console.
