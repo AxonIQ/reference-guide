@@ -102,7 +102,7 @@ _Optional parameters_
 * _**-d**_ refers to the description of the application.
 * _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
-* _**-T**_ in case you want to define the token yourself for newly registered application.
+* _**-T**_ in case you want to define the token yourself for a newly registered application.
 
 The ADMIN role is only valid for the \_admin context, the other roles are specific to another context.In addition to the role name you can also supply the context to which this role applies like _{role\_name}@{context\_name}_. Also if no context is mentioned in Axon Server EE, the role is granted to the application for all registered contexts, including contexts that are created after the role has been granted**.**
 
