@@ -97,6 +97,7 @@
   * [Recovery](axon-server/administration/recovery.md)
 * [Security](axon-server/security/README.md)
   * [Access Control](axon-server/security/access-control.md)
+  * [SSL](axon-server/security/ssl.md)
 * [Performance](axon-server/performance/README.md)
   * [Event Segments](axon-server/performance/tuning-event-processing.md)
   * [Flow Control](axon-server/performance/flow-control.md)
