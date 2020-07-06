@@ -94,7 +94,7 @@ $ java -jar axonserver-cli.jar register-application -a name -r roles  [-d descri
 
 _Mandatory parameters_
 
-* _**-a**_ \_\*\*\_refers to the name of the application
+* _**-a**_ \_\*\*\_refers to the name of the application.
 * _**-r**_ refers to the role of the application. Specify multiple roles by giving a comma separated list \(without spaces\), e.g. READ,ADMIN. 
 
 _Optional parameters_
