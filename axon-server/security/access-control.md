@@ -104,7 +104,7 @@ _Optional parameters_
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
 * _**-T**_ in case you want to define the token yourself for a newly registered application.
 
-The ADMIN role is only valid for the \_admin context, the other roles are specific to another context.In addition to the role name you can also supply the context to which this role applies like _{role\_name}@{context\_name}_. Also if no context is mentioned in Axon Server EE, the role is granted to the application for all registered contexts, including contexts that are created after the role has been granted**.**
+The ADMIN role is only valid for the \_admin context, the other roles are specific to another context. In addition to the role name you can also supply the context to which this role applies, for example _{role\_name}@{context\_name}_. Also if no context is mentioned in Axon Server EE, the role is granted to the application for all registered contexts, including contexts that are created after the role has been granted.
 
 The token that you set here must be used by all Axon Framework Applications connecting to Axon Server. The access token can be setup in the client using the property `axon.axonserver.token=[Token]`
 
