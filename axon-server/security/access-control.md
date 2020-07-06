@@ -17,7 +17,7 @@ Axon Server Standard Edition provides a basic access control mechanism for:
 
 ### Axon Framework Client Applications
 
-Applications need to provide a valid token can perform all operations. For users there are two groups, users that can login to the dashboard but cannot manage users and users with ADMIN role, who are allowed to manage users.‌
+Applications need to provide a valid token before they can perform all operations. For users there are two groups, (1) users that can login to the dashboard but cannot manage users and (2) users with `ADMIN` role, who are allowed to manage users.‌
 
 The token that applications must provide to use Axon Server is defined in the `axonserver.properties` file.
 
@@ -140,7 +140,6 @@ Users can also be added using the REST API / UI Console that Axon Server EE prov
 ### Axon Server cluster <a id="axon-server-cluster"></a>
 
 If access control is enabled, the nodes in the cluster also need to attach a token with the messages sent between them. This token must be defined in the `axonserver.properties`file on each node with property `axoniq.axonserver.accesscontrol.internal-token`. The value of this property must be the same for all nodes. and is comparable to the token for SE. If you have a running cluster and want to enable access control, be sure to first configure this token on all nodes, before you start enabling access control. That way you can keep the restarts limited to a single node at a time, and never lose full cluster availability.
-
 
 
 
