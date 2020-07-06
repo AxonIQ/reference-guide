@@ -10,7 +10,7 @@ axoniq.axonserver.accesscontrol.enabled=true
 
 ## Axon Server Standard Edition <a id="axon-server-standard-edition"></a>
 
-Axon Server Standard Edition provides a basic access control mechanism for 
+Axon Server Standard Edition provides a basic access control mechanism for:
 
 * Client Applications connecting to Axon Server SE.
 * Users accessing the Axon Server UI Console.
@@ -140,7 +140,6 @@ Users can also be added using the REST API / UI Console that Axon Server EE prov
 ### Axon Server cluster <a id="axon-server-cluster"></a>
 
 If access control is enabled, the nodes in the cluster also need to attach a token with the messages sent between them. This token must be defined in the `axonserver.properties`file on each node with property `axoniq.axonserver.accesscontrol.internal-token`. The value of this property must be the same for all nodes. and is comparable to the token for SE. If you have a running cluster and want to enable access control, be sure to first configure this token on all nodes, before you start enabling access control. That way you can keep the restarts limited to a single node at a time, and never lose full cluster availability.
-
 
 
 
