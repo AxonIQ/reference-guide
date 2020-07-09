@@ -17,7 +17,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
   <tbody>
     <tr>
       <td style="text-align:left">
-        <p>&lt;em&gt;&lt;/em&gt;<a href="command-line-interface.md#user"><em><b>Users</b></em></a>
+        <p><a href="command-line-interface.md#user"><em><b>Users</b></em></a>
         </p>
         <p><em>(Standard/Enterprise)</em>
         </p>
@@ -42,7 +42,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
     </tr>
     <tr>
       <td style="text-align:left">
-        <p>&lt;em&gt;&lt;/em&gt;<a href="command-line-interface.md#metrics"><em><b>Metrics</b></em></a>
+        <p><a href="command-line-interface.md#metrics"><em><b>Metrics</b></em></a>
         </p>
         <p><em>(Standard/Enterprise)</em>
         </p>
@@ -57,7 +57,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
     </tr>
     <tr>
       <td style="text-align:left">
-        <p>&lt;em&gt;&lt;/em&gt;<a href="command-line-interface.md#application-enterprise-edition-only"><em><b>Applications</b></em></a>
+        <p><a href="command-line-interface.md#application-enterprise-edition-only"><em><b>Applications</b></em></a>
         </p>
         <p><em>(Enterprise Only)</em>
         </p>
@@ -82,7 +82,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
     </tr>
     <tr>
       <td style="text-align:left">
-        <p>&lt;em&gt;&lt;/em&gt;<a href="command-line-interface.md#cluster-enterprise-edition-only"><em><b>Cluster</b></em></a>
+        <p><a href="command-line-interface.md#cluster-enterprise-edition-only"><em><b>Cluster</b></em></a>
         </p>
         <p><em>(Enterprise Only)</em>
         </p>
@@ -112,7 +112,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
     </tr>
     <tr>
       <td style="text-align:left">
-        <p>&lt;em&gt;&lt;/em&gt;<a href="command-line-interface.md#context-enterprise-edition-only"><em><b>Context</b></em></a>
+        <p><a href="command-line-interface.md#context-enterprise-edition-only"><em><b>Context</b></em></a>
         </p>
         <p><em>(Enterprise Only)</em>
         </p>
@@ -286,7 +286,7 @@ $ java -jar axonserver-cli.jar register-application -a name -r roles  [-d descri
 
 _Mandatory parameters_
 
-* _**-a**_ _\*\*_refers to the name of the application
+* _**-a**_ \_\*\*\_refers to the name of the application
 * _**-r**_ refers to the role of the application. Specify multiple roles by giving a comma separated list \(without spaces\), e.g. READ,ADMIN. 
 
 _Optional parameters_
@@ -306,7 +306,7 @@ $ java -jar axonserver-cli.jar delete-application -a name -S http://[node]:[port
 
 _Mandatory parameters_
 
-* _**-a**_ _\*\*_refers to the name of the application
+* _**-a**_ \_\*\*\_refers to the name of the application
 
 _Optional parameters_
 
@@ -472,3 +472,4 @@ _Optional parameters_
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
 * _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
 * _**--preserve-event-store**_ removes the node from the context but leaves the event store files on that node.
+
