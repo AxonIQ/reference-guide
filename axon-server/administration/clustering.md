@@ -40,8 +40,8 @@ Axon Server EE has one special context, called "\_admin". This context is used t
 You can bypass the manual configuration of the cluster by adding two additional properties in the axonserver.properties file:
 
 ```text
-axoniq.axonserver.autocluster.first=internal-hostname:internal-portaxoniq.axonserver.autocluster.contexts=context1,context2
-```
+axoniq.axonserver.autocluster.first=internal-hostname:internal-port
+axoniq.axonserver.autocluster.contexts=context1,context2
 
 The _axoniq.axonserver.autocluster.first_ property defines the first node in the cluster, by specifying its internal hostname \(the hostname used by other Axon Server nodes to connect to this host\), and the internal port. If the internal port is default \(8224\) it can be omitted.‌
 
