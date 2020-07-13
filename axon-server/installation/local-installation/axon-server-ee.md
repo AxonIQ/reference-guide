@@ -179,7 +179,7 @@ A sample response is shown below \(assuming that the hostnames of the admin node
 ]
 ```
 
-The cluster configuration information depicts 
+The cluster configuration information depicts:
 
 * The leader of the cluster
 * The contexts available within the cluster \(in this case "\_admin" and "default"\)
