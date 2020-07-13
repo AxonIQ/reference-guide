@@ -6,7 +6,7 @@ The Axon Server EE ZIP download contains executable JAR files for the server its
 
 ## Setting up Axon Server EE
 
-Unlike Axon Server SE, the setting up and running of an Axon Server EE edition is a longer process which involves the setup of a cluster, creation of contexts and assignment of roles before it can be used for event storage and message routing. 
+Unlike Axon Server SE, the setting up and running of an Axon Server EE edition is a longer process which involves the setup of a cluster, creation of contexts and assignment of roles before it can be used for event storage and message routing.
 
 Before we get into the setup, a short introduction to the concept of clusters and contexts within Axon Server EE.
 
@@ -28,7 +28,7 @@ Setting up a cluster generally involves three steps:
 
 #### _Provision Axon Server EE nodes_
 
-To get started with setting up a cluster, you need to provision a set of _**uninitialized**_ nodes. Extract the Enterprise Zip on all the nodes that you want to be part of the cluster. The nodes will need to run on separate ports if run on the same machine. 
+To get started with setting up a cluster, you need to provision a set of _**uninitialized**_ nodes. Extract the Enterprise Zip on all the nodes that you want to be part of the cluster. The nodes will need to run on separate ports if run on the same machine.
 
 From the location where the files have been extracted, please run the following command.
 
@@ -46,7 +46,7 @@ This will start Axon Server EE using the default ports - 8024 for HTTP / 8124 an
 
 The HTTP port is used to serve the Management UI and the REST API provided by Axon Server EE. The gRPC 8124 port is used by Axon Framework client applications to connect to Axon Server EE, while the gRPC 8224 port is used for internal communication between the nodes of an Axon Server EE cluster.
 
-The management UI can be opened at "http://localhost:8024" while the REST API is accessible at "http://localhost:8024/v1". The REST API provides an operation at "/v1/public/me" to get the configuration details for a running instance of Axon Server EE.  
+The management UI can be opened at "[http://localhost:8024](http://localhost:8024)" while the REST API is accessible at "[http://localhost:8024/v1](http://localhost:8024/v1)". The REST API provides an operation at "/v1/public/me" to get the configuration details for a running instance of Axon Server EE.
 
 A representation of the response is given below.
 
@@ -80,7 +80,7 @@ This completes the process of setting up the unitialized nodes. Next, we need to
 
 #### _Admin Node initialization_
 
-To convert a group of uninitialized Axon Server EE nodes into a cluster, you need to select any one of them as a starting point and run the “init-cluster” command on it. This is done using the "command-line" utility \(axonserver-cli.jar\) available as part of the Axon Server EE distributable. 
+To convert a group of uninitialized Axon Server EE nodes into a cluster, you need to select any one of them as a starting point and run the “init-cluster” command on it. This is done using the "command-line" utility \(axonserver-cli.jar\) available as part of the Axon Server EE distributable.
 
 ```text
 $ ./axonserver-cli.jar init-cluster
@@ -120,7 +120,7 @@ The UI console displays the newly initialized admin node as shown below \(assumi
 
 #### _Additional Nodes_
 
-The other nodes can be added to the cluster using the “register-node” command, pointing it at an admin node already in the cluster. On every other node, the following command needs to be executed by pointing to the admin node created above. 
+The other nodes can be added to the cluster using the “register-node” command, pointing it at an admin node already in the cluster. On every other node, the following command needs to be executed by pointing to the admin node created above.
 
 ```text
 $ ./axonserver-cli.jar register-node -h axonserver-1
@@ -146,7 +146,7 @@ Assuming that the additional node being added has its hostname as "axonserver-2"
 }
 ```
 
-To get the complete details of the cluster configuration, the REST API operation at "/v1/public/context" if run against the admin node. 
+To get the complete details of the cluster configuration, the REST API operation at "/v1/public/context" if run against the admin node.
 
 A sample response is shown below \(assuming that the hostnames of the admin node and the additional node are "axonserver-1" and "axonserver-2"\)
 
@@ -190,7 +190,7 @@ The UI console displays the newly initialized admin node as shown below \(assumi
 
 ![Additional node registered.](../../../.gitbook/assets/admin_node_additional_node1.png)
 
-A production grade setup would require more advanced configuration. For example an Axon Server EE node can be assigned to play different roles within a cluster - it may serve as an admin node, providing services to configure the cluster and keep it running, next to the “regular” event store and messaging functions. It can also be configured to only service specific _**contexts**_ in various roles. Contexts are comparable to logical databases in a RDBMS. They allow for strong segregation without requiring deploying and managing full instances. 
+A production grade setup would require more advanced configuration. For example an Axon Server EE node can be assigned to play different roles within a cluster - it may serve as an admin node, providing services to configure the cluster and keep it running, next to the “regular” event store and messaging functions. It can also be configured to only service specific _**contexts**_ in various roles. Contexts are comparable to logical databases in a RDBMS. They allow for strong segregation without requiring deploying and managing full instances.
 
 This is detailed in the [Clustering](../../administration/clustering.md) and the [Contexts](../../administration/multi-context.md) sections.
 
@@ -221,7 +221,7 @@ The [configuration](../../administration/admin-configuration/) section details t
 
 ### Access Control
 
-As Axon Server is an event store and may contain sensitive data it is always a good practice to enable access control in production and production-like environments. 
+As Axon Server is an event store and may contain sensitive data it is always a good practice to enable access control in production and production-like environments.
 
 The [Access Control](../../security/access-control.md) section details the steps required to setup access control in Axon Server EE.
 
@@ -230,3 +230,4 @@ The [Access Control](../../security/access-control.md) section details the steps
 Axon Server EE supports TLS/SSL \(Transport Layer Security/Secure Sockets Layer\) to encrypt all of Axon Server SE's network traffic - From Axon Framework client applications to Axon Server EE as well as between the various nodes of an Axon Server EE cluster.
 
 The [SSL](../../security/ssl.md) section details the steps required to setup SSL in Axon Server EE.
+

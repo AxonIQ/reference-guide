@@ -5,7 +5,7 @@ Event publication can from a couple of locations within your Axon Framework appl
 1. Dispatching events from an Aggregate, and
 2. Dispatching events from regular components 
 
-This page will describe how to get an event message on the event bus from both locations. For more specifics regarding event publication and storage implementations in Axon Framework, read [this]() section.
+This page will describe how to get an event message on the event bus from both locations. For more specifics regarding event publication and storage implementations in Axon Framework, read [this](event-dispatchers.md) section.
 
 ## Dispatching events from an Aggregate
 
@@ -36,13 +36,13 @@ The `AggregateLifecycle#apply(Object)` will go through a number of steps:
 
    The `EventMessage` will also receive the `sequenceNumber` from the previous step, as well as the Aggregate it's identifier.
 
-4. The Event Message will be published from here on. 
+4. The Event Message will be published from here on.
 
    The event will first be sent to all the Event Handlers in the Aggregate which are interested.
 
    This is necessary for [Event Sourcing](../../architecture-overview/event-sourcing.md), to update the Aggregate's state accordingly.
 
-5. After the Aggregate itself has handled the event, it will be published on the `EventBus`. 
+5. After the Aggregate itself has handled the event, it will be published on the `EventBus`.
 
 > **MetaData in Aggregate Event Messages**
 >
@@ -60,6 +60,4 @@ public void dispatchEvent() {
 }
 // omitted class and constructor
 ```
-
-
 

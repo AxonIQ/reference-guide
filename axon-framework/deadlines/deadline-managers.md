@@ -44,7 +44,7 @@ Note that there are more options to cancel a deadline next to the previously men
 
   For example, if this operation is performed from within "aggregate instance X",
 
-  the `ScopeDescriptor` from "aggregate instance X" will be used to cancel. 
+  the `ScopeDescriptor` from "aggregate instance X" will be used to cancel.
 
 * `cancelAllWithinScope(String deadlineName, ScopeDescriptor scope)`
 

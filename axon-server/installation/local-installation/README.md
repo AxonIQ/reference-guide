@@ -1,6 +1,6 @@
 # Local Installation
 
-This section of the reference guide will focus on a local instal of Axon Server SE/EE which is ideal for development purposes. The only pre-requisite is to have a machine with Java 8 or 11. 
+This section of the reference guide will focus on a local instal of Axon Server SE/EE which is ideal for development purposes. The only pre-requisite is to have a machine with Java 8 or 11.
 
 | Version |  |
 | :--- | :--- |

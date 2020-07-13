@@ -12,3 +12,4 @@ The release notes section for the Axon framework for all major/minor releases.
 |  | [4.2](rn-af-minor-releases.md#release-4-2) |
 |  | [4.1](rn-af-minor-releases.md#release-4-1) |
 |  | [4.0](rn-af-minor-releases.md#release-4-0) |
+

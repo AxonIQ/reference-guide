@@ -21,5 +21,3 @@ Axon Server provides an API to trigger the increase and decrease of the number o
 >
 > The exposed buttons in the UI can also be targeted directly through REST calls through curl for example. It is recommended to check the Swagger UI for the split and merge endpoint information if such an approach is necessary.
 
-
-

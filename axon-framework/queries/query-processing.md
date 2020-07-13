@@ -2,7 +2,7 @@
 
 Processing [queries ](./)as a dedicated type of message is in line with segregating out query models when following [CQRS](../../architecture-overview/ddd-cqrs-concepts.md). Although creating a query handling layer is fairly straight-forward, using Axon Framework for this part of the application has a number of benefits.
 
-Through providing the functionality to describe query handling methods \(as further explained in [this ](query-handlers.md)section\) and a dedicated bus for query messages, common message features such as[ interceptors](../messaging-concepts/message-intercepting.md) and [message monitoring](../../axon-server/administration/monitoring.md) can be used.
+Through providing the functionality to describe query handling methods \(as further explained in [this ](query-handlers.md)section\) and a dedicated bus for query messages, common message features such as[ interceptors](../messaging-concepts/message-intercepting.md) and [message monitoring](https://github.com/domaincomponents/reference-guide/tree/c3e76b87f9f26b8e8a2fd07c115ec38ae925887f/axon-server/administration/monitoring.md) can be used.
 
 The next sections provide an overview of the tasks related to configuring the necessary components to start processing queries in an Axon application. To that end the approach to registering `@QueryHandler` annotated methods is discussed, as well as what options are present when it comes to dispatching queries.
 

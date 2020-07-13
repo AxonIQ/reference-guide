@@ -8,11 +8,11 @@ Axon Server Enterprise can be deployed as a _**cluster**_ to guarantee high avai
 
 ### Contexts
 
-Within a single cluster you can define _**contexts**_. Contexts are comparable to logical databases in a RDBMS. They allow for strong segregation without requiring deploying and managing full instances. They may be used for "bounded contexts" in the DDD sense, multi-tenancy \(with a context per tenant\), and different retention policies.  
+Within a single cluster you can define _**contexts**_. Contexts are comparable to logical databases in a RDBMS. They allow for strong segregation without requiring deploying and managing full instances. They may be used for "bounded contexts" in the DDD sense, multi-tenancy \(with a context per tenant\), and different retention policies.
 
 ### Node Roles
 
-When you define a context, you assign nodes that will serve that context. 
+When you define a context, you assign nodes that will serve that context.
 
 A node can have different roles in a context:
 
@@ -25,7 +25,7 @@ There are multiple options available of assigning roles to nodes within a contex
 
 ### Consensus/Elections
 
-All nodes serving a particular context maintain a complete copy, with a “context leader” in control of the distributed transaction. The leader is determined by elections, following the [RAFT protocol](https://raft.github.io/). An important consequence has to do with those elections: nodes need to be able to win them, or at least feel the support of a clear majority i.e. To have a valid leader for a context, a _**majority of the nodes must be active**_ \(e.g. when you have a cluster with 3 nodes, you need at least 2 active nodes, for a cluster of 4 nodes you would need 3 active nodes\).‌ The leader orchestrates the distributed transaction \(i.e. replication of data between the nodes\) and confirms to clients when transactions are committed. 
+All nodes serving a particular context maintain a complete copy, with a “context leader” in control of the distributed transaction. The leader is determined by elections, following the [RAFT protocol](https://raft.github.io/). An important consequence has to do with those elections: nodes need to be able to win them, or at least feel the support of a clear majority i.e. To have a valid leader for a context, a _**majority of the nodes must be active**_ \(e.g. when you have a cluster with 3 nodes, you need at least 2 active nodes, for a cluster of 4 nodes you would need 3 active nodes\).‌ The leader orchestrates the distributed transaction \(i.e. replication of data between the nodes\) and confirms to clients when transactions are committed.
 
 While an Axon Server cluster does not need to have an odd number of nodes, every individual context does, to prevent the chance for a draw in an election. This also holds for the internal context named “\_admin”, which is used by the admin nodes and stores the cluster structure data. As a consequence most clusters will have an odd number of nodes, and will keep functioning as long as a majority \(for a particular context\) is responding and storing events.
 
@@ -39,12 +39,11 @@ Axon Server EE has one special context, called "\_admin". This context is used t
 
 You can bypass the manual configuration of the cluster by adding two additional properties in the axonserver.properties file:
 
-```text
-axoniq.axonserver.autocluster.first=internal-hostname:internal-port
-axoniq.axonserver.autocluster.contexts=context1,context2
+\`\`\`text axoniq.axonserver.autocluster.first=internal-hostname:internal-port axoniq.axonserver.autocluster.contexts=context1,context2
 
 The _axoniq.axonserver.autocluster.first_ property defines the first node in the cluster, by specifying its internal hostname \(the hostname used by other Axon Server nodes to connect to this host\), and the internal port. If the internal port is default \(8224\) it can be omitted.‌
 
 _axoniq.axonserver.autocluster.contexts_ defines the contexts to create on the first node and the context to join for the other nodes. All of these contexts will be joined as primary nodes. When you don't specify any contexts, the initial node will only create an admin context, the other nodes will join the cluster, but not be a member of any contexts.‌
 
 The autocluster properties will only take effect on a clean start of a node. If a node is already initialized, it will not create any contexts anymore, nor join the cluster again.‌
+

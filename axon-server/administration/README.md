@@ -1,6 +1,6 @@
 # Administration
 
-The administration section of the reference guide addresses the operational and maintenance aspects of Axon Server deployments \(Axon Server SE/EE\). 
+The administration section of the reference guide addresses the operational and maintenance aspects of Axon Server deployments \(Axon Server SE/EE\).
 
 A summary of the various sub-sections is given below.
 

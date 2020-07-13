@@ -11,4 +11,3 @@ The release notes section for the Axon Server for all major/minor releases.
 |  | [4.2](rn-as-minor-releases.md#release-4-2) |
 |  | [4.1](rn-as-minor-releases.md#release-4-1) |
 
-### 

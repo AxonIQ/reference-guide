@@ -6,3 +6,4 @@ This section details out all the release notes for the Major/Minor versions rele
 | :--- | :--- |
 | [Axon Framework](rn-axon-framework/) | Release notes for all Major/Minor versions of the Axon Framework |
 | [Axon Server](rn-axon-server/) | Release notes for all Major/Minor versions of the Axon Server |
+

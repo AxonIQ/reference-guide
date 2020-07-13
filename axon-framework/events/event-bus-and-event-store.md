@@ -82,9 +82,9 @@ Below is an example configuration of a persistence context configuration:
 </persistence>
 ```
 
-1. In this example, there is a specific persistence unit for the event store. 
+1. In this example, there is a specific persistence unit for the event store.
 
-    You may, however, choose to add the third line to any other persistence unit configuration.
+   You may, however, choose to add the third line to any other persistence unit configuration.
 
 2. This line registers the `DomainEventEntry` \(the class used by the `JpaEventStore`\) with the persistence context.
 

@@ -16,7 +16,7 @@ The query bus is the mechanism that dispatches queries to query handlers. Querie
 
 Axon provides a query bus out of the box, the `AxonServerQueryBus`. It connects to the [AxonIQ AxonServer Server](../../axon-server-introduction.md) to send and receive Queries.
 
-`AxonServerQueryBus` is a 'distributed query bus'. It uses a [`SimpleQueryBus`]() to handle incoming queries on different JVM's by default.
+`AxonServerQueryBus` is a 'distributed query bus'. It uses a [`SimpleQueryBus`](implementations.md) to handle incoming queries on different JVM's by default.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -59,7 +59,7 @@ By simply declaring dependency to `axon-spring-boot-starter`, Axon will automati
 
 > **Excluding the Axon Server Connector**
 >
-> If you exclude the `axon-server-connector` dependency you will fallback to 'non-axon-server' query bus option, the `SimpleQueryBus` \(see [below]()\)
+> If you exclude the `axon-server-connector` dependency you will fallback to 'non-axon-server' query bus option, the `SimpleQueryBus` \(see [below](implementations.md)\)
 {% endtab %}
 {% endtabs %}
 
@@ -77,12 +77,11 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration()
             .messageMonitor(c.messageMonitor(SimpleQueryBus.class, "queryBus"))
             .build()
     );
-    
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
-```
+```text
 @Bean
 public SimpleQueryBus queryBus(AxonConfiguration axonConfiguration, TransactionManager transactionManager) {
     return SimpleQueryBus.builder()

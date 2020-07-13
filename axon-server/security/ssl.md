@@ -2,7 +2,7 @@
 
 Axon Server supports TLS/SSL \(Transport Layer Security/Secure Sockets Layer\) to encrypt all of Axon Server's network traffic - From Axon Framework client applications to Axon Server \(SE/EE\) as well as between Axon Server nodes within a cluster \(EE only\).
 
-Axon Server \(SE/EE\) has two ports \(HTTP/gRPC\) that need to be enabled for SSL and hence there are two different groups of settings to use, one for each port. The HTTP port uses the generic Spring Boot configuration settings, and requires a Java compatible keystore. For the gRPC port we use standard PEM files. 
+Axon Server \(SE/EE\) has two ports \(HTTP/gRPC\) that need to be enabled for SSL and hence there are two different groups of settings to use, one for each port. The HTTP port uses the generic Spring Boot configuration settings, and requires a Java compatible keystore. For the gRPC port we use standard PEM files.
 
 The following properties need to be setup in `axonserver.properties` for both SE and EE:
 
@@ -90,12 +90,13 @@ The following properties need to be setup in `axonserver.properties` for both SE
   </tbody>
 </table>
 
-With Axon Server EE we have two extra settings for the internal gRPC port; “...ssl.internal-cert-chain-file” and “...ssl.internal-trust-manager-file”. 
+With Axon Server EE we have two extra settings for the internal gRPC port; “...ssl.internal-cert-chain-file” and “...ssl.internal-trust-manager-file”.
 
-The first is for the PEM certificate to be used for cluster-internal traffic, if it is different from the one used for client connections. The most common reason is when the nodes use a different DNS name for internal \(cluster node to cluster node\) communication than for external connections. 
+The first is for the PEM certificate to be used for cluster-internal traffic, if it is different from the one used for client connections. The most common reason is when the nodes use a different DNS name for internal \(cluster node to cluster node\) communication than for external connections.
 
 The second is for a \(PEM\) keystore that certifies the other certificates, which may be needed when they are signed using an authority that is not available from the Java JDK’s CA keystore.
 
-#### Downtime Considerations
+## Downtime Considerations
 
 A thing to remember is that enabling SSL on an Axon Server cluster will require downtime, as the “...ssl.enabled” setting controls both server and client side code. This is intentional, as it is unreasonable to expect all nodes to have individual settings per node showing which ones communicate using SSL and which do not, so it is recommended to get this done in the beginning during the installation phase of Axon Server.
+

@@ -73,7 +73,7 @@ During the configuration phase \(i.e. before the first "given" is provided\), yo
 
 * `registerRepository`:
 
-  Registers a custom Aggregate [`Repository`]().
+  Registers a custom Aggregate [`Repository`](commands-events.md).
 
 * `registerRepositoryProvider`:
 
@@ -81,7 +81,7 @@ During the configuration phase \(i.e. before the first "given" is provided\), yo
 
 * `registerAggregateFactory`:
 
-  Registers a custom [`AggregateFactory`]().
+  Registers a custom [`AggregateFactory`](commands-events.md).
 
 * `registerAnnotatedCommandHandler`:
 
@@ -97,25 +97,25 @@ During the configuration phase \(i.e. before the first "given" is provided\), yo
 
 * `registerParameterResolverFactory`:
 
-  Registers a [`ParameterResolverFactory`]() to the test fixture. 
+  Registers a [`ParameterResolverFactory`](commands-events.md) to the test fixture.
 
-  This method is used to complement the default `ParameterResolvers` with custom `ParameterResolver`. 
+  This method is used to complement the default `ParameterResolvers` with custom `ParameterResolver`.
 
 * `registerCommandDispatchInterceptor`:
 
-  Registers a command [`MessageDispatchInterceptor`]().
+  Registers a command [`MessageDispatchInterceptor`](commands-events.md).
 
 * `registerCommandHandlerInterceptor`:
 
-  Registers a command [`MessageHandlerInterceptor`]().
+  Registers a command [`MessageHandlerInterceptor`](commands-events.md).
 
-* `registerDeadlineDispatchInterceptor`: 
+* `registerDeadlineDispatchInterceptor`:
 
-  Registers a [`DeadlineMessage`]() `MessageDispatchInterceptor`.
+  Registers a [`DeadlineMessage`](commands-events.md) `MessageDispatchInterceptor`.
 
 * `registerDeadlineHandlerInterceptor`:
 
-  Registers a [`DeadlineMessage`]() `MessageHandlerInterceptor`.
+  Registers a [`DeadlineMessage`](commands-events.md) `MessageHandlerInterceptor`.
 
 * `registerFieldFilter`:
 
@@ -123,7 +123,7 @@ During the configuration phase \(i.e. before the first "given" is provided\), yo
 
 * `registerIgnoredField`:
 
-  Registers a field that should be ignored for a given class when state equality is performed. 
+  Registers a field that should be ignored for a given class when state equality is performed.
 
 * `registerHandlerDefinition`:
 
@@ -169,43 +169,43 @@ The test fixture allows you to validate return values of your command handlers. 
 
 The following methods are available for validating Command Results:
 
-* `fixture.expectSuccessfulHandlerExecution()`: 
+* `fixture.expectSuccessfulHandlerExecution()`:
 
-  Validates that the handler returned a regular response, which was not marked as an exceptional response. 
+  Validates that the handler returned a regular response, which was not marked as an exceptional response.
 
   The exact response is not evaluated.
 
-* `fixture.expectResultMessagePayload(Object)`: 
+* `fixture.expectResultMessagePayload(Object)`:
 
-   Validates that the handler returned a successful response, with a payload equal to the given payload.
+  Validates that the handler returned a successful response, with a payload equal to the given payload.
 
-* `fixture.expectResultMessagePayloadMatching(Matcher)`: 
+* `fixture.expectResultMessagePayloadMatching(Matcher)`:
 
-   Validates that the handler returned a successful response, with a payload matching the given Matcher
+  Validates that the handler returned a successful response, with a payload matching the given Matcher
 
-* `fixture.expectResultMessage(CommandResultMessage)`: 
+* `fixture.expectResultMessage(CommandResultMessage)`:
 
-   Validates that the `CommandResultMessage` received has equal payload and meta data to that of given message.
+  Validates that the `CommandResultMessage` received has equal payload and meta data to that of given message.
 
-* `fixture.expectResultMessageMatching(Matcher)`: 
+* `fixture.expectResultMessageMatching(Matcher)`:
 
-   Validates that the `CommandResultMessage` matches the given Matcher.
+  Validates that the `CommandResultMessage` matches the given Matcher.
 
-* `fixture.expectException(Matcher)`: 
+* `fixture.expectException(Matcher)`:
 
-   Validates that the command handling result is an exceptional result, and that the exception matches the given `Matcher`.
+  Validates that the command handling result is an exceptional result, and that the exception matches the given `Matcher`.
 
-* `fixture.expectException(Class)`: 
+* `fixture.expectException(Class)`:
 
-   Validates that the command handling result is an exceptional result with the given type of exception.
+  Validates that the command handling result is an exceptional result with the given type of exception.
 
-* `fixture.expectExceptionMessage(String)`: 
+* `fixture.expectExceptionMessage(String)`:
 
-   Validates that the command handling result is an exceptional result and the exception message is equal to the given message.
+  Validates that the command handling result is an exceptional result and the exception message is equal to the given message.
 
-* `fixture.expectExceptionMessage(Matcher)`: 
+* `fixture.expectExceptionMessage(Matcher)`:
 
-   Validates that the command handling result is an exceptional result and the exception message matches the given Matcher.
+  Validates that the command handling result is an exceptional result and the exception message matches the given Matcher.
 
 #### Validating Published Events
 
@@ -221,17 +221,17 @@ Below is an overview of the available event list matchers and their purpose:
 
 * **List with all of**: `Matchers.listWithAllOf(event matchers...)`
 
-  This matcher will succeed if all of the provided event matchers match against at least one event in the list of actual events. 
+  This matcher will succeed if all of the provided event matchers match against at least one event in the list of actual events.
 
   It does not matter whether multiple matchers match against the same event,
 
-   nor if an event in the list does not match against any of the matchers.
+  nor if an event in the list does not match against any of the matchers.
 
 * **List with any of**: `Matchers.listWithAnyOf(event matchers...)`
 
   This matcher will succeed if one or more of the provided event matchers matches against one or more
 
-   of the events in the actual list of events. 
+  of the events in the actual list of events.
 
   Some matchers may not even match at all, while another matches against multiple others.
 
@@ -241,7 +241,7 @@ Below is an overview of the available event list matchers and their purpose:
 
 * **Exact sequence of Events**: `Matchers.exactSequenceOf(event matchers...)`
 
-  Variation of the "Sequence of Events" matcher where gaps of unmatched events are not allowed. 
+  Variation of the "Sequence of Events" matcher where gaps of unmatched events are not allowed.
 
   This means each matcher must match against the event directly following the event the previous matcher matched against.
 
@@ -249,19 +249,19 @@ For convenience, a few commonly required event matchers are provided. They match
 
 * **Equal event**: `Matchers.equalTo(instance...)`
 
-  Verifies that the given object is semantically equal to the given event. 
+  Verifies that the given object is semantically equal to the given event.
 
-  This matcher will compare all values in the fields of both actual and expected objects using a null-safe equals method. 
+  This matcher will compare all values in the fields of both actual and expected objects using a null-safe equals method.
 
-  This means that events can be compared, even if they do not implement the equals method. 
+  This means that events can be compared, even if they do not implement the equals method.
 
   The objects stored in fields of the given parameter _are_ compared using equals,
 
-   requiring them to implement one correctly.
+  requiring them to implement one correctly.
 
 * **No more events**: `Matchers.andNoMore()` or `Matchers.nothing()`
 
-  Only matches against a `null` value. 
+  Only matches against a `null` value.
 
   This matcher can be added as last matcher to the _exact_ sequence of events matchers to ensure that no unmatched events remain.
 
@@ -279,9 +279,9 @@ Since the matchers are passed a list of event messages, you sometimes only want 
 
 * **Payloads matching**: `Matchers.payloadsMatching(list matcher)`
 
-  Verifies that the payloads of the messages matches the given matcher. 
+  Verifies that the payloads of the messages matches the given matcher.
 
-  The given matcher must match against a list containing each of the messages payload. 
+  The given matcher must match against a list containing each of the messages payload.
 
   The payloads matching matcher is typically used as the outer matcher to prevent repetition of payload matchers.
 
@@ -354,7 +354,7 @@ The following methods are available for validating Deadlines:
 
 * `expectScheduledDeadline(Duration, Object)`:
 
-  Explicitly expect a given `deadline` to be scheduled after the specified `Duration`. 
+  Explicitly expect a given `deadline` to be scheduled after the specified `Duration`.
 
 * `expectScheduledDeadlineMatching(Duration, Matcher)`:
 

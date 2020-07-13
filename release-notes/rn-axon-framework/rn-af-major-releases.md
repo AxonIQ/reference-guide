@@ -4,7 +4,7 @@ All the enhancements and features which have been introduced to our major releas
 
 ## Release 4.3
 
-#### _Enhancements_
+### _Enhancements_
 
 * Aggregate Polymorphism has been introduced, allowing for an aggregate hierarchy as would come natural from a domain model.
 
@@ -49,7 +49,7 @@ All the enhancements and features which have been introduced to our major releas
 
   Read the [Event Tracker Status](../../axon-framework/monitoring-and-metrics.md#event-tracker-status) section for more specifics on this.
 
-#### _Bug Fixes_
+### _Bug Fixes_
 
 * A `ConcurrencyException` was thrown when an aggregate was created at two distinct JVM's at the same time.
 
@@ -71,7 +71,7 @@ For a complete list of all the changes made in 4.3 you can check out [this](http
 
 ## Release 4.2
 
-#### _Enhancements_
+### _Enhancements_
 
 * Axon Framework applications can now use tags to support a level of 'location awareness' between Axon clients and Axon Server instances.
 
@@ -91,7 +91,7 @@ For a complete list of all the changes made in 4.3 you can check out [this](http
 * The `TrackingToken` interface now provides an estimate of it's relative position in the event stream through the `position()` method.
 * `Optional` return types can now be used for Query Handling methods.  
 
-#### _Bug Fixes_
+### _Bug Fixes_
 
 * An Aggregate's `Snapshotter` was not auto configured when Spring Boot is being used, as was filed under [\#932](https://github.com/AxonFramework/AxonFramework/issues/932).
 * The `CommandResultMessage` was returned as `null` when using the [`DisruptorCommandBus`](./).
@@ -106,7 +106,7 @@ For a full list of all features, enhancements and bugs, check out the [issue tra
 
 ## Release 4.1
 
-#### _Enhancements_
+### _Enhancements_
 
 * The `TrackingEventProcessor` now has an API to split and merge `TrackingTokens` during runtime of an application.
 
@@ -123,7 +123,7 @@ For a full list of all features, enhancements and bugs, check out the [issue tra
 
   As with the command and query version, the `EventGateway` provides a simpler API when it comes to dispatching Events on the `EventBus`.
 
-#### _Bug Fixes_
+### _Bug Fixes_
 
 * Command and Query message priority was not set correctly for the Axon Server Connector.
 
@@ -136,7 +136,7 @@ We refer to [this](https://github.com/AxonFramework/AxonFramework/milestone/31?c
 
 ## Release 4.0
 
-#### _Enhancements_
+### _Enhancements_
 
 * The package structure of Axon Framework has changed drastically with the aim to provide users the option to pick and choose.
 
@@ -156,8 +156,9 @@ We refer to [this](https://github.com/AxonFramework/AxonFramework/milestone/31?c
 
   the [Builder pattern](https://en.wikipedia.org/wiki/Builder_pattern) has been implemented for all infrastructure components.
 
-#### _Bug Fixes_
+### _Bug Fixes_
 
 The bugs marked for release 4.0 were issues introduced to new features or enhancements. As such they should not have impacted users in any way. Regardless, the full list can be found [here](https://github.com/AxonFramework/AxonFramework/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Release+4.0%22++label%3A%22Type%3A+Bug%22).
 
 For more details, check the list of issues [here](https://github.com/AxonFramework/AxonFramework/milestone/28?closed=1).
+

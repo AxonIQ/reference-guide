@@ -1,6 +1,6 @@
 # Security
 
-Axon provides various features such as authentication, access control, encryption and SSL to secure your Axon Server deployments. 
+Axon provides various features such as authentication, access control, encryption and SSL to secure your Axon Server deployments.
 
 A summary of the various sub-sections is given below.
 
