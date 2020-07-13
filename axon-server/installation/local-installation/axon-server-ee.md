@@ -184,7 +184,7 @@ The cluster configuration information depicts
 * The leader of the cluster
 * The contexts available within the cluster \(in this case "\_admin" and "default"\)
 * The nodes within the a cluster
-*  The roles that the nodes play within a specific context \(in this case PRIMARY i.e. full rights for that context\)
+* The roles that the nodes play within a specific context \(in this case PRIMARY i.e. full rights for that context\)
 
 The UI console displays the newly initialized admin node as shown below \(assuming axonserver-1 as the name of the node\)
 
