@@ -20,7 +20,7 @@ The [Clustering](../../administration/clustering.md) and [Contexts](../../admini
 
 ### Cluster Setup
 
-Setting up a cluster generally involves three steps
+Setting up a cluster generally involves three steps:
 
 * Provision "uninitialized" Axon Server EE nodes
 * Admin Node initialization
@@ -230,4 +230,3 @@ The [Access Control](../../security/access-control.md) section details the steps
 Axon Server EE supports TLS/SSL \(Transport Layer Security/Secure Sockets Layer\) to encrypt all of Axon Server SE's network traffic - From Axon Framework client applications to Axon Server EE as well as between the various nodes of an Axon Server EE cluster.
 
 The [SSL](../../security/ssl.md) section details the steps required to setup SSL in Axon Server EE.
-
