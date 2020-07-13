@@ -78,9 +78,9 @@
 
 * [Introduction](axon-server/introduction.md)
 * [Installation](axon-server/installation/README.md)
-  * [Launch](axon-server/installation/launch.md)
-  * [Development Mode](axon-server/installation/development-mode.md)
-  * [Axon Server Clustering](axon-server/installation/axon-server-clustering.md)
+  * [Local Installation](axon-server/installation/local-installation/README.md)
+    * [Axon Server SE](axon-server/installation/local-installation/axon-server-se.md)
+    * [Axon Server EE](axon-server/installation/local-installation/axon-server-ee.md)
 * [Administration](axon-server/administration/README.md)
   * [Configuration](axon-server/administration/admin-configuration/README.md)
     * [System Properties](axon-server/administration/admin-configuration/configuration.md)
@@ -90,6 +90,7 @@
     * [Actuator Endpoints](axon-server/administration/monitoring/actuator-endpoints.md)
     * [gRPC Metrics](axon-server/administration/monitoring/grpc-metrics.md)
     * [Heartbeat Monitoring](axon-server/administration/monitoring/heartbeat-monitoring.md)
+  * [Clustering](axon-server/administration/clustering.md)
   * [Multi-Context](axon-server/administration/multi-context.md)
   * [Tagging](axon-server/administration/tagging.md)
   * [Backup and Messaging-only Nodes](axon-server/administration/backup-and-messaging-only-nodes.md)
@@ -123,5 +124,5 @@
 * [C. Meta Annotations](appendices/meta-annotations.md)
 * [D. Identifier Generation](appendices/identifier-generation.md)
 * [E. Axon Server Query Language](appendices/query-reference.md)
-* [F. Axon Server APIs](appendices/axon-server-apis.md)
+* [F. Axon Server APIs](appendices/f.-axon-server-apis.md)
 

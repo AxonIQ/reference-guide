@@ -48,17 +48,17 @@ By default, Axon will use Tracking Event Processors. It is possible to change ho
 The `EventProcessingConfigurer` class defines a number of methods that can be used to define how processors need to be configured.
 
 * `registerEventProcessorFactory` allows you to define a default factory method that creates event processors for which no explicit factories have been defined.
-* `registerEventProcessor(String name, EventProcessorBuilder builder)` defines the factory method to use to create a processor with given `name`. 
+* `registerEventProcessor(String name, EventProcessorBuilder builder)` defines the factory method to use to create a processor with given `name`.
 
-   Note that such a processor is only created if `name` is chosen as the processor for any of the available event handler beans.
+  Note that such a processor is only created if `name` is chosen as the processor for any of the available event handler beans.
 
-* `registerTrackingEventProcessor(String name)` defines that a processor with given name should be configured as a tracking event processor, using default settings. 
+* `registerTrackingEventProcessor(String name)` defines that a processor with given name should be configured as a tracking event processor, using default settings.
 
-   It is configured with a TransactionManager and a TokenStore, both taken from the main configuration by default.
+  It is configured with a TransactionManager and a TokenStore, both taken from the main configuration by default.
 
-* `registerTrackingProcessor(String name, Function<Configuration, StreamableMessageSource<TrackedEventMessage<?>>> source, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration)` defines that a processor with given name should be configured as a tracking processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading. 
+* `registerTrackingProcessor(String name, Function<Configuration, StreamableMessageSource<TrackedEventMessage<?>>> source, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration)` defines that a processor with given name should be configured as a tracking processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading.
 
-   The `StreamableMessageSource` defines an event source from which this processor should pull events.
+  The `StreamableMessageSource` defines an event source from which this processor should pull events.
 
 * `usingSubscribingEventProcessors()` sets the default to subscribing event processors instead of tracking ones.
 
@@ -372,19 +372,19 @@ The `SequencingPolicy` defines whether events must be handled sequentially, in p
 
 Axon provides a number of common policies you can use:
 
-* The `FullConcurrencyPolicy` will tell Axon that this event handler may handle all events concurrently. 
+* The `FullConcurrencyPolicy` will tell Axon that this event handler may handle all events concurrently.
 
-   This means that there is no relationship between the events that require them to be processed in a particular order.
+  This means that there is no relationship between the events that require them to be processed in a particular order.
 
-* The `SequentialPolicy` tells Axon that all events must be processed sequentially. 
+* The `SequentialPolicy` tells Axon that all events must be processed sequentially.
 
-   Handling of an event will start when the handling of a previous event has finished.
+  Handling of an event will start when the handling of a previous event has finished.
 
-* `SequentialPerAggregatePolicy` will force domain events that were raised from the same aggregate to be handled sequentially. 
+* `SequentialPerAggregatePolicy` will force domain events that were raised from the same aggregate to be handled sequentially.
 
-   However, events from different aggregates may be handled concurrently. 
+  However, events from different aggregates may be handled concurrently.
 
-   This is typically a suitable policy to use for event listeners that update details from aggregates in database tables.
+  This is typically a suitable policy to use for event listeners that update details from aggregates in database tables.
 
 Besides these provided policies, you can define your own. All policies must implement the `SequencingPolicy` interface. This interface defines a single method, `getSequenceIdentifierFor`, that returns the sequence identifier for a given event. Events for which an equal sequence identifier is returned must be processed sequentially. Events that produce a different sequence identifier may be processed concurrently. Policy implementations may return `null` if the event may be processed in parallel to any other event.
 
@@ -458,7 +458,7 @@ configuration.eventProcessingConfiguration()
 >
 > It is possible to provide a token position to be used when resetting a `TrackingEventProcessor`, thus specifying from which point in the event log it should start replaying the events.
 >
-> How to customize a tracking token position is described [here]().
+> How to customize a tracking token position is described [here](event-processors.md).
 
 ## Custom tracking token position
 
@@ -466,11 +466,11 @@ Prior to Axon release 3.3, you could only reset a `TrackingEventProcessor` to th
 
 * From the head of event stream: `createHeadToken()`.
 * From the tail of event stream: `createTailToken()`.
-* From some point in time: `createTokenAt(Instant)` and `createTokenSince(duration)` - 
+* From some point in time: `createTokenAt(Instant)` and `createTokenSince(duration)` -
 
-   Creates a token that tracks all events after given time. 
+  Creates a token that tracks all events after given time.
 
-   If there is an event exactly at the given time, it will be taken into account too.
+  If there is an event exactly at the given time, it will be taken into account too.
 
 Of course, you can completely disregard the `StreamableMessageSource` input parameter and create a token by yourself.
 

@@ -20,15 +20,15 @@ To allow an upcaster to see what version of serialized object they are receiving
 
 1. The `AnnotationRevisionResolver` checks for an `@Revision` annotation on the Event payload.
 2. The `SerialVersionUIDRevisionResolver` uses the `serialVersionUID` as defined by Java Serialization API.
-3. The `FixedValueRevisionResolver` always returns a predefined value. This is particularly useful when injecting the current application version. 
+3. The `FixedValueRevisionResolver` always returns a predefined value. This is particularly useful when injecting the current application version.
 
    It would allow you to see which version of the application generated a specific event.
 
-4. Maven users can use the `MavenArtifactRevisionResolver` to automatically use the project version. 
+4. Maven users can use the `MavenArtifactRevisionResolver` to automatically use the project version.
 
-   It is initialized using the groupId and artifactId of the project to obtain the version for. 
+   It is initialized using the groupId and artifactId of the project to obtain the version for.
 
-   Since this only works in JAR files created by Maven, the version cannot always be resolved by an IDE. 
+   Since this only works in JAR files created by Maven, the version cannot always be resolved by an IDE.
 
    If a version cannot be resolved, `null` is returned.
 

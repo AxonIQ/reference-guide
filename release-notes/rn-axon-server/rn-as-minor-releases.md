@@ -27,29 +27,29 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 * Fix for timing issue in delete context. This could leave the context existing on one of the member nodes
 * Fix RAFT bug: configuration changes are not allowed before an entry has been committed in the current term.
 
-New configuration properties added for Axon Server: 
+New configuration properties added for Axon Server:
 
 _axoniq.axonserver.data-fetcher-threads_=24 \(number of threads that are allocated for doing longer running operations on the event store\)
 
-_axoniq.axonserver.command-queue-capacity-per-client_=10000 \(number of command requests for a specific command handling client that Axon Server will cache waiting for permits\) 
+_axoniq.axonserver.command-queue-capacity-per-client_=10000 \(number of command requests for a specific command handling client that Axon Server will cache waiting for permits\)
 
-_axoniq.axonserver.query-queue-capacity-per-client_=10000 \(number of query requests for a specific query handling client that Axon Server will cache waiting for permits\) 
+_axoniq.axonserver.query-queue-capacity-per-client_=10000 \(number of query requests for a specific query handling client that Axon Server will cache waiting for permits\)
 
-_axoniq.axonserver.replication.use-mmap-index_=null \(by default, AxonServer will determine whether to use memory mapped indexes for replication logs based on operating system and java version, in rare cases it may be useful to override the default\) 
+_axoniq.axonserver.replication.use-mmap-index_=null \(by default, AxonServer will determine whether to use memory mapped indexes for replication logs based on operating system and java version, in rare cases it may be useful to override the default\)
 
-_axoniq.axonserver.replication.force-clean-mmap-index_=null \(option to forcefully close unused memory mapped files instead of leaving the garbage collector do this, by default, AxonServer will determine this based on operating system and java version, in rare cases it may be useful to override the default\) 
+_axoniq.axonserver.replication.force-clean-mmap-index_=null \(option to forcefully close unused memory mapped files instead of leaving the garbage collector do this, by default, AxonServer will determine this based on operating system and java version, in rare cases it may be useful to override the default\)
 
-_axoniq.axonserver.event.use-mmap-index_=null \(by default, AxonServer will determine whether to use memory mapped indexes for event files in the event store based on operating system and java version, in rare cases it may be useful to override the default\) 
+_axoniq.axonserver.event.use-mmap-index_=null \(by default, AxonServer will determine whether to use memory mapped indexes for event files in the event store based on operating system and java version, in rare cases it may be useful to override the default\)
 
-_axoniq.axonserver.event.force-clean-mmap-index_=null \(option to forcefully close unused memory mapped files instead of leaving the garbage collector do this, by default, AxonServer will determine this based on operating system and java version, in rare cases it may be useful to override the default\) 
+_axoniq.axonserver.event.force-clean-mmap-index_=null \(option to forcefully close unused memory mapped files instead of leaving the garbage collector do this, by default, AxonServer will determine this based on operating system and java version, in rare cases it may be useful to override the default\)
 
-_axoniq.axonserver.snapshot.use-mmap-index_=null \(by default, AxonServer will determine whether to use memory mapped indexes for snapshot files in the event store based on operating system and java version, in rare cases it may be useful to override the default\) 
+_axoniq.axonserver.snapshot.use-mmap-index_=null \(by default, AxonServer will determine whether to use memory mapped indexes for snapshot files in the event store based on operating system and java version, in rare cases it may be useful to override the default\)
 
 _axoniq.axonserver.snapshot.force-clean-mmap-index_=null \(option to forcefully close unused memory mapped files instead of leaving the garbage collector do this, by default, AxonServer will determine this based on operating system and java version, in rare cases it may be useful to override the default\)
 
 _**Configuration properties default values changed:**_
 
-_axoniq.axonserver.cluster-executor-thread-count_=4 \(reduced from 8, configures the number of threads used to handle requests from other axon server nodes, reduced as effective processing of the requests if offloaded to other threads\) 
+_axoniq.axonserver.cluster-executor-thread-count_=4 \(reduced from 8, configures the number of threads used to handle requests from other axon server nodes, reduced as effective processing of the requests if offloaded to other threads\)
 
 _axoniq.axonserver.executor-thread-count_=4 \(reduced from 8, configures the number of threads used to handle requests from clients, reduced as effective processing of the requests if offloaded to other threads\)
 

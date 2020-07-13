@@ -12,7 +12,7 @@ Let's see on an example how Event Sourcing differs from Traditional Storage \(se
 
 ## Event Store
 
-Event Sourcing require an Event Store to store events. Since events are not to be modified \(an event is a fact that something happened and facts cannot be modified\), an Event Store should be optimized for appends. Event ordering plays a really important role in event-sourced systems - as many times as we are reconstructing our materialized state, we want to arrive at the same result. 
+Event Sourcing require an Event Store to store events. Since events are not to be modified \(an event is a fact that something happened and facts cannot be modified\), an Event Store should be optimized for appends. Event ordering plays a really important role in event-sourced systems - as many times as we are reconstructing our materialized state, we want to arrive at the same result.
 
 [Axon Server ](../axon-server-introduction.md)is the default choice within Axon and it offers an _**enterprise grade**_ _**purpose-built event store**_ which is highly optimized for storing/retrieving events. The Server is available as a Standard Edition or an Enterprise Edition.
 
@@ -34,7 +34,7 @@ _Naturalized Audit Trail_
 
 In order to comply with certain regulations, it is required from a software system to provide a full audit log. Event-sourced systems give us exactly that, full audit log and we don’t have to provide any additional information to the reviewer. One additional report that is built up from the event stream and we’re ready to go.
 
-_Analytics_ 
+_Analytics_
 
 The full history of interactions with our application is stored in the Event Store. We could apply various machine learning algorithms to extract information from these interactions that matter to our business.
 
@@ -54,6 +54,5 @@ Integration with external systems can be done using events. In such scenarios, e
 
 _\* If we are applying CQRS \(Command Query Responsibility Segregation\) practices, we could rebuild our command model and query model as well_
 
-[Axon Server](../axon-server-introduction.md) provides an easy way to start up and scale event-sourced Java applications.  
-
+[Axon Server](../axon-server-introduction.md) provides an easy way to start up and scale event-sourced Java applications.
 

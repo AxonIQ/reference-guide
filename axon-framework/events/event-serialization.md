@@ -14,21 +14,21 @@ Serializers come in several flavors in the Axon Framework and are used for a var
 
 As there are several objects to be serialized, it is typically desired to tune which serializer handles which object. To that end, the `Configuration` API allows you to define a default message and event serializers, which lead to the following object-serialization break down:
 
-1. The Event `Serializer` is in charge of de-/serializing event messages. 
+1. The Event `Serializer` is in charge of de-/serializing event messages.
 
-   Events are typically stored in an event store for a long period of time. 
+   Events are typically stored in an event store for a long period of time.
 
    This is the main driver for choosing the event serializer implementation.
 
-2. The Message `Serializer` is in charge of de-/serializing the command and query messages \(used in a distributed application setup\). 
+2. The Message `Serializer` is in charge of de-/serializing the command and query messages \(used in a distributed application setup\).
 
-   Messages are shared between nodes and typically need to be interoperable and/or compact. 
+   Messages are shared between nodes and typically need to be interoperable and/or compact.
 
-   Take this into account when choosing the message serializer implementation. 
+   Take this into account when choosing the message serializer implementation.
 
-3. The default `Serializer` is in charge of de-/serializing the remainder, being the tokens, snapshots and sagas. 
+3. The default `Serializer` is in charge of de-/serializing the remainder, being the tokens, snapshots and sagas.
 
-   These objects are generally not shared between different applications, and most of these classes aren't expected to have some of the getters and setters that are, for example, typically required by Jackson based serializers. 
+   These objects are generally not shared between different applications, and most of these classes aren't expected to have some of the getters and setters that are, for example, typically required by Jackson based serializers.
 
    A flexible, general purpose serializer like [XStream](http://x-stream.github.io/) is quite suited for this purpose.
 

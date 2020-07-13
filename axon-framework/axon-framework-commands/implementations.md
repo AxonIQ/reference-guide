@@ -28,7 +28,7 @@ Currently two implementations exist:
 
    or a maximum number of retries has taken place.
 
-2. The `ExponentialBackOffIntervalRetryScheduler` retries failed commands with an exponential back-off interval until 
+2. The `ExponentialBackOffIntervalRetryScheduler` retries failed commands with an exponential back-off interval until
 
    it succeeds, or a maximum number of retries has taken place.
 
@@ -48,64 +48,64 @@ This is how parameters affect the behavior of the command gateway:
 
 * The first parameter is expected to be the actual command object to dispatch.
 * Parameters annotated with `@MetaDataValue` will have their value assigned to the metadata field with the identifier passed as annotation parameter
-* Parameters of type `MetaData` will be merged with the `MetaData` on the `CommandMessage`. 
+* Parameters of type `MetaData` will be merged with the `MetaData` on the `CommandMessage`.
 
-   Metadata defined by latter parameters will overwrite the metadata of earlier parameters, if their key is equal.
+  Metadata defined by latter parameters will overwrite the metadata of earlier parameters, if their key is equal.
 
-* Parameters of type `CommandCallback` will have their `onSuccess` or `onFailure` invoked after the command is handled. 
+* Parameters of type `CommandCallback` will have their `onSuccess` or `onFailure` invoked after the command is handled.
 
-   You may pass in more than one callback, and it may be combined with a return value. In that case, the invocations of the callback will always match with the return value \(or exception\).
+  You may pass in more than one callback, and it may be combined with a return value. In that case, the invocations of the callback will always match with the return value \(or exception\).
 
-* The last two parameters indicate a timeout and may be of types `long` \(or `int`\) and `TimeUnit`. 
+* The last two parameters indicate a timeout and may be of types `long` \(or `int`\) and `TimeUnit`.
 
-   The method will block at most as long as these parameters indicate. How the method reacts to a timeout depends on the exceptions declared on the method \(see below\). 
+  The method will block at most as long as these parameters indicate. How the method reacts to a timeout depends on the exceptions declared on the method \(see below\).
 
-   Note that if other properties of the method prevent blocking altogether, a timeout will never occur.
+  Note that if other properties of the method prevent blocking altogether, a timeout will never occur.
 
 The declared return value of a method will also affect its behavior:
 
 * A `void` return type will cause the method to return immediately, unless there are other indications on the method that one would want to wait, such as a timeout or declared exceptions.
-* Return types of `Future`, `CompletionStage` and `CompletableFuture` will cause the method to return immediately. 
+* Return types of `Future`, `CompletionStage` and `CompletableFuture` will cause the method to return immediately.
 
-   You can access the result of the command handler using the `CompletableFuture` instance returned from the method. 
+  You can access the result of the command handler using the `CompletableFuture` instance returned from the method.
 
-   Exceptions and timeouts declared on the method are ignored.
+  Exceptions and timeouts declared on the method are ignored.
 
-* Any other return type will cause the method to block until a result is available. 
+* Any other return type will cause the method to block until a result is available.
 
-   The result is cast to the return type \(causing a `ClassCastException` if the types do not match\).
+  The result is cast to the return type \(causing a `ClassCastException` if the types do not match\).
 
 Exceptions have the following effect:
 
-* Any declared checked exception will be thrown if the command handler \(or an interceptor\) threw an exception of that type. 
+* Any declared checked exception will be thrown if the command handler \(or an interceptor\) threw an exception of that type.
 
-   If a checked exception is thrown that has not been declared, it is wrapped in a `CommandExecutionException`, which is a `RuntimeException`.
+  If a checked exception is thrown that has not been declared, it is wrapped in a `CommandExecutionException`, which is a `RuntimeException`.
 
-* When a timeout occurs, the default behavior is to return `null` from the method. 
+* When a timeout occurs, the default behavior is to return `null` from the method.
 
-   This can be changed by declaring a `TimeoutException`. 
+  This can be changed by declaring a `TimeoutException`.
 
-   If this exception is declared, a `TimeoutException` is thrown instead.
+  If this exception is declared, a `TimeoutException` is thrown instead.
 
-* When a thread is interrupted while waiting for a result, the default behavior is to return null. 
+* When a thread is interrupted while waiting for a result, the default behavior is to return null.
 
-   In that case, the interrupted flag is set back on the thread. 
+  In that case, the interrupted flag is set back on the thread.
 
-   By declaring an `InterruptedException` on the method, this behavior is changed to throw that exception instead. 
+  By declaring an `InterruptedException` on the method, this behavior is changed to throw that exception instead.
 
-   The interrupt flag is removed when the exception is thrown, consistent with the java specification.
+  The interrupt flag is removed when the exception is thrown, consistent with the java specification.
 
 * Other runtime exceptions may be declared on the method, but will not have any effect other than clarification to the API user.
 
 Finally, there is the possibility to use annotations:
 
-* As specified in the parameter section, the `@MetaDataValue` annotation on a parameter will have the value of that parameter added as metadata value. 
+* As specified in the parameter section, the `@MetaDataValue` annotation on a parameter will have the value of that parameter added as metadata value.
 
-   The key of the metadata entry is provided as parameter to the annotation.
+  The key of the metadata entry is provided as parameter to the annotation.
 
-* Methods annotated with `@Timeout` will block at most the indicated amount of time. 
+* Methods annotated with `@Timeout` will block at most the indicated amount of time.
 
-   This annotation is ignored if the method declares timeout parameters.
+  This annotation is ignored if the method declares timeout parameters.
 
 * Classes annotated with `@Timeout` will cause all methods declared in that class to block at most the indicated amount of time, unless they are annotated with their own `@Timeout` annotation or specify timeout parameters.
 
@@ -147,7 +147,7 @@ The Command Bus is the mechanism that dispatches commands to their respective co
 
 Axon provides a command bus out of the box, the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server](../../axon-server-introduction.md) to submit and receive Commands.
 
-`AxonServerCommandBus` is a [distributed command bus](command-dispatchers.md#the-command-bus). It uses a [`SimpleCommandBus`]() to handle incoming commands on different JVM's by default.
+`AxonServerCommandBus` is a [distributed command bus](command-dispatchers.md#the-command-bus). It uses a [`SimpleCommandBus`](implementations.md) to handle incoming commands on different JVM's by default.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -189,7 +189,7 @@ By simply declaring dependency to `axon-spring-boot-starter`, Axon will automati
 
 > **Excluding the Axon Server Connector**
 >
-> If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' command bus options, the `SimpleCommandBus` \(see [below]()\).
+> If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' command bus options, the `SimpleCommandBus` \(see [below](implementations.md)\).
 {% endtab %}
 {% endtabs %}
 
@@ -275,112 +275,112 @@ The `DisruptorCommandBus` takes a different approach to multithreaded processing
 
 While the `DisruptorCommandBus` easily outperforms the `SimpleCommandBus` by a factor of 4\(!\), there are a few limitations:
 
-* The `DisruptorCommandBus` only supports event sourced aggregates. 
+* The `DisruptorCommandBus` only supports event sourced aggregates.
 
-   This Command Bus also acts as a Repository for the aggregates processed by the Disruptor. 
+  This Command Bus also acts as a Repository for the aggregates processed by the Disruptor.
 
-   To get a reference to the Repository, use `createRepository(AggregateFactory)`.
+  To get a reference to the Repository, use `createRepository(AggregateFactory)`.
 
 * A command can only result in a state change in a single aggregate instance.
-* When using a cache, it allows only a single aggregate for a given identifier. 
+* When using a cache, it allows only a single aggregate for a given identifier.
 
-   This means it is not possible to have two aggregates of different types with the same identifier.
+  This means it is not possible to have two aggregates of different types with the same identifier.
 
-* Commands should generally not cause a failure that requires a rollback of the unit of work. 
+* Commands should generally not cause a failure that requires a rollback of the unit of work.
 
-   When a rollback occurs, the `DisruptorCommandBus` cannot guarantee that commands are processed in the order they were dispatched. 
+  When a rollback occurs, the `DisruptorCommandBus` cannot guarantee that commands are processed in the order they were dispatched.
 
-   Furthermore, it requires a retry of a number of other commands, causing unnecessary computations.
+  Furthermore, it requires a retry of a number of other commands, causing unnecessary computations.
 
-* When creating a new aggregate instance, commands updating that created instance may not all happen in the exact order as provided. 
+* When creating a new aggregate instance, commands updating that created instance may not all happen in the exact order as provided.
 
-   Once the aggregate is created, all commands will be executed exactly in the order they were dispatched. 
+  Once the aggregate is created, all commands will be executed exactly in the order they were dispatched.
 
-   To ensure the order, use a callback on the creating command to wait for the aggregate being created. 
+  To ensure the order, use a callback on the creating command to wait for the aggregate being created.
 
-   It shouldn't take more than a few milliseconds.
+  It shouldn't take more than a few milliseconds.
 
 To construct a `DisruptorCommandBus` instance, you need an `EventStore`. This component is explained in the [Event Bus and Event Store](../events/event-bus-and-event-store.md) section.
 
 Optionally, you can provide a `DisruptorConfiguration` instance, which allows you to tweak the configuration to optimize performance for your specific environment:
 
-* `Buffer size` - the number of slots on the ring buffer to register incoming commands. 
+* `Buffer size` - the number of slots on the ring buffer to register incoming commands.
 
-   Higher values may increase throughput, but also cause higher latency. Must always be a power of 2. Defaults to 4096.
+  Higher values may increase throughput, but also cause higher latency. Must always be a power of 2. Defaults to 4096.
 
 * `ProducerType` - indicates whether the entries are produced by a single thread, or multiple. Defaults to multiple.
-* `WaitStrategy` - the strategy to use when the processor threads \(the three threads taking care of the actual processing\) need to wait for each other. 
+* `WaitStrategy` - the strategy to use when the processor threads \(the three threads taking care of the actual processing\) need to wait for each other.
 
-   The best wait strategy depends on the number of cores available in the machine, and the number of other processes running. 
+  The best wait strategy depends on the number of cores available in the machine, and the number of other processes running.
 
-   If low latency is crucial, and the `DisruptorCommandBus` may claim cores for itself, you can use the `BusySpinWaitStrategy`. 
+  If low latency is crucial, and the `DisruptorCommandBus` may claim cores for itself, you can use the `BusySpinWaitStrategy`.
 
-   To make the command bus claim less of the CPU and allow other threads to do processing, use the `YieldingWaitStrategy`. 
+  To make the command bus claim less of the CPU and allow other threads to do processing, use the `YieldingWaitStrategy`.
 
-   Finally, you can use the `SleepingWaitStrategy` and `BlockingWaitStrategy` to allow other processes a fair share of CPU. 
+  Finally, you can use the `SleepingWaitStrategy` and `BlockingWaitStrategy` to allow other processes a fair share of CPU.
 
-   The latter is suitable if the Command Bus is not expected to be processing full-time. 
+  The latter is suitable if the Command Bus is not expected to be processing full-time.
 
-   Defaults to the `BlockingWaitStrategy`.
+  Defaults to the `BlockingWaitStrategy`.
 
-* `Executor` - sets the Executor that provides the Threads for the `DisruptorCommandBus`. 
+* `Executor` - sets the Executor that provides the Threads for the `DisruptorCommandBus`.
 
-    This executor must be able to provide at least four threads. 
+  This executor must be able to provide at least four threads.
 
-    Three of the threads are claimed by the processing components of the `DisruptorCommandBus`. 
+  Three of the threads are claimed by the processing components of the `DisruptorCommandBus`.
 
-    Extra threads are used to invoke callbacks and to schedule retries in case an Aggregate's state is detected to be corrupt. 
+  Extra threads are used to invoke callbacks and to schedule retries in case an Aggregate's state is detected to be corrupt.
 
-    Defaults to a `CachedThreadPool` that provides threads from a thread group called `"DisruptorCommandBus"`.
+  Defaults to a `CachedThreadPool` that provides threads from a thread group called `"DisruptorCommandBus"`.
 
 * `TransactionManager` - defines the transaction manager that should ensure that the storage and publication of events are executed within a transaction.
-* `InvokerInterceptors` - defines the `CommandHandlerInterceptor`s that are to be used in the invocation process. 
+* `InvokerInterceptors` - defines the `CommandHandlerInterceptor`s that are to be used in the invocation process.
 
-    This is the process that calls the actual Command Handler method.
+  This is the process that calls the actual Command Handler method.
 
-* `PublisherInterceptors` - defines the `CommandHandlerInterceptor`s that are to be used in the publication process. 
+* `PublisherInterceptors` - defines the `CommandHandlerInterceptor`s that are to be used in the publication process.
 
-    This is the process that stores and publishes the generated events.
+  This is the process that stores and publishes the generated events.
 
-* `RollbackConfiguration` - defines on which Exceptions a Unit of Work should be rolled back. 
+* `RollbackConfiguration` - defines on which Exceptions a Unit of Work should be rolled back.
 
-    Defaults to a configuration that rolls back on unchecked exceptions.
+  Defaults to a configuration that rolls back on unchecked exceptions.
 
-* `RescheduleCommandsOnCorruptState` - indicates whether Commands that have been executed against an Aggregate that has been corrupted \(e.g. because a Unit of Work was rolled back\) should be rescheduled. 
+* `RescheduleCommandsOnCorruptState` - indicates whether Commands that have been executed against an Aggregate that has been corrupted \(e.g. because a Unit of Work was rolled back\) should be rescheduled.
 
-   If `false` the callback's `onFailure()` method will be invoked. 
+  If `false` the callback's `onFailure()` method will be invoked.
 
-   If `true` \(the default\), the command will be rescheduled instead.
+  If `true` \(the default\), the command will be rescheduled instead.
 
-* `CoolingDownPeriod` - sets the number of seconds to wait to make sure all commands are processed. 
+* `CoolingDownPeriod` - sets the number of seconds to wait to make sure all commands are processed.
 
-   During the cooling down period, no new commands are accepted, but existing commands are processed, and rescheduled when necessary. 
+  During the cooling down period, no new commands are accepted, but existing commands are processed, and rescheduled when necessary.
 
-   The cooling down period ensures that threads are available for rescheduling the commands and calling callbacks. 
+  The cooling down period ensures that threads are available for rescheduling the commands and calling callbacks.
 
-   Defaults to `1000` \(1 second\).
+  Defaults to `1000` \(1 second\).
 
-* `Cache` - sets the cache that stores aggregate instances that have been reconstructed from the Event Store. 
+* `Cache` - sets the cache that stores aggregate instances that have been reconstructed from the Event Store.
 
-   The cache is used to store aggregate instances that are not in active use by the disruptor.
+  The cache is used to store aggregate instances that are not in active use by the disruptor.
 
-* `InvokerThreadCount` - the number of threads to assign to the invocation of command handlers. 
+* `InvokerThreadCount` - the number of threads to assign to the invocation of command handlers.
 
-   A good starting point is half the number of cores in the machine.
+  A good starting point is half the number of cores in the machine.
 
-* `PublisherThreadCount` - the number of threads to use to publish events. 
+* `PublisherThreadCount` - the number of threads to use to publish events.
 
-   A good starting point is half the number of cores, and could be increased if a lot of time is spent on I/O.
+  A good starting point is half the number of cores, and could be increased if a lot of time is spent on I/O.
 
-* `SerializerThreadCount` - the number of threads to use to pre-serialize events. 
+* `SerializerThreadCount` - the number of threads to use to pre-serialize events.
 
-   This defaults to `1`, but is ignored if no serializer is configured.
+  This defaults to `1`, but is ignored if no serializer is configured.
 
-* `Serializer` - the serializer to perform pre-serialization with. 
+* `Serializer` - the serializer to perform pre-serialization with.
 
-   When a serializer is configured, the `DisruptorCommandBus` will wrap all generated events in a `SerializationAware` message. 
+  When a serializer is configured, the `DisruptorCommandBus` will wrap all generated events in a `SerializationAware` message.
 
-   The serialized form of the payload and metadata is attached before they are published to the Event Store.
+  The serialized form of the payload and metadata is attached before they are published to the Event Store.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -418,7 +418,7 @@ Sometimes, you want multiple instances of command buses in different JVMs to act
 
 That is where the concept of 'distributing the command bus' comes in. The default implementation of a distributed command bus is the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server ](../../axon-server-introduction.md)to submit and receive Commands. Unlike the other `CommandBus` implementations, the `AxonServerCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between command bus implementations on different JVM's.
 
-By default, [`SimpleCommandBus`]() is configured to handle incoming commands on the different JVM's. You can configure `AxonServerCommandBus` to use other command bus implementations for this purposes: [`AsynchronousCommandBus`](), [`DisruptorCommandBus`]().
+By default, [`SimpleCommandBus`](implementations.md) is configured to handle incoming commands on the different JVM's. You can configure `AxonServerCommandBus` to use other command bus implementations for this purposes: [`AsynchronousCommandBus`](implementations.md), [`DisruptorCommandBus`](implementations.md).
 
 ### DistributedCommandBus
 
@@ -435,11 +435,11 @@ By default, the `RoutingStrategy` implementations will throw an exception when n
 * `ERROR` - the default, and will cause an exception to be thrown when a Routing Key is not available
 * `RANDOM_KEY` - will return a random value when a \`routing key cannot be resolved from the command message.
 
-   This effectively means that those commands will be routed to a random segment of the command bus.
+  This effectively means that those commands will be routed to a random segment of the command bus.
 
-* `STATIC_KEY` - Will return a static key \(being "unresolved"\) for unresolved routing keys. 
+* `STATIC_KEY` - Will return a static key \(being "unresolved"\) for unresolved routing keys.
 
-   This effectively means that all those commands will be routed to the same segment, as long as the configuration of segments does not change.
+  This effectively means that all those commands will be routed to the same segment, as long as the configuration of segments does not change.
 
 You can choose different flavor of this components that are available in one of the extension modules:
 

@@ -38,17 +38,17 @@ public class GiftCard {
 
 There are a couple of noteworthy concepts from the given code snippets, marked with numbered Java comments referring to the following bullets:
 
-1. The `@AggregateIdentifier` is the external reference point to into the `GiftCard` Aggregate. 
+1. The `@AggregateIdentifier` is the external reference point to into the `GiftCard` Aggregate.
 
    This field is a hard requirement, as without it Axon will not know to which Aggregate a given Command is targeted.
 
-2. A `@CommandHandler` annotated constructor, or differently put the 'command handling constructor'. 
+2. A `@CommandHandler` annotated constructor, or differently put the 'command handling constructor'.
 
    This annotation tells the framework that the given constructor is capable of handling the `IssueCardCommand`.
 
-   The `@CommandHandler` annotated functions are the place where you would put your _decision-making/business logic_. 
+   The `@CommandHandler` annotated functions are the place where you would put your _decision-making/business logic_.
 
-3. The static `AggregateLifecycle#apply(Object...)` is what is used when an Event Message should be published. 
+3. The static `AggregateLifecycle#apply(Object...)` is what is used when an Event Message should be published.
 
    Upon calling this function the provided `Object`s will be published as `EventMessage`s within the scope of the Aggregate they are applied in.
 
@@ -56,7 +56,7 @@ There are a couple of noteworthy concepts from the given code snippets, marked w
 
    As all the Event Sourcing Handlers combined will form the Aggregate, this is where all the _state changes_ happen.
 
-   Note that the Aggregate Identifier **must** be set in the `@EventSourcingHandler` of the very first Event published by the aggregate. 
+   Note that the Aggregate Identifier **must** be set in the `@EventSourcingHandler` of the very first Event published by the aggregate.
 
    This is usually the creation event. Lastly, `@EventSourcingHandler` annotated functions are resolved using specific rules.
 
@@ -64,7 +64,7 @@ There are a couple of noteworthy concepts from the given code snippets, marked w
 
 5. A no-arg constructor, which is required by Axon.
 
-   Axon Framework uses this constructor to create an empty aggregate instance before initializing it using past Events. 
+   Axon Framework uses this constructor to create an empty aggregate instance before initializing it using past Events.
 
    Failure to provide this constructor will result in an exception when loading the Aggregate.
 
@@ -78,21 +78,21 @@ There are a couple of noteworthy concepts from the given code snippets, marked w
 
 There are a couple of operations which are desirable to be performed whilst in the life cycle of an Aggregate. To that end, the `AggregateLifecycle` class in Axon provides a couple of static functions:
 
-1. `apply(Object)` and `apply(Object, MetaData)`: The `AggregateLifecycle#apply` will publish an Event message on an `EventBus` such that it is known to have originated from the Aggregate executing the operation. 
+1. `apply(Object)` and `apply(Object, MetaData)`: The `AggregateLifecycle#apply` will publish an Event message on an `EventBus` such that it is known to have originated from the Aggregate executing the operation.
 
-   There is the possibility to provide just the Event `Object` or both the Event and some specific [MetaData](../../messaging-concepts/anatomy-message.md#meta-data).  
+   There is the possibility to provide just the Event `Object` or both the Event and some specific [MetaData](../../messaging-concepts/anatomy-message.md#meta-data).
 
-2. `createNew(Class, Callable)`: Instantiate a new Aggregate as a result of handling a Command. 
+2. `createNew(Class, Callable)`: Instantiate a new Aggregate as a result of handling a Command.
 
    Read [this](aggregate-creation-from-another-aggregate.md) for more details on this.
 
-3. `isLive()`: Check to verify whether the Aggregate is in a 'live' state. 
+3. `isLive()`: Check to verify whether the Aggregate is in a 'live' state.
 
-   An Aggregate is regarded to be 'live' if it has finished replaying historic events to recreate it's state. 
+   An Aggregate is regarded to be 'live' if it has finished replaying historic events to recreate it's state.
 
    If the Aggregate is thus in the process of being event sourced, an `AggregateLifecycle.isLive()` call would return `false`.
 
-   Using this `isLive()` method, you can perform activity that should only be done when handling newly generated events.  
+   Using this `isLive()` method, you can perform activity that should only be done when handling newly generated events.
 
 4. `markDeleted()`: Will mark the Aggregate instance calling the function as being 'deleted'.
 

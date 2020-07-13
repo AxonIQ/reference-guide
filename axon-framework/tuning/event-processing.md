@@ -78,5 +78,3 @@ axon.axonserver.disableEventBlacklisting=true
 >
 > The topology of Event Handlers might change in the lifecycle of a given application. This thus means that once blacklisted events might at a later stage do have Event Handler members present. To cover this scenario, Axon Server will periodically send over blacklisted events to refresh the blacklisted set.
 
-
-

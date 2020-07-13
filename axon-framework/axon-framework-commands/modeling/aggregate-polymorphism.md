@@ -18,15 +18,15 @@ We can define this structure as Polymorphic Aggregate of type `GiftCard` and sub
 
 While modeling a polymorphic aggregate hierarchy it is important to keep these constraints in mind:
 
-* It is not allowed to have a constructor annotated with `@CommandHandler` on abstract aggregate. The rationale for this 
+* It is not allowed to have a constructor annotated with `@CommandHandler` on abstract aggregate. The rationale for this
 
   is that an abstract aggregate can never be created.
 
-* Having creational command handlers of the same command name on different aggregates in the same hierarchy is forbidden 
+* Having creational command handlers of the same command name on different aggregates in the same hierarchy is forbidden
 
-  too, since Axon cannot derive which one to invoke. 
+  too, since Axon cannot derive which one to invoke.
 
-* In a polymorphic aggregate hierarchy it is not allowed to have multiple `@AggregateIdentifier` and `@AggregateVersion` 
+* In a polymorphic aggregate hierarchy it is not allowed to have multiple `@AggregateIdentifier` and `@AggregateVersion`
 
   annotated fields.
 
