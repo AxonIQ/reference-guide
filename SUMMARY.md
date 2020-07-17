@@ -1,7 +1,6 @@
 # Table of contents
 
 * [Introduction](README.md)
-* [Quick Start](quick-start.md)
 * [Architecture Overview](architecture-overview/README.md)
   * [DDD & CQRS Concepts](architecture-overview/ddd-cqrs-concepts.md)
   * [Event Sourcing](architecture-overview/event-sourcing.md)
@@ -18,10 +17,7 @@
 
 ## Getting Started
 
-* [Prerequisites](getting-started/prerequisites.md)
-* [Maven/Gradle Dependencies](getting-started/maven-dependencies.md)
-* [Spring Boot](getting-started/spring-boot.md)
-* [Starting the Axon Server](getting-started/starting-the-axon-server.md)
+* [Quick Start](getting-started/quick-start.md)
 
 ## Axon Framework
 
@@ -73,6 +69,8 @@
   * [Event Snapshots](axon-framework/tuning/event-snapshots.md)
   * [Event Processing](axon-framework/tuning/event-processing.md)
 * [Monitoring and Metrics](axon-framework/monitoring-and-metrics.md)
+* [Spring Boot Integration](axon-framework/spring-boot-integration.md)
+* [Modules](axon-framework/modules.md)
 
 ## Axon Server
 
