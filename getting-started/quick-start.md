@@ -54,4 +54,4 @@ AxonIQ provides a free to view [fast lane online training](https://lp.axoniq.io/
 
 #### Full Training
 
-AxonIQ provides a [fully online Axon training program](https://axoniq.io/support-overview/axon-training) which provides a more hands-on approach complete with instructor-led content and labs. This program is intended to deepen your knowledge concerning the concepts of event-driven microservices, DDD, CQRS and how Axon supports this journey
+AxonIQ provides a [fully online Axon training program](https://axoniq.io/support-overview/axon-training) which provides a more hands-on approach complete with instructor-led content and labs. This program is intended to deepen your knowledge concerning the concepts of event-driven microservices, DDD, CQRS and how Axon supports this journey.
