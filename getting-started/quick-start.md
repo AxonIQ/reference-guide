@@ -50,9 +50,8 @@ The following 5-part video tutorial offers a quick start guided path to understa
 
 #### Fast Lane Training
 
-AxonIQ provides a free to view [fast lane online training ](https://lp.axoniq.io/fast-lane-axon-framework-online-training)which will bring you up to speed on topics such as DDD, CQRS, event sourcing and other concepts related to the Axon stack 
+AxonIQ provides a free to view [fast lane online training](https://lp.axoniq.io/fast-lane-axon-framework-online-training) which will bring you up to speed on topics such as DDD, CQRS, Event Sourcing and other concepts related to the Axon stack.
 
 #### Full Training
 
 AxonIQ provides a [fully online Axon training program](https://axoniq.io/support-overview/axon-training) which provides a more hands-on approach complete with instructor-led content and labs. This program is intended to deepen your knowledge concerning the concepts of event-driven microservices, DDD, CQRS and how Axon supports this journey
-
