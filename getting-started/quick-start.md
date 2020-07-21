@@ -6,7 +6,7 @@ The only pre-requisite to run the Quick Start is to have a Java 8+ JRE in your s
 
 ### Quick Start Toolkit Download
 
-The Quick Start Toolkit package is available for download at the following location -&gt; [https://axoniq.io/download](https://axoniq.io/download)
+The Quick Start Toolkit package is available for download at the following location -&gt; [https://axoniq.io/download](https://axoniq.io/download).
 
 This package contains,
 
@@ -26,7 +26,7 @@ This package contains,
 
 ### Running the Quick Start on Java 8
 
-Quick Start Demo app can run on Java 8 with a small change in the `pom.xml` file
+The Quick Start Demo app can also run on Java 8 with a small change in the `pom.xml` file:
 
 1. From the extracted folder, open `giftcard-demo\pom.xml` with your favourite editor
 2. Replace `<java.version>11</java.version>` occurrency with `<java.version>1.8</java.version>`
@@ -54,11 +54,8 @@ This blog is a good starting point to get familiarized with Axon Server - [https
 
 #### Fast Lane Training
 
-AxonIQ provides a free to view [fast lane online training ](https://lp.axoniq.io/fast-lane-axon-framework-online-training)which will bring you up to speed on topics such as DDD, CQRS, event sourcing and other concepts related to the Axon stack 
+AxonIQ provides a free to view [fast lane online training](https://lp.axoniq.io/fast-lane-axon-framework-online-training) which will bring you up to speed on topics such as DDD, CQRS, Event Sourcing and other concepts related to the Axon stack.
 
 #### Full Training
 
-AxonIQ provides a [fully online Axon training program](https://axoniq.io/support-overview/axon-training) which provides a more hands-on approach complete with instructor-led content and labs. This program is intended to deepen your knowledge concerning the concepts of event-driven microservices, DDD, CQRS and how Axon supports this journey
-
-
-
+AxonIQ provides a [fully online Axon training program](https://axoniq.io/support-overview/axon-training) which provides a more hands-on approach complete with instructor-led content and labs. This program is intended to deepen your knowledge concerning the concepts of event-driven microservices, DDD, CQRS and how Axon supports this journey.

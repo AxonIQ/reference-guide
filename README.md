@@ -1,6 +1,6 @@
 # Introduction
 
-Welcome to the Axon Manual ! 
+Welcome to the Axon Manual!
 
 Axon provides the Axon Framework and the Axon Server to help build applications centered on three core concepts - CQRS \(Command Query Responsibility Segregation\) / Event Sourcing and DDD \(Domain Driven Design\).
 
@@ -29,4 +29,3 @@ The Axon platform consists of Axon Framework and Axon Server. It is provided by 
   * The commercial version, called "Axon Server Enterprise", as well as the various "Packs", are closed source and provided under a commercial license agreement.
 
 If you have any questions about licensing, or want to obtain a license to our commercial software, please contact us via [axoniq.io](https://axoniq.io) or [sales@axoniq.io](mailto:sales@axoniq.io).
-
