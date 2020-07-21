@@ -1,4 +1,4 @@
-# Spring Boot
+# Spring Boot Integration
 
 Axon Framework provides extensive support for Spring, but does not require you to use Spring in order to use Axon. All components can be configured programmatically and do not require Spring on the classpath. However, if you do use Spring, much of the configuration is made easier with the use of Spring's annotation support. Axon provides Spring Boot starters on the top of that, so you can benefit from auto-configuration as well.
 

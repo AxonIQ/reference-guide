@@ -14,4 +14,6 @@ A summary of the various sub-sections is given below.
 | [Testing](testing/) | Testing capabilities provided by the Axon Framework |
 | [Tuning](tuning/) | Tuning capabilities provided by the Axon Framework |
 | [Monitoring and Metrics](monitoring-and-metrics.md) | Monitoring and Metric capabilities provided by the Axon Framework |
+| [Spring Boot Integration](spring-boot-integration.md) | Axon Framework integration with Spring Boot |
+| [Modules](modules.md) | Modules provided by the Axon Framework |
 
