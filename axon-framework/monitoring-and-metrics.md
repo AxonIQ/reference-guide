@@ -162,7 +162,7 @@ public class MetricsConfiguration {
 ```text
 # The default value is `true`. Thus you will have Metrics configured if `axon-micrometer` and appropriate metric implementation (for example: `micrometer-registry-prometheus`) are on your classpath.
 axon.metrics.auto-configuration.enabled=true
-# The default value is `false`. By enabling this property you will have message (event, command, query) payload type set as a micrometer tag/dimension by default. Additionally, the processor name is a tag/dimension now (not the part of the metrics name).
+# The default value is `false`. By enabling this property you will have message (event, command, query) payload type set as a micrometer tag/dimension by default. Additionally, the processor name will be a tag/dimension instead of it being part of the metric name.
 axon.metrics.micrometer.dimensional=true
 # Spring Boot metrics enabled
 management.endpoint.metrics.enabled=true
@@ -313,4 +313,3 @@ public class MetricsConfig {
 }
 
 ```
-
