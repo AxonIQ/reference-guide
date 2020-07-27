@@ -1,6 +1,6 @@
 # Docker / K8s
 
-Axon provides support for Axon Server SE/EE to be run as Docker images utilizing plain Docker images / Docker Compose or larger-scale infrastructural products such as Kubernetes, Cloud-Foundry or Red Hat OpenShift. 
+Axon provides support for Axon Server SE/EE to be run as Docker images utilizing plain Docker images / Docker Compose or larger-scale infrastructural products such as Kubernetes, Cloud-Foundry or Red Hat OpenShift.
 
 | Version |  |
 | :--- | :--- |

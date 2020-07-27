@@ -6,11 +6,11 @@ This section is split into 3 sub-sections.
 * [Deployment using Docker Compose](axon-server-se.md#docker-compose)
 * [Deployment using Kubernetes](axon-server-se.md#kubernetes)
 
-### Docker Image
+## Docker Image
 
 Axon provides a ready to use [Axon Server SE image](https://hub.docker.com/r/axoniq/axonserver/). The image is built using a compact image from Google’s “distroless” base images at the gcr.io repository, in this case “gcr.io/distroless/java:11”.
 
-To run the provided image the command below can be executed. This starts Axon Server SE in a docker container with exposes the HTTP \(8024\) and GRPC \(8124\) ports to the host. 
+To run the provided image the command below can be executed. This starts Axon Server SE in a docker container with exposes the HTTP \(8024\) and GRPC \(8124\) ports to the host.
 
 ```bash
 $ docker run -d --name  -p 8024:8024 -p 8124:8124 axoniq/axonserver
@@ -57,11 +57,11 @@ logging.file.max-history=10
 logging.file.max-size=10MB
 ```
 
-#### Customization
+### Customization
 
 The directory locations for the volumes can be specified as per your requirements. The image also has a third directory "/config" which is not marked as a volume. This gives you the capability to have an "axonserver.properties" file which can be placed in this location to override the above mentioned settings as well as add new properties similar to a local install.
 
-Assuming that you have a directory "_axonserverse**"**_  which will be the designated location for your volumes and configuration information.
+Assuming that you have a directory "_axonserverse**"**_ which will be the designated location for your volumes and configuration information.
 
 We will first create the sub-directories for the volumes/configuration. We will also add a couple of custom properties \(name/hostname\) to the axonserver.properties file which will be placed in the config sub-directory. As stated above, you can add additional properties to control the configuration.
 
@@ -81,13 +81,13 @@ docker run -d --rm --name axonserver -p 8024:8024 -p 8124:8124 -v `pwd`/axonserv
 
 Now if you query the API \(utilizing the “curl” command depicted above\) it will show that it is running with name “axonserver” and hostname “localhost”. Also the data directory will contain the ControlDB file, PID file, and a copy of the log output. The “events” directory will have the event and snapshot data.
 
-This completes a basic setup of the Axon Server SE Docker image with implementation of customizations. 
+This completes a basic setup of the Axon Server SE Docker image with implementation of customizations.
 
-### Docker Compose
+## Docker Compose
 
-Running Axon Server SE in docker-compose helps address more complex requirements around distributed scenarios. The following file will help start Axon Server SE with “./data”, “./events”, and “./config” mounted as volumes and the config directory is actually Read-Only. 
+Running Axon Server SE in docker-compose helps address more complex requirements around distributed scenarios. The following file will help start Axon Server SE with “./data”, “./events”, and “./config” mounted as volumes and the config directory is actually Read-Only.
 
-This again assumes that you have a directory "_axonserverse**"**_  which will be the designated location for your volumes and configuration information.
+This again assumes that you have a directory "_axonserverse**"**_ which will be the designated location for your volumes and configuration information.
 
 ```text
 version: '3.3'
@@ -148,7 +148,7 @@ axonserver_1  |  /_/   \_\/_/\_\___/|_| |_|____/ \___|_|    \_/ \___|_|
 axonserver_1  |  Standard Edition                        Powered by AxonIQ
 ```
 
-### Kubernetes
+## Kubernetes
 
 An Axon Server SE instance has a clear and persistent identity, in that it saves identifying information about itself in the controlDB. Also, if it is used as an event store, the context’s events will be stored on disk as well, essentially _**Axon Server SE is a stateful application**_.
 
@@ -254,9 +254,9 @@ spec:
 ---
 ```
 
-Important to note here is that this is a pretty basic descriptor in the sense that it does not have any settings for the amount of memory and/or cpu to reserve for Axon Server SE which you may want to do for long-running deployments. 
+Important to note here is that this is a pretty basic descriptor in the sense that it does not have any settings for the amount of memory and/or cpu to reserve for Axon Server SE which you may want to do for long-running deployments.
 
-To deploy, you would need a Kubernetes cluster and access to the [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) utility to help control these clusters.  For a development Kubernetes cluster, it is recommended to use [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) or [Red Hat CodeReady Containers](https://github.com/code-ready/crc) which installs a Red Hat OpenShift Kubernetes cluster on your laptop . For production it is recommended to use a managed service like AWS [EKS](https://aws.amazon.com/eks/) / Google's [GKE](https://cloud.google.com/kubernetes-engine) or Azure's [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service).
+To deploy, you would need a Kubernetes cluster and access to the [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) utility to help control these clusters. For a development Kubernetes cluster, it is recommended to use [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) or [Red Hat CodeReady Containers](https://github.com/code-ready/crc) which installs a Red Hat OpenShift Kubernetes cluster on your laptop . For production it is recommended to use a managed service like AWS [EKS](https://aws.amazon.com/eks/) / Google's [GKE](https://cloud.google.com/kubernetes-engine) or Azure's [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service).
 
 The first step would be to create a separate namespace for Axon Server SE.
 

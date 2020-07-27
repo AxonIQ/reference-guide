@@ -313,5 +313,5 @@ public class MetricsConfig {
         configurer.configureMessageMonitor(QueryBus.class, messageMonitorFactory);
     }
 }
-
 ```
+

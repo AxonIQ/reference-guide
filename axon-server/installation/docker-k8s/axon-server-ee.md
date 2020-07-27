@@ -6,7 +6,7 @@ This section is split into 3 sub-sections.
 * [Deployment using Docker Compose ](axon-server-ee.md#docker-compose)and
 * [Deployment using Kubernetes](axon-server-ee.md#kubernetes)
 
-### Construction of the Image
+## Construction of the Image
 
 Axon does not provide a public image for Axon Server EE. A starter Dockerfile is included below which can be tailored as per your requirements. This will work for OpenShift, Kubernetes, as well as Docker and Docker Compose.
 
@@ -63,11 +63,11 @@ $ docker build --tag ${TAG} .
 
 The ${TAG} could be any tag that you would like to give to the Axon Server EE Docker image. This completes the construction of the Docker image. The image can pushed to your local repository or you could keep it local if you only want to run it on your development machine. The next step is to run it either using [Docker Compose](axon-server-ee.md#docker-compose) or [Kubernetes](axon-server-ee.md#kubernetes).
 
-### Docker Compose
+## Docker Compose
 
-Axon Server EE is meant to be run in a distributed manner i.e. as a cluster where there will be multiple instances of Axon Server EE nodes running all interconnected to each other. 
+Axon Server EE is meant to be run in a distributed manner i.e. as a cluster where there will be multiple instances of Axon Server EE nodes running all interconnected to each other.
 
-The installation process assumes that Docker Compose will be used to run a 3-node Axon Server EE cluster i.e. running 3 services of the same container image we built above.  Let us designate these services as "_axonserver-1_", "_axonserver-2_" and "_axonserver-3_".  We will also give a tag to the image that we constructed above as "_axonserver-ee:running_". 
+The installation process assumes that Docker Compose will be used to run a 3-node Axon Server EE cluster i.e. running 3 services of the same container image we built above. Let us designate these services as "_axonserver-1_", "_axonserver-2_" and "_axonserver-3_". We will also give a tag to the image that we constructed above as "_axonserver-ee:running_".
 
 Each container instance will use separate volumes for “data”, “events”, and “log”. We will use "secrets" to inject the license file, tokens as well as the cluster/context definitions using the [autocluster](../local-installation/axon-server-ee.md#auto-clustering) mechanism. An environment variable is added to tell Axon Server about the location of the license file.
 
@@ -231,11 +231,11 @@ Starting Axon Server EE using the docker-compose command is depicted below.
 $ docker-compose up
 ```
 
-### Kubernetes
+## Kubernetes
 
 The deployment of Axon Server EE on Kubernetes essentially follows the same principle as we have seen for Axon Server SE i.e. using Stateful Sets. However to cater to the distributed deployment topology of Axon Server EE, there will be some changes that would need to be done.
 
-The Dockerfile that we [built](axon-server-ee.md#construction-of-the-image) above would need a change. This is due to the fact that volumes are mounted as owned by the mount location’s owner in Docker, while Kubernetes uses a special security context, defaulting to root. Since our EE image runs Axon Server under its own user \(axonserveree\), it has no rights on the mounted volume other than “read”. The context can be specified, but only through the user or group’s ID, and not using their name as we did in the image, because that name does not exist in the k8s management context. So we have to adjust the first stage to specify a specific numeric value _\(here we have given 1001\)_ , and then use that value in the security context of the Stateful set which we shall see below. 
+The Dockerfile that we [built](axon-server-ee.md#construction-of-the-image) above would need a change. This is due to the fact that volumes are mounted as owned by the mount location’s owner in Docker, while Kubernetes uses a special security context, defaulting to root. Since our EE image runs Axon Server under its own user \(axonserveree\), it has no rights on the mounted volume other than “read”. The context can be specified, but only through the user or group’s ID, and not using their name as we did in the image, because that name does not exist in the k8s management context. So we have to adjust the first stage to specify a specific numeric value _\(here we have given 1001\)_ , and then use that value in the security context of the Stateful set which we shall see below.
 
 The change is depicted below. As before, create the image using _docker build_ and give it a tag \(e.g. axonserveree-running\)
 
@@ -259,7 +259,7 @@ $ kubectl create secret generic axonserveree-token --from-file=./axoniq.token -n
 secret/axonserver-token created
 $ kubectl create configmap axonserveree-properties --from-file=./axonserver.properties -n ${axonserveree-ns}
 configmap/axonserver-properties created
-$ 
+$
 ```
 
 In the descriptor we now have to declare the secret, add a volume for it, and mount the secret on the volume. Then a list of volumes has to be added to link the actual license and properties.
@@ -374,7 +374,7 @@ $ kubectl apply -f axonserver-sts.yml -n ${axonserveree-ns}
 statefulset.apps/axonserveree created
 ```
 
-The next step would be to create the two services required for Axon Server EE i.e. axonserver-gui on 8024 \(HTTP\) and axonserver on 8124 \(gRPC\). 
+The next step would be to create the two services required for Axon Server EE i.e. axonserver-gui on 8024 \(HTTP\) and axonserver on 8124 \(gRPC\).
 
 ```text
 ---
