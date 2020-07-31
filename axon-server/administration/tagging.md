@@ -18,7 +18,7 @@ If no matching tags are available at all, it will connect to any available node.
 
 ## Enabling tagging <a id="enabling-tagging"></a>
 
-To enable tagging you must configure both the client and server.‌
+To enable tagging you must configure both the client and server.
 
 ### Axon Server <a id="axon-server"></a>
 
