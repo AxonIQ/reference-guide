@@ -256,7 +256,7 @@ spec:
 
 Important to note here is that this is a pretty basic descriptor in the sense that it does not have any settings for the amount of memory and/or cpu to reserve for Axon Server SE which you may want to do for long-running deployments.
 
-To deploy, you would need a Kubernetes cluster and access to the [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) utility to help control these clusters. For a development Kubernetes cluster, it is recommended to use [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) or [Red Hat CodeReady Containers](https://github.com/code-ready/crc) which installs a Red Hat OpenShift Kubernetes cluster on your laptop . For production it is recommended to use a managed service like AWS [EKS](https://aws.amazon.com/eks/) / Google's [GKE](https://cloud.google.com/kubernetes-engine) or Azure's [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service).
+To deploy, you would need a Kubernetes cluster and access to the [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) utility to help control these clusters. For a development Kubernetes cluster, it is recommended to use [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) or [Red Hat CodeReady Containers](https://github.com/code-ready/crc) which installs a Red Hat OpenShift Kubernetes cluster on your laptop. For production it is recommended to use a managed service like AWS [EKS](https://aws.amazon.com/eks/) / Google's [GKE](https://cloud.google.com/kubernetes-engine) or Azure's [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service).
 
 The first step would be to create a separate namespace for Axon Server SE.
 
