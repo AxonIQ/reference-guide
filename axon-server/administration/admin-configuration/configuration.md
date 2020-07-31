@@ -8,7 +8,7 @@ The system configuration can be maintained/supplied in three ways.
 
 ### _Configuration File_
 
-The most commonly and preferred way is to have an _axonserver.properties_ or _\_ \_axonserver.yml _\_\*\*\_file which contains the desired configuration parameters. The location of the file should be the current working directory or alternatively can be placed within a "\_config"_ subdirectory \(relative to the current working directory\).
+The most commonly and preferred way is to have an _axonserver.properties_ or _\_ \_axonserver.yml _\_\*\*\_file which contains the desired configuration parameters. The location of the file should be the current working directory or alternatively can be placed within a "\_config"\_ subdirectory \(relative to the current working directory\).
 
 An important note - In case both files are detected by Axon Server, it will read from both.
 
