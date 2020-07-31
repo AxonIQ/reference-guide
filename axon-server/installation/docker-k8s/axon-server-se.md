@@ -46,7 +46,7 @@ This displays the information below:
 }
 ```
 
-The application is installed in the root with a minimal properties file which is depicted below. The “/data” and “/eventdata” directories are created as volumes, and their data will be accessible on the local filesystem somewhere in Docker’s temporary storage tree.axoniq.axonserver.event.storage=/eventdata
+The application is installed in the root with a minimal properties file which is depicted below. The “/data” and “/eventdata” directories are created as volumes, and their data will be accessible on the local filesystem somewhere in Docker’s temporary storage tree.
 
 ```text
 axoniq.axonserver.snapshot.storage=/eventdata
