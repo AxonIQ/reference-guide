@@ -22,7 +22,7 @@ A quick verification of the running docker container can be done by querying the
 $ curl -s http://localhost:8024/v1/public/me
 ```
 
-This displays the information below
+This displays the information below:
 
 ```bash
 {
@@ -275,4 +275,3 @@ service/axonserver created
 ```
 
 This completes a basic setup to help install Axon Server SE on Kubernetes.
-
