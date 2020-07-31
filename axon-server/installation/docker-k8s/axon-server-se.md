@@ -73,7 +73,7 @@ $ (
 > ) > axonserverse/config/axonserver.proprties
 ```
 
-To start the container with the customizations done above, the following command can be executed
+To start the container with the customizations done above, the following command can be executed:
 
 ```text
 docker run -d --rm --name axonserver -p 8024:8024 -p 8124:8124 -v `pwd`/axonserverse/data:/data -v `pwd`/axonserverse/events:/eventdata -v `pwd`/axonserverse/config:/config axoniq/axonserver
