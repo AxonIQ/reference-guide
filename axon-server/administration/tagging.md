@@ -1,5 +1,26 @@
 # Tagging
 
+You can use tagging in Axon for 2 different scenarios:
+
+1. you want to control which command handler or query handler executes a command or query
+1. you want to control to which Axon Server node a particular client connects
+
+## Tag based routing
+
+> **Note**
+>
+> This feature is only available with Axon Server version 4.4 onwards.
+>
+Axon Server matches metadata elements provided in a command or a query to tags defined on the command and client handling 
+applications. For instance, you could tag commands with a country code and set the country code in the tags of the handler application.
+In this case, Axon Server will try to find a command handler with the same country code and send the command to that handler.
+If there are multiple applications found with a command handler for the requested command and matching tags, Axon Server will
+pick one based on the provided routing key. The same will happen if there are no applications found with matching tags, so 
+commands will not fail because there are no matching tags. 
+You can, of course, have multiple tags on an application, Axon Server will select the one with most the matching tags. 
+
+## Connection distribution 
+
 > **Note**
 >
 > This feature is only available in Axon Server Enterprise and compatible with version 4.2 onwards of Axon.
