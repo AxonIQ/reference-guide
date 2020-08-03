@@ -6,61 +6,61 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ### Release 4.3.5
 
- * The `TrackingEventProcessor#mergeSegment(int)` method was invoked with the high segment number of the pair to merge,
- 
-    an error would occur in the process as it expected to receive the lower number on all scenarios.
-    
-   This was resolved in pull request [#1450](https://github.com/AxonFramework/AxonFramework/pull/1450).
-   
- * A small connectivity adjustment which was performed in the `AxonServerConnectionManager` for bug release 4.3.4 has been reverted.
- 
-   Although it worked successfully for some scenarios, it did not correctly cover all possibilities.
-   
-   The commit can be found [here](https://github.com/AxonFramework/AxonFramework/commit/5b9348040f4f977db3b9a15c3ae55904710814b6) for reference.
-   
-   The full scenario will be covered through the adjusted connector which is underway for beta release in 4.4.
+* The `TrackingEventProcessor#mergeSegment(int)` method was invoked with the high segment number of the pair to merge,
+
+  an error would occur in the process as it expected to receive the lower number on all scenarios.
+
+  This was resolved in pull request [\#1450](https://github.com/AxonFramework/AxonFramework/pull/1450).
+
+* A small connectivity adjustment which was performed in the `AxonServerConnectionManager` for bug release 4.3.4 has been reverted.
+
+  Although it worked successfully for some scenarios, it did not correctly cover all possibilities.
+
+  The commit can be found [here](https://github.com/AxonFramework/AxonFramework/commit/5b9348040f4f977db3b9a15c3ae55904710814b6) for reference.
+
+  The full scenario will be covered through the adjusted connector which is underway for beta release in 4.4.
 
 For a complete list of all resolved bugs we refer to the [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?q=is%3Aclosed+milestone%3A%22Release+4.3.5%22++label%3A%22Type%3A+Bug%22+).
 
 ### Release 4.3.4
 
- * Whilst adjusting the `JdbcEventStorageEngine` in [#1187](https://github.com/AxonFramework/AxonFramework/issues/1187) to allow more flexibility to configure the used statements, we accidentally dropped support for adjusting how the store wrote timestamps.
-    
-   This issue was rectified by user `ovstetun` in pull request [#1454](https://github.com/AxonFramework/AxonFramework/pull/1454).
-     
- * Snapshots were incorrectly created in the same phase as the publication of events.
- 
-   This has been moved to the after commit phase of the `UnitOfWork` in issue [#1457](https://github.com/AxonFramework/AxonFramework/pull/1457).
-   
- * When using the `SequenceEventStorageEngine` to merge an active and historic event stream there was a discrepancy when the active stream didn't contain any events and the historic stream did.
-    
-   This has been resolved in pull request [#1459](https://github.com/AxonFramework/AxonFramework/pull/1459). 
+* Whilst adjusting the `JdbcEventStorageEngine` in [\#1187](https://github.com/AxonFramework/AxonFramework/issues/1187) to allow more flexibility to configure the used statements, we accidentally dropped support for adjusting how the store wrote timestamps.
+
+  This issue was rectified by user `ovstetun` in pull request [\#1454](https://github.com/AxonFramework/AxonFramework/pull/1454).
+
+* Snapshots were incorrectly created in the same phase as the publication of events.
+
+  This has been moved to the after commit phase of the `UnitOfWork` in issue [\#1457](https://github.com/AxonFramework/AxonFramework/pull/1457).
+
+* When using the `SequenceEventStorageEngine` to merge an active and historic event stream there was a discrepancy when the active stream didn't contain any events and the historic stream did.
+
+  This has been resolved in pull request [\#1459](https://github.com/AxonFramework/AxonFramework/pull/1459).
 
 For a complete list of all resolved bugs we refer to the [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?q=is%3Aclosed+milestone%3A%22Release+4.3.4%22++label%3A%22Type%3A+Bug%22+).
 
 ### Release 4.3.3
 
-This bug release contained a single fix, under pull request [#1425](https://github.com/AxonFramework/AxonFramework/pull/1425). A situation was reported where a Tracking Event Processor did not catch up with the last event, until a new event was available after that event. Effectively causing it to read up to N-1. This only accounted for usages of the `MultiStreamableMessageSource`, thus when two (or more) event streams were combined into a single source for a `TrackingEventProcessor`.
+This bug release contained a single fix, under pull request [\#1425](https://github.com/AxonFramework/AxonFramework/pull/1425). A situation was reported where a Tracking Event Processor did not catch up with the last event, until a new event was available after that event. Effectively causing it to read up to N-1. This only accounted for usages of the `MultiStreamableMessageSource`, thus when two \(or more\) event streams were combined into a single source for a `TrackingEventProcessor`.
 
 To remain complete, [here](https://github.com/AxonFramework/AxonFramework/issues?q=is%3Aclosed+milestone%3A%22Release+4.3.3%22++label%3A%22Type%3A+Bug%22+) is the issue tracker page contained the closed issues for release 4.3.3.
 
 ### Release 4.3.2
 
- * When using the `QueryGateway`, it was not possible to provide a `QueryMessage` as the query field since the `queryName` would be derived from the class name of the provided query.
-     
-   Hence, `QueryMessage` would be the `queryName`, instead of the actual `queryName`.
-   
-   This issue has been resolved in [#1410](https://github.com/AxonFramework/AxonFramework/pull/1410).
-   
- * There was a window of opportunity where the `Snapshotter` would publish the last event in its stream twice.
- 
-   This could cause faulty snapshots in some scenarios.
-    
-   This issue was marked under [#1408](https://github.com/AxonFramework/AxonFramework/issues/1408) and resolved in pull request [#1416](https://github.com/AxonFramework/AxonFramework/pull/1416).
-      
- * The bi-directional stream created by the Axon Server Connector wasn't always closed correctly; specifically in error cases.
-     
-   This problem has been resolved in pull request [1397](https://github.com/AxonFramework/AxonFramework/pull/1397).
+* When using the `QueryGateway`, it was not possible to provide a `QueryMessage` as the query field since the `queryName` would be derived from the class name of the provided query.
+
+  Hence, `QueryMessage` would be the `queryName`, instead of the actual `queryName`.
+
+  This issue has been resolved in [\#1410](https://github.com/AxonFramework/AxonFramework/pull/1410).
+
+* There was a window of opportunity where the `Snapshotter` would publish the last event in its stream twice.
+
+  This could cause faulty snapshots in some scenarios.
+
+  This issue was marked under [\#1408](https://github.com/AxonFramework/AxonFramework/issues/1408) and resolved in pull request [\#1416](https://github.com/AxonFramework/AxonFramework/pull/1416).
+
+* The bi-directional stream created by the Axon Server Connector wasn't always closed correctly; specifically in error cases.
+
+  This problem has been resolved in pull request [1397](https://github.com/AxonFramework/AxonFramework/pull/1397).
 
 For a complete list of all resolved bugs we refer to the [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?q=is%3Aclosed+milestone%3A%22Release+4.3.2%22++label%3A%22Type%3A+Bug%22+).
 
