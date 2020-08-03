@@ -23,48 +23,63 @@ A `Snapshotter` is responsible for the actual creation of a snapshot. Typically,
 
 Axon provides the `AggregateSnapshotter`, which creates and stores `AggregateSnapshot` instances. This is a special type of snapshot, since it contains the actual aggregate instance within it. The repositories provided by Axon are aware of this type of snapshot, and will extract the aggregate from it, instead of instantiating a new one. All events loaded after the snapshot events are streamed to the extracted aggregate instance.
 
-> **Note**
+> **Serializing a Snapshot Event**
 >
-> Do make sure that the `Serializer` instance you use \(which defaults to the `XStreamSerializer`\) is capable of serializing your aggregate. The `XStreamSerializer` requires you to use either a Hotspot JVM, or your aggregate must either have an accessible default constructor or implement the `Serializable` interface.
+> Do make sure the `Serializer` instance you use \(which defaults to the `XStreamSerializer`\) is capable of serializing your aggregate. 
+> The `XStreamSerializer` requires you to use either a Hotspot JVM, or your aggregate must either have an accessible default constructor or implement the `Serializable` interface.
 
 The `AbstractSnapshotter` provides a basic set of properties that allow you to tweak the way snapshots are created:
 
-* `EventStore` sets the event store that is used to load past events and store the snapshots. This event store must implement the `SnapshotEventStore` interface.
+* `EventStore` sets the event store which is used to load past events and store the snapshots. This event store must implement the `SnapshotEventStore` interface.
 * `Executor` sets the executor, such as a `ThreadPoolExecutor` that will provide the thread to process actual snapshot creation. By default, snapshots are created in the thread that calls the `scheduleSnapshot()` method, which is generally not recommended for production.
 
 The `AggregateSnapshotter` provides one more property:
 
-* `AggregateFactories` is the property that allows you to set the factories that will create instances of your aggregates. Configuring multiple aggregate factories allows you to use a single `Snapshotter` to create snapshots for a variety of aggregate types. The `EventSourcingRepository` implementations provide access to the `AggregateFactory` they use. This can be used to configure the same aggregate factories in the Snapshotter as the ones used in the repositories.
+* `AggregateFactories` is the property that allows you to set the factories that will create instances of your aggregates. 
+  Configuring multiple aggregate factories allows you to use a single `Snapshotter` to create snapshots for a variety of aggregate types. 
+  The `EventSourcingRepository` implementations and the `AggregateConfiguration` provide access to the `AggregateFactory` being used for a given Aggregate.
+  Both provide the factory through the `EventSourcingRepository#getAggregateFactory` and `AggregateConfiguration#aggregateFactory` methods respectively.   
+  The result from either can be used to configure the same aggregate factories in the `Snapshotter` as the ones used by the Aggregate.
 
-> **Note**
+> **Snapshotter Configuration**
 >
 > If you use an executor that executes snapshot creation in another thread, make sure you configure the correct transaction management for your underlying event store, if necessary.
 >
-> Spring users can use the `SpringAggregateSnapshotter`, which will automatically look up the right `AggregateFactory` from the application context when a snapshot needs to be created.
+> For both non-Spring and Spring users a default `Snapshotter` is provided.
+> The former uses the Configuration API to provide a default `AggregateSnapshotter`, retrieving the aggregate factories from the registered Aggregates / `AggregateConfiguration`s.
+> Spring uses a `SpringAggregateSnapshotter`, which will automatically looks up the right `AggregateFactory` instances from the application context when a snapshot needs to be created.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
+AggregateConfigurer<GiftCard> giftCardConfigurer =
+        AggregateConfigurer.defaultConfiguration(GiftCard.class)
+                           .configureSnapshotTrigger(config -> new EventCountSnapshotTriggerDefinition(
+                                   config.snapshotter(), 500
+                           ));
 Configurer configurer = DefaultConfigurer.defaultConfiguration()
-                .configureAggregate(AggregateConfigurer.defaultConfiguration(GiftCard.class).configureSnapshotTrigger(c -> new EventCountSnapshotTriggerDefinition(AggregateSnapshotter.builder().eventStore(c.eventStore()).build(),300)));
+                                         .configureAggregate(giftCardConfigurer);
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
-It is possible to define a custom `SnapshotTriggerDefinition` for an aggregate as a Spring bean. In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. Listing below shows how to define a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot every 500 events.
+It is possible to define a custom `SnapshotTriggerDefinition` for an aggregate as a Spring bean. 
+In order to tie the `SnapshotTriggerDefinition` bean to an aggregate, use the `snapshotTriggerDefinition` attribute on `@Aggregate` annotation. 
+Listing below shows how to define a custom `EventCountSnapshotTriggerDefinition` which will take a snapshot every 500 events.
 
-Note that a `Snapshotter` instance, if not explicitly defined as a bean already, will be automatically configured for you. This means you can simply pass the `Snapshotter` as a parameter to your `SnapshotTriggerDefinition`.
+Note that a `Snapshotter` instance, if not explicitly defined as a bean already, will be automatically configured for you. 
+This means you can simply pass the `Snapshotter` as a parameter to your `SnapshotTriggerDefinition`.
 
 ```java
 @Bean
-public SnapshotTriggerDefinition mySnapshotTriggerDefinition(Snapshotter snapshotter) {
+public SnapshotTriggerDefinition giftCardSnapshotTrigger(Snapshotter snapshotter) {
     return new EventCountSnapshotTriggerDefinition(snapshotter, 500);
 }
 
 ...
 
-@Aggregate(snapshotTriggerDefinition = "mySnapshotTriggerDefinition")
-public class MyAggregate {...}
+@Aggregate(snapshotTriggerDefinition = "giftCardSnapshotTrigger")
+public class GiftCard {...}
 ```
 {% endtab %}
 {% endtabs %}
@@ -73,11 +88,59 @@ public class MyAggregate {...}
 
 When a snapshot is stored in the event store, it will automatically use that snapshot to summarize all prior events and return it in their place. All event store implementations allow for concurrent creation of snapshots. This means they allow snapshots to be stored while another process is adding events for the same aggregate. This allows the snapshotting process to run as a separate process altogether.
 
-> **Note**
+> **Snapshots as a replacement of your events?**
 >
-> Normally, you can archive all events once they are part of a snapshot event. Snapshotted events will never be read in again by the event store in regular operational scenarios. However, if you want to be able to reconstruct aggregate state prior to the moment the snapshot was created, you must keep the events up to that date.
+> Normally, you can archive all events once they are part of a snapshot event. 
+> Snapshotted events will never be read in again by the event store in regular operational scenarios. 
+> However, if you want to be able to reconstruct aggregate state prior to the moment the snapshot was created, you must keep the events up to that date.
 
 Axon provides a special type of snapshot event: the `AggregateSnapshot`, which stores an entire aggregate as a snapshot. The motivation is simple: your aggregate should only contain the state relevant to take business decisions. This is exactly the information you want captured in a snapshot. All event sourcing repositories provided by Axon recognize the `AggregateSnapshot`, and will extract the aggregate from it. Beware that using this snapshot event requires that the event serialization mechanism needs to be able to serialize the aggregate.
+
+### Filtering Snapshot Events
+
+When enabling snapshotting, several snapshots would be stored per Aggregate instance in the event store.
+At a certain stage, some of these snapshot events are no longer being used by the application as newer versions took their place.
+Especially if these snapshot events portray an old format of the aggregate by using the `AggregateSnapshot` event would it be smart to no longer load these.
+
+You could take the stance of dropping all the snapshots which are stored (for a given aggregate type), but this means snapshots will be recreated with a 100% certainty.
+It is also possible to filter out snapshot events when reading your Aggregate from the event store.
+To that end, a `SnapshotFilter` can be defined per Aggregate type or for the entire `EventStore`.
+
+The `SnapshotFilter` is a functional interface, providing two main operations: `allow(DomainEventData<?)` and `combine(SnapshotFilter)`.
+The former provides the `DomainEventData` which reflects the snapshot events; the latter allows combining several `SnapshotFilter`s together.
+
+The following snippets share how to configure a `SnapshotFilter`: 
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+SnapshotFilter giftCardSnapshotFilter = snapshotData -> /* allow or disallow this snapshotData */;
+ 
+AggregateConfigurer<GiftCard> giftCardConfigurer = 
+        AggregateConfigurer.defaultConfiguration(GiftCard.class)
+                           .configureSnapshotFilter(config -> giftCardSnapshotFilter);
+Configurer configurer = DefaultConfigurer.defaultConfiguration()
+                                         .configureAggregate(giftCardConfigurer);
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+It is possible to define a custom `SnapshotFilter` for an aggregate as a Spring bean. 
+In order to tie the `SnapshotFilter` bean to an aggregate, use the `snapshotFilter` attribute on `@Aggregate` annotation. 
+
+```java
+@Bean
+public SnapshotFilter giftCardSnapshotFilter() {
+    return snapshotData -> /* allow or disallow this snapshotData */;
+}
+
+...
+
+@Aggregate(snapshotFilter = "giftCardSnapshotFilter")
+public class GiftCard {...}
+```
+{% endtab %}
+{% endtabs %}
 
 ### Initializing an Aggregate based on a Snapshot Event
 
