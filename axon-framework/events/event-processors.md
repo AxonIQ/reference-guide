@@ -331,9 +331,11 @@ Event handlers may have specific expectations on the ordering of events. If this
 
 A saga instance is never invoked concurrently by multiple threads. Therefore, a sequencing policy for a saga is irrelevant. Axon will ensure each saga instance receives the events it needs to process in the order they have been published on the event bus.
 
-> **Note**
+> **Parallel processing and Subscribing Event Processors**
 >
-> Note that subscribing event processors don't manage their own threads. Therefore, it is not possible to configure how they should receive their events. Effectively, they will always work on a sequential-per-aggregate basis, as that is generally the level of concurrency in the command handling component.
+> Note that subscribing event processors don't manage their own threads. 
+> Therefore, it is not possible to configure how they should receive their events. 
+> Effectively, they will always work on a sequential-per-aggregate basis, as that is generally the level of concurrency in the command handling component.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -373,17 +375,14 @@ The `SequencingPolicy` defines whether events must be handled sequentially, in p
 Axon provides a number of common policies you can use:
 
 * The `FullConcurrencyPolicy` will tell Axon that this event handler may handle all events concurrently.
-
   This means that there is no relationship between the events that require them to be processed in a particular order.
 
 * The `SequentialPolicy` tells Axon that all events must be processed sequentially.
-
   Handling of an event will start when the handling of a previous event has finished.
 
-* `SequentialPerAggregatePolicy` will force domain events that were raised from the same aggregate to be handled sequentially.
-
+* The default policy is the `SequentialPerAggregatePolicy`. 
+  It will force domain events that were raised from the same aggregate to be handled sequentially.
   However, events from different aggregates may be handled concurrently.
-
   This is typically a suitable policy to use for event listeners that update details from aggregates in database tables.
 
 Besides these provided policies, you can define your own. All policies must implement the `SequencingPolicy` interface. This interface defines a single method, `getSequenceIdentifierFor`, that returns the sequence identifier for a given event. Events for which an equal sequence identifier is returned must be processed sequentially. Events that produce a different sequence identifier may be processed concurrently. Policy implementations may return `null` if the event may be processed in parallel to any other event.
