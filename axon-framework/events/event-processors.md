@@ -501,6 +501,10 @@ public class ResetService {
 {% endtab %}
 {% endtabs %}
 
+It is possible to provide a change listener which van validate whenever the replay is done.
+More specifically, a `EventTrackerStatusChangeListener` can be configured through the `TrackingEventProcessorConfiguration`.
+See the [monitoring and metrics](../monitoring-and-metrics.md#event-tracker-status-a-idevent-tracker-statusa) for more specifics on the change listener.
+
 > **Partial Replays**
 >
 > It is possible to provide a token position to be used when resetting a `TrackingEventProcessor`, thus specifying from which point in the event log it should start replaying the events.
