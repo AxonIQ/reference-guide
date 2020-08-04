@@ -140,7 +140,7 @@ axon.metrics.auto-configuration.enabled=true
 ### Micrometer
 
 {% tabs %}
-{% tab title="Axon Configuration API" %}
+{% tab title="Axon Configuration API - Without Tags" %}
 ```java
 public class MetricsConfiguration {
 
@@ -151,23 +151,60 @@ public class MetricsConfiguration {
     // The MeterRegistry is a class from the Micrometer library
     public void configureDefaultMetrics(Configurer configurer, MeterRegistry meterRegistry) {
         GlobalMetricRegistry globalMetricRegistry = new GlobalMetricRegistry(meterRegistry);
-        // We register the default monitors with the predefined message payloadType as a micrometer tag/dimension to our messaging components by doing the following
-        globalMetricRegistry.registerWithConfigurerWithDefaultTags(configurer);
-        // We register the default (hierarchical) monitors to our messaging components by doing the following
-        // globalMetricRegistry.registerWithConfigurer(configurer);
+        globalMetricRegistry.registerWithConfigurer(configurer);
     }
 }
 ```
 {% endtab %}
 
-{% tab title="Spring Boot AutoConfiguration" %}
+{% tab title="Axon Configuration API - With Tags" %}
+```java
+public class MetricsConfiguration {
+
+    public Configurer buildConfigurer() {
+        return DefaultConfigurer.defaultConfiguration();
+    }
+
+    // The MeterRegistry is a class from the Micrometer library
+    public void configureDefaultMetrics(Configurer configurer, MeterRegistry meterRegistry) {
+        GlobalMetricRegistry globalMetricRegistry = new GlobalMetricRegistry(meterRegistry);
+        globalMetricRegistry.registerWithConfigurerWithDefaultTags(configurer);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Without Tags" %}
 ```text
-# The default value is `true`. Thus you will have Metrics configured if `axon-micrometer` and appropriate metric implementation (for example: `micrometer-registry-prometheus`) are on your classpath.
+# The default value is `true`. 
+# Thus you will have Metrics configured if `axon-micrometer` and 
+#  appropriate metric implementation (for example: `micrometer-registry-prometheus`) are on your classpath.
 axon.metrics.auto-configuration.enabled=true
-# The default value is `false`. By enabling this property you will have message (event, command, query) payload type set as a micrometer tag/dimension by default. Additionally, the processor name will be a tag/dimension instead of it being part of the metric name.
-axon.metrics.micrometer.dimensional=true
+
 # Spring Boot metrics enabled
 management.endpoint.metrics.enabled=true
+
+# Spring Boot (Prometheus) endpoint (`/actuator/prometheus`) enabled and exposed
+management.metrics.export.prometheus.enabled=true
+management.endpoint.prometheus.enabled=true
+```
+{% endtab %}
+{% tab title="Spring Boot AutoConfiguration - With Tags" %}
+```text
+# The default value is `true`. 
+# Thus you will have Metrics configured if `axon-micrometer` and 
+#  appropriate metric implementation (for example: `micrometer-registry-prometheus`) are on your classpath.
+axon.metrics.auto-configuration.enabled=true
+
+# The default value is `false`. 
+# By enabling this property you will have message (event, command, query)
+#   payload type set as a micrometer tag/dimension by default. 
+# Additionally, the processor name will be a tag/dimension instead of it being part of the metric name.
+axon.metrics.micrometer.dimensional=true
+
+# Spring Boot metrics enabled
+management.endpoint.metrics.enabled=true
+
 # Spring Boot (Prometheus) endpoint (`/actuator/prometheus`) enabled and exposed
 management.metrics.export.prometheus.enabled=true
 management.endpoint.prometheus.enabled=true
@@ -175,7 +212,8 @@ management.endpoint.prometheus.enabled=true
 {% endtab %}
 {% endtabs %}
 
-If you want to have more specific metrics on a message handling component like the `CommandBus`, `QueryBus`, `EventBus` \(or more specifically `TrackingEventProcessor`\), you can do the following:
+The scenario might occur that more fine-grained control over which `MessageMonitor` instance are defined is necessary.
+The following snippet provides as sample if you want to have more specific metrics on any of the message handling components:
 
 ```java
 // Java (Spring Boot Configuration) - Micrometer example
@@ -192,66 +230,56 @@ public class MetricsConfig {
         };
     }
 
-    // A custom/specific implementation of the micrometer metrics for the EventStore component.
     private void instrumentEventStore(MeterRegistry meterRegistry, Configurer configurer) {
         MessageMonitorFactory messageMonitorFactory = (configuration, componentType, componentName) -> {
-
-            // Naming the Counter monitor/meter with the name of the component (eventStore)
-            // Registering the Counter with custom tags: payloadType and the map off all message metadata elements.
-            MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor(componentName,
-                                                                                        meterRegistry,
-                                                                                        message -> Tags
-                                                                                                .of(TagsUtil.PAYLOAD_TYPE_TAG,
-                                                                                                    message.getPayloadType()
-                                                                                                           .getSimpleName())
-                                                                                                .and(message.getMetaData()
-                                                                                                            .entrySet()
-                                                                                                            .stream()
-                                                                                                            .map(s -> Tag.of(s.getKey(), s.getValue().toString()))
-                                                                                                            .collect(Collectors.toList())));
+            MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor(
+                    componentName, meterRegistry,
+                    message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+                                   .and(message.getMetaData().entrySet().stream()
+                                               .map(s -> Tag.of(s.getKey(), s.getValue().toString()))
+                                               .collect(Collectors.toList()))
+            );
             // Naming the Timer monitor/meter with the name of the component (eventStore)
             // Registering the Timer with custom tags: payloadType.
-            MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor(componentName,
-                                                                                meterRegistry,
-                                                                                message -> Tags
-                                                                                        .of(TagsUtil.PAYLOAD_TYPE_TAG,
-                                                                                            message.getPayloadType().getSimpleName()));
+            MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor(
+                    componentName, meterRegistry,
+                    message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+            );
             return new MultiMessageMonitor<>(messageCounter, messageTimer);
         };
         configurer.configureMessageMonitor(EventStore.class, messageMonitorFactory);
     }
 
-    // A custom/specific implementation of the micrometer metrics for the (Tracking) Event Processor components.
     private void instrumentEventProcessors(MeterRegistry meterRegistry, Configurer configurer) {
         MessageMonitorFactory messageMonitorFactory = (configuration, componentType, componentName) -> {
 
-            // Naming the Counter monitor/meter with the fixed name `eventProcessor`. `Component name` is a Micrometer tag in this case.
+            // Naming the Counter monitor/meter with the fixed name `eventProcessor`.
             // Registering the Counter with custom tags: payloadType and processorName.
-            MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor("eventProcessor",
-                                                                                        meterRegistry,
-                                                                                        message -> Tags
-                                                                                                .of(TagsUtil.PAYLOAD_TYPE_TAG,
-                                                                                                    message.getPayloadType().getSimpleName(),
-                                                                                                    TagsUtil.PROCESSOR_NAME_TAG,
-                                                                                                    componentName));
-            // Naming the Timer monitor/meter with the fixed name `eventProcessor`. `Component name` is a Micrometer tag in this case.
+            MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor(
+                    "eventProcessor", meterRegistry,
+                    message -> Tags.of(
+                            TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+                            TagsUtil.PROCESSOR_NAME_TAG, componentName
+                    )
+            );
+            // Naming the Timer monitor/meter with the fixed name `eventProcessor`.
             // Registering the Timer with custom tags: payloadType and processorName.
-            MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor("eventProcessor",
-                                                                                meterRegistry,
-                                                                                message -> Tags
-                                                                                        .of(TagsUtil.PAYLOAD_TYPE_TAG,
-                                                                                            message.getPayloadType().getSimpleName(),
-                                                                                            TagsUtil.PROCESSOR_NAME_TAG,
-                                                                                            componentName));
-            // Naming the Capacity/Gauge monitor/meter with the fixed name `eventProcessor`. `Component name` is a Micrometer tag in this case.
+            MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor(
+                    "eventProcessor", meterRegistry,
+                    message -> Tags.of(
+                            TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+                            TagsUtil.PROCESSOR_NAME_TAG, componentName
+                    )
+            );
+            // Naming the Capacity/Gauge monitor/meter with the fixed name `eventProcessor`.
             // Registering the Capacity/Gauge with custom tags: payloadType and processorName.
-            CapacityMonitor capacityMonitor1Minute = CapacityMonitor.buildMonitor("eventProcessor",
-                                                                                  meterRegistry,
-                                                                                  message -> Tags
-                                                                                          .of(TagsUtil.PAYLOAD_TYPE_TAG,
-                                                                                              message.getPayloadType().getSimpleName(),
-                                                                                              TagsUtil.PROCESSOR_NAME_TAG,
-                                                                                              componentName));
+            CapacityMonitor capacityMonitor1Minute = CapacityMonitor.buildMonitor(
+                    "eventProcessor", meterRegistry,
+                    message -> Tags.of(
+                            TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+                            TagsUtil.PROCESSOR_NAME_TAG, componentName
+                    )
+            );
 
             return new MultiMessageMonitor<>(messageCounter, messageTimer, capacityMonitor1Minute);
         };
@@ -260,25 +288,22 @@ public class MetricsConfig {
 
     private void instrumentCommandBus(MeterRegistry meterRegistry, Configurer configurer) {
         MessageMonitorFactory messageMonitorFactory = (configuration, componentType, componentName) -> {
+            MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor(
+                    componentName, meterRegistry,
+                    message -> Tags.of(
+                            TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+                            "messageId", message.getIdentifier()
+                    )
+            );
+            MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor(
+                    componentName, meterRegistry,
+                    message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+            );
 
-            MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor(componentName,
-                                                                                        meterRegistry,
-                                                                                        message -> Tags
-                                                                                                .of(TagsUtil.PAYLOAD_TYPE_TAG,
-                                                                                                    message.getPayloadType().getSimpleName(),
-                                                                                                    "messageId",
-                                                                                                    message.getIdentifier()));
-            MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor(componentName,
-                                                                                meterRegistry,
-                                                                                message -> Tags
-                                                                                        .of(TagsUtil.PAYLOAD_TYPE_TAG,
-                                                                                            message.getPayloadType().getSimpleName()));
-
-            CapacityMonitor capacityMonitor1Minute = CapacityMonitor.buildMonitor(componentName,
-                                                                                  meterRegistry,
-                                                                                  message -> Tags
-                                                                                          .of(TagsUtil.PAYLOAD_TYPE_TAG,
-                                                                                              message.getPayloadType().getSimpleName()));
+            CapacityMonitor capacityMonitor1Minute = CapacityMonitor.buildMonitor(
+                    componentName, meterRegistry,
+                    message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+            );
 
             return new MultiMessageMonitor<>(messageCounter, messageTimer, capacityMonitor1Minute);
         };
@@ -287,31 +312,26 @@ public class MetricsConfig {
 
     private void instrumentQueryBus(MeterRegistry meterRegistry, Configurer configurer) {
         MessageMonitorFactory messageMonitorFactory = (configuration, componentType, componentName) -> {
-            MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor(componentName,
-                                                                                        meterRegistry,
-                                                                                        message -> Tags
-                                                                                                .of(TagsUtil.PAYLOAD_TYPE_TAG,
-                                                                                                    message.getPayloadType().getSimpleName(),
-
-                                                                                                    "messageId",
-                                                                                                    message.getIdentifier()));
-            MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor(componentName,
-                                                                                meterRegistry,
-                                                                                message -> Tags
-                                                                                        .of(TagsUtil.PAYLOAD_TYPE_TAG,
-                                                                                            message.getPayloadType().getSimpleName()));
-
-            CapacityMonitor capacityMonitor1Minute = CapacityMonitor.buildMonitor(componentName,
-                                                                                  meterRegistry,
-                                                                                  message -> Tags
-                                                                                          .of(TagsUtil.PAYLOAD_TYPE_TAG,
-                                                                                              message.getPayloadType().getSimpleName()));
-
+            MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor(
+                    componentName, meterRegistry,
+                    message -> Tags.of(
+                            TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+                            "messageId", message.getIdentifier()
+                    )
+            );
+            MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor(
+                    componentName, meterRegistry,
+                    message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+            );
+            CapacityMonitor capacityMonitor1Minute = CapacityMonitor.buildMonitor(
+                    componentName, meterRegistry,
+                    message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+            );
 
             return new MultiMessageMonitor<>(messageCounter, messageTimer, capacityMonitor1Minute);
         };
         configurer.configureMessageMonitor(QueryBus.class, messageMonitorFactory);
     }
-}
+}`
 ```
 
