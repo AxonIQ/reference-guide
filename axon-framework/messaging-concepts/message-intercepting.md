@@ -97,7 +97,9 @@ public class CommandBusConfiguration {
 
 #### `@CommandHandlerInterceptor` Annotation
 
-The framework has the ability to add a Handler Interceptor as a `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. The difference between a method on an Aggregate and a "[regular](message-intercepting.md#command-handler-interceptors)" Command Handler Interceptor, is that with the annotation approach you can make decisions based on the current state of the given Aggregate. Some properties of an annotated Command Handler Interceptor are:
+The framework has the ability to add a Handler Interceptor as a `@CommandHandlerInterceptor` annotated method with on the Aggregate/Entity. 
+The difference between a method on an Aggregate and a "[regular](message-intercepting.md#command-handler-interceptors)" Command Handler Interceptor, is that with the annotation approach you can make decisions based on the current state of the given Aggregate. 
+Some properties of an annotated Command Handler Interceptor are:
 
 * The annotation can be put on entities within the Aggregate. 
 * It is possible to intercept a command on Aggregate Root level, whilst the command handler is in a child entity.
@@ -109,18 +111,20 @@ The framework has the ability to add a Handler Interceptor as a `@CommandHandler
 In the example below we can see a `@CommandHandlerInterceptor` annotated method which prevents command execution if a command's `state` field does not match the Aggregate's `state` field:
 
 ```java
-public class MyAggregate {
-    ...
+public class GiftCard {
+    //..
     private String state;
-    ...
+    //..
     @CommandHandlerInterceptor
-    public void intercept(MyCommand myCommand, InterceptorChain interceptorChain) {
-        if (this.state.equals(myCommand.getState()) {
+    public void intercept(RedeemCardCommand command, InterceptorChain interceptorChain) {
+        if (this.state.equals(command.getState())) {
             interceptorChain.proceed();
         }
     }
 }
 ```
+
+Note that the `@CommandHandlerInterceptor` is essentially a more specific implementations of the `@MessageHandlerInterceptor` described [here](#messagehandlerinterceptor). 
 
 ## Event Interceptors
 
@@ -241,3 +245,112 @@ Interceptors must implement the `MessageHandlerInterceptor` interface. This inte
 
 Unlike dispatch interceptors, handler interceptors are invoked in the context of the query handler. That means they can attach correlation data based on the message being handled to the unit of work, for example. This correlation data will then be attached to messages being created in the context of that unit of work.
 
+## @MessageHandlerInterceptor
+
+Alongside defining overall `MessageHandlerInterceptor` instances on the component handling a message (e.g. a command, query or event), it is also possible to define a handler interceptor for a specific component containing the handlers.
+This can be achieved by adding a method handling the message, combined with the `@MessageHandlerInterceptor` annotation.
+Adding such a method allows you more fine-grained control over which message handling components should react and how these should react.
+
+Several handles are given to you when it comes to adding the `@MessageHandlerInterceptor`, like:
+
+1. `MessageHandlerInterceptor` instances work with the `InterceptorChain` to decide when to proceed with other interceptors in the chain. The `InterceptorChain` is an _optional_ parameter which can be added to the intercepting method to provide you the same control. In absence of this parameter, the framework will call `InterceptorChain#proceed` once the method is exited. 
+2. You can define the type of `Message` the interceptor should deal with. By default, it reacts to any `Message` implementation. If an `EventMessage` specific interceptor is desired, the `messageType` parameter on the annotation should be set to `EventMessage.class`.
+3. For even more fine-grained control of which messages should react to the interceptor, the `payloadType` contained in the `Message` to handle can be specified.    
+
+The following snippets shows some possible approaches of using the use `@MessageHandlerInterceptor` annotation:
+
+{% tabs %}
+{% tab title="Simple @MessageHandlerInterceptor method" %}
+```java
+public class CardSummaryProjection {
+    /*
+     * Some @EventHandler and @QueryHandler annotated methods
+     */
+    @MessageHandlerInterceptor
+    public void intercept(Message<?> message) {
+        // Add your intercepting logic here based on the
+    }
+}
+```
+{% endtab %}
+
+{% tab title="@MessageHandlerInterceptor method defining the Message type" %}
+```java
+public class CardSummaryProjection {
+    /*
+     * Some @EventHandler and @QueryHandler annotated methods
+     */
+    @MessageHandlerInterceptor(messageType = EventMessage.class)
+    public void intercept(EventMessage<?> eventMessage) {
+        // Add your intercepting logic here based on the
+    }
+}
+```
+{% tab title="@MessageHandlerInterceptor method defining the Message and payload type" %}
+
+{% endtab %}
+```java
+public class CardSummaryProjection {
+    /*
+     * Some @EventHandler and @QueryHandler annotated methods
+     */
+    @MessageHandlerInterceptor(
+        messageType = EventMessage.class, 
+        payloadType = CardRedeemedEvent.class
+    )
+    public void intercept(CardRedeemedEvent event) {
+        // Add your intercepting logic here based on the
+    }
+}
+```
+{% endtab %}
+
+{% tab title="@MessageHandlerInterceptor method defining an InterceptorChain parameter" %}
+```java
+public class CardSummaryProjection {
+    /*
+     * Some @EventHandler and @QueryHandler annotated methods
+     */
+    @MessageHandlerInterceptor(messageType = QueryMessage.class)
+    public void intercept(QueryMessage<?, ?> queryMessage, 
+                          InterceptorChain interceptorChain) throws Exception {
+        // Add your intercepting logic before
+        interceptorChain.proceed();
+        // or after the InterceptorChain#proceed invocation
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+Next to the message, payload and `InterceptorChain`, an `@MessageHandlerInterceptor` can resolve other parameters as well.
+Which can be resolved is based on the type of `Message` being handled by the interceptor. 
+For more specifics on which parameters can be resolved, take a look at [this](supported-parameters-annotated-handlers.md) page. 
+
+### @ExceptionHandler
+
+The `@MessageHandlerInterceptor` allows for a more specific version of an intercepting function too.
+Namely, an `@ExceptionHandler` annotated method.
+A function annotated with `@ExceptionHandler` will be regarded as an handler interceptor which will _only_ be invoked for exceptional results.
+Using annotated functions to this end for example allow you to throw a more domain specific exception as a result of a thrown database/service exception.
+You can introduce an `@ExceptionHandler` which reacts to all exception, or specify which exceptions annotated handler reacts on as shown here:
+
+```java
+public class CardSummaryProjection {
+
+    /*
+     * Some @EventHandler and @QueryHandler annotated methods
+     */
+    @ExceptionHandler
+    public void handle(Exception exception) {
+        // How you prefer to react to this generic exception, 
+        //  for example by throwing a domain specific exception.
+    }
+    
+    @ExceptionHandler(resultType = IllegalArgumentException.class)
+    public void handle(IllegalArgumentException exception) {
+        // How you prefer to react to the IllegalArgumentException, 
+        //  for example by throwing a domain specific exception.
+    }
+}
+```

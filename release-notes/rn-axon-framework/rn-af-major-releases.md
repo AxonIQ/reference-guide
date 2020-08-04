@@ -15,6 +15,12 @@ All the enhancements and features which have been introduced to our major releas
 * An `EventTrackerStatusChangeListener` can now be configured for a `TrackingEventProcessor`, as was request in [#1338](https://github.com/AxonFramework/AxonFramework/issues/1338).
   It can be configured through the `TrackingEventProcessorConfiguration`, allowing users to react upon status changes of each thread processing events.
 
+* Component specific message handler interceptors can now be defined through a dedicated annotation: the `@MessageHandlerInterceptor` annotation.
+  This annotation allows you to introduce specific logic do be invoked _prior_ to entering the message handling function or after invocation.
+  It for example allows the additional introduction of a `@ExceptionHandler` annotation, allowing you to specific deal with the exceptions thrown from your message handlers.
+  The original pull request can be found under [#1394](https://github.com/AxonFramework/AxonFramework/pull/1394).
+  For more specifics on using this annotation, check ou the [@MessageHandlerInterceptor](../../axon-framework/messaging-concepts/message-intercepting.md#messagehandlerinterceptor) section.
+
 * Configuring a `Snapshotter` and `SnapshotFilter` has been simplified in this release. 
   Pull request [#1447](https://github.com/AxonFramework/AxonFramework/pull/1447) shares the load of allowing for distinct `Snapshotter` configuration.
   Issue [#1391](https://github.com/AxonFramework/AxonFramework/issues/1391) describes the intent to the configuration of snapshot filtering to be performed on Aggregate level.
