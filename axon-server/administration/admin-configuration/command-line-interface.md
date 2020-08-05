@@ -111,6 +111,46 @@ A quick summary of the various commands is depicted below. Each command has a sp
       <td style="text-align:left">Unregisters a member node within a cluster</td>
     </tr>
     <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">update-license</td>
+      <td style="text-align:left">Uploads a new license file to the cluster</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p><a href="command-line-interface.md#replication-groups-enterprise-edition-only"><em><b>Replication Group</b></em></a>
+        </p>
+        <p><em>(Enterprise Only)</em>
+        </p>
+      </td>
+      <td style="text-align:left"></td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">replication-groups</td>
+      <td style="text-align:left">Lists all details of registered replication groups within an Axon Server EE deployment</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">add-node-to-replication-group</td>
+      <td style="text-align:left">Adds a node as a member of a replication group</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">register-replication-group</td>
+      <td style="text-align:left">Creates a new replication group</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">delete-node-from-replication-group</td>
+      <td style="text-align:left">Unregisters a member node of a replication group</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">delete-replication-group</td>
+      <td style="text-align:left">Deletes a replication group</td>
+    </tr>
+    <tr>
       <td style="text-align:left">
         <p><a href="command-line-interface.md#context-enterprise-edition-only"><em><b>Context</b></em></a>
         </p>
@@ -127,18 +167,8 @@ A quick summary of the various commands is depicted below. Each command has a sp
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">add-node-to-context</td>
-      <td style="text-align:left">Adds a node as a member of a context</td>
-    </tr>
-    <tr>
-      <td style="text-align:left"></td>
       <td style="text-align:left">register-context</td>
       <td style="text-align:left">Creates a new context</td>
-    </tr>
-    <tr>
-      <td style="text-align:left"></td>
-      <td style="text-align:left">delete-node-from-context</td>
-      <td style="text-align:left">Unregisters a member node of a context</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
@@ -381,6 +411,121 @@ _Optional parameters_
 * _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
 
+_**update-license**_**‌**
+
+Uploads a new license file to the cluster. Axon Server distributes the new license file to all nodes in the cluster.
+
+```text
+$ java -jar axonserver-cli.jar update-license -f [license-file] -S http://[node]:[port] [-t token]
+```
+
+_Mandatory parameters_
+
+* _**-n**_ refers to the name of the node that needs to be removed from the cluster.
+* _**-f**_ refers to the file containing the license to update.
+
+_Optional parameters_
+
+* _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
+* _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
+
+### Replication Groups \(Enterprise Edition only\) <a id="replication-groups-enterprise-edition-only"></a>
+
+_**replication-groups**_**‌**
+
+Lists all replication groups and the nodes assigned to the replication groups. For each replication groups it shows the name of the replication group, 
+the master node for the replication group and the member nodes of the replication group.‌
+
+```text
+$ java -jar axonserver-cli.jar replication-groups -S http://[node]:[port] [-t token]
+```
+
+_Optional parameters_
+
+* _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
+* _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
+* _**-o json**_ will display the output in a json format.
+
+_**register-replication-group**_**‌**
+
+The register-replication-group command helps in the registration and creation of a new replication group. 
+A sample of the command with the mandatory parameters is depicted below:
+
+```text
+$ java -jar ./axonserver-cli.jar register-replication-group  -c [context-name] -n [members]‌ -a [members] -m [members] -p [members] -s [members] -S http://[node]:[port] [-t token]
+```
+
+_Mandatory parameters_
+
+* _**-c**_ refers to the replication group name. The replication group name must match the following regular expression "\[a-zA-Z\]\[a-zA-Z\_-0-9\]\*", so it should start with a letter \(uppercase or lowercase\), followed by a combination of letters, digits, hyphens and underscores.
+* _**-n**_ refers to the comma separated list of node names that should be members of the new replication group. This parameter registers them as "PRIMARY" member nodes of that context.
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-a**_ refers to the comma separated list of node names that should be "ACTIVE\_BACKUP" member nodes of that replication group.
+* _**-m**_ refers to the comma separated list of node names that should be "MESSAGING\_ONLY" member nodes of that replication group.
+* _**-p**_ refers to the comma separated list of node names that should be "PASSIVE\_BACKUP" member nodes of that replication group.
+* _**-p**_ refers to the comma separated list of node names that should be "SECONDARY" member nodes of that replication group.
+* _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
+
+_**delete-replication-group**_**‌**
+
+The delete-replication-group command helps in the deletion of a replication group and its associated data from all member nodes of that replication group. 
+A sample of the command with the mandatory parameters is depicted below:
+
+```text
+$ java -jar ./axonserver-cli.jar delete-replication-group  -g [replication-group-name] -S http://[node]:[port]
+```
+
+_Mandatory parameters_
+
+* _**-g**_ refers to the replication group that needs to be deleted.
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
+* _** --preserve-event-store**_  option to keep all the event store data for all the nodes in the replication group (false by default)
+
+_**add-node-to-replication-group**_**‌**
+
+The add-node-to-replication-group command helps in the registration of a new member node creation of an existing replication group.
+
+```text
+$ java -jar ./axonserver-cli.jar add-node-to-replication-group -g [replication-group-name] -r [role of the node] -n [node name] -S http://[node]:[port] [-t token]‌
+```
+
+_Mandatory parameters_
+
+* _**-g**_ refers to an existing replication group.
+* _**-n**_ refers to the node name that should be a member of this replication group.
+* _**-r**_ refers to the role of this node within the replication group \(PRIMARY/MESSAGING\_ONLY/ACTIVE\_BACKUP/PASSIVE\_BACKUP/SECONDARY\).
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
+
+_**delete-node-from-replication-group**_**‌**
+
+The delete-node-from-replication-group command helps in the deletion member node from an existing replication group. A sample of the command with the mandatory parameters is depicted below:
+
+```text
+$ java -jar ./axonserver-cli.jar delete-node-from-replication-group  -g [replication-group-name] -n [node name] -S http://[node]:[port] [-t token]‌
+```
+
+_Mandatory parameters_
+
+* _**-g**_ refers to an existing replication group.
+* _**-n**_ refers to the node name that should no longer be a member of this context.
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
+* _**--preserve-event-store**_ removes the node from the replication group but leaves the event store files on that node.
+
 ### Contexts \(Enterprise Edition only\) <a id="context-enterprise-edition-only"></a>
 
 _**contexts**_**‌**
@@ -402,20 +547,25 @@ _**register-context**_**‌**
 The register-context command helps in the registration and creation of a new context. A sample of the command with the mandatory parameters is depicted below:
 
 ```text
-$ java -jar ./axonserver-cli.jar register-context  -c [context-name] -n [members]‌ -a [members] -m [members] -p [members] -S http://[node]:[port] [-t token]
+$ java -jar ./axonserver-cli.jar register-context  -c [context-name] -g [replication-group-name] -n [members]‌ -a [members] -m [members] -p [members] -S http://[node]:[port] [-t token]
 ```
+
+If you don't provide an existing replication group name, you need to provide the names and roles of the nodes to include in the replication group to create.
+If you don't provide a replication group name, but do provide nodes, it will create a replication group with the same name as the context. 
 
 _Mandatory parameters_
 
 * _**-c**_ refers to the context name. The context name must match the following regular expression "\[a-zA-Z\]\[a-zA-Z\_-0-9\]\*", so it should start with a letter \(uppercase or lowercase\), followed by a combination of letters, digits, hyphens and underscores.
-* _**-n**_ refers to the comma separated list of node names that should be members of the new context. This parameter registers them as "PRIMARY" member nodes of that context.
 
 _Optional parameters_
 
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-g**_ refers to the name of the replication group
+* _**-n**_ refers to the comma separated list of node names that should be members of the new context. This parameter registers them as "PRIMARY" member nodes of that context.
 * _**-a**_ refers to the comma separated list of node names that should be "ACTIVE\_BACKUP" member nodes of that context.
 * _**-m**_ refers to the comma separated list of node names that should be "MESSAGING\_ONLY" member nodes of that context.
 * _**-p**_ refers to the comma separated list of node names that should be "PASSIVE\_BACKUP" member nodes of that context.
+* _**-s**_ refers to the comma separated list of node names that should be "SECONDARY" member nodes of that context.
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
 
 _**delete-context**_**‌**
@@ -434,42 +584,5 @@ _Optional parameters_
 
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
 * _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
-
-_**add-node-to-context**_**‌**
-
-The add-node-to-context command helps in the registration of a new member node creation of an existing context.
-
-```text
-$ java -jar ./axonserver-cli.jar add-node-to-context -c [context-name] -r [role of the node] -n [node name] -S http://[node]:[port] [-t token]‌
-```
-
-_Mandatory parameters_
-
-* _**-c**_ refers to an existing context.
-* _**-n**_ refers to the node name that should be a member of this context.
-* _**-r**_ refers to the role of this node within the context \(PRIMARY/MESSAGING\_ONLY/ACTIVE\_BACKUP/PASSIVE\_BACKUP\).
-
-_Optional parameters_
-
-* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
-* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
-
-_**delete-node-from-context**_**‌**
-
-The delete-node-from-context command helps in the deletion member node from an existing context. A sample of the command with the mandatory parameters is depicted below:
-
-```text
-$ java -jar ./axonserver-cli.jar delete-node-from-context  -c [context-name] -n [node name] -S http://[node]:[port] [-t token]‌
-```
-
-_Mandatory parameters_
-
-* _**-c**_ refers to an existing context.
-* _**-n**_ refers to the node name that should no longer be a member of this context.
-
-_Optional parameters_
-
-* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
-* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
-* _**--preserve-event-store**_ removes the node from the context but leaves the event store files on that node.
+* _** --preserve-event-store**_  option to keep the event store data (false by default).
 
