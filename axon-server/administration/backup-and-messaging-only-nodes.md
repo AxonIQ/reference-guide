@@ -114,7 +114,7 @@ You can add nodes as secondary nodes to a replication group, if you want to limi
 You could for example have fast (more expensive) storage on the primary nodes and less expensive storage on the secondary nodes. 
 Most activity will take place on recent data, and only when you need to access older data you have to go to the secondary nodes. 
 
-One you have defined secondary nodes for a replication group, this will apply for all contexts that are defined in the replication group.
+Once you have defined secondary nodes for a replication group, this will apply for all contexts that are defined in the replication group.
 You can configure the retention time per context, so for some contexts you may have a longer retention time than for others. 
 
 As the old data still needs to be available at least one SECONDARY node needs to be up at all times. PRIMARY nodes will not delete information
@@ -124,7 +124,7 @@ There are three possible ways to assign the SECONDARY role to a node within a re
 
 A\) The Axon Server EE UI Console. Navigate to the Replication Groups icon on the navigation menu of the console which will open up the replication group maintenance screen. The nodes can be added as a MESSAGING\_ONLY role within a replication group.
 
-B\) The _add-node-to-replication-group_ command with the role option as SECONDARY
+B\) The _add-node-to-replication-group_ command with the role option as SECONDARY.
 
 ```text
 $ java -jar axonserver-cli.jar add-node-to-replication-group  -S http://[node]:[port] -n [node name] -g [replication-group-name] -r SECONDARY
@@ -141,7 +141,7 @@ _Optional parameters_
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context 
 * _**-t**_  refers to the access token to authenticate at server
 
-C\) Axon Server EE provided REST API \(http:\[server\]:\[port\]/swagger-ui.html\) which offers the _replication-group-rest-controller_ to help perform role maintenance operations
+C\) Axon Server EE provided REST API \(http:\[server\]:\[port\]/swagger-ui.html\) which offers the _replication-group-rest-controller_ to help perform role maintenance operations.
 
 
 ## Changing node roles <a id="changing-node-roles"></a>

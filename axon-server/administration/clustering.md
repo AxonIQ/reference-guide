@@ -9,7 +9,7 @@ Axon Server Enterprise can be deployed as a _**cluster**_ to guarantee high avai
 ### Replication groups
 
 Within a single cluster you can define _**replication groups**_. A replication group has a number of member nodes that will get copies of the data. Each node has a specific role in a replication group. The nodes in a replication group will elect a 
-leader which will be responsible for managing transactions in the replication group. In a replication group you can define a number of contexts (see the in the [multi-context]() section).  
+leader which will be responsible for managing transactions in the replication group. In a replication group you can define a number of contexts (see the in the [multi-context](multi-context.md) section).  
  
 
 ### Node Roles

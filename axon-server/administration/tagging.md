@@ -2,8 +2,8 @@
 
 You can use tagging in Axon for 2 different scenarios:
 
-1. you want to control which command handler or query handler executes a command or query
-1. you want to control to which Axon Server node a particular client connects
+1. You want to control which command handler or query handler executes a command or query, or
+2. You want to control to which Axon Server node a particular client connects.
 
 ## Tag based routing
 
