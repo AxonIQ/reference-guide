@@ -1,9 +1,9 @@
 # Reactor
 
-Overlooking Axon Frameworks architecture, you can notice that in general systems using the framework are Message Driven, Responsive, Resilient and Elastic.
+Overlooking Axon Frameworks architecture, you can notice that in general systems using the framework are "Message Driven", "Responsive", "Resilient" and "Elastic".
 According to [Reactive Manifesto](https://www.reactivemanifesto.org/), the same holds for Reactive Systems in general. 
 
-Although we can state that Axon Framework is a _type_ of reactive system, we can't say that Axon Framework is fully reactive.
+Although we can state that Axon Framework is a _type_ of reactive system, we can't say that it is fully reactive.
 
 {% hint style="info" %}
 Reactive programming is an approach to writing software that embraces asynchronous I/O. 
@@ -12,16 +12,15 @@ The idea is simple: alleviate inefficient resource utilization by reclaiming res
 Asynchronous I/O inverts the normal design I/O processing: the clients are notified of new data instead of asking for it, which frees the client to do other work while waiting for these notifications. 
 {% endhint %}
 
-By nature, a reactive API and Axon Framework are a great fit, as most of framework's operations are async and non-blocking.
-We chose to use Pivotal’s Reactor project to provide a reactive extension to Axon.
-Reactor builds on top of the Reactive Streams specification and is the de-facto standard for Java enterprise & Spring applications.
-As such, we feel it to be a great fit to provide an extension in.
-
-With this extension we aim to make Axon reactive, by introduce a pure Reactive API.
+By their nature, a reactive API and Axon are a great fit, as most of framework's operations are async and non-blocking.
+Providing a dedicated extension for this was thus a logical step to take.
+To that end, we chose to use Pivotal’s [Project Reactor](https://projectreactor.io/) to build this extension.
+Reactor builds on top of the [Reactive Streams](https://www.reactive-streams.org/) specification and is the de-facto standard for Java enterprise & Spring applications.
+As such, we feel it to be a great fit to provide an extension in, making Axon more reactive.
 
 {% hint style="info" %}
 Not all Axon components offer a reactive API, yet. 
-We are introducing Reactive API through this extension incrementally, giving priority to components where users can benefit the most. 
+We will incrementally introduce more "reactiveness" to this extension, giving priority to components where users can benefit the most. 
 {% endhint %}
 
-To use the Reactor Extension, make sure that `axon-reactor` module is available on the classpath.
+To use the [Axon Reactor Extension](https://github.com/AxonFramework/extension-reactor), make sure that `axon-reactor` module is available on the classpath.
