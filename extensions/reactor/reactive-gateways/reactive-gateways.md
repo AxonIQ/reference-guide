@@ -10,7 +10,7 @@ Reactor doesn't allow `null` values in streams, any null value returned from the
 {% endhint %}
 
 
-*Retries
+**Retries**
 
 All operation support Reactor's retry mechanism.
 
