@@ -2,6 +2,15 @@
 
 Any patch release made for an Axon project is tailored towards resolving bugs. This page aims to provide a dedicated overview of patch releases per project.
 
+## _Release 4.4_
+
+### Release 4.4.1
+
+A single fix was performed as soon as possible to release 4.4, in conjunction with the new [Axon Server Connector](https://github.com/AxonIQ/axonserver-connector-java) used by this release.
+There was an off by one scenario when an Event Processor started reading events from the beginning of time.
+This meant that the first event in the event store was systematically skipped.
+The bug was resolved in [this](https://github.com/AxonFramework/AxonFramework/commit/3a055407437589bc1388cecca0b6e2f0bc61ea26) commit.
+
 ## _Release 4.3_
 
 ### Release 4.3.5

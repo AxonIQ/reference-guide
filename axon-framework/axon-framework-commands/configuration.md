@@ -68,6 +68,13 @@ The following is needed to register a `GiftCardCommandHandler` as being a Comman
 Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     .registerCommandHandler(conf -> new GiftCardCommandHandler());
 ```
+
+Or, a more general approach to registering _all_ types of message handlers in a component can be used:
+
+```java
+Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
+    .registerMessageHandler(conf -> new GiftCardCommandHandler());
+```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}

@@ -331,9 +331,11 @@ Event handlers may have specific expectations on the ordering of events. If this
 
 A saga instance is never invoked concurrently by multiple threads. Therefore, a sequencing policy for a saga is irrelevant. Axon will ensure each saga instance receives the events it needs to process in the order they have been published on the event bus.
 
-> **Note**
+> **Parallel processing and Subscribing Event Processors**
 >
-> Note that subscribing event processors don't manage their own threads. Therefore, it is not possible to configure how they should receive their events. Effectively, they will always work on a sequential-per-aggregate basis, as that is generally the level of concurrency in the command handling component.
+> Note that subscribing event processors don't manage their own threads. 
+> Therefore, it is not possible to configure how they should receive their events. 
+> Effectively, they will always work on a sequential-per-aggregate basis, as that is generally the level of concurrency in the command handling component.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -373,17 +375,14 @@ The `SequencingPolicy` defines whether events must be handled sequentially, in p
 Axon provides a number of common policies you can use:
 
 * The `FullConcurrencyPolicy` will tell Axon that this event handler may handle all events concurrently.
-
   This means that there is no relationship between the events that require them to be processed in a particular order.
 
 * The `SequentialPolicy` tells Axon that all events must be processed sequentially.
-
   Handling of an event will start when the handling of a previous event has finished.
 
-* `SequentialPerAggregatePolicy` will force domain events that were raised from the same aggregate to be handled sequentially.
-
+* The default policy is the `SequentialPerAggregatePolicy`. 
+  It will force domain events that were raised from the same aggregate to be handled sequentially.
   However, events from different aggregates may be handled concurrently.
-
   This is typically a suitable policy to use for event listeners that update details from aggregates in database tables.
 
 Besides these provided policies, you can define your own. All policies must implement the `SequencingPolicy` interface. This interface defines a single method, `getSequenceIdentifierFor`, that returns the sequence identifier for a given event. Events for which an equal sequence identifier is returned must be processed sequentially. Events that produce a different sequence identifier may be processed concurrently. Policy implementations may return `null` if the event may be processed in parallel to any other event.
@@ -410,55 +409,111 @@ Alternatively, you can choose other components that you can find in one of the e
 
 ## Replaying events
 
-In cases when you want to rebuild projections \(view models\), replaying past events comes in handy. The idea is to start from the beginning of time and invoke all event handlers anew. The `TrackingEventProcessor` supports replaying of events. In order to achieve that, you should invoke the `resetTokens()` method on it. It is important to know that the tracking event processor must not be in active state when starting a reset. Hence it is wise to shut it down first, then reset it and once this was successful, start it up again. It is possible to define a `@ResetHandler`, so you can do some preparation prior to resetting. Let's take a look how we can accomplish replaying. First, we will see one simple projecting class.
+In cases when you want to rebuild projections \(view models\), replaying past events comes in handy. 
+The idea is to start from the beginning of time and invoke all event handlers anew. 
+The `TrackingEventProcessor` supports replaying of events. 
+In order to achieve that, you should invoke the `resetTokens()` method on it. 
+
+It is important to know that the tracking event processor must not be in active state when starting a reset. 
+Hence it is required to shut it down first, then reset it and once this was successful, after which it can be started up again.
+
+Initiating a replay through the `TrackingEventProcessor` opens up an API to tap into the process of replaying. 
+It is for example possible to define a `@ResetHandler`, so you can do some preparation prior to resetting.
+ 
+Let's take a look at how we can accomplish a replay of a tracking event processor. 
+First, we will see one simple projecting class:
 
 ```java
-@ProcessingGroup("projections")
-public class MyProjection {
-    ...
+@AllowReplay // 1.
+@ProcessingGroup("card-summary")
+public class CardSummaryProjection {
+    //...
     @EventHandler
-    public void on(MyEvent event, ReplayStatus replayStatus) {
+    @DisallowReplay // 2. - It is possible to prevent some handlers from being replayed
+    public void on(CardIssuedEvent event) {
+        // This event handler performs a "side effect",
+        //  like sending an e-mail or a sms.
+        // Neither, is something we want to reoccur when a 
+        //  replay happens, hence we disallow this method 
+        //  to be replayed
+    }
+
+    @EventHandler
+    public void on(CardRedeemedEvent event, ReplayStatus replayStatus /* 3. */) {
         // We can wire a ReplayStatus here so we can see whether this
         // event is delivered to our handler as a 'REGULAR' event or
         // a 'REPLAY' event
         // Perform event handling
-    }
-
-    @EventHandler
-    @DisallowReplay // It is possible to prevent some handlers
-                    // from being replayed
-    public void on(MyOtherEvent event) {
-        // Perform some side effect introducing functionality,
-        // like sending an e-mail, which we do not want to be replayed
     }    
 
-    @ResetHandler // This method will be called before replay starts
-    public void onReset() {
+    @ResetHandler // 4. - This method will be called before replay starts
+    public void onReset(ResetContext resetContext) {
         // Do pre-reset logic, like clearing out the projection table for a
-        // clean slate
+        // clean slate. The given resetContext is [optional], allowing the 
+        // user to specify in what context a reset was executed.
     }
-    ...
+    //...
 }
 ```
 
-And now, we can reset our `TrackingEventProcessor`:
+The `CardSummaryProjection` shows a couple of interesting things to take note of when it comes to "being aware" of a reset is in progress:
 
+1. An `@AllowReplay` can be used, situated either on an entire class or an `@EventHandler` annotated method. It defines whether the given class or method should be invoked when a replay is in transit.
+2. Next to allowing a replay, `@DisallowReplay` could also be used. Similar to `@AllowReplay` it can be placed on class level and on methods, where it serves the purpose of defining whether the class / method should **not** be invoked when a replay is in transit.   
+3. To have more fine-grained control on what (not) to do during a replay, the `ReplayStatus` parameter can be added. It is an additional parameter which can be added to `@EventHandler` annotated methods, allowing conditional operations within a method to be performed based on whether a replay is in transit yes or no.
+4. If there is certain pre-reset logic which should be performed, like clearing out a projection table, the `@ResetHandler` annotation should be used. This annotation can only be placed on a method, allowing the addition of a reset context if necessary. The `resetContext` passed along in the `@ResetHandler` originates from the operation initiating the `TrackingEventProcessor#resetTokens(R resetContext)` method. The type of the `resetContext` is up to the user. 
+
+With all this in place, we are ready to initiate a reset from our `TrackingEventProcessor`.
+To that end, we need to have access to the `TrackingEventProcessor` we want to reset.
+For this you should retrieve the `EventProcessingConfiguration` available in the main `Configuration`.
+Added, this is where we can provide an optional reset context to be passed along in the `@ResetHandler`:
+
+{% tabs %}
+{% tab title="Reset without reset context" %}
 ```java
-configuration.eventProcessingConfiguration()
-             .eventProcessorByProcessingGroup("projections",
-                                              TrackingEventProcessor.class)
-             .ifPresent(trackingEventProcessor -> {
-                 trackingEventProcessor.shutDown();
-                 trackingEventProcessor.resetTokens(); // (1)
-                 trackingEventProcessor.start();
-             });
+public class ResetService {
+    //...
+    public void reset(Configuration config) {
+        EventProcessingConfiguration eventProcessingConfig = config.eventProcessingConfiguration();
+        eventProcessingConfig.eventProcessor("card-summary", TrackingEventProcessor.class)
+                             .ifPresent(processor -> {
+                                 processor.shutDown();
+                                 processor.resetTokens();
+                                 processor.start();
+                             });
+    }
+}
 ```
+{% endtab %}
+
+{% tab title="Reset with reset context" %}
+```java
+public class ResetService {
+    //...
+    public <R> void resetWithContext(Configuration config, R resetContext) {
+        EventProcessingConfiguration eventProcessingConfig = config.eventProcessingConfiguration();
+        eventProcessingConfig.eventProcessor("card-summary", TrackingEventProcessor.class)
+                             .ifPresent(processor -> {
+                                 processor.shutDown();
+                                 processor.resetTokens(resetContext);
+                                 processor.start();
+                             });
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+It is possible to provide a change listener which can validate whenever the replay is done.
+More specifically, a `EventTrackerStatusChangeListener` can be configured through the `TrackingEventProcessorConfiguration`.
+See the [monitoring and metrics](../monitoring-and-metrics.md#event-tracker-status-a-idevent-tracker-statusa) for more specifics on the change listener.
 
 > **Partial Replays**
 >
 > It is possible to provide a token position to be used when resetting a `TrackingEventProcessor`, thus specifying from which point in the event log it should start replaying the events.
+> This would require the usage of the `TrackingEventProcessor#resetTokens(TrackingToken)` or `TrackingEventProcessor#resetTokens(Function<StreamableMessageSource<TrackedEventMessage<?>>, TrackingToken>)` method, which both provide the `TrackingToken` from which the reset should start.
 >
-> How to customize a tracking token position is described [here](event-processors.md).
+> How to customize a tracking token position is described [here](event-processors.md#custom-tracking-token-position).
 
 ## Custom tracking token position
 
