@@ -18,7 +18,7 @@ With this instrumentation, we can chain synchronous and asynchronous commands an
 </dependency>
 ```
 
-The first dependency is [Spring Boot starter for Axon Tracing extension](../getting-started/maven-dependencies.md#axon-tracing-spring-boot-starter), which is the quickest start in to an extension configuration.
+The first dependency is [Spring Boot starter for Axon Tracing extension](../axon-framework/modules.md#axon-tracing-spring-boot-starter), which is the quickest start in to an extension configuration.
 
 The second dependency is [Jaeger](https://www.jaegertracing.io/) implementation for OpenTracing.
 

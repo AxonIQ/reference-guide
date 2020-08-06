@@ -1,5 +1,25 @@
 # Major Releases
 
+## Release 4.4
+
+Standard Edition and Enterprise Edition
+
+* Axon Server can now act as an event scheduler
+* Tag-based routing of commands and queries
+* Support fom token store identifiers to identify which tracking event processors share a token store
+
+Enterprise Edition only
+
+* Tracking event processors can now read from any primary node
+* Reading aggregates will read events from followers and only request the leader for latest events
+* Introduction of replication groups containing one or more contexts to reduce overhead in replication process
+* New index type to improve speed in reading aggregates
+* Axon Server Enterprise can now start without a license and has the option to upload licenses to the cluster
+* Cluster templates to initialize a cluster including replication groups, contexts, users and applications based on a
+    template
+* Multi-tier storage to keep only recent data at primary nodes
+* Some storage properties can now be set at the context level
+
 ## Release 4.3
 
 * Introduced new roles for nodes in context \(ACTIVE\_BACKUP, PASSIVE\_BACKUP and MESSAGING\_ONLY\)

@@ -105,6 +105,10 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.3_
 
+### Release 4.3.7
+
+* Fixed concurrency issue in subscribing/unsubscribing commands
+
 ### Release 4.3.6
 
 * Do not override log entries in RAFT log that already have been committed
