@@ -5,7 +5,7 @@ With the Cluster Template feature we enabled users to maintain cluster configura
 Cluster template is defined as a YAML file which describes cluster configuration. It is possible to pre-define replication groups, contexts, metadata, applications (with tokens), users and their roles and that configuration can be shared across teams.
 
 {% hint style="warn" %}
-Cluster template runs exactly once, on the first clean Axon Server start-up, if there is no previous cluster configuration defined. Therefore, cluster template WILL NOT override any exciting configuration, and its purpose is to be used during active development and to share cluster configuration across the developing team.
+Cluster template runs exactly once, on the first clean Axon Server start-up, if there is no previous cluster configuration defined. Therefore, cluster template WILL NOT override any existing configuration, its purpose is to be used during active development and to share cluster configuration across the developing team.
 {% endhint %}
 
 {% hint style="warn" %}
@@ -15,10 +15,10 @@ As clustering is an Axon Server EE feature, license needs to be provided before 
 
 ## Usage
 
-To use Cluster template all you need to do is define a valid cluster template yml file. If this file is present on a clean Axon Server startup, it will automatically be picked up and the cluster will be configured accordingly.
+To use Cluster template all you need to do is define a valid cluster template yml file. If this file is present on a clean Axon Server startup, it will automatically be picked up, and the cluster will be configured accordingly.
 
 {% hint style="warn" %}
-Each cluster node needs to have the cluster template yml copy . Each node will read this file, find its own configuration within configuration and configure itself.
+Each cluster node needs to have the cluster template yml file copy. Each node will read this file, find its own configuration and configure itself.
 {% endhint %}
 
 Default path from which Axon Server reads configuration is `./cluster-template.yml`
@@ -65,12 +65,12 @@ _Cluster overview after default configuration is applied_
 
 ### Export/Generator
 
-In order to avoid mistakes while working with cluster templates we implemented an export button that will generate cluster template files based on current cluster configuration. 
+In order to avoid mistakes while writing with cluster configuration we implemented export button that will generate cluster template file based on current cluster configuration. 
 
 ![Cluster Template export button location](/.gitbook/assets/cluster-template-export-button.png)
 _Location of export button at Settings page_
 
-**Recommended way for creating advanced cluster setup is to**
+**Recommended way for creating advanced cluster setup**
 
 * Start a fresh Axon Server (use basic cluster template setup mentioned above)
 * Configure a cluster via UI by creating users, applications, replication groups & contexts
