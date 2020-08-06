@@ -10,13 +10,13 @@ Reactor doesn't allow `null` values in streams, any null value returned from the
 {% endhint %}
 
 
-{% hint style="info" %}
+*Retries
+
 All operation support Reactor's retry mechanism.
 
 `reactiveQueryGateway.query(query, ResponseType.class).retry(5);`
 
-Retries sending of a query maximum 5 times if query fails.
-{% endhint %}
+_Retries sending of a query maximum 5 times if query fails._
 
 
 
@@ -34,13 +34,14 @@ and return command result Mono directly to the controller.
                  .send(command);
      }
 ```
+_Sending a command from Spring Controller._
 
 {% hint style="info" %}
 If command handler is type of `void`, `Mono<CommandHandlerResponseBody>` should be replaced with `Mono<Void>`
 {% endhint %}
 
 
-Another common pattern is `send and forget`. Following code sends a command and returns immediately. 
+Another common pattern is `send and forget`.  
 
 ```java
      public void sendAndForget(CommandBody command) {
@@ -49,6 +50,8 @@ Another common pattern is `send and forget`. Following code sends a command and 
                  .subscribe();
      }
 ```
+_Functions that sends a command and returns immediately without waiting for result._
+
 
 **`sendAll`** - Uses given Publisher of commands to send incoming commands away.
 
@@ -65,6 +68,7 @@ This operation is available only in Reactor extension. Use it to connect 3th par
                 .subscribe();
     }
 ```
+_Connects external input stream directly to Command Gateway._
 
 {% hint style="info" %}
 `sendAll` will keep sending commands until input stream gets canceled. 
@@ -81,8 +85,6 @@ Number of commands if prefetched from an incoming stream and stored in buffer fo
 
 **`query`** Sends the given query over expecting a response in the form of `responseType` from a single source.
 
-`TODO link to regular query `
-
 ```java
      @GetMapping
      public Mono<ResponseType> findAll() {
@@ -90,10 +92,10 @@ Number of commands if prefetched from an incoming stream and stored in buffer fo
                  .query(findAllQuery,ResponseType.class);
      }
 ```
+_Recommended way of using query gateway within Spring REST controllers.
+Query Mono is returned to Spring controller. Subscribe control is given to Spring Framework._
 
 **`scatterGather`** Sends the given query over expecting a response in the form of `responseType` from several sources. 
-
-`TODO link to reqular query `
 
 ```java
      @GetMapping
@@ -103,7 +105,7 @@ Number of commands if prefetched from an incoming stream and stored in buffer fo
                  .take(3);
      }
 ```
-Sends a given query that stops after receiving 3 results or after 5 seconds.
+_Sends a given query that stops after receiving 3 results or after 5 seconds._
 
 
 ### Subscription queries
@@ -112,14 +114,12 @@ Reactor API for subscription queries is not new.
 
 However, we noticed a several pattern often used, such as concatenating initial results with query updates in a single stream, or skip initial result all together, so we added several methods to ease usage of these common patterns. 
 
-See... regual sub query
-
 **`subscriptionQuery`** Sends the given query, returns initial result and keeps streaming incremental updates until a subscriber unsubscribes from Flux.
 
 Should be used when response type of initial result and incremental update match.
 
 ```java 
-Flux<String> resultFlux = reactiveQueryGateway.subscriptionQuery("criteriaQuery", String.class);
+Flux<String> resultFlux = reactiveQueryGateway.subscriptionQuery("criteriaQuery", ResultType.class);
 ```
 
 is equivalent to 
@@ -137,7 +137,7 @@ Should be used when initial result contains multiple instances of response type 
 Response type of initial response and incremental updates needs to match.
 
 ```java   
-Flux<String> resultFlux = reactiveQueryGateway.subscriptionQueryMany("criteriaQuery", String.class);
+Flux<String> resultFlux = reactiveQueryGateway.subscriptionQueryMany("criteriaQuery", ResultType.class);
 ```
 
 is equivalent to 
@@ -154,10 +154,10 @@ subscriptionQuery(query,
 
 **`queryUpdates`** sends the given query and streams incremental updates until a subscriber unsubscribes from Flux.
 
-Should be used when subscriber is interested only in updates.
+Should be used when subscriber has interest only in updates.
 
 ```java   
-Flux<String> updatesOnly = reactiveQueryGateway.queryUpdates("criteriaQuery", String.class);
+Flux<String> updatesOnly = reactiveQueryGateway.queryUpdates("criteriaQuery", ResultType.class);
 ```
 
 is equivalent to 
@@ -189,13 +189,13 @@ if user has registered interceptor that modifies events.
 
         Flux<Object> result = gateway.publish("event");
 ```
-Example when published events have been modified by a dispatcher interceptor.
-Such published modified events are returned to user as result Flux.
+_Example when published events have been modified by a dispatcher interceptor.
+Such published modified events are returned to user as result Flux._
 
 
 ## Interceptors
 
-Reactor gateway offers two types of interceptor: dispatch & result interceptor.
+Reactor gateway offers two types of interceptor: **dispatch** & result handler interceptor.
 
 These interceptors allow us to centrally define rules & filter that will be applied to a message stream.
 
@@ -212,7 +212,7 @@ Use this interceptor to centrally apply rules & validations for outgoing message
                 .registerDispatchInterceptor(msgMono -> msgMono
                         .map(msg -> msg.andMetaData(Collections.singletonMap("key1", "value1"))));
 ```
-Dispatcher interceptor that adds key-value pair to message metadata.
+_Dispatcher interceptor that adds key-value pair to message metadata._
 
 
 ```java
@@ -223,26 +223,26 @@ Dispatcher interceptor that adds key-value pair to message metadata.
                                 .map(ctx->ctx.get("security")))
                 );
 ```
-Dispatcher Interceptor that discards the message if based on security flag in Reactor's Context.
+_Dispatcher Interceptor that discards the message if based on security flag in Reactor's Context._
 
 
 ### Result Handler Interceptors
 
 Use this interceptor to centrally apply rules & validations for incoming messages (results).
 
-Parameters are `message` that has been sent, and Flux of `results` for that message, that are going to be intercepted.
+Parameters are `message` that has been sent, and Flux of `results` for that message, that is going to be intercepted.
 
 Message parameter can be useful if you want to apply result rule only for specific messages.
 
 {% hint style="info" %}
-This type of interceptor is available only in Reactor Extension
+This type of interceptor is available only in Reactor Extension.
 {% endhint %}
 
 ```java
         reactiveGateway.registerResultHandlerInterceptor((msg, results) -> results
                 .filter(r -> !r.getPayload().equals("blockedPayload")));
 ```
-Result interceptor that discards all results that have payload `blockedPayload`
+_Result interceptor that discards all results that have payload `blockedPayload`_
 
 
 ```java
@@ -257,7 +257,7 @@ Result interceptor that discards all results that have payload `blockedPayload`
                         })
                 );
 ```
-Result interceptor that validates that query result does not contain empty string. 
+_Result interceptor that validates that query result does not contain empty string._ 
 
 ```java
         reactiveQueryGateway
@@ -265,18 +265,18 @@ Result interceptor that validates that query result does not contain empty strin
                         .filter(it -> !((boolean) q.getQueryName().equals("myBlockedQuery")))
                 );
 ```
-Result interceptor that discards all results for `myBlockedQuery` query message.
+_Result interceptor that discards all results for `myBlockedQuery` query message._
 
 
 ```java
         reactiveGateway.registerResultHandlerInterceptor(
                 (msg,results) -> results.timeout(Duration.ofSeconds(30)));
 ```
-Result interceptor that limits all results waiting time to 30 seconds. 
+_Result interceptor that limits result waiting time to 30 seconds. (per message)_ 
 
 
 ```java
         reactiveGateway.registerResultHandlerInterceptor(
                 (msg,results) -> results.log().take(5));
 ```
-Result interceptor that limits number of results to maximum of 5 and logs all results.
+_Result interceptor that limits number of results to 5 entries, and logs all results._
