@@ -1,6 +1,8 @@
 # Exception Handling
 
-Exception handling is a well known concept when developing software. Dealing with exceptions in a distributed application landscape is a little more challenging than we are typically used to. Especially when it comes to failures when handling a command or a query, messages that are intended to have a return value, we should be conscious about how we throw exceptions.
+Exception handling is a well-known concept when developing software. 
+Dealing with exceptions in a distributed application landscape is a little more challenging than we are typically used to. 
+Especially when it comes to failures when handling a command or a query, messages that are intended to have a return value, we should be conscious about how we throw exceptions.
 
 ## Handler Execution Exception
 

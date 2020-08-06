@@ -12,7 +12,8 @@ You may also implement your own serializer, simply by creating a class that impl
 
 Serializers come in several flavors in the Axon Framework and are used for a variety of subjects. Currently you can choose between the `XStreamSerializer`, `JacksonSerializer` and `JavaSerializer` to serialize messages \(commands/queries/events\), tokens, snapshots and sagas in an Axon application.
 
-As there are several objects to be serialized, it is typically desired to tune which serializer handles which object. To that end, the `Configuration` API allows you to define a default, message and event serializers, which lead to the following object-serialization break down:
+As there are several objects to be serialized, it is typically desired to chose which serializer handles which object. 
+To that end, the `Configuration` API allows you to define default, message and event serializers, which lead to the following object-serialization break down:
 
 1. The Event `Serializer` is in charge of de-/serializing event messages.
    Events are typically stored in an event store for a long period of time.
@@ -126,9 +127,9 @@ When using event sourcing, serialized events can stick around for a long time. T
 ### Lenient Deserialization
 
 "Being lenient" from the `Serializer`'s perspective means the `Serializer` can ignore unknown properties.
-If it thus was handling a format to deserialize, it would no fail when it is incapable of finding a field / setter / constructor parameter for a given field in the serialized format. 
+If it thus was handling a format to deserialize, it would not fail when it is incapable of finding a field / setter / constructor parameter for a given field in the serialized format. 
 
-Enabling lenient serialization can be especially helpful to accommodate with different message versions.
+Enabling lenient serialization can be especially helpful to accommodate different message versions.
 This situation would occur naturally when using an event store, as the format of the events would change overtime.
 But this might also happen between commands and queries if several distinct versions of an application are run concurrently.
 A scenario when you would hit this is when going for a rolling upgrade pattern to deploying a new service.

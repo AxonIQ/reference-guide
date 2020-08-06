@@ -152,7 +152,7 @@ As is shown above, the `@CreationPolicy` annotation requires stating the `Aggreg
 * `ALWAYS` - A creation policy of "always" will expect to instantiate the aggregate.
   This effectively works like a command handler annotated constructor.
   Without defining a return type, the aggregate identifier used during the creation will be returned.
-  Through this approach it is possible to return other results next to the aggregate identifier.
+  Through this approach, it is possible to return other results next to the aggregate identifier.
 
 * `CREATE_IF_MISSING` - A creation policy of "create if missing" can either create an aggregate or act on an existing instance.
 

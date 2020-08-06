@@ -30,7 +30,7 @@ Axon provides the `AggregateSnapshotter`, which creates and stores `AggregateSna
 
 The `AbstractSnapshotter` provides a basic set of properties that allow you to tweak the way snapshots are created:
 
-* `EventStore` sets the event store which is used to load past events and store the snapshots. This event store must implement the `SnapshotEventStore` interface.
+* `EventStore` sets the event store, which is used to load past events and store the snapshots. This event store must implement the `SnapshotEventStore` interface.
 * `Executor` sets the executor, such as a `ThreadPoolExecutor` that will provide the thread to process actual snapshot creation. By default, snapshots are created in the thread that calls the `scheduleSnapshot()` method, which is generally not recommended for production.
 
 The `AggregateSnapshotter` provides one more property:
@@ -92,7 +92,7 @@ When a snapshot is stored in the event store, it will automatically use that sna
 >
 > Normally, you can archive all events once they are part of a snapshot event. 
 > Snapshotted events will never be read in again by the event store in regular operational scenarios. 
-> However, if you want to be able to reconstruct aggregate state prior to the moment the snapshot was created, you must keep the events up to that date.
+> However, if you want to be able to reconstruct an aggregate state prior to the moment the snapshot was created, you must keep the events up to that date.
 
 Axon provides a special type of snapshot event: the `AggregateSnapshot`, which stores an entire aggregate as a snapshot. The motivation is simple: your aggregate should only contain the state relevant to take business decisions. This is exactly the information you want captured in a snapshot. All event sourcing repositories provided by Axon recognize the `AggregateSnapshot`, and will extract the aggregate from it. Beware that using this snapshot event requires that the event serialization mechanism needs to be able to serialize the aggregate.
 
@@ -107,9 +107,10 @@ It is also possible to filter out snapshot events when reading your Aggregate fr
 To that end, a `SnapshotFilter` can be defined per Aggregate type or for the entire `EventStore`.
 
 The `SnapshotFilter` is a functional interface, providing two main operations: `allow(DomainEventData<?)` and `combine(SnapshotFilter)`.
-The former provides the `DomainEventData` which reflects the snapshot events; the latter allows combining several `SnapshotFilter`s together.
+The former provides the `DomainEventData` which reflects the snapshot events. 
+The latter allows combining several `SnapshotFilter`s together.
 
-The following snippets share how to configure a `SnapshotFilter`: 
+The following snippets show how to configure a `SnapshotFilter`: 
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}

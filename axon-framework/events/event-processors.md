@@ -420,7 +420,7 @@ Hence it is required to shut it down first, then reset it and once this was succ
 Initiating a replay through the `TrackingEventProcessor` opens up an API to tap into the process of replaying. 
 It is for example possible to define a `@ResetHandler`, so you can do some preparation prior to resetting.
  
-Let's take a look how we can accomplish a replay of a tracking event processor. 
+Let's take a look at how we can accomplish a replay of a tracking event processor. 
 First, we will see one simple projecting class:
 
 ```java
@@ -431,8 +431,11 @@ public class CardSummaryProjection {
     @EventHandler
     @DisallowReplay // 2. - It is possible to prevent some handlers from being replayed
     public void on(CardIssuedEvent event) {
-        // Perform some side effect introducing functionality,
-        // like sending an e-mail, which we do not want to be replayed
+        // This event handler performs a "side effect",
+        //  like sending an e-mail or a sms.
+        // Neither, is something we want to reoccur when a 
+        //  replay happens, hence we disallow this method 
+        //  to be replayed
     }
 
     @EventHandler
@@ -453,7 +456,7 @@ public class CardSummaryProjection {
 }
 ```
 
-The `CardSummaryProjection` shows a couple of interesting things to take note of when it comes to "being aware" a reset is in process:
+The `CardSummaryProjection` shows a couple of interesting things to take note of when it comes to "being aware" of a reset is in progress:
 
 1. An `@AllowReplay` can be used, situated either on an entire class or an `@EventHandler` annotated method. It defines whether the given class or method should be invoked when a replay is in transit.
 2. Next to allowing a replay, `@DisallowReplay` could also be used. Similar to `@AllowReplay` it can be placed on class level and on methods, where it serves the purpose of defining whether the class / method should **not** be invoked when a replay is in transit.   
@@ -501,7 +504,7 @@ public class ResetService {
 {% endtab %}
 {% endtabs %}
 
-It is possible to provide a change listener which van validate whenever the replay is done.
+It is possible to provide a change listener which can validate whenever the replay is done.
 More specifically, a `EventTrackerStatusChangeListener` can be configured through the `TrackingEventProcessorConfiguration`.
 See the [monitoring and metrics](../monitoring-and-metrics.md#event-tracker-status-a-idevent-tracker-statusa) for more specifics on the change listener.
 

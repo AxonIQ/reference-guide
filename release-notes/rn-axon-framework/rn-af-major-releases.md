@@ -12,26 +12,26 @@ All the enhancements and features which have been introduced to our major releas
 * As a partial solution to [#1106](https://github.com/AxonFramework/AxonFramework/issues/1106), Axon Server can now be used to schedule events.
   Building an `AxonServerEventScheduler` as the `EventScheduler` implementation as defined through the builder is sufficient to start with scheduling events through Axon Server.
   
-* An `EventTrackerStatusChangeListener` can now be configured for a `TrackingEventProcessor`, as was request in [#1338](https://github.com/AxonFramework/AxonFramework/issues/1338).
-  It can be configured through the `TrackingEventProcessorConfiguration`, allowing users to react upon status changes of each thread processing events.
+* An `EventTrackerStatusChangeListener` can now be configured for a `TrackingEventProcessor`, as was requested in [#1338](https://github.com/AxonFramework/AxonFramework/issues/1338).
+  It can be configured through the `TrackingEventProcessorConfiguration`, allowing users to react upon status changes of each thread processing event messages.
 
 * Component specific message handler interceptors can now be defined through a dedicated annotation: the `@MessageHandlerInterceptor` annotation.
-  This annotation allows you to introduce specific logic do be invoked _prior_ to entering the message handling function or after invocation.
-  It for example allows the additional introduction of a `@ExceptionHandler` annotation, allowing you to specific deal with the exceptions thrown from your message handlers.
+  This annotation allows you to introduce a specific bit of logic to be invoked _prior_ to entering the message handling function or after invocation.
+  It for example allows the additional introduction of a `@ExceptionHandler` annotation, allowing you to specifically deal with the exceptions thrown from your message handlers.
   The original pull request can be found under [#1394](https://github.com/AxonFramework/AxonFramework/pull/1394).
   For more specifics on using this annotation, check ou the [@MessageHandlerInterceptor](../../axon-framework/messaging-concepts/message-intercepting.md#messagehandlerinterceptor) section.
 
-* Configuring a `Snapshotter` and `SnapshotFilter` has been simplified in this release. 
+* Configuring a `Snapshotter` and `SnapshotFilter` have been simplified in this release. 
   Pull request [#1447](https://github.com/AxonFramework/AxonFramework/pull/1447) shares the load of allowing for distinct `Snapshotter` configuration.
   Issue [#1391](https://github.com/AxonFramework/AxonFramework/issues/1391) describes the intent to the configuration of snapshot filtering to be performed on Aggregate level.
   The former can be configured through the `Configurer`, whereas the latter is by usage of the `AggregateConfigurer`.
 
 ### _Bug Fixes_
 
-* The `AggregateTestFixture` was wrongfully noting an old method in one of its exceptions.
+* The `AggregateTestFixture` was incorrectly noting an old method in one of its exceptions.
   This has been marked and resolved in [#1428](https://github.com/AxonFramework/AxonFramework/issues/1428).
 
-* The `CommandValidator` and `EventValidator` had a minor discrepancy, namely the `CommandValidator` cleared out contained commands upon starting whereas the `EventValidator` didn't.
+* The `CommandValidator` and `EventValidator` had a minor discrepancy; namely, the `CommandValidator` cleared out contained commands upon starting whereas the `EventValidator` didn't.
   Pull request [#1438](https://github.com/AxonFramework/AxonFramework/pull/1438) resolved the problem at hand. 
 
 For a full list of all the feature request and enhancements done for release 4.4, you can check out [this](https://github.com/AxonFramework/AxonFramework/milestone/45?closed=1) page.
@@ -40,12 +40,12 @@ For a full list of all the feature request and enhancements done for release 4.4
 
 ### _Enhancements_
 
-* Aggregate Polymorphism has been introduced, allowing for an aggregate hierarchy as would come natural from a domain model.
+* Aggregate Polymorphism has been introduced, allowing for an aggregate hierarchy to come naturally from a domain model.
   To set this up, the `AggregateConfigurer#withSubtypes(Class... aggregates)` method can be used.
   In a Spring environment, an aggregate class hierarchy will be detected automatically.
   For more details on this feature, read up on it [here](../../axon-framework/axon-framework-commands/modeling/aggregate-polymorphism.md).
 
-* An Axon application will now shutdown more gracefully then it used to in previous releases.
+* An Axon application will now shutdown more gracefully than it did in the previous releases.
   This is achieved by marking specific methods in Axon's infrastructure components as a `@StartHandler` or `@ShutdownHandler`.
   A 'phase' is required in those, specifying when the method should be executed.
   If you want to add your own lifecycle handlers, you can either register a component with the aforementioned annotations or register the methods directly through `Configurer#onInitialize`, `Configuration#onStart` and `Configuration#onShutdown`.
@@ -123,7 +123,7 @@ For a full list of all features, enhancements and bugs, check out the [issue tra
 
 * Primitive types are now supported as `@QueryHandler` return types.
 
-* In a similar fashion as the `CommandGateway` and `QueryGateway` we have introduced the `EventGateway`.
+* We have introduced the `EventGateway` in a similar fashion as the `CommandGateway` and `QueryGateway`.
   As with the command and query version, the `EventGateway` provides a simpler API when it comes to dispatching Events on the `EventBus`.
 
 ### _Bug Fixes_
