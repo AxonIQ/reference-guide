@@ -175,7 +175,23 @@ In these methods' subscription query is closed automatically after a subscriber 
 
 ## Event Gateway
 
-tbd
+Variation of EventGateway. Provides support for reactive return types such as Flux.
+
+**`publish`** Publishes given events once the caller subscribes to the resulting Flux.
+
+Returns events that were published. This means that returning events can be different from those users is publishing 
+if user has registered interceptor that modifies events.
+
+
+```java
+        gateway.registerDispatchInterceptor(eventMono -> eventMono
+                .map(event -> GenericEventMessage.asEventMessage("intercepted" + event.getPayload())));
+
+        Flux<Object> result = gateway.publish("event");
+```
+Example when published events have been modified by a dispatcher interceptor.
+Such published modified events are returned to user as result Flux.
+
 
 ## Interceptors
 
