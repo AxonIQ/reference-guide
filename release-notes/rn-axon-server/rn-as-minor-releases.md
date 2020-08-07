@@ -103,6 +103,12 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## Axon Server Enterprise Edition
 
+## _Release 4.4_
+
+### Release 4.4.1
+
+* Fix for migration of contexts created before version 4.3
+
 ## _Release 4.3_
 
 ### Release 4.3.7
