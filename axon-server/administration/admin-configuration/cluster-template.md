@@ -80,4 +80,5 @@ _Location of export button at Settings page_
 
 {% hint style="warn" %}
 Use export button from main - leader node.
+Leader node always contains full cluster configuration, while it might happen that followers don't.
 {% endhint %}
