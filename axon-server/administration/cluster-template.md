@@ -15,7 +15,7 @@ As clustering is an Axon Server EE feature, a license needs to be provided to be
 
 ## Usage
 
-To use Cluster template all you need to do is define a valid cluster template yml file. If this file is present on a clean Axon Server startup, it will automatically be picked up, and the cluster will be configured accordingly.
+To use the cluster template feature, all you need to do is define a valid cluster template yml file. If this file is present on a fresh Axon Server startup, it will automatically be picked up and the cluster will be configured accordingly.
 
 {% hint style="warn" %}
 Each cluster node needs to have the cluster template yml file copy. Each node will read this file, find its own configuration and configure itself.
