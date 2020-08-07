@@ -1,6 +1,6 @@
 #Cluster template
 
-With the Cluster Template feature we enabled users to maintain cluster configuration as a code.
+With the Cluster Template feature we enable users to maintain cluster configuration as code.
 
 Cluster template is defined as a YAML file which describes cluster configuration. It is possible to pre-define replication groups, contexts, metadata, applications (with tokens), users and their roles and that configuration can be shared across teams.
 
@@ -81,4 +81,3 @@ _Location of export button at Settings page_
 {% hint style="warn" %}
 Use export button from main - leader node.
 {% endhint %}
-
