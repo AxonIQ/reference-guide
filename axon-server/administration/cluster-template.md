@@ -70,7 +70,7 @@ In order to avoid mistakes while writing with cluster configuration we implement
 ![Cluster Template export button location](/.gitbook/assets/cluster-template-export-button.png)
 _Location of export button at Settings page_
 
-**Recommended way for creating advanced cluster setup**
+**Recommended way for creating an advanced cluster setup**
 
 * Start a fresh Axon Server (use basic cluster template setup mentioned above)
 * Configure a cluster via UI by creating users, applications, replication groups & contexts
