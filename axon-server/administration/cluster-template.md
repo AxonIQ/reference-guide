@@ -9,7 +9,7 @@ Cluster template runs exactly once, on the first clean Axon Server start-up, if 
 {% endhint %}
 
 {% hint style="warn" %}
-As clustering is an Axon Server EE feature, license needs to be provided before using this feature.
+As clustering is an Axon Server EE feature, a license needs to be provided to be able to use this feature.
 {% endhint %}
 
 
