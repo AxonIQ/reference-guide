@@ -72,10 +72,10 @@ _Location of export button at Settings page_
 
 **Recommended way for creating an advanced cluster setup**
 
-* Start a fresh Axon Server (use basic cluster template setup mentioned above)
-* Configure a cluster via UI by creating users, applications, replication groups & contexts
-* Use export button located at Settings tab > Configuration panel  to download current cluster configuration
-* Replace basic cluster template with newly exported cluster template configuration
+* Start a fresh Axon Server setup (use basic cluster template setup mentioned above).
+* Configure a cluster via the UI, by creating users, applications, replication groups and contexts.
+* Use the export button located at "Settings -> Configuration" panel  to download the current cluster configuration.
+* Replace the basic cluster template with the newly exported cluster template configuration.
 
 
 {% hint style="warn" %}
