@@ -28,7 +28,7 @@ You can override this path anytime by setting Axon Server property:
 
 ### Configuration
 
-Below you can find an example of basic cluster setup: _admin & default context in separate replication nodes, replicated across all nodes that are marked as primary.
+Below you can find an example of a basic cluster setup: the _admin and default contexts are in separate replication nodes, replicated across all nodes that are marked as primary.
 
 ```yaml
 axoniq:
