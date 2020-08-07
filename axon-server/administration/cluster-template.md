@@ -65,7 +65,7 @@ _Cluster overview after default configuration is applied_
 
 ### Export/Generator
 
-In order to avoid mistakes while writing with cluster configuration we implemented export button that will generate cluster template file based on current cluster configuration. 
+In order to avoid mistakes while writing a cluster configuration file, we have implemented an export button that will generate a cluster template file based on current setup. 
 
 ![Cluster Template export button location](/.gitbook/assets/cluster-template-export-button.png)
 _Location of export button at Settings page_
