@@ -5,7 +5,7 @@ With the Cluster Template feature we enable users to maintain cluster configurat
 The cluster template is defined as a YAML file, describing a cluster's configuration. It is possible to predefine replication groups, contexts, metadata, applications (with tokens), users and their roles, so that the configuration can be shared across teams.
 
 {% hint style="warn" %}
-Cluster template runs exactly once, on the first clean Axon Server start-up, if there is no previous cluster configuration defined. Therefore, cluster template WILL NOT override any existing configuration, its purpose is to be used during active development and to share cluster configuration across the developing team.
+The cluster template runs exactly once, on the first clean Axon Server start-up, if there is no previous cluster configuration defined. Therefore, the cluster template **will not** override any existing configuration. Its purpose is to be used during active development, to be able to share the configuration across development teams.
 {% endhint %}
 
 {% hint style="warn" %}
