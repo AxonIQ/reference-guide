@@ -43,7 +43,7 @@ class SpringCommandController {
     }
 }
 ```
-_Sending a command from Spring WebFlux Controller._
+_Sending a command from a Spring WebFlux Controller._
 
 {% hint style="info" %}
 If the command handling function returns type `void`, `Mono<CommandHandlerResponseBody>` should be replaced with `Mono<Void>`
@@ -64,7 +64,7 @@ class CommandDispatcher {
 ```
 _Function that sends a command and returns immediately without waiting for the result._
 
-**`sendAll`** - This method uses given `Publisher` of commands to dispatch incoming commands.
+**`sendAll`** - This method uses the given `Publisher` of commands to dispatch incoming commands.
 
 {% hint style="info" %}
 This operation is available only in the Reactor extension. Use it to connect 3rd party streams that delivers commands.
@@ -74,25 +74,24 @@ This operation is available only in the Reactor extension. Use it to connect 3rd
 class CommandPublisher {
 
     private final ReactorCommandGateway reactiveCommandGateway;
-    private Flux<CommandBody> inputStream = ...;
     
     @PostConstruct
-    public void startReceivingCommands(){
+    public void startReceivingCommands(Flux<CommandBody> inputStream) {
         reactiveCommandGateway.sendAll(inputStream)
                               .subscribe();
     }
 }
 ```
-_Connects external input stream directly to Command Gateway._
+_Connects an external input stream directly to the Reactor Command Gateway._
 
 {% hint style="info" %}
 The `sendAll` operation will keep sending commands until the input stream is canceled. 
 {% endhint %}
 
 {% hint style="warn" %}
-`send` & `sendAll` do not offer any backpressure, yet. 
-The only "backpressure" mechanism in place is that commands will be sent sequentially; thus once the result of a previous command arrives.
-The number of commands if prefetched from an incoming stream and stored in a buffer for sending (see [Flux#concatMap](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html#concatMap)).
+`send` and `sendAll` do not offer _any_ backpressure, yet. 
+The only backpressure mechanism in place is that commands will be sent sequentially; thus once the result of a previous command arrives.
+The number of commands is prefetched from an incoming stream and stored in a buffer for sending (see [Flux#concatMap](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html#concatMap)).
 **This slows down sending**, but does not guarantee that the Subscriber will not be overwhelmed with commands if they are sent too fast.
 {% endhint %}
 
@@ -112,9 +111,9 @@ class SpringQueryController {
     }
 }
 ```
-_Recommended way of using the Reactor query gateway within a Spring REST controllers._
+_Recommended way of using the Reactor query gateway within a Spring REST controller._
 
-**`scatterGather`** - Sends the given `query`, expecting a response in the form of `responseType` from several sources within a specified time. 
+**`scatterGather`** - Sends the given `query`, expecting a response in the form of `responseType` from several sources within a specified `duration`. 
 
 ```java
 class SpringQueryController {
@@ -136,9 +135,9 @@ Firstly, the Reactor API for subscription queries in Axon is not new.
 However, we noticed several patterns which are often used, such as:
  
  * Concatenating initial results with query updates in a single stream, or
- * skipping the initial result all together
+ * skipping the initial result all together.
  
-As such the Reactor Extension provides several methods to ease usage of these common patterns. 
+As such, the Reactor Extension provides several methods to ease usage of these common patterns. 
 
 **`subscriptionQuery`** - Sends the given `query`, returns the initial result and keeps streaming incremental updates until a subscriber unsubscribes from the `Flux`.
 
@@ -194,7 +193,7 @@ class SubscriptionQuerySender {
 
 **`queryUpdates`** - Sends the given `query` and streams incremental updates until a subscriber unsubscribes from the `Flux`.
 
-Should be used when subscriber is only interested in updates.
+This method could be used when subscriber is only interested in updates.
 
 ```java   
 Flux<ResultType> updatesOnly = reactiveQueryGateway.queryUpdates("criteriaQuery", ResultType.class);
@@ -216,8 +215,8 @@ class SubscriptionQuerySender {
 ```
 
 {% hint style="info" %}
-In these methods, the subscription query is closed automatically after a subscriber has unsubscribed from the `Flux`. 
-When using the regular `QueryGateway`, the subscription query needs to be closed manually.
+In the above shown methods, the subscription query is closed automatically after a subscriber has unsubscribed from the `Flux`. 
+When using the regular `QueryGateway`, the subscription query needs to be closed manually however.
 {% endhint %}
 
 ## Reactor Event Gateway
@@ -227,7 +226,7 @@ Reactive variation of the `EventGateway`. Provides support for reactive return t
 **`publish`** - Publishes the given `events` once the caller subscribes to the resulting `Flux`.
 
 This method returns events that were published. 
-Note that the returned events may be different from those the user has publishing, granted an [interceptor](#interceptors) has been registered which modifies events.
+Note that the returned events may be different from those the user has published, granted an [interceptor](#interceptors) has been registered which modifies events.
 
 ```java
 class EventPublisher {
@@ -246,12 +245,12 @@ class EventPublisher {
     }   
 }
 ```
-_Example of dispatcher modified events, returned to user as result `Flux`._
+_Example of dispatcher modified events, returned to user as the result `Flux`._
 
 ## Interceptors
 
 Axon provides a notion of [interceptors](../../../axon-framework/messaging-concepts/message-intercepting.md).
-The Reactor gateways allow for two distinct types of interceptors: `ReactorMessageDispatchInterceptor` and `ReactorResultHandlerInterceptor`.
+The Reactor gateways allow for similar interceptor logic, namely the `ReactorMessageDispatchInterceptor` and `ReactorResultHandlerInterceptor`.
 
 These interceptors allow us to centrally define rules and filters that will be applied to a message stream.
 
@@ -279,6 +278,7 @@ public interface ReactorMessageDispatchInterceptor<M extends Message<?>> extends
 ```
 
 It thus defaults the `MessageDispatchInterceptor#handle(List<? extends M>` method to utilize the `ReactorMessageDispatchInterceptor#intercept(Mono<M>)` method.
+As such, a `ReactorMessageDispatchInterceptor` could thus be configured on a plain Axon gateway too.
 Here are a couple of examples how a message dispatch interceptor could be used:
 
 ```java
@@ -320,12 +320,12 @@ public interface ReactorResultHandlerInterceptor<M extends Message<?>, R extends
 }
 ```
 
-The parameters are the `message` that has been sent, and a `Flux` of `results` for that message, which is going to be intercepted.
+The parameters are the `message` that has been sent, and a `Flux` of `results` from that message, which is going to be intercepted.
 The `message` parameter can be useful if you want to apply a given result rule only for specific messages.
 Here are a couple of examples how a message result interceptor could be used:
 
 {% hint style="info" %}
-This type of interceptor is available only in the Reactor Extension.
+This type of interceptor is available _only_ in the Reactor Extension.
 {% endhint %}
 
 ```java
@@ -338,7 +338,7 @@ class ReactorConfiguration {
     }
 }
 ```
-_Result interceptor which discards all results that have payload matching `blockedPayload`_
+_Result interceptor which discards all results that have a payload matching `blockedPayload`_
 
 ```java
 class ReactorConfiguration {

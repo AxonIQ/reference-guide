@@ -15,7 +15,7 @@ Asynchronous I/O inverts the normal design I/O processing: the clients are notif
 By their nature, a reactive API and Axon are a great fit, as most of framework's operations are async and non-blocking.
 Providing a dedicated extension for this was thus a logical step to take.
 To that end, we chose to use Pivotal’s [Project Reactor](https://projectreactor.io/) to build this extension.
-Reactor builds on top of the [Reactive Streams](https://www.reactive-streams.org/) specification and is the de-facto standard for Java enterprise & Spring applications.
+Reactor builds on top of the [Reactive Streams](https://www.reactive-streams.org/) specification and is the de-facto standard for Java enterprise and Spring applications.
 As such, we feel it to be a great fit to provide an extension in, making Axon more reactive.
 
 {% hint style="info" %}
