@@ -39,8 +39,8 @@ public class GiftCard {
 There are a couple of noteworthy concepts from the given code snippets, marked with numbered Java comments referring to the following bullets:
 
 1. The `@AggregateIdentifier` is the external reference point to into the `GiftCard` Aggregate.
-
    This field is a hard requirement, as without it Axon will not know to which Aggregate a given Command is targeted.
+   Note that this annotation can be placed on a field and a method.
 
 2. A `@CommandHandler` annotated constructor, or differently put the 'command handling constructor'.
 
