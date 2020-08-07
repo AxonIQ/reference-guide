@@ -17,6 +17,12 @@ Any null value returned from the handler will be mapped to [Mono#empty()](https:
 >
 > This call will retry sending the query a maximum of five times when it fails.
 
+## Configuration in Spring Boot
+
+This extension can be added as a Spring Boot starter dependency to your project using group id `org.axonframework.extensions.reactor` and artifact id `axon-reactor-spring-boot-starter`.
+The implementation of the extension can be found [here](https://github.com/AxonFramework/extension-reactor).
+
+
 ## Reactor Command Gateway
 
 This section describes the methods on the `ReactorCommandGateway`.
