@@ -110,10 +110,12 @@
 ## Extensions
 
 * [Spring AMQP](extensions/spring-amqp.md)
-* [Kafka](extensions/kafka.md)
 * [JGroups](extensions/jgroups.md)
-* [Spring Cloud](extensions/spring-cloud.md)
+* [Kafka](extensions/kafka.md)
 * [Mongo](extensions/mongo.md)
+* [Reactor](extensions/reactor/introduction.md)
+  * [Reactor Gateways](extensions/reactor/reactive-gateways/reactive-gateways.md)
+* [Spring Cloud](extensions/spring-cloud.md)
 * [Tracing](extensions/tracing.md)
 
 ## Appendices
