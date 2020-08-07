@@ -33,6 +33,13 @@ There are three options that AxonServer provides to maintain its configuration. 
         <p>Cluster Configuration - Contexts / Clusters</p>
       </td>
     </tr>
+    <tr>
+      <td style="text-align:left"><a href="cluster-template.md">Cluster template</a>
+      </td>
+      <td style="text-align:left">
+        <p>Managing cluster configuration as code</p>
+      </td>
+    </tr>    
+    
   </tbody>
 </table>
-
