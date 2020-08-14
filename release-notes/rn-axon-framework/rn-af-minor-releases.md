@@ -4,6 +4,23 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.4_
 
+### Release 4.4.2
+
+* A persistent loop of 500ms was spotted during event consumption from Axon Server.
+  Credits go to Damir Murat who has spotted the [issue](https://github.com/AxonFramework/AxonFramework/issues/1481).
+  With his help the issue was found quickly and eventually resolved in pull request [#1484](https://github.com/AxonFramework/AxonFramework/pull/1484).
+
+* A serialization issue was found when working with the `ConfigToken` and de-/serialize it through the `JacksonSerializer`.
+  This problem was uncovered in issue [#1482](https://github.com/AxonFramework/AxonFramework/issues/1482) and resolved in pull request [#1485](https://github.com/AxonFramework/AxonFramework/pull/1485).
+
+* The introduction of the [AxonServer Connector for Java](https://github.com/AxonIQ/axonserver-connector-java) to simplify the framework's integration with Axon Server introduced some configuration issues.
+  For example, the `AxonServerConfiguration#isForceReadFromLeader` wasn't used when opening an event stream (resolved in PR [#1488](https://github.com/AxonFramework/AxonFramework/pull/1488)).
+  
+* Furthermore, properties like the `max-message-size`, gRPC keep alive settings and `processorNotificationRate` weren't used when forming a connection with Axon Server.
+  This issue was covered by pull request [#1487](https://github.com/AxonFramework/AxonFramework/pull/1487).
+
+[This](https://github.com/AxonFramework/AxonFramework/issues?q=is%3Aclosed+milestone%3A%22Release+4.4.2%22) page shares a complete list of all resolved issues for this release.
+
 ### Release 4.4.1
 
 A single fix was performed as soon as possible to release 4.4, in conjunction with the new [Axon Server Connector](https://github.com/AxonIQ/axonserver-connector-java) used by this release.
