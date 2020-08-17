@@ -13,6 +13,7 @@ For invoices, that is typically several weeks, whereas the confirmation of a cre
 In Axon, you can use an `EventScheduler` to schedule an event for publication. In the example of an invoice, you would expect the invoice to be paid within thirty days. A saga would, after sending the `CreateInvoiceCommand`, schedule an `InvoicePaymentDeadlineExpiredEvent` to be published in 30 days. The `EventScheduler` returns a `ScheduleToken` after scheduling an event. This token can be used to cancel the schedule, for example when a payment of an Invoice has been received.
 
 Axon provides three `EventScheduler` implementations:
+
  1. Pure Java 
  2. [Quartz](http://www.quartz-scheduler.org/) based
  3. [Axon Server](../../axon-server/introduction.md) based

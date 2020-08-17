@@ -85,14 +85,15 @@ Besides main modules, there are several extension modules which complement Axon 
 | :--- | :--- | :--- | :---: |
 | [Axon AMQP](modules.md#axon-amqp) | axon-amqp | org.axonframework.extensions.amqp | [available](https://search.maven.org/search?q=a:axon-amqp) |
 | [Axon AMQP Spring Boot Starter](modules.md#axon-amqp-spring-boot-starter) | axon-amqp-spring-boot-starter | org.axonframework.extensions.amqp | [available](https://search.maven.org/search?q=a:axon-amqp-spring-boot-starter) |
-| [Axon Kafka](modules.md#axon-kafka) | axon-kafka | org.axonframework.extensions.kafka | [available](https://search.maven.org/search?q=a:axon-kafka) |
-| [Axon Kafka Spring Boot Starter](modules.md#axon-kafka-spring-boot-starter) | axon-kafka-spring-boot-starter | org.axonframework.extensions.kafka | [available](https://search.maven.org/search?q=a:axon-kafka-spring-boot-starter) |
-| [Axon Spring Cloud](modules.md#axon-spring-cloud) | axon-springcloud | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud) |
-| [Axon Spring Cloud Spring Boot Starter](modules.md#axon-spring-cloud-spring-boot-starter) | axon-springcloud-spring-boot-starter | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud-spring-boot-starter) |
+| [Axon CDI](modules.md#axon-cdi) | axon-cdi | org.axonframework.extensions.cdi | [available](https://search.maven.org/search?q=a:axon-cdi) |
 | [Axon JGroups](modules.md#axon-jgroups) | axon-jgroups | org.axonframework.extensions.jgroups | [available](https://search.maven.org/search?q=a:axon-jgroups) |
 | [Axon JGroups Spring Boot Starter](modules.md#axon-jgroups-spring-boot-starter) | axon-jgroups-spring-boot-starter | org.axonframework.extensions.jgroups | [available](https://search.maven.org/search?q=a:axon-jgroups-spring-boot-starter) |
+| [Axon Kafka](modules.md#axon-kafka) | axon-kafka | org.axonframework.extensions.kafka | [available](https://search.maven.org/search?q=a:axon-kafka) |
+| [Axon Kafka Spring Boot Starter](modules.md#axon-kafka-spring-boot-starter) | axon-kafka-spring-boot-starter | org.axonframework.extensions.kafka | [available](https://search.maven.org/search?q=a:axon-kafka-spring-boot-starter) |
+| [Axon Kotlin](modules.md#axon-kotlin) | axon-kotlin | org.axonframework.extensions.kotlin | [available](https://search.maven.org/search?q=a:axon-kotlin) |
 | [Axon Mongo](modules.md#axon-mongo) | axon-mongo | org.axonframework.extensions.mongo | [available](https://search.maven.org/search?q=a:axon-mongo) |
-| [Axon CDI](modules.md#axon-cdi) | axon-cdi | org.axonframework.extensions.cdi | [available](https://search.maven.org/search?q=a:axon-cdi) |
+| [Axon Spring Cloud](modules.md#axon-spring-cloud) | axon-springcloud | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud) |
+| [Axon Spring Cloud Spring Boot Starter](modules.md#axon-spring-cloud-spring-boot-starter) | axon-springcloud-spring-boot-starter | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud-spring-boot-starter) |
 | [Axon Tracing](modules.md#axon-tracing) | axon-tracing | org.axonframework.extensions.tracing | [available](https://search.maven.org/search?q=a:axon-tracing) |
 | [Axon Tracing Spring Boot Starter](modules.md#axon-tracing-spring-boot-starter) | axon-tracing-spring-boot-starter | org.axonframework.extensions.tracing | [available](https://search.maven.org/search?q=a:axon-tracing-spring-boot-starter) |
 
@@ -104,21 +105,9 @@ This module provides components that allow you leverage an AMQP-based message br
 
 This module provides Spring auto-configuration on top of the `axon-amqp` module.
 
-### Axon Kafka
+### Axon CDI
 
-This module provides integration with Kafka for event distribution. As such it plays a similar role as the [Axon AMQP](modules.md#axon-amqp) extension and thus is **not** a replacement Event Storage mechanism. [Kafka](https://kafka.apache.org/) is a distributed message streaming platform.
-
-### Axon Kafka Spring Boot Starter
-
-This module provides Spring auto-configuration on top of the `axon-kafka` module.
-
-### Axon Spring Cloud
-
-This module provides integration with Spring Cloud for command distribution. [Spring Cloud](https://spring.io/projects/spring-cloud) provides an API for common distributed system patterns.
-
-### Axon Spring Cloud Spring Boot Starter
-
-This module provides Spring auto-configuration on top of the `axon-springcloud` module
+This module provides support for Contexts and Dependency Injection \(CDI\) for the Java EE platform.
 
 ### Axon JGroups
 
@@ -128,13 +117,29 @@ This module provides integration with JGroups for command distribution. [JGroups
 
 This module provides Spring auto-configuration on top of the `axon-jgroups` module
 
+### Axon Kafka
+
+This module provides integration with Kafka for event distribution. As such it plays a similar role as the [Axon AMQP](modules.md#axon-amqp) extension and thus is **not** a replacement Event Storage mechanism. [Kafka](https://kafka.apache.org/) is a distributed message streaming platform.
+
+### Axon Kafka Spring Boot Starter
+
+This module provides Spring auto-configuration on top of the `axon-kafka` module.
+
+### Axon Kotlin
+
+This module provides a set of reified operations, among others, to allow a cleaner [Kotlin](https://kotlinlang.org/) coding experience when using Axon. 
+
 ### Axon Mongo
 
 This module provides event and saga store implementations that store event streams and sagas in a MongoDB database. [MongoDB](https://www.mongodb.com/) is a document based NoSQL database.
 
-### Axon CDI
+### Axon Spring Cloud
 
-This module provides support for Contexts and Dependency Injection \(CDI\) for the Java EE platform.
+This module provides integration with Spring Cloud for command distribution. [Spring Cloud](https://spring.io/projects/spring-cloud) provides an API for common distributed system patterns.
+
+### Axon Spring Cloud Spring Boot Starter
+
+This module provides Spring auto-configuration on top of the `axon-springcloud` module
 
 ### Axon Tracing
 
@@ -143,4 +148,3 @@ This module provides support for distributed tracing of Axon applications. The [
 ### Axon Tracing Spring Boot Starter
 
 This module provides Spring auto-configuration on top of the `axon-tracing` module
-

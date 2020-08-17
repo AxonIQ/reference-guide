@@ -127,11 +127,11 @@ During the configuration phase \(i.e. before the first "given" is provided\), yo
 
 * `registerHandlerDefinition`:
 
-  Registers a custom [`HandlerDefinition`](https://github.com/domaincomponents/reference-guide/tree/7ae838faa2d2d8045603b108c1e042f7452f59dc/appendices/message-handler-tuning/handler-definition.md) to the test fixture.
+  Registers a custom [`HandlerDefinition`](../../appendices/message-handler-tuning/handler-enhancers.md) to the test fixture.
 
 * `registerHandlerEnhancerDefinition`:
 
-  Registers a custom [`HandlerEnhancerDefinition`](https://github.com/domaincomponents/reference-guide/tree/7ae838faa2d2d8045603b108c1e042f7452f59dc/appendices/message-handler-tuning/handler-definition.md) to the test fixture.
+  Registers a custom [`HandlerEnhancerDefinition`](../../appendices/message-handler-tuning/handler-enhancers.md) to the test fixture.
 
   This method is used to complement the default `HandlerEnhancerDefinition` with a custom `HandlerEnhancerDefinition`.
 
