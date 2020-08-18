@@ -56,7 +56,7 @@ axoniq:
       users: []
 ```
 
-![Cluster overview after default configuration is applied](https://github.com/domaincomponents/reference-guide-feature/tree/4180a57874eb19fc653e614dc6650b6531f1ec96/.gitbook/assets/cluster-template-default-configuration.png) 
+![Cluster overview after default configuration is applied](/.gitbook/assets/cluster-template-default-configuration.png) 
 
 _Cluster overview after default configuration is applied_
 
@@ -64,7 +64,7 @@ _Cluster overview after default configuration is applied_
 
 In order to avoid mistakes while writing a cluster configuration file, we have implemented an export button that will generate a cluster template file based on current setup.
 
-![Cluster Template export button location](https://github.com/domaincomponents/reference-guide-feature/tree/4180a57874eb19fc653e614dc6650b6531f1ec96/.gitbook/assets/cluster-template-export-button.png) 
+![Cluster Template export button location](/.gitbook/assets/cluster-template-export-button.png) 
 
 _Location of export button at Settings page_
 
