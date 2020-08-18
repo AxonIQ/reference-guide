@@ -86,7 +86,7 @@
     * [System Properties](axon-server/administration/admin-configuration/configuration.md)
     * [Command Line Interface](axon-server/administration/admin-configuration/command-line-interface.md)
     * [REST API](axon-server/administration/admin-configuration/rest-api.md)
-    * [Cluster template](axon-server/administration/admin-configuration/cluster-template.md)
+    * [Cluster Template](axon-server/administration/admin-configuration/cluster-template.md)
   * [Monitoring](axon-server/administration/monitoring/README.md)
     * [Actuator Endpoints](axon-server/administration/monitoring/actuator-endpoints.md)
     * [gRPC Metrics](axon-server/administration/monitoring/grpc-metrics.md)
