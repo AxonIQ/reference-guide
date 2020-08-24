@@ -31,7 +31,7 @@ axoniq:
   axonserver:
     cluster-template:
       first: axonserver-enterprise-1
-      replicationsGroups:
+      replicationGroups:
       - name: _admin
         roles:
         - node: axonserver-enterprise-1
