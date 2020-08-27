@@ -112,6 +112,7 @@
 * [Spring AMQP](extensions/spring-amqp.md)
 * [JGroups](extensions/jgroups.md)
 * [Kafka](extensions/kafka.md)
+* [Kotlin](extensions/kotlin.md)
 * [Mongo](extensions/mongo.md)
 * [Reactor](extensions/reactor/introduction.md)
   * [Reactor Gateways](extensions/reactor/reactive-gateways/reactive-gateways.md)
