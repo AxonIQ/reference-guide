@@ -1,55 +1,121 @@
-# Clustering
+# Clusters
 
 > Note - This feature is only available in Axon Server Enterprise
 
 ## Introduction
 
-Axon Server Enterprise can be deployed as a _**cluster**_ to guarantee high availability. A cluster of Axon Server nodes will provide multiple connection points for \(Axon Framework-based\) client applications, and thus share the load of managing message delivery and event storage. Client applications will dynamically connect to a node in the cluster and automatically reconnect to another, should the node that they are currently connected to become unreachable.‌
+Axon Server Enterprise Edition can be deployed as a _**cluster**_ to guarantee high availability. A cluster of Axon Server EE nodes will provide multiple connection points for \(Axon Framework-based\) client applications, and thus share the load of managing message delivery and event storage. Client applications will dynamically connect to a node in the cluster and automatically reconnect to another, should the node that they are currently connected to become unreachable.‌
 
-### Replication groups
+An Axon Server EE cluster has 3 main areas of administration,
 
-Within a single cluster you can define _**replication groups**_. A replication group has a number of member nodes that will get copies of the data. Each node has a specific role in a replication group. The nodes in a replication group will elect a 
-leader which will be responsible for managing transactions in the replication group. In a replication group you can define a number of contexts (see the in the [multi-context](multi-context.md) section).  
- 
+* [Cluster Nodes](clustering.md#cluster-nodes) - "Instances" of Axon Server EE that need to be part of the EE cluster.
+* [Replication Groups](replication-groups.md) - Responsible for event data replication and transaction management between the various nodes of a cluster.
+* [Contexts](multi-context.md) - Responsible for event storage within the various nodes of a cluster.
 
-### Node Roles
+A visual representation of the relationship between the 3 is shown below.
 
-When you define a replication group, you assign nodes that will serve that replication group.
+![Clusters / Replication Groups and Contexts](../../.gitbook/assets/cluster.jpg)
 
-A node can have different roles in a context:
+## Setup Process
 
-* A “PRIMARY” node is a fully functional \(and voting\) member of that replication group. 
-A majority of primary nodes is needed for a replication group to be available to client applications.
-* A “MESSAGING\_ONLY” member will not provide event storage, and \(as it is not involved with the transactions\) is a non-voting member of the replication group.
-* An “ACTIVE\_BACKUP” node is a voting member which provides an event store for each context in the replication group, but it does not provide the messaging services, so clients will not connect to it. Note that you must have at least one active backup node that needs to be up if you want a guarantee that you have up-to-date backups.
-* A “PASSIVE\_BACKUP” will provide event stores, but not participate in transactions or even elections, nor provide messaging services. It being up or down will never influence the availability of the replication group, and the leader will send any events accumulated during maintenance, as soon as it comes back online.
-* Lastly, a "SECONDARY" node will provide event stores, but not participate in transactions or even elections, nor provide messaging services. The leader will send any events accumulated during maintenance, as soon as it comes back online. When there 
-are secondary nodes in a replication group, the primary nodes will only keep the most recent data in their event store. 
+The cluster setup process always begins by designating any one clean/uninitialized Axon Server EE node as the first member of the cluster. You can then run the "[init-cluster](admin-configuration/command-line-interface.md#cluster-enterprise-edition-only)" command on it which will create the following replication groups and contexts -&gt; _admin/default._
 
-There are multiple options available of assigning roles to nodes within a replication group. The Command Line interface section details this out in the [clusters](admin-configuration/command-line-interface.md#cluster-enterprise-edition-only) and [contexts](admin-configuration/command-line-interface.md#context-enterprise-edition-only) sub-sections.
+From thereon, there are multiple ways to continue the setup depending upon your Event Store deployment topology. 
 
-### Consensus/Elections
+* Any other Axon Server EE node can be added to the cluster using the "register-node" command without associating it with any Replication Group / Context.
+* New Replication Groups/Contexts can be added and cluster member nodes can be associated with these. 
+* Member nodes can be removed from the cluster at any point of time.
 
-All nodes serving a particular context maintain a complete copy, with a “replication leader” in control of the distributed transaction. The leader is determined by elections, following the [RAFT protocol](https://raft.github.io/). An important consequence has to do with those elections: nodes need to be able to win them, or at least feel the support of a clear majority i.e. To have a valid leader for a context, a _**majority of the nodes must be active**_ \(e.g. when you have a cluster with 3 nodes, you need at least 2 active nodes, for a cluster of 4 nodes you would need 3 active nodes\).‌ The leader orchestrates the distributed transaction \(i.e. replication of data between the nodes\) and confirms to clients when transactions are committed.
+Axon provides two ways for automating cluster configuration. The first is the [Automatic Initialization](clustering.md#automatic-initialization) feature and the other is the [Cluster Template](clustering.md#cluster-templates) feature.
 
-While an Axon Server cluster does not need to have an odd number of nodes, every individual replication leader does, to prevent the chance for a draw in an election. This also holds for the internal context named “\_admin”, which is used by the admin nodes and stores the cluster structure data. As a consequence most clusters will have an odd number of nodes, and will keep functioning as long as a majority \(for a particular context\) is responding and storing events.
+### Automatic initialization
 
-### Special Replication Group
+The manual process of member registration of the cluster can be bypassed by setting a couple of properties in the axonserver.properties file.
 
-Axon Server EE has one special replication group and context, called "\_admin". This context is used to process all configuration changes in Axon Server, so it contains the master configuration from which all replication groups get their information.‌
-You cannot add additional context to the "\_admin" replication group.
-
-## Automatic initialization <a id="automatic-initialization"></a>
-
-> New in Axon Server 4.3
-
-You can bypass the manual configuration of the cluster by adding two additional properties in the axonserver.properties file:
-
-\`\`\`text axoniq.axonserver.autocluster.first=internal-hostname:internal-port axoniq.axonserver.autocluster.contexts=context1,context2
+axoniq.axonserver.autocluster.first=internal-hostname:internal-port axoniq.axonserver.autocluster.contexts=context1,context2
 
 The _axoniq.axonserver.autocluster.first_ property defines the first node in the cluster, by specifying its internal hostname \(the hostname used by other Axon Server nodes to connect to this host\), and the internal port. If the internal port is default \(8224\) it can be omitted.‌
 
 _axoniq.axonserver.autocluster.contexts_ defines the contexts to create on the first node and the context to join for the other nodes. All of these contexts will be joined as primary nodes. When you don't specify any contexts, the initial node will only create an admin context, the other nodes will join the cluster, but not be a member of any contexts.‌
 
 The autocluster properties will only take effect on a clean start of a node. If a node is already initialized, it will not create any contexts anymore, nor join the cluster again.‌
+
+### Cluster Templates
+
+> Note - This feature is only available in Axon Server Enterprise \(since v4.4\)
+
+The cluster template is defined as a YAML file, describing a cluster's configuration. It is possible to predefine replication groups, contexts, metadata, applications \(with tokens\), users and their roles, so that the configuration can be shared across teams.
+
+{% hint style="info" %}
+The cluster template runs exactly once, on the first clean Axon Server start-up, if there is no previous cluster configuration defined. Therefore, the cluster template **will not** override any existing configuration. Its purpose is to be used during active development, to be able to share the configuration across development teams.
+{% endhint %}
+
+#### Usage
+
+To use the cluster template feature, all you need to do is define a valid cluster template yml file. If this file is present on a fresh Axon Server startup, it will automatically be picked up and the cluster will be configured accordingly.
+
+{% hint style="info" %}
+Each cluster node needs to have the cluster template yml file copy. Each node will read this file, find its own configuration and configure itself.
+{% endhint %}
+
+Default path from which Axon Server reads configuration is `./cluster-template.yml`
+
+You can override this path anytime by setting Axon Server property: `axoniq.axonserver.clustertemplate.path:/mypath/cluster-template.yml`
+
+#### Configuration
+
+Below you can find an example of a basic cluster setup: the \_admin and default contexts are in separate replication nodes, replicated across all nodes that are marked as primary.
+
+```yaml
+axoniq:
+  axonserver:
+    cluster-template:
+      first: axonserver-enterprise-1
+      replicationGroups:
+      - name: _admin
+        roles:
+        - node: axonserver-enterprise-1
+          role: PRIMARY
+        - node: axonserver-enterprise-2
+          role: PRIMARY
+        - node: axonserver-enterprise-3
+          role: PRIMARY
+        contexts:
+        - name: _admin
+      - name: default
+        roles:
+        - node: axonserver-enterprise-2
+          role: PRIMARY
+        - node: axonserver-enterprise-3
+          role: PRIMARY
+        - node: axonserver-enterprise-1
+          role: PRIMARY
+        contexts:
+        - name: default
+      applications: []
+      users: []
+```
+
+![Cluster overview after default configuration is applied](https://github.com/domaincomponents/reference-guide-feature-dev/tree/615f89fe44783bf80563113cb22ef7d039b8f38b/.gitbook/assets/cluster-template-default-configuration.png)
+
+_Cluster overview after default configuration is applied_
+
+#### Export/Generator
+
+In order to avoid mistakes while writing a cluster configuration file, we have implemented an export button that will generate a cluster template file based on current setup.
+
+![Cluster Template export button location](https://github.com/domaincomponents/reference-guide-feature-dev/tree/615f89fe44783bf80563113cb22ef7d039b8f38b/.gitbook/assets/cluster-template-export-button.png)
+
+_Location of export button at Settings page_
+
+**Recommended mechanism - Creating an advanced cluster setup**
+
+* Start a fresh Axon Server setup \(use basic cluster template setup mentioned above\).
+* Configure a cluster via the UI, by creating users, applications, replication groups and contexts.
+* Use the export button located at "Settings -&gt; Configuration" panel  to download the current cluster configuration.
+* Replace the basic cluster template with the newly exported cluster template configuration.
+
+{% hint style="info" %}
+Use export button from main - leader node. Leader node always contains complete cluster configuration, while it might happen that followers don't.
+{% endhint %}
 
