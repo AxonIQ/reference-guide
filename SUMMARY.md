@@ -127,5 +127,4 @@
 * [C. Meta Annotations](appendices/meta-annotations.md)
 * [D. Identifier Generation](appendices/identifier-generation.md)
 * [E. Axon Server Query Language](appendices/query-reference.md)
-* [F. Axon Server APIs](appendices/f.-axon-server-apis.md)
 
