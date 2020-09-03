@@ -14,7 +14,7 @@ An Axon Server EE cluster has 3 main areas of administration,
 
 A visual representation of the relationship between the 3 is shown below.
 
-![Clusters / Replication Groups and Contexts](../../.gitbook/assets/cluster.jpg)
+![Relationship between Cluster Nodes / Replication Groups and Contexts](../../.gitbook/assets/clusters.jpg)
 
 ## Setup Process
 
@@ -70,7 +70,7 @@ Below you can find an example of a basic cluster setup: the \_admin and default 
 axoniq:
   axonserver:
     cluster-template:
-      first: axonserver-enterprise-1
+      first: internal-hostname:internal-port
       replicationGroups:
       - name: _admin
         roles:
@@ -96,7 +96,7 @@ axoniq:
       users: []
 ```
 
-![Cluster overview after default configuration is applied](https://github.com/domaincomponents/reference-guide-feature-dev/tree/615f89fe44783bf80563113cb22ef7d039b8f38b/.gitbook/assets/cluster-template-default-configuration.png)
+![Cluster overview after default configuration is applied](../../.gitbook/assets/cluster-template-default-configuration.png)
 
 _Cluster overview after default configuration is applied_
 
@@ -104,7 +104,7 @@ _Cluster overview after default configuration is applied_
 
 In order to avoid mistakes while writing a cluster configuration file, we have implemented an export button that will generate a cluster template file based on current setup.
 
-![Cluster Template export button location](https://github.com/domaincomponents/reference-guide-feature-dev/tree/615f89fe44783bf80563113cb22ef7d039b8f38b/.gitbook/assets/cluster-template-export-button.png)
+![Cluster Template export button location](../../.gitbook/assets/cluster-template-export-button.png)
 
 _Location of export button at Settings page_
 
@@ -116,6 +116,6 @@ _Location of export button at Settings page_
 * Replace the basic cluster template with the newly exported cluster template configuration.
 
 {% hint style="info" %}
-Use export button from main - leader node. Leader node always contains complete cluster configuration, while it might happen that followers don't.
+Use export button from any admin node to ensure that the configuration file contains all the relevant information.
 {% endhint %}
 

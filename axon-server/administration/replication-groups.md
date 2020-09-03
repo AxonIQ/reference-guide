@@ -4,7 +4,7 @@ Within a single cluster you can define _**replication groups**_. A replication g
 
 A visual representation of Replication Groups is depicted below.
 
-![Replication Groups](../../.gitbook/assets/replication_groups.jpg)
+![Replication Groups](../../.gitbook/assets/clusters.jpg)
 
 Each node has a specific role in a replication group. The nodes in a replication group will elect a leader which will be responsible for managing transactions in the replication group. Within a replication group you can define a number of contexts \(see the in the [multi-context](multi-context.md) section\).
 
@@ -31,7 +31,7 @@ There are multiple options available of assigning roles to nodes within a replic
 
 All nodes serving a particular context maintain a complete copy, with a “replication leader” in control of the distributed transaction. The leader is determined by elections, following the [RAFT protocol](https://raft.github.io/). An important consequence has to do with those elections: nodes need to be able to win them, or at least feel the support of a clear majority i.e. To have a valid leader for a context, a _**majority of the nodes must be active**_ \(e.g. when you have a cluster with 3 nodes, you need at least 2 active nodes, for a cluster of 4 nodes you would need 3 active nodes\).‌ The leader orchestrates the distributed transaction \(i.e. replication of data between the nodes\) and confirms to clients when transactions are committed.
 
-While an Axon Server cluster does not need to have an odd number of nodes, every individual replication leader does, to prevent the chance for a draw in an election. This also holds for the internal context named “\_admin”, which is used by the admin nodes and stores the cluster structure data. As a consequence most clusters will have an odd number of nodes, and will keep functioning as long as a majority \(for a particular context\) is responding and storing events.
+While an Axon Server cluster does not need to have an odd number of nodes, every individual replication group does, to prevent the chance for a draw in an election. This also holds for the internal replication group named “\_admin”, which is used by the admin nodes and stores the cluster structure data. As a consequence most clusters will have an odd number of nodes, and will keep functioning as long as a majority \(for a particular replication group\) is responding and storing events.
 
 ### Special Replication Group
 
