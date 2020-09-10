@@ -1,15 +1,15 @@
 # Kotlin
 
-[Kotlin](https://kotlinlang.org/) is a programming language which interoperates fully with Java and the JVM. As Axon is written in Java it can be used in conjunction with Kotlin too, offering a different feel to using the framework.
+[Kotlin](https://kotlinlang.org/) is a programming language which interoperates fully with Java and the JVM. As Axon is written in Java it can be used in conjunction with Kotlin too, offering a different feel when using the framework.
 
-Some of Axon's API's work perfectly well in Java, but have a rather awkward feel when transitioning over to Kotlin. The goal of the [Kotlin Extension](https://github.com/AxonFramework/extension-kotlin) is remove that awkwardness, by providing [inline and reified](https://kotlinlang.org/docs/reference/inline-functions.html) methods of Axon's API.
+Some of Axon's API's work perfectly well in Java, but have a rather awkward feel when transitioning over to Kotlin. The goal of the [Kotlin Extension](https://github.com/AxonFramework/extension-kotlin) is to remove that awkwardness, by providing [inline and reified](https://kotlinlang.org/docs/reference/inline-functions.html) methods of Axon's API.
 
 Several solutions are currently given, which can roughly be segregated into the distinct types of messages used by Axon. This thus provides a [commands](#commands), [events](#events) and [queries](#queries) section on this page.
 
 > **Experimental Release**
 >
 > Currently, the [Kotlin Extension](https://github.com/AxonFramework/extension-kotlin) has been release experimentally (e.g. release 0.1.0).
-> This means that all implementations are subject to chance until a full release (e.g. a release 1.0.0) has been made.
+> This means that all implementations are subject to change until a full release (e.g. a release 1.0.0) has been made.
 
 ## Commands
 
@@ -102,7 +102,7 @@ import org.axonframework.queryhandling.QueryGateway
 class QueryDispatcher(private val queryGateway: QueryGateway) {
     fun getTotalNumberOfCards(): Int {
            val query = CountCardSummariesQuery()
-           // query will return a CompletableFuture so it has to be handled
+           // Query will return a CompletableFuture so it has to be handled
            return queryGateway.query<Int, CountCardSummariesQuery>(query)
                    .join()
        }
