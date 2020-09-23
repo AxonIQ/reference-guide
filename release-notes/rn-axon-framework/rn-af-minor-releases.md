@@ -4,6 +4,21 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.4_
 
+### Release 4.4.3
+
+* An optimization in the snapshotting process was introduced in pull request [#1510](https://github.com/AxonFramework/AxonFramework/pull/1510).
+  This PR ensures no unnecessary snapshots are staged in the `AbstractSnapshotter` by validating none have been scheduled yet.
+  This fix will resolve potential high I.O. when snapshots are being recreated for aggregates which have a high number of events.
+
+* The assignment rules used by the `EventProcessingConfigurer` weren't always taken into account as desired.
+  This inconsistency compared to regular assignment through the `@ProcessingGroup` annotation has been resolved in [this](https://github.com/AxonFramework/AxonFramework/pull/1500) pull request.
+  
+* Heartbeat messages between Axon Server and an Axon Framework application were already configurable, but only from the server's side.
+  Properties have been introduced to also enables this from the clients end, as specified further in [this](https://github.com/AxonFramework/AxonFramework/pull/1511) pull request.
+  Enabling heartbeat messages will ensure the connection is preemptively closed if no response has been received in the configured time frame.
+
+To check out all fixes introduced in 4.4.3, you can check them out on [this](https://github.com/AxonFramework/AxonFramework/issues?q=is%3Aclosed+milestone%3A%22Release+4.4.3%22) page.
+
 ### Release 4.4.2
 
 * A persistent loop of 500ms was spotted during event consumption from Axon Server.
