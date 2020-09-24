@@ -4,6 +4,19 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## Axon Server Standard Edition
 
+## _Release 4.4_
+
+### Release 4.4.2
+
+* Offload expensive data-writing operations to a separate thread pool
+* Fix for reading aggregates with older snapshots
+
+### Release 4.4.1
+
+* Reduced latency when Tracking live Events from a follower
+* Improved handling of full queue to client
+* Fix the refresh of the event processor status
+
 ## _Release 4.3_
 
 ### Release 4.3.6
@@ -104,6 +117,21 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 ## Axon Server Enterprise Edition
 
 ## _Release 4.4_
+
+### Release Notes for version 4.4.4
+
+* Fix for initializing jump skip index when it has more than 1 segment
+* Improved error handling for problems creating a context and storing events/snapshots
+* Offload expensive data-writing operations to separate thread pool
+* Fix for reading aggregates with older snapshots
+
+### Release Notes for version 4.4.3
+
+* Fix race condition in queries and commands handlers unsubscription during reconnection
+* Fix pre-vote election with active backup nodes
+* Axon Server SE improvements from 4.4 to 4.4.1
+* Fixed issue causing added latency while Tracking live Events from a follower node
+* Fix the event processor status refresh process
 
 ### Release Notes for version 4.4.2
 
