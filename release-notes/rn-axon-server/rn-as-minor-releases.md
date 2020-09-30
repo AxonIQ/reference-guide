@@ -6,6 +6,11 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.4_
 
+### Release 4.4.3
+
+* Fix for connections not correctly registered
+* Changed initialization sequence for event store to initialize completed segments first
+
 ### Release 4.4.2
 
 * Offload expensive data-writing operations to a separate thread pool
@@ -117,6 +122,15 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 ## Axon Server Enterprise Edition
 
 ## _Release 4.4_
+
+### Release Notes for version 4.4.5
+
+* Fix for connections not correctly registered
+* Changed initialization sequence for event store to initialize completed segments first
+* Changed order of files in the backup endpoint for contexts with a jump skip index to list the global index files
+  before the segment index files
+* Fix timing issue when a follower sends new events to a new leader before it is fully initialized
+* Improved logging and error handling for log compaction task
 
 ### Release Notes for version 4.4.4
 
