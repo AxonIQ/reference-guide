@@ -24,6 +24,7 @@
 * [Introduction](axon-framework/introduction.md)
 * [Messaging Concepts](axon-framework/messaging-concepts/README.md)
   * [Anatomy of a Message](axon-framework/messaging-concepts/anatomy-message.md)
+  * [Message Correlation](axon-framework/messaging-concepts/message-correlation.md)
   * [Message Intercepting](axon-framework/messaging-concepts/message-intercepting.md)
   * [Supported Parameters for Annotated Handlers](axon-framework/messaging-concepts/supported-parameters-annotated-handlers.md)
   * [Exception Handling](axon-framework/messaging-concepts/exception-handling.md)
@@ -128,4 +129,3 @@
 * [C. Meta Annotations](appendices/meta-annotations.md)
 * [D. Identifier Generation](appendices/identifier-generation.md)
 * [E. Axon Server Query Language](appendices/query-reference.md)
-
