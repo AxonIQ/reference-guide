@@ -88,15 +88,15 @@ If no explicit `eventSerializer` is configured, events are serialized using the 
 
 ## ContentTypeConverters
 
-An [upcaster ](event-versioning.md#event-upcasting)works on a given content type \(e.g. dom4j Document\). To provide extra flexibility between upcasters, content types between chained upcasters may vary. Axon will try to convert between the content types automatically by using `ContentTypeConverter`s. It will search for the shortest path from type `x` to type `y`, perform the conversion and pass the converted value into the requested upcaster. For performance reasons, conversion will only be performed if the `canUpcast` method on the receiving upcaster yields true.
+An [upcaster ](event-versioning.md#event-upcasting) works on a given content type \(e.g. dom4j Document\). To provide extra flexibility between upcasters, content types between chained upcasters may vary. Axon will try to convert between the content types automatically by using `ContentTypeConverter`s. It will search for the shortest path from type `x` to type `y`, perform the conversion and pass the converted value into the requested upcaster. For performance reasons, conversion will only be performed if the `canUpcast` method on the receiving upcaster yields true.
 
-The `ContentTypeConverter`s may depend on the type of serializer used. Attempting to convert a `byte[]` to a dom4j `Document` will not make any sense unless a `Serializer` was used that writes an event as XML. To make sure the `UpcasterChain` has access to the serializer-specific `ContentTypeConverter`s, you can pass a reference to the serializer to the constructor of the `UpcasterChain`.
+The `ContentTypeConverter`s may depend on the type of serializer used. Attempting to convert a `byte[]` to a dom4j `Document` will not make any sense unless a `Serializer` was used that writes an event as XML. Axon Framework will only use the generic content type converters (such as the one converting a `String` to `byte[]` or a `byte[]` to `InputStream`) and the converters configured on the Serializer that will be used to deserialize the message. That means if you use a JSON based serializer, you would be able to convert to and from JSON-specific formats.
 
 > **Tip**
 >
 > To achieve the best performance, ensure that all upcasters in the same chain \(where one's output is another's input\) work on the same content type.
 
-If the content type conversion that you need is not provided by Axon you can always write one yourself using the `ContentTypeConverter` interface.
+If Axon does not provide the content type conversion that you need, you can always write one yourself by implementing the `ContentTypeConverter` interface.
 
 The `XStreamSerializer` supports dom4j as well as XOM as XML document representations. The `JacksonSerializer` supports Jackson's `JsonNode`.
 
