@@ -115,7 +115,7 @@
 * [Kafka](extensions/kafka.md)
 * [Kotlin](extensions/kotlin.md)
 * [Mongo](extensions/mongo.md)
-* [Reactor](extensions/reactor/introduction.md)
+* [Reactor](extensions/reactor/reactor.md)
   * [Reactor Gateways](extensions/reactor/reactive-gateways/reactive-gateways.md)
 * [Spring Cloud](extensions/spring-cloud.md)
 * [Tracing](extensions/tracing.md)
