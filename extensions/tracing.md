@@ -25,9 +25,9 @@ The second dependency is [Jaeger](https://www.jaegertracing.io/) implementation 
 There are other supported tracers that can be used: LightStep, Instana, Apache SkyWalking, Datadog, Wavefront by VMware, Elastic APM and many more.
 
 ## Configuring the extension
-The extension could be disabled using the property `axon.extension.tracing.enabled` (default=TRUE). This will give you the possibility to turn it off for a certain environment.
+The extension can be disabled setting the property `axon.extension.tracing.enabled` to `false` (default=`true`). This will give you the possibility to turn it off when needed (e.g.: for a certain environment).
 
-In release 4.4 we introduced a fine-grained configuration of tracing span tags for command, event and query.  You can customize span tags easily, mixing and matching between available tag `messageId`, `aggregateId`, `messageType`, `payloadType`, `messageName` and `payload`. Take into account that some of the tags make sense on a certain span type, but not on another, and some of them have an hidden cost on network (such as payload). Use them wisely!
+Furthermore there is a more fine-grained configuration option of the tracing span tags on commands, events and queries.  You can customize span tags easily, mixing and matching between available tag `messageId`, `aggregateId`, `messageType`, `payloadType`, `messageName` and `payload`. Take into account that some of the tags make sense on a certain span type, but not on another, and some of them have an hidden cost on network (such as payload). Use them wisely!
 ```
 axon.extension.tracing.span.commandTags=messageId, messageType, payloadType, messageName
 axon.extension.tracing.span.eventTags=messageId, aggregateId, messageType, payloadType
