@@ -20,7 +20,7 @@ Axon Server can operate in clustered mode. Each node in the cluster is active an
 
 ## Flow control
 
-Axon Server controls the flow of messages sent to the message handlers. The message handlers sent a number of permits to the messing platform, indicating the number of messages the messaging platform may send. Once the handler is ready for more request it sends another message with a number of additional permits. Axon Server queues messages when there are no permits for the handler left. When a handler is disconnected while there are still queued messages, these are re-routed to another handler \(if possible\).
+Axon Server controls the flow of messages sent to the message handlers. The message handlers sent a number of permits to the messaging platform, indicating the number of messages the messaging platform may send. Once the handler is ready for more request it sends another message with a number of additional permits. Axon Server queues messages when there are no permits for the handler left. When a handler is disconnected while there are still queued messages, these are re-routed to another handler \(if possible\).
 
 ## QoS Messages
 
