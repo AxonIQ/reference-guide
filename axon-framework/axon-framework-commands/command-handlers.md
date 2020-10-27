@@ -77,7 +77,7 @@ public class RedeemCardCommand {
 }
 ```
 
-The `cardId` present in both commands is the reference to a `GiftCard` instance and thus is annotated withe the `@TargetAggregateIdentifier` annotation. Commands that create an Aggregate instance do not need to identify the target aggregate identifier, as there is no Aggregate in existence yet. It is nonetheless recommended for consistency to annotate the Aggregate Identifier on them as well.
+The `cardId` present in both commands is the reference to a `GiftCard` instance and thus is annotated with the `@TargetAggregateIdentifier` annotation. Commands that create an Aggregate instance do not need to identify the target aggregate identifier, as there is no Aggregate in existence yet. It is nonetheless recommended for consistency to annotate the Aggregate Identifier on them as well.
 
 If you prefer to use another mechanism for routing commands, the behavior can be overridden by supplying a custom `CommandTargetResolver`. This class should return the Aggregate Identifier and expected version \(if any\) based on a given command.
 
