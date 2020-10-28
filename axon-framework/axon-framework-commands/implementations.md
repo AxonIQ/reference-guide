@@ -52,9 +52,10 @@ This is how parameters affect the behavior of the command gateway:
 
   Metadata defined by latter parameters will overwrite the metadata of earlier parameters, if their key is equal.
 
-* Parameters of type `CommandCallback` will have their `onSuccess` or `onFailure` invoked after the command is handled.
-
-  You may pass in more than one callback, and it may be combined with a return value. In that case, the invocations of the callback will always match with the return value \(or exception\).
+* Parameters of type `CommandCallback` will have their `onResult(CommandMessage<? extends C>, CommandResultMessage<? extends R>)` invoked after the command has been handled.
+  Although the `CommandCallback` provides a means to deal with the result of command handling, this is no impact on whether you can define a return type on the custom command gateway.
+  In case both a callback and return type are defined, the invocations of the callback will always match with the return value \(or exception\).
+  Lastly, know that you may pass in several `CommandCallback` instances, which all will be invoked in order. 
 
 * The last two parameters indicate a timeout and may be of types `long` \(or `int`\) and `TimeUnit`.
 
