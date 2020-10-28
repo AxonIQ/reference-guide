@@ -77,7 +77,7 @@ public class RedeemCardCommand {
 }
 ```
 
-The `cardId` present in both commands is the reference to a `GiftCard` instance and thus is annotated withe the `@TargetAggregateIdentifier` annotation. Commands that create an Aggregate instance do not need to identify the target aggregate identifier, as there is no Aggregate in existence yet. It is nonetheless recommended for consistency to annotate the Aggregate Identifier on them as well.
+The `cardId` present in both commands is the reference to a `GiftCard` instance and thus is annotated with the `@TargetAggregateIdentifier` annotation. Commands that create an Aggregate instance do not need to identify the target aggregate identifier, as there is no Aggregate in existence yet. It is nonetheless recommended for consistency to annotate the Aggregate Identifier on them as well.
 
 If you prefer to use another mechanism for routing commands, the behavior can be overridden by supplying a custom `CommandTargetResolver`. This class should return the Aggregate Identifier and expected version \(if any\) based on a given command.
 
@@ -101,7 +101,7 @@ The[ Aggregate Test Fixture](../testing/commands-events.md) will guard from unin
 
 ### Applying Events from Event Sourcing Handlers
 
-In some cases, especially when the Aggregate structures grows beyond just a couple of Entities, it is cleaner to react on events being published in other Entities of the same Aggregate \(multi Entity Aggregates are explained in more detail [here](modeling/multi-entity-aggregates.md)\). However, since the Event Handling methods are also invoked when reconstructing Aggregate state, special precautions must be taken.
+In some cases, especially when the Aggregate structure grows beyond just a couple of Entities, it is cleaner to react on events being published in other Entities of the same Aggregate \(multi Entity Aggregates are explained in more detail [here](modeling/multi-entity-aggregates.md)\). However, since the Event Handling methods are also invoked when reconstructing Aggregate state, special precautions must be taken.
 
 It is possible to `apply()` new events inside an Event Sourcing Handler method. This makes it possible for an Entity 'B' to apply an event in reaction to Entity 'A' doing something. Axon will ignore the `apply()`invocation when replaying historic events upon sourcing the given Aggregate. Do note that in the scenario where Event Messages are published from an Event Sourcing Handler, the Event of the inner `apply()` invocation is only published to the entities after all entities have received the first event. If more events need to be published, based on the state of an entity after applying an inner event, use `apply(...).andThenApply(...)`.
 
