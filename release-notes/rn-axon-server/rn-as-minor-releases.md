@@ -6,6 +6,15 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.4_
 
+### Release 4.4.4
+
+* Improved QueryService logging
+* Added preserve event store option to delete context CLI command
+* Fixed stream completed by the server in case of inactivity
+* Hide upload license panel in SE
+* Reduced number of open index files
+* Fix for GetTokenAt operation
+
 ### Release 4.4.3
 
 * Fix for connections not correctly registered
@@ -122,6 +131,18 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 ## Axon Server Enterprise Edition
 
 ## _Release 4.4_
+
+### Release Notes for version 4.4.6
+
+* Improved QueryService logging
+* Added preserve event store option to delete context CLI command
+* Fixed stream completed by the server in case of inactivity
+* Hide upload license panel in SE
+* Reduced number of open index files
+* Fix for GetTokenAt operation
+* Improved feedback on license upload errors
+* Fix timing issue in leader change potentially causing duplicate events
+* New REST endpoint to download a diagnostics zip file
 
 ### Release Notes for version 4.4.5
 
