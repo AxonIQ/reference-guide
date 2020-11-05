@@ -132,7 +132,7 @@ This module provides a set of reified operations, among others, to allow a clean
 
 ### Axon Reactor
 
-This module provides integration with [Project Reactor](provides integration with Project Reactor).
+This module provides integration with [Project Reactor](https://projectreactor.io/).
 
 ### Axon Mongo
 
