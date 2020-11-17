@@ -4,6 +4,21 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.4_
 
+### Release 4.4.4
+
+* There was a bug which made it so that an `@ResetHandler` annotated method without any parameters was included for validation if a component could handle a specific type of event.
+  This exact validation is used to filter out events from the event stream to optimize the entire stream.
+  The optimization was thus mitigated by the simple fact of introducing a default `@ResetHandler`.
+  The problem was marked by `@kad-hesseg` (for which thanks) and resolved in pull request [#1597](https://github.com/AxonFramework/AxonFramework/pull/1597).
+ 
+ * A new `SnapshotTriggerDefinition` called `AggregateLoadTimeSnapShotTriggerDefinition` has been introduced, which uses the load time of an aggregate to trigger a snapshot creation.
+ 
+ * When using an aggregate class hierarchy, `@AggregateMember` annotated fields present on the root would be duplicated for every class in the hierarchy which included message handling functions.
+   This problem was traced back to the `AnnotatedAggregateMetaModelFactory.AnnotatedAggregateModel` which looped over an inconsistent set of classes to find these members.
+   The issue was marked by `@kad-malota` and resolved in pull request [#1595](https://github.com/AxonFramework/AxonFramework/pull/1595).
+
+For a complete set of the release notes, please check [here](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.4.4).
+
 ### Release 4.4.3
 
 * An optimization in the snapshotting process was introduced in pull request [#1510](https://github.com/AxonFramework/AxonFramework/pull/1510).
