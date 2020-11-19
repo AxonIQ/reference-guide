@@ -23,9 +23,8 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>AUTHENTICATION_TOKEN_MISSING</b>
         </p>
-        <p>This indicates that the Axon Server has been configured with authentication
-          enabled and will reject any instructions from a client application if the
-          token is missing.</p>
+        <p>This indicates that the Axon Server has been configured with authentication enabled and a client application did not pass a token. 
+          </p>
       </td>
     </tr>
     <tr>
@@ -34,9 +33,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>AUTHENTICATION_INVALID_TOKEN</b>
         </p>
-        <p>This indicates that the Axon Server has been configured with authentication
-          enabled and will reject any instructions from a client application if an
-          invalid token has been supplied.</p>
+        <p>This indicates that the Axon Server has been configured with authentication enabled and a client application has supplied an invalid token.</p>
       </td>
     </tr>
     <tr>
@@ -65,8 +62,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>INSTRUCTION_RESULT_TIMEOUT</b>
         </p>
-        <p>This indicates that the Axon Server threw an error during the execution
-          of the instruction passed to it.</p>
+        <p>This indicates that the execution of the instruction did not finish within the timeout set.</p>
       </td>
     </tr>
     <tr>
@@ -75,7 +71,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>NODE_IS_REPLICA</b>
         </p>
-        <p>This error is<b> </b>returned when a request from a node to join a cluster
+        <p>This error is returned when a request from a node to join a cluster
           is received by a node that is no longer leader.</p>
         <p>Normally the node would forward the request to the leader, but if there
           is a leader change during the processing of the join request this may happen.</p>
@@ -137,7 +133,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>AXONSERVER_NODE_NOT_CONNECTED</b>
         </p>
-        <p>This<b> </b>error is returned when there is an instruction to create a
+        <p>This error is returned when there is an instruction to create a
           specific context within Axon Server and it already exists.</p>
       </td>
     </tr>
@@ -153,7 +149,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>INVALID_SEQUENCE</b>
         </p>
-        <p>This<b> </b>error is returned when there is a gap between the sequence
+        <p>This error is returned when there is a gap between the sequence
           number for a particular aggregate instance that the client application
           sends and the current sequence number for that instance in the Axon Server
           Event Store.</p>
@@ -175,7 +171,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>TOO_MANY_EVENTS </b>
         </p>
-        <p>This error is<b> </b>returned when an ad-hoc query (e.g. from the Search
+        <p>This error is returned when an ad-hoc query (e.g. from the Search
           Page) has buffered too many rows to send to the client, this error also
           is returned when a single transaction from a client contains more than
           32767 events (due to a limitation in the event store format, we can only
@@ -198,7 +194,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>NOT_RUNNING_IN_CLUSTER</b>
         </p>
-        <p>This error<b> </b>is returned when Axon Server is not running in a cluster.</p>
+        <p>This error is returned when Axon Server is not running in a cluster.</p>
       </td>
     </tr>
     <tr>
@@ -217,7 +213,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>INVALID_TRANSACTION_TOKEN </b>
         </p>
-        <p>This error is<b> </b>returned when during replication there is a mismatch
+        <p>This error is returned when during replication there is a mismatch
           between the transaction token in the new transaction and the transaction
           token that the event store node expects. This means that there is a likely
           inconsistency in the data between the nodes.</p>
@@ -229,7 +225,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>CLUSTER_NOT_ALLOWED</b>
         </p>
-        <p>This error is<b> </b>returned when an instruction to create a cluster
+        <p>This error is returned when an instruction to create a cluster
           is rejected.</p>
       </td>
     </tr>
@@ -239,7 +235,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>CONTEXT_CREATION_NOT_ALLOWED</b>
         </p>
-        <p>This<b> </b>error is<b> </b>returned when an instruction to create a context
+        <p>This error is returned when an instruction to create a context
           on an Axon Server cluster is rejected due to invalid permissions.</p>
       </td>
     </tr>
@@ -249,8 +245,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>NOT_SUPPORTED_IN_DEVELOPMENT</b>
         </p>
-        <p>This<b> </b>error is<b> </b>returned when an instruction valid only for
-          non-development environments is attempted on a development environment.</p>
+        <p>This error is returned when an instruction valid only in non-development mode is attempted when development mode is active.</p>
       </td>
     </tr>
     <tr>
@@ -278,8 +273,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>ALREADY_MEMBER_OF_CLUSTER</b>
         </p>
-        <p>This error is returned when<b> </b>the maximum size of the cluster is
-          reached.</p>
+        <p>This error is returned when an attempt is made to add an already existing node to a cluster.</p>
       </td>
     </tr>
     <tr>
@@ -288,8 +282,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>NOT_A_MEMBER</b>
         </p>
-        <p>This error is returned when<b> </b>the maximum size of the cluster is
-          reached.</p>
+        <p>This error is returned when a cluster related instruction was sent to a node that is not a member of the cluster.</p>
       </td>
     </tr>
     <tr>
@@ -298,8 +291,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>INVALID_CONTEXT_NAME</b>
         </p>
-        <p>This error is returned when<b> </b>an instruction is attemped on an invalid
-          context.</p>
+        <p>This error is returned when an instruction is attemped on a non-existing context.</p>
       </td>
     </tr>
     <tr>
@@ -308,7 +300,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>CANNOT_REMOVE_LAST_NODE </b>
         </p>
-        <p>This error is<b> </b>returned when a user tries to remove the last node
+        <p>This error is returned when a user tries to remove the last node
           from a replication group. In this case, the user should delete the replication
           group.</p>
       </td>
@@ -319,7 +311,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>INVALID_PROPERTY_VALUE</b>
         </p>
-        <p>This error is returned in multiple conditions e.g.<b> </b>when creating
+        <p>This error is returned in multiple conditions e.g. when creating
           a context with properties and one of the properties does not have a valid
           value, also when updating a license and the license file is invalid or
           the environment variable.</p>
@@ -331,15 +323,18 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>SAME_NODE_NAME </b>
         </p>
-        <p>This error is<b> </b>returned when a node tries to join the cluster with
+        <p>This error is returned when a node tries to join the cluster with
           the same internal hostname and port as the leader.</p>
       </td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">AXONIQ-2501</td>
-      <td style="text-align:left"><b>UNKNOWN_HOST</b>
-      </td>
+      <td style="text-align:left">
+<p><b>UNKNOWN_HOST</b>
+        </p>
+        <p>This error is returned when a hostname was passed that did not resolve to a valid IP address.</p>      
+</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
@@ -347,8 +342,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>CANNOT_JOIN</b> 
         </p>
-        <p>This error is returned when a node tries to join the cluster and there
-          is an error.</p>
+        <p>This error is returned when a node tries to join the cluster and there is an error.</p>
       </td>
     </tr>
     <tr>
@@ -357,7 +351,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>UNKNOWN_ROLE </b>
         </p>
-        <p>This error is<b> </b>returned when an unknown role is assigned to a user
+        <p>This error is returned when an unknown role is assigned to a user
           or application. This can only happen when this is done through the REST
           interface directly or through the CLI.</p>
       </td>
@@ -368,7 +362,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>INVALID_QUERY</b>
         </p>
-        <p>This error is returned when<b> </b>the user send a query in the search
+        <p>This error is returned when the user sends a query in the search
           window that is not valid</p>
       </td>
     </tr>
@@ -430,7 +424,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>COMMAND_DISPATCH_ERROR </b>
         </p>
-        <p>This error is returned when a command messagae instruction is sent to
+        <p>This error is returned when a command message instruction is sent to
           the Axon Server and there is an error while dispatching it.</p>
       </td>
     </tr>
@@ -472,7 +466,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>NODE_NOT_READY_FOR_BACKUP</b>
         </p>
-        <p>This<b> </b>error is returned when an Axon Server node is not available
+        <p>This error is returned when an Axon Server node is not available
           for any backup operation.</p>
       </td>
     </tr>
@@ -508,7 +502,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>DATAFILE_WRITE_ERROR </b>
         </p>
-        <p>This error<b> </b>is returned when Axon Server is unable to write to the
+        <p>This error is returned when Axon Server is unable to write to the
           Event/Snapshot Data files.</p>
       </td>
     </tr>
@@ -518,7 +512,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>INDEX_WRITE_ERROR </b>
         </p>
-        <p>This error<b> </b>is returned when Axon Server is unable to write to the
+        <p>This error is returned when Axon Server is unable to write to the
           Index files.</p>
       </td>
     </tr>
@@ -528,7 +522,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>DIRECTORY_CREATION_FAILED </b>
         </p>
-        <p>This error<b> </b>is returned when Axon Server is unable to create a directory
+        <p>This error is returned when Axon Server is unable to create a directory
           for storing events/snapshots or indexes.</p>
       </td>
     </tr>
@@ -549,7 +543,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>TRANSACTION_ROLLED_BACK</b> 
         </p>
-        <p>This error<b> </b>is returned when any transaction is rolled back.</p>
+        <p>This error is returned when any transaction is rolled back.</p>
       </td>
     </tr>
     <tr>
@@ -568,7 +562,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>NO_EVENTSTORE</b>
         </p>
-        <p>This error<b> </b>is returned when the Axon Server Event Store is not
+        <p>This error is returned when the Axon Server Event Store is not
           available to perform any instructions.</p>
       </td>
     </tr>
@@ -578,7 +572,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>CLIENT_DISCONNECTED </b>
         </p>
-        <p>This error<b> </b>is returned when an Axon Framework client application
+        <p>This error is returned when an Axon Framework client application
           disconnects from the Axon Server.</p>
       </td>
     </tr>
@@ -614,7 +608,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>UNCOMMITTED_TERM </b>
         </p>
-        <p>This error is returned when<b> </b>a request to update the configuration
+        <p>This error is returned when a request to update the configuration
           of a replication group is received before there are any actions committed.
           The request is refused to prevent potential replication issues.</p>
       </td>
@@ -641,7 +635,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>OTHER</b>
         </p>
-        <p>Any other<b> </b>errors.</p>
+        <p>Any other errors.</p>
       </td>
     </tr>
     <tr>
