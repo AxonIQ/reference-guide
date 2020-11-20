@@ -6,6 +6,13 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.4_
 
+### Release 4.4.5
+
+* Improved reporting of errors while initializing the event store
+* Fix for NullPointerException when event processor status was sent to Axon Server before registration request
+  was processed
+* Improved handling of request processor status after an application disconnect
+
 ### Release 4.4.4
 
 * Improved QueryService logging
@@ -132,7 +139,19 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.4_
 
-### Release Notes for version 4.4.6
+### Release 4.4.7
+
+* Fix for access control issue when updating an application
+* Fix for global index files remaining after delete context
+* Fix for commit index not updated correctly in specific cases
+* Fix for warning messages on opening index that should have been debug messages
+* Fix for invalid previous term/index in replication heartbeat messages causing some overhead in communication
+* Fix for missing portnumber in cluster template export
+* Fix for commands being sent to wrong context if the only handler is in another context
+* New property "axoniq.axonserver.enterprise-default-index-type" to specify the index type for new contexts. Default
+  value is JUMP_SKIP_INDEX, use BLOOM_FILTER_INDEX for the pre-4.4 index type
+
+### Release 4.4.6
 
 * Improved QueryService logging
 * Added preserve event store option to delete context CLI command
@@ -144,7 +163,7 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 * Fix timing issue in leader change potentially causing duplicate events
 * New REST endpoint to download a diagnostics zip file
 
-### Release Notes for version 4.4.5
+### Release 4.4.5
 
 * Fix for connections not correctly registered
 * Changed initialization sequence for event store to initialize completed segments first
@@ -153,14 +172,14 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 * Fix timing issue when a follower sends new events to a new leader before it is fully initialized
 * Improved logging and error handling for log compaction task
 
-### Release Notes for version 4.4.4
+### Release 4.4.4
 
 * Fix for initializing jump skip index when it has more than 1 segment
 * Improved error handling for problems creating a context and storing events/snapshots
 * Offload expensive data-writing operations to separate thread pool
 * Fix for reading aggregates with older snapshots
 
-### Release Notes for version 4.4.3
+### Release 4.4.3
 
 * Fix race condition in queries and commands handlers unsubscription during reconnection
 * Fix pre-vote election with active backup nodes
@@ -168,7 +187,7 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 * Fixed issue causing added latency while Tracking live Events from a follower node
 * Fix the event processor status refresh process
 
-### Release Notes for version 4.4.2
+### Release 4.4.2
 
 * Fix for downloading and starting with cluster templates
 * Renamed field replicationsGroups to replicationGroup in cluster template
