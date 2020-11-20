@@ -4,6 +4,18 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.4_
 
+### Release 4.4.5
+
+* When creating a `TrackingToken` at a certain position through `StreamableMessageSource#createTokenAt(Instant)`, a tail token was wrongfully returned if the provided timestamp exceeded the timestamp of the last event.
+  Instead, the token closests to the provided timestamp should be returned, was equals the head token.
+  This discrepancy between documentation and implementation was marked by `mbreevoort` and resolved in pull request [#1607](https://github.com/AxonFramework/AxonFramework/pull/1607).
+
+* A certain path within the `AxonServerEventStore` allowed for event retrieval without correctly deserializing the `MetaData` of the events.
+  If someone tried to access the `MetaData`, a `CannotConvertBetweenTypesException` was being thrown.
+  This problem, among others, was remedied in pull request [#1612](https://github.com/AxonFramework/AxonFramework/pull/1612), by ensuring the correct `Serializer` taking gRPC message types into account is consistently used.   
+
+For a complete set of the release notes, please check [here](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.4.5).
+
 ### Release 4.4.4
 
 * There was a bug which made it so that an `@ResetHandler` annotated method without any parameters was included for validation if a component could handle a specific type of event.
