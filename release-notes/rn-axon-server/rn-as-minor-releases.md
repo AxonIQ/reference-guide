@@ -148,7 +148,7 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 * Fix for invalid previous term/index in replication heartbeat messages causing some overhead in communication
 * Fix for missing portnumber in cluster template export
 * Fix for commands being sent to wrong context if the only handler is in another context
-* New property "axoniq.axonserver.enterprise-default-index-type" to specify the index type for new contexts. Default
+* New property "axoniq.axonserver.enterprise.default-index-type" to specify the index type for new contexts. Default
   value is JUMP_SKIP_INDEX, use BLOOM_FILTER_INDEX for the pre-4.4 index type
 
 ### Release 4.4.6
