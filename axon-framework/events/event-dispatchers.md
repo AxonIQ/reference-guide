@@ -1,6 +1,6 @@
 # Event Dispatchers
 
-Event publication can from a couple of locations within your Axon Framework application. In general, these can be grouped in two major areas:
+Event publication can originate from a couple of locations within your Axon Framework application. In general, these can be grouped in two major areas:
 
 1. Dispatching events from an Aggregate, and
 2. Dispatching events from regular components 
