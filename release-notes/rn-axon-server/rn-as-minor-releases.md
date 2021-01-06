@@ -6,6 +6,14 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.4_
 
+### Release 4.4.8
+
+* New metric to monitor query response times per query handler
+
+### Release 4.4.7
+
+* Improvement for subscription query: initial result are now provided by a single instance per component
+
 ### Release 4.4.6
 
 * Fix for processor information showing information on disconnected applications
@@ -145,6 +153,18 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 ## Axon Server Enterprise Edition
 
 ## _Release 4.4_
+
+### Release 4.4.10
+
+* Load balancing strategy for queries is now configurable. Metrics based by default, to configure round-robin set property
+  axoniq.axonserver.query-handler-selector=round-robin
+* Improvement on metrics based load balancing of queries, now giving higher probabilities based on the response time
+  for the handler as recorded on the current axon server node
+* Fix for scheduler not rescheduling all events after a leader change
+
+### Release 4.4.9
+
+* Improvement for subscription query: initial result are now provided by a single instance per component
 
 ### Release 4.4.8
 
