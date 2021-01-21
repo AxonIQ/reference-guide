@@ -77,7 +77,7 @@ As configuring goes, this would opt for usage of the `axon-springcloud-spring-bo
 In either case, your application should be marked to enable it as a discoverable service through Spring Cloud.
 This can for example be done by annotating the main class with `@EnableDiscoveryClient`. 
 
-There are quite some customizable components still.
+There are still quite a few customizable components.
 For some suggestions in that space, take a look at the following examples:
 
 {% tabs %}
