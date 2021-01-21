@@ -78,7 +78,7 @@ In either case, your application should be marked to enable it as a discoverable
 This can for example be done by annotating the main class with `@EnableDiscoveryClient`. 
 
 There are still quite a few customizable components.
-For some suggestions in that space, take a look at the following examples:
+For some suggestions, take a look at the following examples:
 
 {% tabs %}
 {% tab title="Custom Bean Configuration" %}
