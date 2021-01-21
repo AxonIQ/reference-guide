@@ -7,7 +7,7 @@ You thus have the choice of which Spring Cloud implementation to use when discov
 An example implementations is the Netflix' [Eureka Discovery/Eureka Server](https://cloud.spring.io/spring-cloud-netflix/multi/multi__service_discovery_eureka_clients.html) combination or HashiCorp's [Consul](https://www.consul.io/use-cases/service-discovery-and-health-checking).
 
 To use the Spring Cloud components from Axon, make sure the `axon-springcloud` module is available on the classpath.
-Easiest would be to include the Spring Cloud starter (`axon-springcloud-spring-boot-starter`) from this extension to your project.
+The easiest way is to include the Spring Cloud starter (`axon-springcloud-spring-boot-starter`) from this extension to your project.
 
 Giving a description of every Spring Cloud implementation would push this reference guide too far. 
 For information on any of the Spring Cloud implementation options out there, we refer to their respective documentations.
