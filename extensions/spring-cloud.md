@@ -56,7 +56,7 @@ There are, however, a couple of additional things you can configure for this rou
 >
 > It is not required for all nodes to have the same set of command handlers. 
 > You may use different segments for different command types altogether. 
-> The Distributed Command Bus will always choose a node to dispatch a command to that has support for that specific type of command.
+> The Distributed Command Bus will always choose a node to dispatch a command to the one that has support for that specific type of command.
 
 ## Sending Commands between nodes
 
