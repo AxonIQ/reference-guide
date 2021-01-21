@@ -68,7 +68,7 @@ There are three hard requirements when creating this service and one optional co
 1. Local `CommandBus` - This "local segment" is the command bus which dispatches commands into the local JVM. It is thus invoked when the `SpringHttpCommandBusConnector` receives a command from the outside, or if it receives a command which is meant for itself.
 2. `RestOperations` - The service used to POST a command message to another instance. In most situations the `RestTemplate` is used for this.
 3. `Serializer` - The serializer is used to de-/serialize the command messages before they are sent over or when they are received.
-4. `Executor` (optional) - The `Executor` used to handle incoming commands and to dispatch commands. Defaults to a `DirectExecutor` instance.
+4. `Executor` (optional) - The `Executor` is used to handle incoming commands and to dispatch commands. Defaults to a `DirectExecutor` instance.
 
 ## Configuring this Extension
 
