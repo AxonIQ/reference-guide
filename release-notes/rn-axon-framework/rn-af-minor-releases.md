@@ -4,6 +4,28 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.4_
 
+### Release 4.4.6
+
+* Contributor "Rafaesp" noted that a registered `CommandHandlerInterceptor` in the `AggregateTestFixture` could be invoked more often than desired.
+  This only occurred if the fixture's `givenCommands(...)` method was invoked, but nonetheless this behaviour was incorrect.
+  The issue is marked under [#1665](https://github.com/AxonFramework/AxonFramework/issues/1665) and resolved in pull request [#1666](https://github.com/AxonFramework/AxonFramework/pull/1666).
+  
+* In 4.4.4, a fix was introduced which ensured a `ChildEntity` (read, the Aggregate Members) was no longer duplicated in an aggregate hierarchy.
+  This fix had the troublesome side effect that aggregate member command handlers weren't registered on every level of the aggregate hierarchy anymore.
+  The resolution to this problem can be found in pull request [#1674](https://github.com/AxonFramework/AxonFramework/pull/1674).
+  
+* Using the subscription query in a distributed environment had a possible troublesome side effect.
+  If a consumer of updates was closed for whatever reason, it could also close the producing side. 
+  This is obviously undesired, as no single consumer should influence if the producer should still dispatch updates to other consumers.
+  The problem was marked under issue [#1680](https://github.com/AxonFramework/AxonFramework/issues/1680) and resolved in [this](https://github.com/AxonFramework/AxonFramework/commit/9907ae9bc1374a58ad9c8eca3dad2004086e2261) commit.
+  
+* Right before we aimed to release 4.4.6, contributor "haraldk" provided a thorough issue description when using the `SequenceEventStorageEngine`.
+  He noted that if snapshots were used for an aggregate, there was a window of opportunity that the 'active' `EventStorageEngine` in the sequencing engine did not return any events.
+  This followed from the sequence number logic, which wrongfully defaulted to position "0", even though the starting sequence number is per definition higher if a snapshot has been found.
+  The clarifying issue can be found [here](https://github.com/AxonFramework/AxonFramework/issues/1682), with its resolution present in pull request [#1683](https://github.com/AxonFramework/AxonFramework/pull/1683).
+
+For a complete overview of all the changes you can check the release notes [here](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.4.6).
+
 ### Release 4.4.5
 
 * When creating a `TrackingToken` at a certain position through `StreamableMessageSource#createTokenAt(Instant)`, a tail token was wrongfully returned if the provided timestamp exceeded the timestamp of the last event.
