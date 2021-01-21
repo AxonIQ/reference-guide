@@ -60,7 +60,7 @@ There are, however, a couple of additional things you can configure for this rou
 
 ## Sending Commands between nodes
 
-The `CommandBusConnector` is in charge to send the commands, based on a given route, from one node to another.
+The `CommandBusConnector` is in charge of sending commands, based on a given route, from one node to another.
 This extension to that end provides the `SpringHttpCommandBusConnector`, which uses plain REST for sending commands.
 
 There are three hard requirements when creating this service and one optional configuration:
