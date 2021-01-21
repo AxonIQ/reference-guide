@@ -50,7 +50,7 @@ There are, however, a couple of additional things you can configure for this rou
 
 * `RoutingStrategy` - The component in charge of deciding which of the nodes receives the commands consistently. By default a `AnnotationRoutingStrategy` is used (see [Distributing the Command Bus](../axon-framework/axon-framework-commands/implementations.md#distributedcommandbus) for more).
 * A `ServiceInstance` filter - This `Predicate` is used to filter out `ServiceInstance`s retrieved through the `DiscoveryClient`. For example, it allows the removal of instances which are known to not handle any command messages. This might be useful if you have several services within the Spring Cloud Discovery Service set up, which you do not ever want to take into account for command handling.
-* `ConsistentHashChangeListener` - Adding a consistent hash change listener provides you the opportunity to perform a specific task if new nodes have been added to the known command handlers set.
+* `ConsistentHashChangeListener` - Adding a consistent hash change listener provides you with the opportunity to perform a specific task if new nodes have been added to the known command handlers set.
 
 > **Differing Command Capabilities per Node**
 >
