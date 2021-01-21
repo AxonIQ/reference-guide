@@ -4,7 +4,7 @@ Spring Cloud is an alternative approach to distributing the command bus \(comman
 
 The Spring Cloud Extension uses the service registration and discovery mechanism described by [Spring Cloud](https://spring.io/projects/spring-cloud) for distributing the command bus. 
 You thus have the choice of which Spring Cloud implementation to use when discovering the routes to distribute your commands. 
-An example implementations is the Netflix' [Eureka Discovery/Eureka Server](https://cloud.spring.io/spring-cloud-netflix/multi/multi__service_discovery_eureka_clients.html) combination or HashiCorp's [Consul](https://www.consul.io/use-cases/service-discovery-and-health-checking).
+An example of that would be Netflix' [Eureka Discovery/Eureka Server](https://cloud.spring.io/spring-cloud-netflix/multi/multi__service_discovery_eureka_clients.html) combination or HashiCorp's [Consul](https://www.consul.io/use-cases/service-discovery-and-health-checking).
 
 To use the Spring Cloud components from Axon, make sure the `axon-springcloud` module is available on the classpath.
 The easiest way is to include the Spring Cloud starter (`axon-springcloud-spring-boot-starter`) from this extension to your project.
