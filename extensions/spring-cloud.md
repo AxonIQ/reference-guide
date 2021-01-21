@@ -75,7 +75,7 @@ There are three hard requirements when creating this service and one optional co
 Chances are high that you will be using Spring Boot if you are also using Spring Cloud.
 As configuring goes, this would opt for usage of the `axon-springcloud-spring-boot-starter` dependency to automatically retrieve all required beans.
 In either case, your application should be marked to enable it as a discoverable service through Spring Cloud.
-This can for example be done by annotation the main class with `@EnableDiscoveryClient`. 
+This can for example be done by annotating the main class with `@EnableDiscoveryClient`. 
 
 There are quite some customizable components still.
 For some suggestions in that space, take a look at the following examples:
