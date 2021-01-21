@@ -33,7 +33,7 @@ Furthermore, it is the `ServiceInstance` which provides us with the required inf
 > Additionally, it is used to validate whether the command routing capabilities for known nodes has been altered.
 >
 > Thus, if heartbeat events are disabled, your instance will no longer be updated with the current command routing capabilities.
-> As such, this will cause issues during command routing.
+> If so, this will cause issues during command routing.
 
 The logic to store the local capabilities and discovering the remote capabilities of a `ServiceInstance` is maintained in the `CapabilityDiscoveryMode`. 
 It is thus the `CapabilityDiscoveryMode` which provides us the means to actually retrieve a `ServiceInstance`'s set of commands it can handle (if any).
