@@ -22,7 +22,7 @@ To that end it uses the `DiscoveryClient` and `Registration` from Spring Cloud.
 These are respectively used to gather remote command routing information and maintain local information.
 The most straightforward way to retrieve both is by annotating your application with `@EnableDiscoveryClient`.
 
-The gathering and storage of command routing information revolves around Spring Cloud's `ServiceInstance`s.
+Gathering and storing the command routing information revolves around Spring Cloud's `ServiceInstance`s.
 A `Registration` is just the local `ServiceInstance`, whereas the `DiscoveryClient` provides the API to find remote `ServiceInstance`s.
 Furthermore, it is the `ServiceInstance` which provides us with the required information (e.g. the URI) to retrieve a node's capabilities.
 
