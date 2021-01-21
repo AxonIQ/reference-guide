@@ -28,7 +28,7 @@ Furthermore, it is the `ServiceInstance` which provides us with the required inf
 
 > **Spring Cloud's Heartbeat Requirement**
 >
-> When using the `SpringCloudCommandRouter`, make sure that your Spring application has heartbeat events enabled.
+> When using the `SpringCloudCommandRouter`, make sure your Spring application has heartbeat events enabled.
 > The heartbeat events published by a Spring Cloud application are the trigger to check if the set of `ServiceInstance`s from the `DiscoveryClient` has changed.
 > On top of that it is used to validate whether the command routing capabilities for known nodes has been altered.
 >
