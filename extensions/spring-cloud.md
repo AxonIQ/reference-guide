@@ -29,7 +29,7 @@ Furthermore, it is the `ServiceInstance` which provides us with the required inf
 > **Spring Cloud's Heartbeat Requirement**
 >
 > When using the `SpringCloudCommandRouter`, make sure your Spring application has heartbeat events enabled.
-> The heartbeat events published by a Spring Cloud application are the trigger to check if the set of `ServiceInstance`s from the `DiscoveryClient` has changed.
+> The heartbeat events published by a Spring Cloud application are the trigger to check if the set of `ServiceInstance`s from the `DiscoveryClient` has been changed.
 > Additionally, it is used to validate whether the command routing capabilities for known nodes has been altered.
 >
 > Thus, if heartbeat events are disabled, your instance will no longer be updated with the current command routing capabilities.
@@ -67,7 +67,7 @@ There are three hard requirements when creating this service and one optional co
 
 1. Local `CommandBus` - This "local segment" is the command bus which dispatches commands into the local JVM. It is thus invoked when the `SpringHttpCommandBusConnector` receives a command from the outside, or if it receives a command which is meant for itself.
 2. `RestOperations` - The service used to POST a command message to another instance. In most situations the `RestTemplate` is used for this.
-3. `Serializer` - The serializer is used to de-/serialize the command messages before they are sent over or when they are received.
+3. `Serializer` - The serializer is used to serialize the command messages before they are sent over and deserialize when they are received.
 4. `Executor` (optional) - The `Executor` is used to handle incoming commands and to dispatch commands. Defaults to a `DirectExecutor` instance.
 
 ## Configuring this Extension
@@ -75,7 +75,7 @@ There are three hard requirements when creating this service and one optional co
 Chances are high that you will be using Spring Boot if you are also using Spring Cloud.
 As configuring goes, this would opt for usage of the `axon-springcloud-spring-boot-starter` dependency to automatically retrieve all required beans.
 In either case, your application should be marked to enable it as a discoverable service through Spring Cloud.
-This can for example be done by annotating the main class with `@EnableDiscoveryClient`. 
+This can, for example, be done by annotating the main class with `@EnableDiscoveryClient`. 
 
 There are still quite a few customizable components.
 For some suggestions, take a look at the following examples:
