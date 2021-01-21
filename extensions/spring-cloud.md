@@ -9,7 +9,7 @@ An example implementations is the Netflix' [Eureka Discovery/Eureka Server](http
 To use the Spring Cloud components from Axon, make sure the `axon-springcloud` module is available on the classpath.
 Easiest would be to include the Spring Cloud starter (`axon-springcloud-spring-boot-starter`) from this extension to your project.
 
-Giving a description of every Spring Cloud implementation would push this reference guide to far. 
+Giving a description of every Spring Cloud implementation would push this reference guide too far. 
 For information on any of the Spring Cloud implementation options out there, we refer to their respective documentations.
 
 The Spring Cloud connector setup is a combination of the `SpringCloudCommandRouter` and a `SpringHttpCommandBusConnector`.
