@@ -46,7 +46,7 @@ There are decorators present for the `CapabilityDiscoveryMode`, providing two ad
 2. `AcceptAllCommandsDiscoveryMode` - a `CapabilityDiscoveryMode` decorator which regardless of what _this_ instance can handle as commands, state it can handle anything. This decorator comes in handy if the nodes in the system are homogeneous (aka, everybody can handle the same set of commands). 
 
 The `Registration`, `DiscoveryClient` and `CapabilityDiscoveryMode` are arguably the heart of the `SpringCloudCommandRouter`.
-There are however a couple of additional things you can configure for this router, which are the following:
+There are, however, a couple of additional things you can configure for this router, which are the following:
 
 * `RoutingStrategy` - The component in charge of deciding which of the nodes receives the commands consistently. By default a `AnnotationRoutingStrategy` is used (see [Distributing the Command Bus](../axon-framework/axon-framework-commands/implementations.md#distributedcommandbus) for more).
 * A `ServiceInstance` filter - This `Predicate` is used to filter out `ServiceInstance`s retrieved through the `DiscoveryClient`. For example allows the removal of instances which are known to not handle any command messages. This might be useful if you've got several services within the Spring Cloud Discovery Service set up which you do not want to take into account for command handling, ever.
