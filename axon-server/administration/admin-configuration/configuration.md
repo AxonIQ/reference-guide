@@ -360,6 +360,13 @@ A list of all the configuration properties by area is denoted below. Unless expl
       style="text-align:left">32767</td>
     </tr>
     <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">enterprise.default-index-type</td>
+      <td style="text-align:left">(Since 4.4.7, EE only) Sets the default index type to be used for new contexts. Values are JUMP_SKIP_INDEX and BLOOM_FILTER_INDEX.</td>
+      <td
+      style="text-align:left">JUMP_SKIP_INDEX</td>
+    </tr>
+    <tr>
       <td style="text-align:left"><em><b>Logging</b></em>
       </td>
       <td style="text-align:left"></td>
@@ -1066,6 +1073,43 @@ A list of all the configuration properties by area is denoted below. Unless expl
         any updates. After that it will check every &quot;rate&quot; milliseconds.</td>
       <td
       style="text-align:left">10000</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">command-cache-capacity</td>
+      <td style="text-align:left">Limits the total number of pending commands on an Axon Server node. If it is set to 0, the 
+limit is determined dynamically based on the maximum memory available to the JVM.</td>
+      <td style="text-align:left">0</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">query-cache-capacity</td>
+      <td style="text-align:left">Limits the total number of pending queries on an Axon Server node. If it is set to 0, the 
+limit is determined dynamically based on the maximum memory available to the JVM.</td>
+      <td style="text-align:left">0</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">messages.context-buffer-limit</td>
+      <td style="text-align:left">(Since 4.4.8) Limits the total number of pending commands or queries per context on an Axon Server node. 
+If less than 0, there is no limit. 
+      <td style="text-align:left">-1</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">query-handler-selector</td>
+      <td style="text-align:left">(Since 4.4.10) Determines how Axon Server distributes queries over instances of the same application. 
+By default, it will favor instances that give a faster response. Set to "round-robin" to distribute in a round robin way.</td>
+      <td
+      style="text-align:left">metrics</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">metrics-query-handler-selector.min-requests</td>
+      <td style="text-align:left">(Since 4.4.10) Used in conjunction with the query-handler-selector set to "metric". Determines the 
+minimum number of queries to be set to each instance of an application, before the router will distribute based on the metrics.</td>
+      <td
+      style="text-align:left">20</td>
     </tr>
     <tr>
       <td style="text-align:left"><em><b>Recovery</b></em>
