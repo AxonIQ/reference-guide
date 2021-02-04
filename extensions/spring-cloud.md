@@ -10,7 +10,7 @@ To use the Spring Cloud components from Axon, make sure the `axon-springcloud` m
 The easiest way is to include the Spring Cloud starter (`axon-springcloud-spring-boot-starter`) from this extension to your project.
 
 Giving a description of every Spring Cloud implementation would push this reference guide too far. 
-For information on any of the Spring Cloud implementation options out there, we refer to their respective documentations.
+For information on other Spring Cloud implementation options out there, please refer to their respective documentations.
 
 The Spring Cloud connector setup is a combination of the `SpringCloudCommandRouter` and a `SpringHttpCommandBusConnector`.
 The former is the `CommandRouter` and latter the `CommandBusConnector`, both used by the `DistributedCommandBus` to enable command distribution.
