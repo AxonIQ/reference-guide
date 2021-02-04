@@ -22,3 +22,15 @@ When using the [Kubernetes](https://spring.io/projects/spring-cloud-kubernetes) 
 
 The `SpringCloudCommandRouter` failed to correctly connect to a Spring Cloud Discovery Service if the node did not contain any Command Handler methods. This undesired behaviour was marked by user "travikk" and made more lenient under [this](https://github.com/AxonFramework/extension-springcloud/issues/1).
 
+### Spring Cloud 4.4
+
+This release has seen a bunch of adjustments towards the Spring Cloud extension, which can be grouped into two categories.
+Firstly, the introduction of the `CapabilityDiscoveryMode` and secondly the automatic process added to this project:
+
+* Introduced GitHub Actions to build, test and push snapshots of the Spring Cloud Extension, as has been marked in pull request [#68](https://github.com/AxonFramework/extension-springcloud/pull/68). 
+* Dependabot was introduced, ensuring all versions will be as up to date as possible.
+* JUnit4 has been removed entirely, in favor of JUnit 5.
+* The `CapabilityDiscoveryMode` mode has been introduced through issue [#23](https://github.com/AxonFramework/extension-springcloud/issues/23).
+  This approach allows for more flexibility when it comes to defining how command routing information should be retrieved and shared.
+
+For a full list of all the changes, please check the [release notes](https://github.com/AxonFramework/extension-springcloud/releases/tag/axon-springcloud-4.4).
