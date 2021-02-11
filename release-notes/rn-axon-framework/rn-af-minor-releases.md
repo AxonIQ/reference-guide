@@ -4,6 +4,22 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.4_
 
+### Release 4.4.7
+
+* Contributor "krosenvold" noticed that the SQL to retrieve a stream of events was performed twice in quick concession.
+  The provided solution (in pull request [#1689](https://github.com/AxonFramework/AxonFramework/pull/1689)) would resolve this, but the problem was spotted to originate elsewhere.
+  Commit [16b7152](https://github.com/AxonFramework/AxonFramework/commit/16b71529472ddb7345bd247ee5dd930dc6bd2206) saw an end to this occurrence by making a minor tweak in the `EmbeddedEventStore`.
+
+* As rightfully noticed by user "pepperbob", there was a type discrepancy when reading events through a tracking token.
+  An event would always become a `DomainEventMessage` when read through the `EventStorageEngine`, whereas it might original have been a regular `EventMessage`.
+  The problem has been fixed in commit [c61a95b](https://github.com/AxonFramework/AxonFramework/commit/c61a95bff14cda0ed3fea154747067560a670b4d).
+  Furthermore, the entire description of the issue can be found [here](https://github.com/AxonFramework/AxonFramework/issues/1697).
+  
+* Through use of the `AxonServerQueryBus`, a cancelled subscription query was wrongfully completed normally where it should complete exceptionally.
+  This problem is marked and resolved under pull request [#1695](https://github.com/AxonFramework/AxonFramework/pull/1695).
+
+For a detailed perspective on the release notes, please check [this](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.4.7) page. 
+
 ### Release 4.4.6
 
 * Contributor "Rafaesp" noted that a registered `CommandHandlerInterceptor` in the `AggregateTestFixture` could be invoked more often than desired.
