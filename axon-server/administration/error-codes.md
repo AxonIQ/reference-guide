@@ -455,6 +455,66 @@ This page depicts the various Error codes that Axon Server will return in the ca
       </td>
     </tr>
     <tr>
+      <td style="text-align:left"><em>Extension Errors</em>
+      </td>
+      <td style="text-align:left"></td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-3004</td>
+      <td style="text-align:left">
+        <p><b>EVENT_REJECTED_BY_INTERCEPTOR</b>
+        </p>
+        <p>This error is returned when an interceptor in an extension rejects an event.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-3005</td>
+      <td style="text-align:left">
+        <p><b>SNAPSHOT_REJECTED_BY_INTERCEPTOR</b>
+        </p>
+        <p>This error is returned when an interceptor in an extension rejects a snapshot.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-4004</td>
+      <td style="text-align:left">
+        <p><b>COMMAND_REJECTED_BY_INTERCEPTOR</b>
+        </p>
+        <p>This error is returned when an interceptor in an extension rejects a command.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-5004</td>
+      <td style="text-align:left">
+        <p><b>QUERY_REJECTED_BY_INTERCEPTOR</b>
+        </p>
+        <p>This error is returned when an interceptor in an extension rejects a query.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-5005</td>
+      <td style="text-align:left">
+        <p><b>SUBSCRIPTION_QUERY_REJECTED_BY_INTERCEPTOR</b>
+        </p>
+        <p>This error is returned when an interceptor in an extension rejects a subscription query request.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-6100</td>
+      <td style="text-align:left">
+        <p><b>EXCEPTION_IN_INTERCEPTOR</b>
+        </p>
+        <p>This error is returned when an interceptor in an extension throws an exception.</p>
+      </td>
+    </tr>
+    <tr>
       <td style="text-align:left"><em>Backup Errors</em>
       </td>
       <td style="text-align:left"></td>

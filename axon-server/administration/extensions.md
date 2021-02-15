@@ -25,7 +25,7 @@ If the uploaded extension has the same name and version as an already existing e
 
 To upload an extension through the command-line interface, use:
 ```bash
-java -jar axonserver-cli.jar upload-extension -f <file> [-t <token>]
+java -jar axonserver-cli.jar upload-extension -f [file] 
 ```
 ### Configuring an extension
 If your extension contains registered services of the type _io.axoniq.axonserver.extensions.ConfigurationListener_, you can configure the extension through Axon Server. In the UI you will see a form with the properties that are defined in the ConfigurationListeners, initially filled with the default values. Note that you set the values per context.
@@ -54,7 +54,7 @@ public class SampleConfigurationListener implements ConfigurationListener {
 
     private final Configuration configuration  = new Configuration(
             asList(
-                    ExtensionPropertyDefinition.newBuilder("mypropid1", "My first property").build()
+                    ExtensionPropertyDefinition.newBuilder("mypropid1", "My first property").build(),
                     ExtensionPropertyDefinition.newBuilder("mypropid2", "My second property").build()
             ),
             "myname"
@@ -90,11 +90,11 @@ And use the following command-line command:
 ```bash
 java -jar axonserver-cli.jar configure-extension -e <extension> -v <version> -c <context> -f <filename>
 ```
-### Starting an extension
+### Activating an extension
 
-You can start an extension through the UI or use the following command-line command:
+You can activate an extension through the UI or use the following command-line command:
 ```bash
-java -jar axonserver-cli.jar start-extension -e <extension> -v <version> -c <context> 
+java -jar axonserver-cli.jar activate-extension -e <extension> -v <version> -c <context> 
 ```
 
 ### Pausing an extension
