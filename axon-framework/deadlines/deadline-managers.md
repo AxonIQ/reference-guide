@@ -75,6 +75,8 @@ We have now seen how to schedule a deadline. When the scheduled time is met, the
 > When scheduling a deadline, the context from where it was scheduled is taken into account. This means a scheduled deadline will only be triggered in its originating context. Thus any `@DeadlineHandler` annotated function you wish to be called on a met deadline, must be in the same Aggregate/Saga from which is was scheduled.
 >
 > Axon calls this context a `Scope`. If necessary, implementing and providing your own `Scope` will allow you to schedule deadlines in your custom, 'scoped' components.
+> 
+> A Saga can end its lifecycle when @EndSaga is added on a deadline handler. 
 
 A `@DeadlineHandler` is matched based on the deadline name and the deadline payload.
 

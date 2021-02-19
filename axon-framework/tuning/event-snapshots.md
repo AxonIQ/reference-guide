@@ -48,6 +48,9 @@ The `AggregateSnapshotter` provides one more property:
 > For both non-Spring and Spring users a default `Snapshotter` is provided.
 > The former uses the Configuration API to provide a default `AggregateSnapshotter`, retrieving the aggregate factories from the registered Aggregates / `AggregateConfiguration`s.
 > Spring uses a `SpringAggregateSnapshotter`, which will automatically looks up the right `AggregateFactory` instances from the application context when a snapshot needs to be created.
+>
+> The @Revision is a dedicated `SnapshotFilter` implementation that checks for any revisions in the snapshot. This is used to filter out non-matching snapshotters from the `Repository`'s loading process. 
+> When the @Revision is used on an aggregate the snapshots will be filtered out automatically. 
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}

@@ -179,6 +179,10 @@ public void configureSagaEventProcessing(EventProcessingConfigurer config) {
 {% endtab %}
 {% endtabs %}
 
+> Note
+>
+> The Saga `TrackingEventProcessor` will by default start its token at the head of the stream.
+
 ## Error Handling
 
 Errors are inevitable. Depending on where they happen, you may want to respond differently.
