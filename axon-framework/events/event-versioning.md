@@ -13,6 +13,13 @@ Upcasters are classes that take one input event of revision `x` and output zero 
 > **Note**
 >
 > Perhaps the greatest benefit of upcasting is that it allows you to do non-destructive refactoring. In other words, the complete event history remains intact.
+>
+> **Conversion Notice**
+>
+> Sometimes the event store can contain events in different serialized formats, since differing Serializer implementations where used.
+> 
+> During upcasting it is important to note what the format is of the `IntermediateEventRepresentation`, as it influences the upcaster solution provided.
+> To validate if the intermediate representation supports a given type, you can invoke `IntermediateEventRepresentation#canConvertDataTo(Class<?>)`.
 
 In this section we'll explain how to write an upcaster, describe the different \(abstract\) implementations of the Upcaster that come with Axon, and explain how the serialized representations of events affects how upcasters are written.
 

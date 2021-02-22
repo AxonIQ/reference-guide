@@ -37,9 +37,13 @@ By default, `@CommandHandler` annotated methods allow the following parameter ty
 
   For more specifics on this it is recommend to read [this](message-intercepting.md#commandhandlerinterceptor-annotation) section.
 
-* If the application is run in a Spring environment, any Spring Bean can be resolved.
+* If the application is run in a Spring environment, any Spring Bean can be resolved. 
+  
+> If Spring beans are resolved for message handling methods `@Autowired` annotation should be used to get the revamped solution. 
+> 
+> The `@Qualifier` annotation can be used in conjunction with this to further specify which Bean should be resolved.
 
-  Note that the `@Qualifier` annotation can be used in conjunction with this to further specify which Bean should be resolved.
+* The newly added `ScopeDescriptor` can only be implemented for Aggregates and Sagas at this time.
 
 ## Supported Parameters for Query Handlers
 
