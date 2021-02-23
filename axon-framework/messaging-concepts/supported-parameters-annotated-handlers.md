@@ -43,7 +43,7 @@ By default, `@CommandHandler` annotated methods allow the following parameter ty
 > 
 > The `@Qualifier` annotation can be used in conjunction with this to further specify which Bean should be resolved.
 
-* The newly added `ScopeDescriptor` can only be implemented for Aggregates and Sagas at this time.
+* A parameter of type `ScopeDescriptor` can be resolved. This can be used when scheduling a deadline through the `DeadlineManager`. Note that the `ScopeDescriptor` only makes sense from within the scope of an Aggregate or Saga.
 
 ## Supported Parameters for Query Handlers
 
@@ -71,4 +71,3 @@ By default, `@QueryHandler` annotated methods allow the following parameter type
 * If the application is run in a Spring environment, any Spring Bean can be resolved.
 
   Note that the `@Qualifier` annotation can be used in conjunction with this to further specify which Bean should be resolved.
-
