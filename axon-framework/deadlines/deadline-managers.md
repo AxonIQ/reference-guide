@@ -76,7 +76,7 @@ We have now seen how to schedule a deadline. When the scheduled time is met, the
 >
 > Axon calls this context a `Scope`. If necessary, implementing and providing your own `Scope` will allow you to schedule deadlines in your custom, 'scoped' components.
 > 
-> A Saga can end its lifecycle when @EndSaga is added on a deadline handler. 
+> A Saga can end its lifecycle when `@EndSaga` is added on a deadline handler. 
 
 A `@DeadlineHandler` is matched based on the deadline name and the deadline payload.
 
@@ -116,4 +116,3 @@ public void handle(PublishTime cmd) {
 ```
 
 Note that the current timestamp is automatically added to the EventMessage. If handlers only need to rely on the timestamp the event was published, they can access that timestamp directly, as described in [Handling Events](../events/event-handlers.md).
-
