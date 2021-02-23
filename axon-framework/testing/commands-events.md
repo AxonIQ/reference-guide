@@ -61,6 +61,32 @@ public class GiftCardTest {
 }
 ```
 
+> **Aggregate Lifecycle Extension**
+>
+> Alternatively, JUnit 5 users can use `StubAggregateLifecycleExtension` in order to directly attach to the aggregate lifecycle.` 
+> This might be useful if you prefer not to use the `AggregateTestFixture`
+> 
+> ```java
+>
+> public class AggregateTest {
+>
+> @RegisterExtension
+> static StubAggregateLifecycleExtension testSubject = new StubAggregateLifecycleExtension();
+> 
+>    @Test
+>    void test() {
+>        apply(new Event(...));
+>
+>        assertEquals(1, testSubject.getAppliedEvents().size());
+>    }  
+>  
+>}
+>```
+
+
+ 
+
+
 The "given-when-then" test fixture defines three stages: configuration, execution and validation. Each of these stages is represented by a different interface: `FixtureConfiguration`, `TestExecutor` and `ResultValidator`, respectively.
 
 > **Fluent Interface**
