@@ -16,7 +16,7 @@ Upcasters are classes that take one input event of revision `x` and output zero 
 >
 > **Conversion Notice**
 >
-> Sometimes the event store can contain events in different serialized formats, since differing Serializer implementations where used.
+> Sometimes the event store can contain events in different serialized formats, since differing `Serializer` implementations where used.
 > 
 > During upcasting it is important to note what the format is of the `IntermediateEventRepresentation`, as it influences the upcaster solution provided.
 > To validate if the intermediate representation supports a given type, you can invoke `IntermediateEventRepresentation#canConvertDataTo(Class<?>)`.
@@ -143,4 +143,3 @@ public class AxonConfiguration {
     }
 }
 ```
-
