@@ -63,7 +63,7 @@ public class GiftCardTest {
 
 > **Aggregate Lifecycle Extension**
 >
-> Alternatively, JUnit 5 users can use `StubAggregateLifecycleExtension` in order to directly attach to the aggregate lifecycle.` 
+> Alternatively, JUnit 5 users can use `StubAggregateLifecycleExtension` in order to directly attach to the aggregate lifecycle. 
 > This might be useful if you prefer not to use the `AggregateTestFixture`
 > 
 > ```java
