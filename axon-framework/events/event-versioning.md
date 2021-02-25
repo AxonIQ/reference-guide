@@ -13,13 +13,6 @@ Upcasters are classes that take one input event of revision `x` and output zero 
 > **Note**
 >
 > Perhaps the greatest benefit of upcasting is that it allows you to do non-destructive refactoring. In other words, the complete event history remains intact.
->
-> **Conversion Notice**
->
-> Sometimes the event store can contain events in different serialized formats, since differing `Serializer` implementations where used.
-> 
-> During upcasting it is important to note what the format is of the `IntermediateEventRepresentation`, as it influences the upcaster solution provided.
-> To validate if the intermediate representation supports a given type, you can invoke `IntermediateEventRepresentation#canConvertDataTo(Class<?>)`.
 
 In this section we'll explain how to write an upcaster, describe the different \(abstract\) implementations of the Upcaster that come with Axon, and explain how the serialized representations of events affects how upcasters are written.
 
@@ -42,6 +35,13 @@ To allow an upcaster to see what version of serialized object they are receiving
 Axon's upcasters do not work with the `EventMessage` directly, but with an `IntermediateEventRepresentation`. The `IntermediateEventRepresentation` provides functionality to retrieve all necessary fields to construct an `EventMessage` \(and thus a upcasted `EventMessage` too\), together with the actual _upcast_ functions. These upcast functions by default only allow the adjustment of the event's payload, payload type and additions to the event's metadata. The actual representation of the events in the upcast function may vary based on the event serializer used or the desired form to work with, so the upcast function of the `IntermediateEventRepresentation` allows the selection of the expected representation type. The other fields, for example the message/aggregate identifier, aggregate type, timestamp etc. are not adjustable by the `IntermediateEventRepresentation`. Adjusting those fields is not the intended work for an upcaster. As such, those options are not provided by the provided `IntermediateEventRepresentation` implementations.
 
 The basic `Upcaster` interface for events in the Axon Framework works on a `Stream` of `IntermediateEventRepresentations` and returns a `Stream` of `IntermediateEventRepresentations`. The upcasting process thus does not directly return the end result of the introduced upcast functions, but chains every upcasting function from one revision to another together by stacking `IntermediateEventRepresentations`. Once this process has taken place and the end result is pulled from them, that is when the actual upcasting function is performed on the serialized event.
+
+> **Conversion Notice**
+>
+> Sometimes the event store can contain events in different serialized formats, since differing `Serializer` implementations where used.
+>
+> During upcasting it is important to note what the format is of the `IntermediateEventRepresentation`, as it influences the upcaster solution provided.
+> To validate if the intermediate representation supports a given type, you can invoke `IntermediateEventRepresentation#canConvertDataTo(Class<?>)`.
 
 ### Provided abstract Upcaster implementations
 

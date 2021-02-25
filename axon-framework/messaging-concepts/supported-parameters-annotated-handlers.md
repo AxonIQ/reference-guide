@@ -68,6 +68,7 @@ By default, `@QueryHandler` annotated methods allow the following parameter type
   This is useful if a method needs several meta data fields, or other properties of the wrapping message.
 
 * A parameter of type `String` annotated with `@MessageIdentifier` will resolve the identifier of the `QueryMessage` being handled
-* If the application is run in a Spring environment, any Spring Bean can be resolved.
 
-  Note that the `@Qualifier` annotation can be used in conjunction with this to further specify which Bean should be resolved.
+> If Spring beans are resolved for message handling methods `@Autowired` annotation should be used to get the revamped solution.
+> 
+> Note that the `@Qualifier` annotation can be used in conjunction with this to further specify which Bean should be resolved.
