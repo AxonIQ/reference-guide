@@ -36,6 +36,13 @@ Axon's upcasters do not work with the `EventMessage` directly, but with an `Inte
 
 The basic `Upcaster` interface for events in the Axon Framework works on a `Stream` of `IntermediateEventRepresentations` and returns a `Stream` of `IntermediateEventRepresentations`. The upcasting process thus does not directly return the end result of the introduced upcast functions, but chains every upcasting function from one revision to another together by stacking `IntermediateEventRepresentations`. Once this process has taken place and the end result is pulled from them, that is when the actual upcasting function is performed on the serialized event.
 
+> **Conversion Notice**
+>
+> Sometimes the event store can contain events in different serialized formats, since differing `Serializer` implementations where used.
+>
+> During upcasting it is important to note what the format is of the `IntermediateEventRepresentation`, as it influences the upcaster solution provided.
+> To validate if the intermediate representation supports a given type, you can invoke `IntermediateEventRepresentation#canConvertDataTo(Class<?>)`.
+
 ### Provided abstract Upcaster implementations
 
 As described earlier, the `Upcaster` interface does not upcast a single event; it requires a `Stream<IntermediateEventRepresentation>` and returns one. However, an upcaster is usually written to adjust a single event out of this stream. More elaborate upcasting setups are also imaginable. For example from one event to multiple, or an upcaster which pulls state from an earlier event and pushes it in a later one. This section describes the currently provided \(abstract\) implementations of event upcasters which a user can extend to add their own desired upcast functionality.
@@ -136,4 +143,3 @@ public class AxonConfiguration {
     }
 }
 ```
-

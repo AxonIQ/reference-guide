@@ -48,6 +48,9 @@ The `AggregateSnapshotter` provides one more property:
 > For both non-Spring and Spring users a default `Snapshotter` is provided.
 > The former uses the Configuration API to provide a default `AggregateSnapshotter`, retrieving the aggregate factories from the registered Aggregates / `AggregateConfiguration`s.
 > Spring uses a `SpringAggregateSnapshotter`, which will automatically looks up the right `AggregateFactory` instances from the application context when a snapshot needs to be created.
+>
+> The `@Revision` annotation has a dedicated, automatically configured `SnapshotFilter` implementation. This implementation is used to filter out non-matching snapshots from the `Repository`'s loading process. 
+> So when the `@Revision` annotation is used on an aggregate the snapshots will be filtered out automatically. 
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -189,4 +192,3 @@ Here are a few guidelines that help you get the most out of your caching solutio
 * Cache data in-memory.
 
   For true optimization, caches should keep data in-memory \(and preferably on-heap\) for best performance. This prevents the need to \(re\)serialize aggregates when storing to disk and even off-heap.
-

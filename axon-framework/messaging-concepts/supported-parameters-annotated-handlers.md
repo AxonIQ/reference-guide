@@ -37,9 +37,13 @@ By default, `@CommandHandler` annotated methods allow the following parameter ty
 
   For more specifics on this it is recommend to read [this](message-intercepting.md#commandhandlerinterceptor-annotation) section.
 
-* If the application is run in a Spring environment, any Spring Bean can be resolved.
+* If the application is run in a Spring environment, any Spring Bean can be resolved. 
+  
+> If Spring beans are resolved for message handling methods `@Autowired` annotation should be used to get the revamped solution. 
+> 
+> The `@Qualifier` annotation can be used in conjunction with this to further specify which Bean should be resolved.
 
-  Note that the `@Qualifier` annotation can be used in conjunction with this to further specify which Bean should be resolved.
+* A parameter of type `ScopeDescriptor` can be resolved. This can be used when scheduling a deadline through the `DeadlineManager`. Note that the `ScopeDescriptor` only makes sense from within the scope of an Aggregate or Saga.
 
 ## Supported Parameters for Query Handlers
 
@@ -64,7 +68,7 @@ By default, `@QueryHandler` annotated methods allow the following parameter type
   This is useful if a method needs several meta data fields, or other properties of the wrapping message.
 
 * A parameter of type `String` annotated with `@MessageIdentifier` will resolve the identifier of the `QueryMessage` being handled
-* If the application is run in a Spring environment, any Spring Bean can be resolved.
 
-  Note that the `@Qualifier` annotation can be used in conjunction with this to further specify which Bean should be resolved.
-
+> If Spring beans are resolved for message handling methods `@Autowired` annotation should be used to get the revamped solution.
+> 
+> Note that the `@Qualifier` annotation can be used in conjunction with this to further specify which Bean should be resolved.
