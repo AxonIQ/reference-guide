@@ -179,7 +179,7 @@ public void configureSagaEventProcessing(EventProcessingConfigurer config) {
 {% endtab %}
 {% endtabs %}
 
-> A new Saga's Event Stream position
+> **A new Saga's Event Stream position**
 >
 > The Saga `TrackingEventProcessor` will by default start its token at the head of the stream.
 
