@@ -52,10 +52,6 @@ Axon Framework has support for JSR 303 Bean Validation based validation. This al
 
 The `BeanValidationInterceptor` also implements `MessageHandlerInterceptor`, allowing you to configure it as a handler interceptor as well.
 
-> **Note about Javax and Jakarta**
-> 
-> It is important to note that this version of the `BeanValidationInterceptor` is only usable with `javax`. If you are moving to a `jakarta` approach of bean validation, you should use the `JakartaBeanValidationInterceptor`. 
-
 ### Command Handler Interceptors
 
 Message handler interceptors can take action both before and after command processing. Interceptors can even block command processing altogether, for example for security reasons.
