@@ -177,6 +177,51 @@ A quick summary of the various commands is depicted below. Each command has a sp
     </tr>
     <tr>
       <td style="text-align:left">
+        <p><a href="command-line-interface.md#plugins"><em><b>Plugins</b></em></a>
+        </p>
+        <p><em>(Enterprise Only)</em>
+        </p>
+      </td>
+      <td style="text-align:left"></td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">plugins</td>
+      <td style="text-align:left">Lists all details of installed plugins</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">upload-plugin</td>
+      <td style="text-align:left">Upload a plugin package</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">configure-plugin</td>
+      <td style="text-align:left">Configures a plugin for a context</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">active-plugin</td>
+      <td style="text-align:left">Activates a plugin for a context</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">pause-plugin</td>
+      <td style="text-align:left">Temporarily stops a plugin for a context</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">unregister-plugin</td>
+      <td style="text-align:left">Unregisters a plugin for a context</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">delete-plugin</td>
+      <td style="text-align:left">Deletes a plugin package</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
         <p><em><b>Other</b></em>
         </p>
         <p><em>(Standard Only)</em>
@@ -613,14 +658,14 @@ _Optional parameters_
 * _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
 * _** --preserve-event-store**_  option to keep the event store data (false by default).
 
-### Extensions
+### Plugins <a id="plugins"></a>
 
-_**extensions**_
+_**plugins**_
 
-Lists all the installed extensions and their status per context.
+Lists all the installed plugins and their status per context.
 
 ```text
-$ java -jar ./axonserver-cli.jar extensions [-o json]
+$ java -jar ./axonserver-cli.jar plugins [-o json]
 ```
 
 _Optional parameters_
@@ -629,34 +674,34 @@ _Optional parameters_
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
 * _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
 
-_**upload-extension**_
+_**upload-plugin**_
 
-Uploads a new extension package to Axon Server. In Enterprise Edition this command needs to be targetted to an _admin node.
+Uploads a new plugin package to Axon Server. In Enterprise Edition this command needs to be targetted to an _admin node.
 
 ```text
-$ java -jar ./axonserver-cli.jar upload-extensions -f <file>
+$ java -jar ./axonserver-cli.jar upload-plugin -f <file>
 ```
 _Mandatory parameters_
 
-* _**-f**_ refers to the jar file containing the OSGi bundle for the extension 
+* _**-f**_ refers to the jar file containing the OSGi bundle for the plugin 
 
 _Optional parameters_
 
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
 * _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
 
-_**configure-extension**_
+_**configure-plugin**_
 
-Configures an extension for a specific context.
+Configures a plugin for a specific context.
 
 ```text
-$ java -jar ./axonserver-cli.jar configure-extensions -e <extension> -v <version> -c <context> [ --prop <property> | -f <file]
+$ java -jar ./axonserver-cli.jar configure-plugin -p <plugin> -v <version> -c <context> [ --prop <property> | -f <file]
 ```
 _Mandatory parameters_
 
-* _**-e**_ refers to the name of the extension
-* _**-v**_ refers to the version of the extension
-* _**-c**_ refers to the context where the configuration of the extension applies
+* _**-p**_ refers to the name of the plugin
+* _**-v**_ refers to the version of the plugin
+* _**-c**_ refers to the context where the configuration of the plugin applies
 
 _Optional parameters_
 
@@ -665,71 +710,71 @@ _Optional parameters_
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
 * _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
 
-_**activate-extension**_
+_**activate-plugin**_
 
-Activates an extension for a specific context.
+Activates a plugin for a specific context.
 
 ```text
-$ java -jar ./axonserver-cli.jar activate-extensions -e <extension> -v <version> -c <context> 
+$ java -jar ./axonserver-cli.jar activate-plugin -p <plugin> -v <version> -c <context> 
 ```
 _Mandatory parameters_
 
-* _**-e**_ refers to the name of the extension
-* _**-v**_ refers to the version of the extension
-* _**-c**_ refers to the context for which to activate the extension
+* _**-p**_ refers to the name of the plugin
+* _**-v**_ refers to the version of the plugin
+* _**-c**_ refers to the context for which to activate the plugin
 
 _Optional parameters_
 
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
 * _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
 
-_**pause-extension**_
+_**pause-plugin**_
 
-Pauses an extension for a specific context.
+Pauses an plugin for a specific context.
 
 ```text
-$ java -jar ./axonserver-cli.jar pause-extensions -e <extension> -v <version> -c <context> 
+$ java -jar ./axonserver-cli.jar pause-plugin -p <plugin> -v <version> -c <context> 
 ```
 _Mandatory parameters_
 
-* _**-e**_ refers to the name of the extension
-* _**-v**_ refers to the version of the extension
-* _**-c**_ refers to the context for which to pause the extension
+* _**-p**_ refers to the name of the plugin
+* _**-v**_ refers to the version of the plugin
+* _**-c**_ refers to the context for which to pause the plugin
 
 _Optional parameters_
 
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
 * _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
 
-_**unregister-extension**_
+_**unregister-plugin**_
 
-Removes an extension for a specific context.
+Removes a plugin for a specific context.
 
 ```text
-$ java -jar ./axonserver-cli.jar unregister-extensions -e <extension> -v <version> -c <context> 
+$ java -jar ./axonserver-cli.jar unregister-plugin -p <plugin> -v <version> -c <context> 
 ```
 _Mandatory parameters_
 
-* _**-e**_ refers to the name of the extension
-* _**-v**_ refers to the version of the extension
-* _**-c**_ refers to the context for which to unregister the extension
+* _**-p**_ refers to the name of the plugin
+* _**-v**_ refers to the version of the plugin
+* _**-c**_ refers to the context for which to unregister the plugin
 
 _Optional parameters_
 
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
 * _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
 
-_**delete-extension**_
+_**delete-v**_
 
-Removes an extension from all Axon Server nodes and for all contexts.
+Removes an plugin from all Axon Server nodes and for all contexts.
 
 ```text
-$ java -jar ./axonserver-cli.jar unregister-extensions -e <extension> -v <version>
+$ java -jar ./axonserver-cli.jar unregister-plugin -p <plugin> -v <version>
 ```
 _Mandatory parameters_
 
-* _**-e**_ refers to the name of the extension
-* _**-v**_ refers to the version of the extension
+* _**-p**_ refers to the name of the v
+* _**-v**_ refers to the version of the plugin
 
 _Optional parameters_
 
