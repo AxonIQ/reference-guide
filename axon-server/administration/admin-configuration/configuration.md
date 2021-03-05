@@ -1126,7 +1126,7 @@ minimum number of queries to be set to each instance of an application, before t
       style="text-align:left">recovery.json</td>
     </tr>
     <tr>
-      <td style="text-align:left"><em><b>Extensions</b></em>
+      <td style="text-align:left"><em><b>Plugins<a id="plugins"></a></b></em>
       </td>
       <td style="text-align:left"></td>
       <td style="text-align:left"></td>
@@ -1134,28 +1134,28 @@ minimum number of queries to be set to each instance of an application, before t
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">extensions-enabled</td>
-      <td style="text-align:left">Option to disable extension support. Extension support is enabled by default.</td>
+      <td style="text-align:left">plugins-enabled</td>
+      <td style="text-align:left">Option to disable plugin support. Plugin support is <em>enabled</em> by default.</td>
       <td
       style="text-align:left">true</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">extension-package-directory</td>
-      <td style="text-align:left">Directory where Axon Server stores the installed extensions. This directory must be writeable and persistent.</td>
+      <td style="text-align:left">plugin-package-directory</td>
+      <td style="text-align:left">Directory where Axon Server stores the installed plugins. This directory must be writeable and persistent.</td>
       <td
       style="text-align:left">plugins/bundles</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">extension-cache-directory</td>
+      <td style="text-align:left">plugin-cache-directory</td>
       <td style="text-align:left">Cache directory fot the OSGi container. This directory must be writeable.</td>
       <td
       style="text-align:left">plugins/cache</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">extension-clean-policy</td>
+      <td style="text-align:left">plugin-clean-policy</td>
       <td style="text-align:left">Specifies if the OSGi container should clean up its cache directory on restart of the Axon Server node.
 Possible values are "none" and "onFirstInit". 
 </td>

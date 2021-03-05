@@ -14,12 +14,16 @@ Plugins are managed at a context level, you can configure and activate plugins p
 
 Axon Server stores plugins on disk on each node. It is important that the location where the plugins are stored is persistent. By default, Axon Server stores the plugin in the directory plugins/bundles. Apart from this directory, there is also a cache directory used by the OSGi container internally (plugins/cache by default). The cache directory does not need to be persistent, Axon Server reinstalls the configured extensions on restart.
 
+## Plugin development
+
+For more information on plugin development, check the API module in GitHub [https://github.com/AxonIQ/axon-server-plugin-api](https://github.com/AxonIQ/axon-server-plugin-api).
+
 ## Plugin administration
 You can administer plugins through the UI or using the command-line interface.
 
 ### Upload plugin
 
-This uploads aplugin to Axon Server and makes it available for further configuration.
+This uploads a plugin to Axon Server and makes it available for further configuration.
 When you upload the plugin Axon Server will perform some basic validation, to verify that it is a valid OSGi bundle and it can be loaded in the OSGi container.
 If the uploaded plugin has the same name and version as an already existing plugin, it will immediately replace the existing plugin.
 
