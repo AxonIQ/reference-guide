@@ -329,7 +329,9 @@ Splitting and merging is allowed at runtime which allows you to dynamically cont
 
 Tracking processors can use multiple threads to process an event stream. They do so by claiming a segment which is identified by a number. Normally, a single thread will process a single segment.
 
-The number of segments used can be defined. When an event processor starts for the first time, it can initialize a number of segments. This number defines the maximum number of threads that can process events simultaneously. Each node running of a tracking event processor will attempt to start its configured amount of threads to start processing events.
+The number of segments used can be defined. When an event processor starts for the first time, it can initialize a number of segments. This number defines the maximum number of threads that can process events simultaneously. 
+
+Each node running of a tracking event processor will attempt to start its configured amount of threads to start processing events. The TrackingEventProcessor can claim a single segment per thread, if the configured number of threads are less than number of configured segments, some of the events might not be handled. Hence it is recommended to have the number of threads on every node more than or equal to the total number of segments.  
 
 Event handlers may have specific expectations on the ordering of events. If this is the case, the processor must ensure these events are sent to these handlers in that specific order. Axon uses the `SequencingPolicy` for this. The `SequencingPolicy` is a function that returns a value for any given message. If the return value of the `SequencingPolicy` function is equal for two distinct event messages, it means that those messages must be processed sequentially. By default, Axon components will use the `SequentialPerAggregatePolicy`, which makes it so that events published by the same aggregate instance will be handled sequentially.
 
@@ -362,9 +364,9 @@ You can configure the number of threads \(on this instance\) as well as the init
 
 ```text
 axon.eventhandling.processors.name.mode=tracking
-# Sets the number of maximum number threads to start on this node
-axon.eventhandling.processors.name.threadCount=2
-# Sets the initial number of segments (i.e. defines the maximum number of overall threads)
+# Sets the maximum number threads to start on this node
+axon.eventhandling.processors.name.threadCount=5
+# Sets the initial number of segments
 axon.eventhandling.processors.name.initialSegmentCount=4
 ```
 {% endtab %}
