@@ -36,5 +36,5 @@ AggregateConfigurer<GiftCard> configurer = AggregateConfigurer.defaultConfigurat
 
 > **Polymorphic Aggregates in Spring**
 >
-> If you are using Spring, polymorphic hierarchy will be automatically detected based on `@Aggregate` annotations and class hierarchy.
+> If you are using Spring, Axon will automatically detect polymorphic aggregates based on the `@Aggregate` annotations and class hierarchy. The `@Aggregate` annotation needs to be put on the shared parent class that contains the aggregate identifier, as well as every subclass that is a potential instance type of that shared parent class.
 
