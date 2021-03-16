@@ -1,16 +1,43 @@
 # Spring Boot Integration
 
-Axon Framework provides extensive support for Spring, but does not require you to use Spring in order to use Axon. All components can be configured programmatically and do not require Spring on the classpath. However, if you do use Spring, much of the configuration is made easier with the use of Spring's annotation support. Axon provides Spring Boot starters on the top of that, so you can benefit from auto-configuration as well.
+Axon Framework provides extensive support for Spring, but does not require you to use Spring in order to use Axon. All
+components can be configured programmatically and do not require Spring on the classpath. However, if you do use Spring,
+much of the configuration is made easier with the use of Spring's annotation support. Axon provides Spring Boot starters
+on the top of that, so you can benefit from auto-configuration as well.
 
 ## Auto-configuration
 
-Axon's Spring Boot auto-configuration is by far the easiest option to get started configuring your Axon components. By simply declaring dependency to `axon-spring-boot-starter`, Axon will automatically configure the infrastructure components \(command bus, event bus, query bus\), as well as any component required to run and store aggregates and sagas.
+Axon's Spring Boot auto-configuration is by far the easiest option to get started configuring your Axon components. By
+simply declaring dependency to `axon-spring-boot-starter`, Axon will automatically configure the infrastructure
+components \(command bus, event bus, query bus\), as well as any component required to run and store aggregates and
+sagas.
+
+### JPA & Persistence Contexts
+
+With Spring Data-JPA, a JPA Persistence Context is automatically configured. Axon's Spring Boot Autoconfiguration module
+will make sure Axon's JPA Entities are automatically registered with this default context.
+
+However, when you explicitly include certain packages, for example using an `@EntityScan` annotation, this
+autoconfiguration will not happen anymore. If you then wish to use JPA based components from Axon, you will need to make
+sure the right Entities are registered.
+
+To register Axon's JPA Entities, include the relevant packages, as described below:
+
+- `org.axonframework.eventhandling.tokenstore` contains the entities necessary for the TokenStore used by Event
+  Processors.
+- `org.axonframework.modelling.saga.repository.jpa` contains the entities necessary to persist Sagas
+- `org.axonframework.eventsourcing.eventstore.jpa` contains the entities necessary for the JPA Event Storage engine,
+  when using a relational database as the Event Store.
 
 ## Demystifying Axon Spring Boot Starter
 
-With a lot of things happening in the background, it sometimes becomes difficult to understand how an annotation or just including a dependency enables so many features.
+With a lot of things happening in the background, it sometimes becomes difficult to understand how an annotation or just
+including a dependency enables so many features.
 
-`axon-spring-boot-starter` follows general Spring boot convention in structuring the starter. It depends on `axon-spring-boot-autoconfigure` which holds concrete implementation of Axon auto-configuration. When Axon Spring Boot application starts up, it looks for a file named `spring.factories` in the `classpath`. This file is located in the `META-INF` directory of `axon-spring-boot-autoconfigure` module:
+`axon-spring-boot-starter` follows general Spring boot convention in structuring the starter. It depends
+on `axon-spring-boot-autoconfigure` which holds concrete implementation of Axon auto-configuration. When Axon Spring
+Boot application starts up, it looks for a file named `spring.factories` in the `classpath`. This file is located in
+the `META-INF` directory of `axon-spring-boot-autoconfigure` module:
 
 ```text
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
