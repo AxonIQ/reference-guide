@@ -4,6 +4,21 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.4_
 
+### Release 4.4.8
+
+* A bug was noted whenever a query handler returned a `Future`/`CompletableFuture` in combination with a subscription query, with Axon Server as the infrastructure.
+  In this format, Axon would incorrectly use the scatter-gather query for the initial result of the subscription query.
+  Whenever the returned result was completed, this didn't cause any issues. 
+  However, for a `Future`/`CompletableFuture` a `TimeoutException` would be thrown.
+  The issue was luckily easily mitigated by changing the "number of expected results" from within the `QueryRequest` to default to 1 instead of zero.
+  As an effect, the point-to-point would be invoked instead of scatter-gather.
+  For reference, the issue can be found [here](https://github.com/AxonFramework/AxonFramework/issues/1737).
+  
+* Whenever an interface is used as the type of an `@AggregateMember` annotated field, Axon would throw a `NullPointerException`.
+  This is far from friendly, and has been changed towards an `AxonConfigurationException` in pull request [#1742](https://github.com/AxonFramework/AxonFramework/pull/1742).
+
+Note that the named issues comprise the complete changelist for [Axon Framework 4.4.8](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.4.8). 
+
 ### Release 4.4.7
 
 * The [Axon Server Connector Java](https://github.com/AxonIQ/axonserver-connector-java) version 4.4.7 has been included in this release as well. 
