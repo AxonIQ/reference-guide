@@ -31,6 +31,10 @@ To upload an plugin through the command-line interface, use:
 ```bash
 java -jar axonserver-cli.jar upload-plugin -f [file] 
 ```
+
+Note that there are default settings for the maximum file size (1M) and maximum request size (10M) for the upload request. If you want to upload larger bundles, 
+increase these limits in axonserver.properties (spring.servlet.multipart.max-file-size and spring.servlet.multipart.max-request-size).
+
 ### Configuring a plugin
 If your plugin contains registered services of the type _io.axoniq.axonserver.plugin.ConfigurationListener_, you can configure the plugin through Axon Server. In the UI you will see a form with the properties that are defined in the ConfigurationListeners, initially filled with the default values. Note that you set the values per context.
 
