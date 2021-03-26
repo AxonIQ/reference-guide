@@ -1164,14 +1164,14 @@ Possible values are "none" and "onFirstInit".
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">spring.servlet.multipart.max-file-size</td>
+      <td style="text-align:left">spring.servlet.multipart.max-file-size <em>(no prefix)</em></td>
       <td style="text-align:left">Specifies the maximum size permitted for uploaded files.</td>
       <td
       style="text-align:left">1MB</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">spring.servlet.multipart.max-request-size</td>
+      <td style="text-align:left">spring.servlet.multipart.max-request-size <em>(no prefix)</em></td>
       <td style="text-align:left">Specifies the maximum size allowed for multipart/form-data requests.</td>
       <td
       style="text-align:left">10MB</td>
