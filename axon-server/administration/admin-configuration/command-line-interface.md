@@ -299,7 +299,7 @@ Registers a user with specified roles. For Axon Server SE, the only two roles po
 - READ\_EVENTS
 - SUBSCRIBE\_COMMAND\_HANDLER
 - SUBSCRIBE\_QUERY\_HANDLER
-- USE\_CONTEXT
+- USE\_CONTEXT/VIEW\_CONFIGURATION
 
 In addition to the role name you can also supply the context to which this role applies like _{role\_name}@{context\_name}_. For Axon Server SE, the only context available is the _default_ context so the role will only apply to that context \(hence not necessary to supply the context name\). For Axon Server EE, the specific context can be included as required. Also if no context is mentioned in Axon Server EE, the role is granted to the user for all registered contexts.
 
@@ -376,7 +376,7 @@ Registers an application with specified name and role. The following roles can b
 - READ\_EVENTS
 - SUBSCRIBE\_COMMAND\_HANDLER
 - SUBSCRIBE\_QUERY\_HANDLER
-- USE\_CONTEXT
+- USE\_CONTEXT/VIEW\_CONFIGURATION
 
 In addition to the role name you can also supply the context to which this role applies like _{role\_name}@{context\_name}_. Also if no context is mentioned in Axon Server EE, the role is granted to the application for all registered contexts.
 
