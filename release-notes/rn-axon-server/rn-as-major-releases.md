@@ -6,7 +6,7 @@ Standard Edition and Enterprise Edition
 
 New features:
 - Support for customer-defined plugins to add custom actions to adding/reading events and snapshots and executing commands and (subscription queries)
-  For more information see [plugins](../../axon-server/administration/plugins).
+  For more information see [plugins](/axon-server/administration/plugins).
 - Search snapshots in Axon Dashboard
 
 Enhancements:
