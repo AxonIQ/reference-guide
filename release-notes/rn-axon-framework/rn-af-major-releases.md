@@ -2,6 +2,48 @@
 
 All the enhancements and features which have been introduced to our major releases of the Axon Framework are noted here.
 
+## Release 4.5
+
+This release has seen numerous addition towards Axon Framework.
+The most interesting adjustments can be seen down below. 
+Note that the BOM (as marked in [#1200](https://github.com/AxonFramework/AxonFramework/issues/1200)) is not part of the release notes, as this will use its own separate release cycle.
+For those interested, the BOM repository can be found [here](https://github.com/AxonFramework/axon-bom).
+
+For an exhaustive list of all adjustments made for release 4.5 you can check out [this](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5) page.
+
+### _Enhancements_
+
+* A new type of `EventProcessor` has been introduced in pull request [#1712](https://github.com/AxonFramework/AxonFramework/pull/1712), called the `PooledStreamingEventProcessor`.
+  This `EventProcessor` allows the same set of operations as the `TrackingEventProcessor`, but uses a different threading approach for handling events and processing operations.
+  In all, this solution provides a more straightforward processor implementation and configuration, allowing for enhanced event processing in general.
+  For specifics on how to configure it, check out [this](../../axon-framework/events/event-processors.md#pooled-streaming-event-processor) section.
+  
+* Sagas support the use of [Deadline Handlers](../../axon-framework/deadlines/deadline-managers.md#handling-a-deadline), but an `@DeadlineHandler` annotated method couldn't automatically close a Saga with the `@EndSaga` annotation.
+  This enhancement has been described in [#1469](https://github.com/AxonFramework/AxonFramework/issues/1469) and resolved in pull request [#1656](https://github.com/AxonFramework/AxonFramework/pull/1656).
+  As such, as of Axon 4.5, an `@DeadlineHandler` annotated can also be annotated with `@EndSaga`, to automatically close the Saga whenever the given deadline is handled.
+  
+* Whenever an application uses snapshots, the point arises that old snapshot versions need to be invalidated when loading an Aggregate.
+  To that end the [`SnapshotFilter`](../../axon-framework/tuning/event-snapshots.md#filtering-snapshot-events) can be configured.
+  As a simplified solution, the `@Revision` annotation can now be placed on the Aggregate class to automatically configure a revision based `SnapshotFilter`.
+  Due to this, old snapshots will be filtered out automatically when an Aggregate is reconstructed from the `EventStore`.
+  For those interested, the implementation of this feature can be found [here](https://github.com/AxonFramework/AxonFramework/pull/1657).
+  
+* At the basis of Axon's message handling functionality, is the `MessageHandlingMember`.
+  For the time being, the sole implementation of this is the `AnnotatedMessageHandlingMember`, which expect the use of annotations like the `@CommandHandler` and `@EventHandler`, for example.
+  As a step towards constructing an annotation-less approach, [#1621](https://github.com/AxonFramework/AxonFramework/pull/1621) was introduced into the framework.
+  The first steps taken in this pull request are the deprecation of annotation-specific methods from the `MessageHandlingMember` interface.
+  Added to this is a new approach towards defining attributes of a message handling member through `HandlerAttributes`.
+
+### _Bug Fixes_
+
+* The `InMemoryEventStorageEngine` is a good fit for testing purposes.
+  However, it included a discrepancy towards the event storing solution compared to other event storage solutions.
+  This issue was addressed in [#1056](https://github.com/AxonFramework/AxonFramework/issues/1056) and resolved in pull request [#1660](https://github.com/AxonFramework/AxonFramework/pull/1660).
+  
+* In issue [#1733](https://github.com/AxonFramework/AxonFramework/issues/1733) a confusion around the `EventUtils#asDomainEventMessage` was described.
+  This reiterated the fact that this method is purely intended for internal use inside Axon Framework, which was not clear to the users.
+  As such, it has now been deprecated, containing a clear statement why this method is not to be used.
+
 ## Release 4.4
 
 ### _Enhancements_
@@ -57,7 +99,7 @@ For a full list of all the feature request and enhancements done for release 4.4
 * Both the `XStreamSerializer` and `JacksonSerializer` provide a means to toggle on "lenient serialization" through their builders.
 
 * Various test fixture improvements have been made, such as options to register a `HandlerEnhancerDefinition`, a `ParameterResolverFactory` and a `ListenerInvocationErrorHandler`.
-  Additionally validations have been added too, revolving around asserting scheduled events and deadline message.
+  Additional validations have been added too, revolving around asserting scheduled events and deadline message.
   The [Test Fixture](../../axon-framework/testing/commands-events.md) page has been updated to define these new operations accordingly.
 
 * The `TrackingEventProcessor#processingStatus` method as of 4.3 exposes more status information.
@@ -71,10 +113,10 @@ For a full list of all the feature request and enhancements done for release 4.4
   Retrying this operation is however useless and hence has been replaced for an `AggregateStreamCreationException` in pull request [\#1333](https://github.com/AxonFramework/AxonFramework/pull/1333).
 
 * The test fixtures for state-stored aggregates did unintentionally not allow resource injection.
-  This problem has been resolved in pull request [\#1315](https://github.com/AxonFramework/AxonFramework/pull/1315).
+  This problem has been resolved in pull request [#1315](https://github.com/AxonFramework/AxonFramework/pull/1315).
 
 * The `MultiStreamableMessageSource` did not deal well with one or several exceptional streams.
-  Hence exception handling has been improved on this matter in [\#1325](https://github.com/AxonFramework/AxonFramework/pull/1325).
+  Hence exception handling has been improved on this matter in [#1325](https://github.com/AxonFramework/AxonFramework/pull/1325).
 
 For a complete list of all the changes made in 4.3 you can check out [this](https://github.com/AxonFramework/AxonFramework/milestone/42?closed=1) page.
 
