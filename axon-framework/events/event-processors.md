@@ -549,3 +549,49 @@ public class Configuration {
     }
 }
 ```
+
+## Pooled Streaming Event Processor
+
+Next to the `TrackingEventProcessor`, there is another `EventProcessor` implementation which provides the same operations with a different processing approach behind it.
+This is the so-called `PooledStreamingEventProcessor`.
+
+It allows for [splitting, merging](#splitting-and-merging-tracking-tokens) and [resetting](#replaying-events) the segments of a processor, just as with the `TrackingEventProcessor`.
+Under the hoods, it however uses two threads pools, instead of the single fixed set of threads used by the `TrackingEventProcessor`.
+The first thread pool is in charge of open a stream with the event source and to delegate all the work (e.g. which events to handle, split/merge, etc.).
+The second thread pool is dealing with all the segments the `PooledStreamingEventProcessor` could claim.
+
+When it comes to configuring the `PooledStreamingEventProcessor`, you can take the following approaches:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class Configuration {
+    
+    public void configurePooledProcessor(EventProcessingConfigurer processingConfigurer) {
+        processingConfigurer
+            // Defaults all Event Processors to PooledStreamingEventProcessors instances
+            .usingPooledStreamingEventProcessors()
+            // Configures the "processing-group" to be a PooledStreamingEventProcessors
+            .registerPooledStreamingEventProcessor("processing-group")
+            // Configures the "processing-group" to be a PooledStreamingEventProcessors, using the EventStore as a message source
+            .registerPooledStreamingEventProcessor("processing-group", config -> config.eventStore())
+            // The same "processing-group"  configuration, including a PooledStreamingProcessorConfiguration allowing complete configuration of the PooledStreamingEventProcessors 
+            .registerPooledStreamingEventProcessor(
+                "processing-group", config -> config.eventStore(),
+                (config, builder) -> builder /* Invoke the 'builder's methods for futher configuraiton'*/
+            );  
+    }
+}
+```
+{% endtab %}
+{% tab title="Spring Boot AutoConfiguration" %}
+```text
+# Defines that a processor "processing-group" should be a PooledStreamingEventProcessor
+axon.eventhandling.processors.processing-group.mode=pooled
+# Sets the event batch size for "processing-group" to 1024
+axon.eventhandling.processors.processing-group.batchSize=1024
+# Sets the initial number of segments for "processing-group" to 32
+axon.eventhandling.processors.processing-group.initialSegmentCount=32
+```
+{% endtab %}
+{% endtabs %}
