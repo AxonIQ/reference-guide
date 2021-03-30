@@ -6,6 +6,10 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.4_
 
+### Release 4.4.10
+
+* Fix for subscription queries in case of missing query handler
+
 ### Release 4.4.9
 
 * Fix for concurrency issue in listing aggregates events during appending events for the same aggregate
@@ -157,6 +161,10 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 ## Axon Server Enterprise Edition
 
 ## _Release 4.4_
+
+### Release 4.4.12
+
+* Fix for subscription queries in case of missing query handler
 
 ### Release 4.4.11
 
