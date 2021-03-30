@@ -1125,6 +1125,57 @@ minimum number of queries to be set to each instance of an application, before t
       <td
       style="text-align:left">recovery.json</td>
     </tr>
+    <tr>
+      <td style="text-align:left"><em><b>Plugins<a id="plugins"></a></b></em>
+      </td>
+      <td style="text-align:left"></td>
+      <td style="text-align:left"></td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">plugins-enabled</td>
+      <td style="text-align:left">Option to disable plugin support. Plugin support is <em>enabled</em> by default.</td>
+      <td
+      style="text-align:left">true</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">plugin-package-directory</td>
+      <td style="text-align:left">Directory where Axon Server stores the installed plugins. This directory must be writeable and persistent.</td>
+      <td
+      style="text-align:left">plugins/bundles</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">plugin-cache-directory</td>
+      <td style="text-align:left">Cache directory fot the OSGi container. This directory must be writeable.</td>
+      <td
+      style="text-align:left">plugins/cache</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">plugin-clean-policy</td>
+      <td style="text-align:left">Specifies if the OSGi container should clean up its cache directory on restart of the Axon Server node.
+Possible values are "none" and "onFirstInit". 
+</td>
+      <td
+      style="text-align:left">onFirstInit</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">spring.servlet.multipart.max-file-size <em>(no prefix)</em></td>
+      <td style="text-align:left">Specifies the maximum size permitted for uploaded files.</td>
+      <td
+      style="text-align:left">1MB</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">spring.servlet.multipart.max-request-size <em>(no prefix)</em></td>
+      <td style="text-align:left">Specifies the maximum size allowed for multipart/form-data requests.</td>
+      <td
+      style="text-align:left">10MB</td>
+    </tr>
   </tbody>
 </table>
 

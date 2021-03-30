@@ -98,6 +98,7 @@
   * [Backup and Messaging-only Nodes](axon-server/administration/backup-and-messaging-only-nodes.md)
   * [Backups](axon-server/administration/backups.md)
   * [Recovery](axon-server/administration/recovery.md)
+  * [Plugins](axon-server/administration/plugins.md) 
   * [Error Codes](axon-server/administration/error-codes.md)
 * [Security](axon-server/security/README.md)
   * [Access Control](axon-server/security/access-control.md)

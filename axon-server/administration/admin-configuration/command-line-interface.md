@@ -177,6 +177,51 @@ A quick summary of the various commands is depicted below. Each command has a sp
     </tr>
     <tr>
       <td style="text-align:left">
+        <p><a href="command-line-interface.md#plugins"><em><b>Plugins</b></em></a>
+        </p>
+        <p><em>(Enterprise Only)</em>
+        </p>
+      </td>
+      <td style="text-align:left"></td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">plugins</td>
+      <td style="text-align:left">Lists all details of installed plugins</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">upload-plugin</td>
+      <td style="text-align:left">Upload a plugin package</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">configure-plugin</td>
+      <td style="text-align:left">Configures a plugin for a context</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">active-plugin</td>
+      <td style="text-align:left">Activates a plugin for a context</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">pause-plugin</td>
+      <td style="text-align:left">Temporarily stops a plugin for a context</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">unregister-plugin</td>
+      <td style="text-align:left">Unregisters a plugin for a context</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">delete-plugin</td>
+      <td style="text-align:left">Deletes a plugin package</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
         <p><em><b>Other</b></em>
         </p>
         <p><em>(Standard Only)</em>
@@ -218,6 +263,11 @@ For Axon Server Standard Edition the token is specified in the axonserver.proper
 ## Commands
 
 This section describes all commands supported by the command line interface, grouped by the specific area.‌
+For all command line commands there are 2 common \(optional\) parameters:
+
+* _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). For Axon Server SE, the URL for the Axon Server SE will be the single running node, while for Axon Server EE the URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
+* _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
+
 
 ### Users <a id="user"></a>
 
@@ -228,22 +278,33 @@ When using Axon Server with access control enabled, users need to be defined to 
 Returns a list of all registered users and their roles.‌
 
 ```text
-$ java -jar axonserver-cli.jar users -S http://[node]:[port] -t [token]
+$ java -jar axonserver-cli.jar users [-o json]
 ```
 
 _Optional parameters_
 
+* _**-o**_ produces output in JSON format instead of formatted text
 * _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). For Axon Server SE, the URL for the Axon Server SE will be the single running node, while for Axon Server EE the URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
 
 _**register-user**_**‌**
 
-Registers a user with specified roles. For Axon Server SE, the only two roles possible are READ/ADMIN while for Axon Server EE, the following roles can be granted - ADMIN/CONTEXT\_ADMIN/DISPATCH\_COMMANDS/DISPATCH\_QUERY/MONITOR/PUBLISH\_EVENTS/READ\_EVENTS/SUBSCRIBE\_COMMAND\_HANDLER/SUBSCRIBE\_QUERY\_HANDLER/USE\_CONTEXT
+Registers a user with specified roles. For Axon Server SE, the only two roles possible are READ/ADMIN while for Axon Server EE, the following roles can be granted:
+- ADMIN
+- CONTEXT\_ADMIN
+- DISPATCH\_COMMANDS
+- DISPATCH\_QUERY
+- MONITOR
+- PUBLISH\_EVENTS
+- READ\_EVENTS
+- SUBSCRIBE\_COMMAND\_HANDLER
+- SUBSCRIBE\_QUERY\_HANDLER
+- USE\_CONTEXT
 
 In addition to the role name you can also supply the context to which this role applies like _{role\_name}@{context\_name}_. For Axon Server SE, the only context available is the _default_ context so the role will only apply to that context \(hence not necessary to supply the context name\). For Axon Server EE, the specific context can be included as required. Also if no context is mentioned in Axon Server EE, the role is granted to the user for all registered contexts.
 
 ```text
-$ java -jar axonserver-cli.jar register-user -u username -r roles [-p password] -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar register-user -u <username> -r <roles> [-p <password>] 
 ```
 
 _Mandatory parameters_
@@ -262,7 +323,7 @@ _**delete-user‌**_
 Deletes the specified user.
 
 ```text
-$ java -jar axonserver-cli.jar delete-user -u username -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar delete-user -u <username>
 ```
 
 _Mandatory parameters_
@@ -279,7 +340,7 @@ _Optional parameters_
 Overview of all Axon specific metrics.‌
 
 ```text
-$ java -jar axonserver-cli.jar metrics -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar metrics 
 ```
 
 _Optional parameters_
@@ -294,49 +355,60 @@ _**applications**_**‌**
 Lists all applications and the roles per application per context.‌
 
 ```text
-$ java -jar axonserver-cli.jar applications -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar applications [-o json]
 ```
 
 _Optional parameters_
 
+* _**-o**_ produces output in JSON format instead of formatted text
 * _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
 
 _**register-application**_**‌**
 
-Registers an application with specified name and role. The following roles can be granted - ADMIN/CONTEXT\_ADMIN/DISPATCH\_COMMANDS/DISPATCH\_QUERY/MONITOR/PUBLISH\_EVENTS/READ\_EVENTS/SUBSCRIBE\_COMMAND\_HANDLER/SUBSCRIBE\_QUERY\_HANDLER/USE\_CONTEXT
+Registers an application with specified name and role. The following roles can be granted:
+- ADMIN
+- CONTEXT\_ADMIN
+- DISPATCH\_COMMANDS
+- DISPATCH\_QUERY
+- MONITOR
+- PUBLISH\_EVENTS
+- READ\_EVENTS
+- SUBSCRIBE\_COMMAND\_HANDLER
+- SUBSCRIBE\_QUERY\_HANDLER
+- USE\_CONTEXT
 
 In addition to the role name you can also supply the context to which this role applies like _{role\_name}@{context\_name}_. Also if no context is mentioned in Axon Server EE, the role is granted to the application for all registered contexts.
 
 This command returns the generated token to use. Note that this token is only generated once, if you lose it you must delete the application and register it again to get a new token. If you want to define the token yourself, you can provide one in the command line command using the `-T` flag, e.g.:
 
 ```text
-$ java -jar axonserver-cli.jar register-application -a name -r roles  [-d description] [-T apptoken] -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar register-application -a <name> -r <roles>  [-d <description>] [-T <apptoken>] 
 ```
 
 _Mandatory parameters_
 
-* _**-a**_ \_\*\*\_refers to the name of the application
+* _**-a**_ refers to the name of the application
 * _**-r**_ refers to the role of the application. Specify multiple roles by giving a comma separated list \(without spaces\), e.g. READ,ADMIN. 
 
 _Optional parameters_
 
 * _**-d**_ refers to the description of the application.
-* _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
-* _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
 * _**-T**_ in case you want to define the token yourself for newly registered application.
+* _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
+* _**-t**_ refers to the access token to authenticate at the server to which the command is sent to.
 
 _**delete-application**_**‌**
 
 Deletes the application from Axon Server EE
 
 ```text
-$ java -jar axonserver-cli.jar delete-application -a name -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar delete-application -a <name>
 ```
 
 _Mandatory parameters_
 
-* _**-a**_ \_\*\*\_refers to the name of the application
+* _**-a**_ refers to the name of the application
 
 _Optional parameters_
 
@@ -350,11 +422,12 @@ _**cluster**_**‌**
 Shows all the nodes in the cluster, including their hostnames, http ports and grpc ports.‌
 
 ```text
-$ java -jar axonserver-cli.jar cluster -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar cluster [-o json]
 ```
 
 _Optional parameters_
 
+* _**-o**_ produces output in JSON format instead of formatted text
 * _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
 
@@ -363,7 +436,7 @@ _**init-cluster**_**‌**
 Initializes the cluster, creates the _\_admin_ context and the specified context.
 
 ```text
-$ java -jar axonserver-cli.jar init-cluster [-c context] -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar init-cluster [-c <context>] 
 ```
 
 _Optional parameters_
@@ -377,7 +450,7 @@ _**register-node**_**‌**
 Registers an Axon Server node with a cluster.
 
 ```text
-$ java -jar axonserver-cli.jar register-node -h node-internal-host-name [-p internal-grpc-port] [-c context] -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar register-node -h <node-internal-host-name> [-p <internal-grpc-port>] [-c <context>] [--no-contexts]
 ```
 
 If you specify a context, the new node will be a member of the specified context. If you haven't specified a context, the new node will become a member of all defined contexts.‌
@@ -399,7 +472,7 @@ _**unregister-node**_**‌**
 Removes the node with specified name from the cluster. After this, the node that is deleted will still be running in standalone mode.‌
 
 ```text
-$ java -jar axonserver-cli.jar unregister-node -n nodename‌ -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar unregister-node -n <nodename>
 ```
 
 _Mandatory parameters_
@@ -416,12 +489,11 @@ _**update-license**_**‌**
 Uploads a new license file to the cluster. Axon Server distributes the new license file to all nodes in the cluster.
 
 ```text
-$ java -jar axonserver-cli.jar update-license -f [license-file] -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar update-license -f <license-file>
 ```
 
 _Mandatory parameters_
 
-* _**-n**_ refers to the name of the node that needs to be removed from the cluster.
 * _**-f**_ refers to the file containing the license to update.
 
 _Optional parameters_
@@ -437,14 +509,14 @@ Lists all replication groups and the nodes assigned to the replication groups. F
 the master node for the replication group and the member nodes of the replication group.‌
 
 ```text
-$ java -jar axonserver-cli.jar replication-groups -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar replication-groups [-o json]
 ```
 
 _Optional parameters_
 
+* _**-o**_ produces output in JSON format instead of formatted text
 * _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
-* _**-o json**_ will display the output in a json format.
 
 _**register-replication-group**_**‌**
 
@@ -452,12 +524,12 @@ The register-replication-group command helps in the registration and creation of
 A sample of the command with the mandatory parameters is depicted below:
 
 ```text
-$ java -jar ./axonserver-cli.jar register-replication-group  -c [context-name] -n [members]‌ -a [members] -m [members] -p [members] -s [members] -S http://[node]:[port] [-t token]
+$ java -jar ./axonserver-cli.jar register-replication-group  -g <name> -n <members> [-a <members>] [-m <members>] [-p <members>] [-s <members>] 
 ```
 
 _Mandatory parameters_
 
-* _**-c**_ refers to the replication group name. The replication group name must match the following regular expression "\[a-zA-Z\]\[a-zA-Z\_-0-9\]\*", so it should start with a letter \(uppercase or lowercase\), followed by a combination of letters, digits, hyphens and underscores.
+* _**-g**_ refers to the replication group name. The replication group name must match the following regular expression "\[a-zA-Z\]\[a-zA-Z\_-0-9\]\*", so it should start with a letter \(uppercase or lowercase\), followed by a combination of letters, digits, hyphens and underscores.
 * _**-n**_ refers to the comma separated list of node names that should be members of the new replication group. This parameter registers them as "PRIMARY" member nodes of that context.
 
 _Optional parameters_
@@ -475,7 +547,7 @@ The delete-replication-group command helps in the deletion of a replication grou
 A sample of the command with the mandatory parameters is depicted below:
 
 ```text
-$ java -jar ./axonserver-cli.jar delete-replication-group  -g [replication-group-name] -S http://[node]:[port]
+$ java -jar ./axonserver-cli.jar delete-replication-group  -g [replication-group-name] [--preserve-event-store]
 ```
 
 _Mandatory parameters_
@@ -493,7 +565,7 @@ _**add-node-to-replication-group**_**‌**
 The add-node-to-replication-group command helps in the registration of a new member node creation of an existing replication group.
 
 ```text
-$ java -jar ./axonserver-cli.jar add-node-to-replication-group -g [replication-group-name] -r [role of the node] -n [node name] -S http://[node]:[port] [-t token]‌
+$ java -jar ./axonserver-cli.jar add-node-to-replication-group -g <replication-group-name> -n <node> -r <role>
 ```
 
 _Mandatory parameters_
@@ -512,7 +584,7 @@ _**delete-node-from-replication-group**_**‌**
 The delete-node-from-replication-group command helps in the deletion member node from an existing replication group. A sample of the command with the mandatory parameters is depicted below:
 
 ```text
-$ java -jar ./axonserver-cli.jar delete-node-from-replication-group  -g [replication-group-name] -n [node name] -S http://[node]:[port] [-t token]‌
+$ java -jar ./axonserver-cli.jar delete-node-from-replication-group  -g <replication-group-name> -n <node name> [--preserve-event-store]
 ```
 
 _Mandatory parameters_
@@ -533,21 +605,21 @@ _**contexts**_**‌**
 Lists all contexts and the nodes assigned to the contexts. For each context it shows the name of the context, the master node for the context and the member nodes of the context.‌
 
 ```text
-$ java -jar axonserver-cli.jar contexts -S http://[node]:[port] [-t token]
+$ java -jar axonserver-cli.jar contexts [-o json] 
 ```
 
 _Optional parameters_
 
+* _**-o**_ produces output in JSON format instead of formatted text
 * _**-S**_ refers to the server to send the command to and if not supplied connects by default to [http://localhost:8024](http://localhost:8024). The URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
 * _**-t**_  refers to the access token to authenticate at the server to which the command is sent to.
-* _**-o json**_ will display the output in a json format.
 
 _**register-context**_**‌**
 
 The register-context command helps in the registration and creation of a new context. A sample of the command with the mandatory parameters is depicted below:
 
 ```text
-$ java -jar ./axonserver-cli.jar register-context  -c [context-name] -g [replication-group-name] -n [members]‌ -a [members] -m [members] -p [members] -S http://[node]:[port] [-t token]
+$ java -jar ./axonserver-cli.jar register-context  -c <context-name> -g <replication-group-name> [-n <members>]‌ [-a <members>] [-m <members>] [-p <members>] 
 ```
 
 If you don't provide an existing replication group name, you need to provide the names and roles of the nodes to include in the replication group to create.
@@ -573,7 +645,7 @@ _**delete-context**_**‌**
 The delete-context command helps in the deletion of a context and its associated data from all member nodes of that context. A sample of the command with the mandatory parameters is depicted below:
 
 ```text
-$ java -jar ./axonserver-cli.jar delete-context  -c [context-name] -S http://[node]:[port]
+$ java -jar ./axonserver-cli.jar delete-context  -c <context-name> -S http://<node>:<port>
 ```
 
 _Mandatory parameters_
@@ -585,4 +657,129 @@ _Optional parameters_
 * _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
 * _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
 * _** --preserve-event-store**_  option to keep the event store data (false by default).
+
+### Plugins <a id="plugins"></a>
+
+_**plugins**_
+
+Lists all the installed plugins and their status per context.
+
+```text
+$ java -jar ./axonserver-cli.jar plugins [-o json]
+```
+
+_Optional parameters_
+
+* _**-o**_ produces output in JSON format instead of formatted text
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
+
+_**upload-plugin**_
+
+Uploads a new plugin package to Axon Server. In Enterprise Edition this command needs to be targetted to an _admin node.
+
+```text
+$ java -jar ./axonserver-cli.jar upload-plugin -f <file>
+```
+_Mandatory parameters_
+
+* _**-f**_ refers to the jar file containing the OSGi bundle for the plugin 
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
+
+_**configure-plugin**_
+
+Configures a plugin for a specific context.
+
+```text
+$ java -jar ./axonserver-cli.jar configure-plugin -p <plugin> -v <version> -c <context> [ --prop <property> | -f <file]
+```
+_Mandatory parameters_
+
+* _**-p**_ refers to the name of the plugin
+* _**-v**_ refers to the version of the plugin
+* _**-c**_ refers to the context where the configuration of the plugin applies
+
+_Optional parameters_
+
+* _**-f**_ YAML file containing properties
+* _**-prop**_ property group, name and value for a configuration property, may be provided multiple times
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
+
+_**activate-plugin**_
+
+Activates a plugin for a specific context.
+
+```text
+$ java -jar ./axonserver-cli.jar activate-plugin -p <plugin> -v <version> -c <context> 
+```
+_Mandatory parameters_
+
+* _**-p**_ refers to the name of the plugin
+* _**-v**_ refers to the version of the plugin
+* _**-c**_ refers to the context for which to activate the plugin
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
+
+_**pause-plugin**_
+
+Pauses an plugin for a specific context.
+
+```text
+$ java -jar ./axonserver-cli.jar pause-plugin -p <plugin> -v <version> -c <context> 
+```
+_Mandatory parameters_
+
+* _**-p**_ refers to the name of the plugin
+* _**-v**_ refers to the version of the plugin
+* _**-c**_ refers to the context for which to pause the plugin
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
+
+_**unregister-plugin**_
+
+Removes a plugin for a specific context.
+
+```text
+$ java -jar ./axonserver-cli.jar unregister-plugin -p <plugin> -v <version> -c <context> 
+```
+_Mandatory parameters_
+
+* _**-p**_ refers to the name of the plugin
+* _**-v**_ refers to the version of the plugin
+* _**-c**_ refers to the context for which to unregister the plugin
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
+
+_**delete-v**_
+
+Removes an plugin from all Axon Server nodes and for all contexts.
+
+```text
+$ java -jar ./axonserver-cli.jar unregister-plugin -p <plugin> -v <version>
+```
+_Mandatory parameters_
+
+* _**-p**_ refers to the name of the v
+* _**-v**_ refers to the version of the plugin
+
+_Optional parameters_
+
+* _**-S**_ if not supplied connects by default to [http://localhost:8024](http://localhost:8024). If supplied, it should be any node serving the _\_admin_ context.
+* _**-t**_  refers to the access token to authenticate at  the server to which the command is sent to.
+
+
 
