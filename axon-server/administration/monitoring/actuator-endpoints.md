@@ -20,8 +20,8 @@ The /actuator/health endpoint provides information on various components of Axon
   If the connections to all other nodes is down, the status of the cluster component is _DOWN_.
 * command, shows the status of command handling applications connected to the current Axon Server node. For each connected application it shows the number of commands waiting to 
   be sent to the command handler. If this value is higher than zero, it means that commands are being sent faster than the command handler can handle them.
-* db, shows the status of the controldb
-* diskSpace, shows the diskspace in use and available for each storage location (this includes the locations where events and snapshots are stored and the location of the replication logs).
+* db, shows the status of the control DB
+* diskSpace, shows the diskspace in use and available for each storage location (this includes the locations where events and snapshots are stored, and the location of the replication logs).
   if the available space in any of these locations is below the threshold, the health for the diskSpace component will be _WARN_.
 * license (EE only, since 4.5). shows the status of the license. If the license is in the grace period, this component gets status _WARN_, if license is expired the status becomes _DOWM_.
 * localEventStore, shows the status of the local replica for each context available on the current node. 
