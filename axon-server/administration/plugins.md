@@ -27,7 +27,7 @@ This uploads a plugin to Axon Server and makes it available for further configur
 When you upload the plugin Axon Server will perform some basic validation, to verify that it is a valid OSGi bundle and it can be loaded in the OSGi container.
 If the uploaded plugin has the same name and version as an already existing plugin, it will immediately replace the existing plugin.
 
-To upload an plugin through the command-line interface, use:
+To upload a plugin through the command-line interface, use:
 ```bash
 java -jar axonserver-cli.jar upload-plugin -f [file] 
 ```
