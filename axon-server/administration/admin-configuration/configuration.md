@@ -516,7 +516,7 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">ssl.internal-cert-chain-file</td>
       <td style="text-align:left">
         <p>File containing the full certificate chain to be used in internal communication
-          between Axon Server nodes.</p>
+          between Axon Server nodes. If not specified, Axon Server will use the primary key file from <em>ssl.cert-chain-file</em>.</p>
         <p><em>(Axon EE only)</em>
         </p>
       </td>
@@ -527,6 +527,17 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">ssl.internal-trust-manager-file</td>
       <td style="text-align:left">
         <p>Trusted certificates for verifying the other AxonServer&apos;s certificate.</p>
+        <p><em>(Axon EE only)</em>
+        </p>
+      </td>
+      <td style="text-align:left">None</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">ssl.internal-private-key-file</td>
+      <td style="text-align:left">
+        <p>File containing the private key to be used in internal communication
+          between Axon Server nodes. If not specified, Axon Server will use the primary key file from <em>ssl.private-key-file</em>.</p>
         <p><em>(Axon EE only)</em>
         </p>
       </td>
@@ -559,13 +570,23 @@ A list of all the configuration properties by area is denoted below. Unless expl
         <p><em>(Axon EE only)</em>
         </p>
       </td>
-      <td style="text-align:left">&lt;em&gt;&lt;/em&gt;</td>
+      <td style="text-align:left"></td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">accesscontrol.token</td>
       <td style="text-align:left">
         <p>Token to be used by client applications connecting to Axon Server.</p>
+        <p><em>(Axon SE only)</em>
+        </p>
+      </td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">accesscontrol.admin-token</td>
+      <td style="text-align:left">
+        <p>Token to be used by CLI to manage Admin Server users.</p>
         <p><em>(Axon SE only)</em>
         </p>
       </td>
