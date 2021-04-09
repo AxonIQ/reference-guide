@@ -4,13 +4,15 @@ Axon Framework consists of a number of modules that provide specific capabilitie
 
 There are currently two ways of obtaining the module binaries: either download the binaries from our website or preferably configure a repository for your build system \([Maven](http://maven.apache.org/), [Gradle](https://gradle.org/)\).
 
+To not be bothered with version compatibility issues between [framework](#main-modules) and the [extensions](#extension-modules), it is recommended to use the [BOM](#axon-bill-of-materials).
+
 Axon modules are available on [Maven Central](https://search.maven.org/search?q=axonframework).
 
 ## Main modules
 
 Axon 'Main Modules' are the modules that have been thoroughly tested and are robust enough to use in demanding production environments. The maven `groupId` of all these modules is `org.axonframework`. Visit [Maven Central Repository](https://search.maven.org/search?q=g:org.axonframework) to copy coordinates for the version you need.
 
-> **Note**
+> **Quick starting an Axon Application**
 >
 > The [Axon Spring Boot Starter](modules.md#axon-spring-boot-starter) module is the quickest start in to an Axon project as it will retrieve all the required modules/dependencies transitively. Alternatively, you can manually select individual modules for a customized configuration.
 
@@ -153,3 +155,69 @@ This module provides support for distributed tracing of Axon applications. The [
 ### Axon Tracing Spring Boot Starter
 
 This module provides Spring auto-configuration on top of the `axon-tracing` module
+
+## Axon Bill of Materials
+
+Next to the main framework modules and the extensions, Axon also has a [Bill of Materials](https://en.wikipedia.org/wiki/Software_bill_of_materials), or BOM. 
+The BOM is provided to ensure the use of compatible framework and extension dependencies inside an Axon application.
+As such, it is the recommended approach towards defining the overall Axon version used inside an application.
+
+| Module | Artifact Id | Group Id | Maven Central | GitHub |
+| :--- | :--- | :--- | :--- | :---: |
+| [Axon BOM](#axon-bill-of-materials) | axon-bom | org.axonframework | [available](https://search.maven.org/search?q=a:axon-bom) | [available](https://github.com/AxonFramework/axon-bom) |
+
+For using the BOM, you would add the `axon-bom` dependency to your dependency management system:
+
+{% tabs %}
+{% tab title="Maven" %}
+```xml
+
+...
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-bom</artifactId>
+            <version>${version.axon}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
+        ...
+
+    </dependencies>
+</dependencyManagement>
+...
+```
+
+{% endtab %}
+
+{% tab title="Gradle" %}
+
+For usage with Gradle, apply the dependency-management-plugin plugin like so:    
+```groovy
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE"
+  }
+}
+
+apply plugin: "io.spring.dependency-management"
+```
+After this, import the Axon BOM:
+```groovy
+dependencyManagement {
+  imports {
+    mavenBom 'org.axonframework:axon-bom:<VERSION>'
+  }
+}
+```
+
+{% endtab %}
+{% endtabs %}
+
+After that is in place, you can add any of the mentioned dependencies from [framework](#main-modules) and the [extensions](#extension-modules) without specifying version.
+Furthermore, you will be guaranteed that the provided version in the BOM are compatible with one another.
