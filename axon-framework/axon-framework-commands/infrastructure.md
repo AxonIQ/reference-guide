@@ -1,4 +1,4 @@
-# Implementations
+# Infrastructure
 
 Command dispatching, as exemplified in the [Dispatching Commands](command-dispatchers.md) page, has a number of advantages. First of all, there is a single object that clearly describes the intent of the client. By logging the command, you store both the intent and related data for future reference. Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. Testing also becomes a lot easier. You could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing](../testing/) for more on this\). The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
 
@@ -142,13 +142,14 @@ MyGateway myGateway = factory.createGateway(MyGateway.class);
 
 ## The Command Bus
 
-The Command Bus is the mechanism that dispatches commands to their respective command handlers within an Axon application. Suggestions on how to use the `CommandBus` can be found [here](command-dispatchers.md#the-command-bus). Several flavors of the command bus, with differing characteristics, exist within the framework:
+The Command Bus is the mechanism that dispatches commands to their respective command handlers within an Axon application. 
+Suggestions on how to use the `CommandBus` can be found [here](command-dispatchers.md#the-command-bus). Several flavors of the command bus, with differing characteristics, exist within the framework:
 
 ### AxonServerCommandBus
 
 Axon provides a command bus out of the box, the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server](../../axon-server-introduction.md) to submit and receive Commands.
 
-`AxonServerCommandBus` is a [distributed command bus](command-dispatchers.md#the-command-bus). It uses a [`SimpleCommandBus`](implementations.md) to handle incoming commands on different JVM's by default.
+`AxonServerCommandBus` is a [distributed command bus](command-dispatchers.md#the-command-bus). It uses a [`SimpleCommandBus`](infrastructure.md) to handle incoming commands on different JVM's by default.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -190,7 +191,7 @@ By simply declaring dependency to `axon-spring-boot-starter`, Axon will automati
 
 > **Excluding the Axon Server Connector**
 >
-> If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' command bus options, the `SimpleCommandBus` \(see [below](implementations.md)\).
+> If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' command bus options, the `SimpleCommandBus` \(see [below](infrastructure.md)\).
 {% endtab %}
 {% endtabs %}
 
@@ -419,7 +420,7 @@ Sometimes, you want multiple instances of command buses in different JVMs to act
 
 That is where the concept of 'distributing the command bus' comes in. The default implementation of a distributed command bus is the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server ](../../axon-server-introduction.md)to submit and receive Commands. Unlike the other `CommandBus` implementations, the `AxonServerCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between command bus implementations on different JVM's.
 
-By default, [`SimpleCommandBus`](implementations.md) is configured to handle incoming commands on the different JVM's. You can configure `AxonServerCommandBus` to use other command bus implementations for this purposes: [`AsynchronousCommandBus`](implementations.md), [`DisruptorCommandBus`](implementations.md).
+By default, [`SimpleCommandBus`](infrastructure.md) is configured to handle incoming commands on the different JVM's. You can configure `AxonServerCommandBus` to use other command bus implementations for this purposes: [`AsynchronousCommandBus`](infrastructure.md), [`DisruptorCommandBus`](infrastructure.md).
 
 ### DistributedCommandBus
 

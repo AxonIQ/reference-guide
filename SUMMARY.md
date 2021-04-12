@@ -39,7 +39,7 @@
     * [Conflict Resolution](axon-framework/axon-framework-commands/modeling/conflict-resolution.md)
   * [Command Dispatchers](axon-framework/axon-framework-commands/command-dispatchers.md)
   * [Command Handlers](axon-framework/axon-framework-commands/command-handlers.md)
-  * [Implementations](axon-framework/axon-framework-commands/implementations.md)
+  * [Infrastructure](axon-framework/axon-framework-commands/infrastructure.md)
   * [Configuration](axon-framework/axon-framework-commands/configuration.md)
 * [Events](axon-framework/events/README.md)
   * [Event Dispatchers](axon-framework/events/event-dispatchers.md)

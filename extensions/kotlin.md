@@ -17,7 +17,7 @@ This section describes the additional functionality attached to Axon's [command 
 
 ### CommandGateway
 
-An inlined method has been introduced on the `CommandGateway` which allows the introduction of a dedicated function to be invoked upon success or failure of handling the command. As such it provides a short hand instead of using the [`CommandCallback`](../axon-framework/axon-framework-commands/implementations.md) directly yourself.
+An inlined method has been introduced on the `CommandGateway` which allows the introduction of a dedicated function to be invoked upon success or failure of handling the command. As such it provides a shorthand instead of using the [`CommandCallback`](../axon-framework/axon-framework-commands/infrastructure.md) directly yourself.
 
 Here is a sample of how this can be utilized within your own project:
 
