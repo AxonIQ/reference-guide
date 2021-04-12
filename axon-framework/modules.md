@@ -12,7 +12,7 @@ Axon modules are available on [Maven Central](https://search.maven.org/search?q=
 
 Axon 'Main Modules' are the modules that have been thoroughly tested and are robust enough to use in demanding production environments. The maven `groupId` of all these modules is `org.axonframework`. Visit [Maven Central Repository](https://search.maven.org/search?q=g:org.axonframework) to copy coordinates for the version you need.
 
-> **Quick starting an Axon Application**
+> **Quick start an Axon Application**
 >
 > The [Axon Spring Boot Starter](modules.md#axon-spring-boot-starter) module is the quickest start in to an Axon project as it will retrieve all the required modules/dependencies transitively. Alternatively, you can manually select individual modules for a customized configuration.
 
@@ -158,9 +158,9 @@ This module provides Spring auto-configuration on top of the `axon-tracing` modu
 
 ## Axon Bill of Materials
 
-Next to the main framework modules and the extensions, Axon also has a [Bill of Materials](https://en.wikipedia.org/wiki/Software_bill_of_materials), or BOM. 
+In addition to the main framework modules and the extensions, Axon also has a [Bill of Materials](https://en.wikipedia.org/wiki/Software_bill_of_materials), or BOM. 
 The BOM is provided to ensure the use of compatible framework and extension dependencies inside an Axon application.
-As such, it is the recommended approach towards defining the overall Axon version used inside an application.
+As such, it is the recommended approach towards defining the overall Axon version used inside of an application.
 
 | Module | Artifact Id | Group Id | Maven Central | GitHub |
 | :--- | :--- | :--- | :--- | :---: |
@@ -194,7 +194,7 @@ For using the BOM, you would add the `axon-bom` dependency to your dependency ma
 
 {% tab title="Gradle" %}
 
-For usage with Gradle, apply the dependency-management-plugin plugin like so:    
+For usage with Gradle, apply the dependency-management-plugin like so:    
 ```groovy
 buildscript {
   repositories {
@@ -219,5 +219,5 @@ dependencyManagement {
 {% endtab %}
 {% endtabs %}
 
-After that is in place, you can add any of the mentioned dependencies from [framework](#main-modules) and the [extensions](#extension-modules) without specifying version.
-Furthermore, you will be guaranteed that the provided version in the BOM are compatible with one another.
+After that is in place, you can add any of the mentioned dependencies from [framework](#main-modules) and the [extensions](#extension-modules) without specifying versions.
+Furthermore, you will be guaranteed that the provided versions in the BOM are compatible with one another.
