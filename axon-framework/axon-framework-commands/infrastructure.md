@@ -1,10 +1,19 @@
 # Infrastructure
 
-Command dispatching, as exemplified in the [Dispatching Commands](command-dispatchers.md) page, has a number of advantages. First of all, there is a single object that clearly describes the intent of the client. By logging the command, you store both the intent and related data for future reference. Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. Testing also becomes a lot easier. You could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing](../testing/) for more on this\). The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
+Command dispatching, as exemplified in the [Dispatching Commands](command-dispatchers.md) page, has a number of advantages. 
+Firstly, it constructs an object that clearly describes the intent of the client. 
+By logging the command, you store both the intent and related data for future reference. 
+Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. 
+
+Testing also becomes a lot easier. 
+You could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing](../testing/commands-events.md) for more on this\).
+
+The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
 
 This does not mean command dispatching using explicit command objects is the only way to do it. The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way, while providing best practices as the default behavior. It is still possible to use a service layer that you can invoke to execute commands. The method will just need to start a unit of work \(see [Unit of Work](../messaging-concepts/unit-of-work.md)\) and perform a commit or rollback on it when the method is finished.
 
 The next sections provide an overview of the tasks related to setting up a command dispatching infrastructure with the Axon Framework.
+The API-friendlier [`CommandGateway`](#the-command-gateway) is mentioned, as well as the `CommandBus` in both a [local](#the-command-bus---local) and [distributed](#the-command-bus---distributed) environment. 
 
 ## The Command Gateway
 
@@ -22,7 +31,7 @@ Both your custom Command Gateway and the one provided by Axon need to at least b
 
 The `RetryScheduler` is capable of scheduling retries when command execution has failed. When a command fails due to an exception that is explicitly non-transient, no retries are done at all. Note that the retry scheduler is only invoked when a command fails due to a `RuntimeException`. Checked exceptions are regarded as a "business exception" and will never trigger a retry.
 
-Currently two implementations exist:
+Currently, two implementations exist:
 
 1. The `IntervalRetryScheduler` will retry a given command at set intervals until it succeeds,
 
