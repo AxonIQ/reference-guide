@@ -10,6 +10,13 @@ Command Messages can also be [dispatched](command-dispatchers.md) with different
 
 In order for Axon to know which instance of an Aggregate type should handle the Command Message, the property carrying the Aggregate Identifier in the command object **must** be annotated with `@TargetAggregateIdentifier`. The annotation may be placed on either the field or an accessor method \(e.g. a getter\) in the Command object.
 
+> **Routing in a distributed environment**
+> 
+> Regardless of the type of command, as soon as you are distributing your application (through for example Axon Server), it is recommended to specify a routing key on the command. 
+> The `@TargetAggregateIdentifier` doubles as such, but in absence of a field worthy of the annotation, the `@RoutingKey` annotation should be added to ensure the command can be routed.
+> 
+> If neither of these annotations suffices for your use case, a different `RoutingStrategy` can be configured, as is further specified in the [Routing Strategy](infrastructure.md#routing-strategy) section.
+
 Taking the `GiftCard` Aggregate as an example, we can identify two Command Handlers on the Aggregate:
 
 ```java
@@ -83,9 +90,9 @@ If you prefer to use another mechanism for routing commands, the behavior can be
 
 > **Aggregate Creation Command Handlers**
 >
-> When the `@CommandHandler` annotation is placed on an aggregate's constructor, the respective command will create a new instance of that aggregate and add it to the repository. Those commands do not require to target a specific aggregate instance. Therefore, those commands do not require any `@TargetAggregateIdentifier` or `@TargetAggregateVersion` annotations, nor will a custom `CommandTargetResolver` be invoked for these commands.
->
-> However, regardless of the type of command, as soon as you are distributing your application through for example Axon Server, it is highly recommended to specify a routing key on the given message. The `@TargetAggregateIdentifier` doubles as such, but in absence of a field worthy of the annotation, the `@RoutingKey` annotation should be added to ensure the command can be routed. Additionally, a different `RoutingStrategy` can be configured, as is further specified in the [Command Dispatching section.](command-dispatchers.md)
+> When the `@CommandHandler` annotation is placed on an aggregate's constructor, the respective command will create a new instance of that aggregate and add it to the repository. 
+> Those commands do not require to target a specific aggregate instance. 
+> Therefore, those commands do not require any `@TargetAggregateIdentifier` or `@TargetAggregateVersion` annotations, nor will a custom `CommandTargetResolver` be invoked for these commands.
 
 ### Business Logic and State Changes
 
