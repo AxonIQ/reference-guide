@@ -149,60 +149,11 @@ CommandGatewayFactory factory = CommandGatewayFactory.builder()
 MyGateway myGateway = factory.createGateway(MyGateway.class);
 ```
 
-## The Command Bus
+## The Command Bus - Local
 
-The Command Bus is the mechanism that dispatches commands to their respective command handlers within an Axon application. 
-Suggestions on how to use the `CommandBus` can be found [here](command-dispatchers.md#the-command-bus). Several flavors of the command bus, with differing characteristics, exist within the framework:
-
-### AxonServerCommandBus
-
-Axon provides a command bus out of the box, the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server](../../axon-server-introduction.md) to submit and receive Commands.
-
-`AxonServerCommandBus` is a [distributed command bus](command-dispatchers.md#the-command-bus). It uses a [`SimpleCommandBus`](infrastructure.md) to handle incoming commands on different JVM's by default.
-
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-Declare dependencies:
-
-```text
-<!--somewhere in the POM file-->
-<dependency>
-    <groupId>org.axonframework</groupId>
-    <artifactId>axon-server-connector</artifactId>
-    <version>${axon.version}</version>
-</dependency>
-<dependency>
-    <groupId>org.axonframework</groupId>
-    <artifactId>axon-configuration</artifactId>
-    <version>${axon.version}</version>
-</dependency>
-```
-
-Configure your application:
-
-```java
-// Returns a Configurer instance with default components configured. `AxonServerCommandBus` is configured as Command Bus by default.
-Configurer configurer = DefaultConfigurer.defaultConfiguration();
-```
-{% endtab %}
-
-{% tab title="Spring Boot AutoConfiguration" %}
-By simply declaring dependency to `axon-spring-boot-starter`, Axon will automatically configure the Axon Server Command Bus:
-
-```text
-<!--somewhere in the POM file-->
-<dependency>
-    <groupId>org.axonframework</groupId>
-    <artifactId>axon-spring-boot-starter</artifactId>
-    <version>${axon.version}</version>
-</dependency>
-```
-
-> **Excluding the Axon Server Connector**
->
-> If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' command bus options, the `SimpleCommandBus` \(see [below](infrastructure.md)\).
-{% endtab %}
-{% endtabs %}
+The local command bus is the mechanism that dispatches commands to their respective command handlers within an Axon application. 
+Suggestions on how to use the `CommandBus` can be found [here](command-dispatchers.md#the-command-bus). 
+Several flavors of the command bus, with differing characteristics, exist within the framework.
 
 ### SimpleCommandBus
 
@@ -215,8 +166,14 @@ Since all command processing is done in the same thread, this implementation is 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-            .configureCommandBus(c -> SimpleCommandBus.builder().transactionManager(c.getComponent(TransactionManager.class)).messageMonitor(c.messageMonitor(SimpleCommandBus.class, "commandBus")).build());
+Configurer configurer =
+    DefaultConfigurer.defaultConfiguration()
+                     .configureCommandBus(
+                        c -> SimpleCommandBus.builder()
+                                             .transactionManager(c.getComponent(TransactionManager.class))
+                                             .messageMonitor(c.messageMonitor(SimpleCommandBus.class, "commandBus"))
+                                             .build()
+                     );
 ```
 {% endtab %}
 
@@ -235,10 +192,6 @@ public SimpleCommandBus commandBus(TransactionManager txManager, AxonConfigurati
     return commandBus;
 }
 ```
-
-> **Excluding the Axon Server Connector**
->
-> If you exclude the `axon-server-connector` dependency from the `axon-spring-boot-starter` dependency, the `SimpleCommandBus` will be auto-configured for you.
 {% endtab %}
 {% endtabs %}
 
