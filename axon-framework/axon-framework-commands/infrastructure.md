@@ -589,49 +589,29 @@ public class AxonConfig {
 
 ### DistributedCommandBus
 
-`DistributedCommandBus` is an alternative approach to distributing command bus \(commands\). Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
+The alternative to the [`AxonServerCommandBus`](#axonservercommandbus) is the `DistributedCommandBus`.
+Each instance of the `DistributedCommandBus` on each JVM is referred to as a "Segment".
 
 ![Structure of the Distributed Command Bus](../../.gitbook/assets/distributed-command-bus.png)
 
-The `DistributedCommandBus` relies on two components: a `CommandBusConnector`, which implements the communication protocol between the JVM's, and the `CommandRouter`, which chooses a destination for each incoming command. This router defines which segment of the `DistributedCommandBus` should be given a \`command, based on a routing key calculated by a routing strategy. Two commands with the same routing key will always be routed to the same segment, as long as there is no change in the number and configuration of the segments. Generally, the identifier of the targeted aggregate is used as a routing key.
+The `DistributedCommandBus` relies on two components: 
 
-Two implementations of the `RoutingStrategy` are provided: the `MetaDataRoutingStrategy`, which uses a metadata property in the command message to find the routing key, and the `AnnotationRoutingStrategy`, which uses the `@TargetAggregateIdentifier` annotation on the Command Messages payload to extract the routing key. Obviously, you can also provide your own implementation.
+ 1. The `CommandBusConnector` - implements the communication protocol between the JVM's to send the command over the wire and to receive the response. 
+ 2. The `CommandRouter` - chooses the destination for each incoming command.
+    It defines which segment of the `DistributedCommandBus` should be given a command, based on a routing key calculated by the [routing strategy](#routing-strategy).
+    
+You can choose different flavors of these components that are available as extension modules.
+Currently, Axon provides two extensions to that end, which are:
 
-By default, the `RoutingStrategy` implementations will throw an exception when no key can be resolved from a command message. This behavior can be altered by providing a `UnresolvedRoutingKeyPolicy` in the constructor of the `MetaDataRoutingStrategy` or `AnnotationRoutingStrategy`. There are three possible policies:
-
-* `ERROR` - the default, and will cause an exception to be thrown when a Routing Key is not available
-* `RANDOM_KEY` - will return a random value when a \`routing key cannot be resolved from the command message.
-
-  This effectively means that those commands will be routed to a random segment of the command bus.
-
-* `STATIC_KEY` - Will return a static key \(being "unresolved"\) for unresolved routing keys.
-
-  This effectively means that all those commands will be routed to the same segment, as long as the configuration of segments does not change.
-
-You can choose different flavor of this components that are available in one of the extension modules:
-
-* [SpringCloud](../../extensions/spring-cloud.md) or 
-* [JGroups](../../extensions/jgroups.md).
+ 1. The [SpringCloud](../../extensions/spring-cloud.md) extension 
+ 2. The [JGroups](../../extensions/jgroups.md) extension
 
 Configuring a distributed command bus can \(mostly\) be done without any modifications in configuration files.
-
-First of all, the starters for one of the Axon distributed command bus modules needs to be included \(e.g. [JGroups](../../extensions/jgroups.md) or [Spring Cloud](../../extensions/spring-cloud.md)\).
-
-Once that is present, a single property needs to be added to the application context, to enable the distributed command bus:
+The most straightforward approach to this is to include the Spring Boot starter dependency of either the Spring Cloud or JGroups extension.
+With that in place, a single property needs to be added to the application context, to enable the `DistributedCommandBus`:
 
 ```text
 axon.distributed.enabled=true
 ```
 
-There is one setting that is independent of the type of connector used:
-
-```text
-axon.distributed.load-factor=100
-```
-
-The load factor of a Distributed Command Bus is defaulted to `100`.
-
-> **The Load Factor Explained**
->
-> The load factor defines the amount of load the instance would carry compared to others. For example, if you have a two machine set up, both with a load factor of 100, both will carry an equal amount of load. Increasing the load factor to 200 on both would still mean that both machines receive the same amount of load. Concluding, the load factor is intended to serve heterogeneous application landscapes with the means to distribute more load to faster machines than to slower machines.
-
+It is recommended to visit the respective extension pages on how to configure JGroups or Spring Cloud for the `DistributedCommandBus`.
