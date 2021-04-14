@@ -1,12 +1,31 @@
 # Event Processors
 
-Event handlers define the business logic to be performed when an event is received. Event processors are the components that take care of the technical aspects of that processing. They start a unit of work and possibly a transaction. However, they also ensure that correlation data can be correctly attached to all messages created during event processing.
+[Event handlers](../event-handlers.md) define the business logic to be performed when an event is received. 
+_Event Processors_ are the components that take care of the technical aspects of that processing. 
+They start a [unit of work](../../messaging-concepts/unit-of-work.md) and possibly a transaction. 
+However, they also ensure that [correlation data](../../monitoring-and-metrics.md#correlation-data-a-idcorrelation-dataa) can be correctly attached to all messages created during event processing, among other non-functional requirements.
 
-A representation of the organization of Event Processors and Event Handlers is depicted below.
+A representation of the organization of Event Processors and Event Handlers is depicted below:
 
 ![Organization of Event Processors and Event Handlers](../../../.gitbook/assets/event-processors.png)
 
-Event Processors come in roughly two forms: Subscribing and Tracking. Subscribing Event Processors subscribe themselves to a source of Events and are invoked by the thread managed by the publishing mechanism. Tracking Event Processors, on the other hand, pull their messages from a source using a thread that it manages itself.
+Axon has a layered approach towards organizing event handlers.
+First, an event handler will be positioned in a _Processing Group_.
+Each event handler, or "Event Handling Component", will only ever belong to a single Processing Group. 
+The Processing Group provides a level of configurable non-functional requirements, like [error handling](#exceptions-raised-by-event-handler-methods) and the [sequencing policy](streaming.md#sequential-processing).
+
+The Event Processors in turn is in charge of the Processing Group.
+An Event Processor will control 1 to N Processing Groups, although in most cases there will be a one to one mapping.
+Similar as the Event Handling Component, a Processing Group will belong to a single Event Processor.
+This last layer allows definition of the type of Event Processor used, as well as concepts like the threading mode and a more fine-grained degree of [error handling](#exceptions-during-processing).
+
+Event Processors come in roughly two forms: [Subscribing](subscribing.md) and [Streaming](streaming.md). 
+
+Subscribing Event Processors subscribe themselves to a source of events and are invoked by the thread managed by the publishing mechanism. 
+Streaming Event Processors, on the other hand, pull their messages from a source using a thread that it manages itself.
+
+For more specifics on either type, their respective sections should be consulted.
+The rest of this page dedicates itself towards describing the common concepts and configuration options of the Event Processor.
 
 ## Assigning handlers to processors
 
