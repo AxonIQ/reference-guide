@@ -304,9 +304,3 @@ public void configure(EventProcessingConfigurer config) {
 {% endtabs %}
 
 To implement custom behavior, implement the `ErrorHandler`'s single method. Based on the provided `ErrorContext` object, you can decide to ignore the error, schedule retries, perform dead-letter-queue delivery or rethrow the exception.
-
-## Distributing Events
-
-Distributing events in inter-process environments is supported with Axon Server by default.
-
-Alternatively, you can choose other components that you can find in one of the extension modules \(Spring AMQP, Kafka\).
