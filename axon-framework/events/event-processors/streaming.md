@@ -328,6 +328,12 @@ public class Configuration {
     }
 }
 ```
+## Error Mode
+
+A `TrackingEventProcessor` will go into Error Mode.
+Then, it will retry processing the event using an incremental back-off period.
+It will start at 1 second and double after each attempt until a maximum wait time of 60 seconds per attempt is achieved.
+This back-off time ensures that if another node is able to process events successfully, it will have the opportunity to claim the token required to process the event.
 
 ## Pooled Streaming Event Processor
 

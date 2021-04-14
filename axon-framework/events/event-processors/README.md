@@ -12,12 +12,12 @@ A representation of the organization of Event Processors and Event Handlers is d
 Axon has a layered approach towards organizing event handlers.
 First, an event handler will be positioned in a _Processing Group_.
 Each event handler, or "Event Handling Component", will only ever belong to a single Processing Group. 
-The Processing Group provides a level of configurable non-functional requirements, like [error handling](#exceptions-raised-by-event-handler-methods) and the [sequencing policy](streaming.md#sequential-processing).
+The Processing Group provides a level of configurable non-functional requirements, like [error handling](#processing-group---listener-invocation-error-handler) and the [sequencing policy](streaming.md#sequential-processing).
 
 The Event Processors in turn is in charge of the Processing Group.
 An Event Processor will control 1 to N Processing Groups, although in most cases there will be a one to one mapping.
 Similar as the Event Handling Component, a Processing Group will belong to a single Event Processor.
-This last layer allows definition of the type of Event Processor used, as well as concepts like the threading mode and a more fine-grained degree of [error handling](#exceptions-during-processing).
+This last layer allows definition of the type of Event Processor used, as well as concepts like the threading mode and a more fine-grained degree of [error handling](#event-processor---error-handler).
 
 Event Processors come in roughly two forms: [Subscribing](subscribing.md) and [Streaming](streaming.md). 
 
@@ -233,74 +233,121 @@ public void configureSagaEventProcessing(EventProcessingConfigurer config) {
 
 ## Error Handling
 
-Errors are inevitable. Depending on where they happen, you may want to respond differently.
+Errors are inevitable in any application. 
+Depending on where they happen, you may want to respond differently.
 
-By default exceptions raised by event handlers are logged and processing continues with the next events. When an exception is thrown when a processor is trying to commit a transaction, update a token, or in any other other part of the process, the exception will be propagated. In case of a Tracking Event Processor, this means the processor will go into error mode, releasing any tokens and retrying at an incremental interval \(starting at 1 second, up to max 60 seconds\). A Subscribing Event Processor will report a publication error to the component that provided the event.
+By default, exceptions raised by event handlers are caught in the [Processing Group layer](#processing-group---listener-invocation-error-handler), logged and processing continues with the next events. 
+When an exception is thrown when a processor is trying to commit a transaction, update a [token](streaming.md#token-store), or in any other part of the process, the exception will be propagated. 
 
-To change this behavior, there are two levels at which you can customize how Axon deals with exceptions:
+In case of a [Tracking Event Processor](streaming.md#tracking-event-processor), this means the processor will go into error mode, releasing any tokens and retrying at an incremental interval \(starting at 1 second, up to max 60 seconds\). 
+A [Subscribing Event Processor](subscribing.md) will report a publication error to the component that provided the event.
 
-### Exceptions raised by event handler methods
+To change this behavior there are two levels, the Processing Group and Event Processor respectively, at which you can customize how Axon deals with exceptions:
 
-By default these exceptions are logged and processing continues with the next handler or message.
+### Processing Group - Listener Invocation Error Handler
 
-This behavior can be configured per processing group:
+The component dealing with exceptions thrown from an event handling method, is called the `ListenerInvocationErrorHandler`.
+By default, these exceptions are logged (with the `LoggingErrorHandler` implementation) and processing continues with the next handler or message.
+
+The default `ListenerInvocationErrorHandler` used by each processing group can be customized.
+Furthermore, the error handling behavior can also be configured per processing group:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-eventProcessingConfigurer.registerDefaultListenerInvocationErrorHandler(conf -> /* create error handler */);
-
-// or for a specific processing group:
-eventProcessingConfigurer.registerListenerInvocationErrorHandler("processingGroup", conf -> /* create error handler */);
+public class AxonConfig {
+    // ...
+    public void configureProcessingGroupErrorHandling(EventProcessingConfigurer processingConfigurer) {
+        // To configure a default ...
+        processingConfigurer.registerDefaultListenerInvocationErrorHandler(conf -> /* create listener error handler */)
+                            // ... or for a specific processing group: 
+                            .registerListenerInvocationErrorHandler("my-processing-group", conf -> /* create listener error handler */);
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
-@Autowired
-public void configure(EventProcessingConfigurer config) {
-    config.registerDefaultListenerInvocationErrorHandler(conf -> /* create error handler */);
-
-    // or for a specific processing group:
-    config.registerListenerInvocationErrorHandler("processingGroup", conf -> /* create error handler */);
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureProcessingGroupErrorHandling(EventProcessingConfigurer processingConfigurer) {
+        // To configure a default ...
+        processingConfigurer.registerDefaultListenerInvocationErrorHandler(conf -> /* create listener error handler */)
+                            // ... or for a specific processing group: 
+                            .registerListenerInvocationErrorHandler("my-processing-group", conf -> /* create listener error handler */);
+    }
 }
 ```
 {% endtab %}
 {% endtabs %}
 
-It is easy to implement custom error handling behavior. The error handling method to implement provides the exception, the event that was handled, and a reference to the handler that was handling the message. You can choose to retry, ignore or rethrow the exception. In the latter case, the exception will bubble up to the event processor level.
+It is easy to implement custom error handling behavior. 
+The error handling method to implement provides the exception, the event that was handled, and a reference to the handler that was handling the message:
 
-### Exceptions during processing
+```java
+public interface ListenerInvocationErrorHandler {
 
-Exceptions that occur outside of the scope of an event handler, or have bubbled up from there, are handled by the ErrorHandler. The default behavior depends on the processor implementation:
+    void onError(Exception exception, 
+                 EventMessage<?> event, 
+                 EventMessageHandler eventHandler) throws Exception;
+}
+```
 
-A `TrackingEventProcessor` will go into Error Mode. Then, it will retry processing the event using an incremental back-off period. It will start at 1 second and double after each attempt until a maximum wait time of 60 seconds per attempt is achieved. This back-off time ensures that if another node is able to process events successfully, it will have the opportunity to claim the token required to process the event.
+You can choose to retry, ignore or rethrow the exception. 
+When rethrown the exception will bubble up to the [Event Processor level](#event-processor---error-handler).
 
-The `SubscribingEventProcessor` will have the exception bubble up to the publishing component of the event, allowing it to deal with it, accordingly.
+### Event Processor - Error Handler
 
-To customize the behavior, you can configure an error handler on the event processor level.
+Exceptions that occur outside the scope of an event handler, or have bubbled up from there, are handled by the `ErrorHandler`.
+The default error handler is the `PropagatingErrorHandler`, which will rethrow any exceptions it catches.
+
+How the Event Processor deals with a rethrown exception differs per implementation.
+The behaviour for the Subscribing- and the Streaming Event Processor can respectively be found [here](subscribing.md#error-mode) and [here](streaming.md#error-mode).
+
+A default `ErrorHandler` for all Event Processors or an `ErrorHandler` for a specific processors can be configured:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-eventProcessingConfigurer.registerDefaultErrorHandler(conf -> /* create error handler */);
-
-// or for a specific processor:
-eventProcessingConfigurer.registerErrorHandler("processorName", conf -> /* create error handler */);
+public class AxonConfig {
+    // ...
+    public void configureProcessingGroupErrorHandling(EventProcessingConfigurer processingConfigurer) {
+        // To configure a default ...
+        processingConfigurer.registerDefaultErrorHandler(conf -> /* create error handler */)
+                            // ... or for a specific processor: 
+                            .registerErrorHandler("my-processor", conf -> /* create error handler */);
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
-@Autowired
-public void configure(EventProcessingConfigurer config) {
-    config.registerDefaultErrorHandler(conf -> /* create error handler */);
-
-    // or for a specific processing group:
-    config.registerErrorHandler("processingGroup", conf -> /* create error handler */);
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureProcessingGroupErrorHandling(EventProcessingConfigurer processingConfigurer) {
+        // To configure a default ...
+        processingConfigurer.registerDefaultErrorHandler(conf -> /* create error handler */)
+                            // ... or for a specific processor: 
+                            .registerErrorHandler("my-processor", conf -> /* create error handler */);
+    }
 }
 ```
 {% endtab %}
 {% endtabs %}
 
-To implement custom behavior, implement the `ErrorHandler`'s single method. Based on the provided `ErrorContext` object, you can decide to ignore the error, schedule retries, perform dead-letter-queue delivery or rethrow the exception.
+To provide a custom solution, the `ErrorHandler`'s single method needs to be implemented:
+
+```java
+public interface ErrorHandler {
+
+    void handleError(ErrorContext errorContext) throws Exception;
+}
+```
+
+Based on the provided `ErrorContext` object, you can decide to ignore the error, schedule retries, perform dead-letter-queue delivery or rethrow the exception.
