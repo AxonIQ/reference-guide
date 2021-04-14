@@ -44,7 +44,7 @@
 * [Events](axon-framework/events/README.md)
   * [Event Dispatchers](axon-framework/events/event-dispatchers.md)
   * [Event Handlers](axon-framework/events/event-handlers.md)
-  * [Event Processors](axon-framework/events/event-processors/event-processors.md)
+  * [Event Processors](axon-framework/events/event-processors/README.md)
   * [Event Bus & Event Store](axon-framework/events/event-bus-and-event-store.md)
   * [Event Versioning](axon-framework/events/event-versioning.md)
   * [Event Serialization](axon-framework/events/event-serialization.md)

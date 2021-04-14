@@ -519,7 +519,7 @@ See the [monitoring and metrics](../../monitoring-and-metrics.md#event-tracker-s
 > It is possible to provide a token position to be used when resetting a `TrackingEventProcessor`; thus, specifying from which point in the event log it should start replaying the events.
 > This would require the usage of the `TrackingEventProcessor#resetTokens(TrackingToken)` or `TrackingEventProcessor#resetTokens(Function<StreamableMessageSource<TrackedEventMessage<?>>, TrackingToken>)` method, which both provide the `TrackingToken` from which the reset should start.
 >
-> How to customize a tracking token position is described [here](event-processors.md#custom-tracking-token-position).
+> How to customize a tracking token position is described [here](README.md#custom-tracking-token-position).
 
 ## Custom tracking token position
 

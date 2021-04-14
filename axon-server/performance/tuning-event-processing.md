@@ -6,7 +6,7 @@ Typically, application components contain one or more Event Processors which are
 
 Tracking Event Processors that handle events in multiple threads use segments to separate the events in the stream across these threads in a reliable way. However, especially when these threads are spread across multiple instances of a component, and the number of instances changes, it may be useful to scale the number of segments accordingly.
 
-To this end, Axon Framework provides a [split and merge API](../../axon-framework/events/event-processors/event-processors.md#splitting-and-merging-tracking-tokens). This API can be utilized directly or through Axon Server, where the latter takes required coordination into account.
+To this end, Axon Framework provides a [split and merge API](../../axon-framework/events/event-processors/README.md#splitting-and-merging-tracking-tokens). This API can be utilized directly or through Axon Server, where the latter takes required coordination into account.
 
 ### Segment tuning through Axon Server <a id="segment-tuning-through-axon-server"></a>
 

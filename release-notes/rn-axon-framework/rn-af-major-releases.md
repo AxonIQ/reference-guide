@@ -16,7 +16,7 @@ For an exhaustive list of all adjustments made for release 4.5 you can check out
 * A new type of `EventProcessor` has been introduced in pull request [#1712](https://github.com/AxonFramework/AxonFramework/pull/1712), called the `PooledStreamingEventProcessor`.
   This `EventProcessor` allows the same set of operations as the `TrackingEventProcessor`, but uses a different threading approach for handling events and processing operations.
   In all, this solution provides a more straightforward processor implementation and configuration, allowing for enhanced event processing in general.
-  For specifics on how to configure it, check out [this](../../axon-framework/events/event-processors/event-processors.md#pooled-streaming-event-processor) section.
+  For specifics on how to configure it, check out [this](../../axon-framework/events/event-processors/README.md#pooled-streaming-event-processor) section.
   
 * Sagas support the use of [Deadline Handlers](../../axon-framework/deadlines/deadline-managers.md#handling-a-deadline), but an `@DeadlineHandler` annotated method couldn't automatically close a Saga with the `@EndSaga` annotation.
   This enhancement has been described in [#1469](https://github.com/AxonFramework/AxonFramework/issues/1469) and resolved in pull request [#1656](https://github.com/AxonFramework/AxonFramework/pull/1656).
