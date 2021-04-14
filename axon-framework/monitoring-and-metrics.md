@@ -55,15 +55,15 @@ Another good approach to track the flow of messages throughout an Axon applicati
 
 ### Event Tracker Status <a id="event-tracker-status"></a>
 
-Since [Tracking Tokens](events/event-processors/README.md#token-store) "track" the progress of a given Tracking Event Processor, they provide a sensible monitoring hook in any Axon application. Such a hook proves its usefulness when we want to rebuild our view model and we want to check when the processor has caught up with all the events.
+Since [Tracking Tokens](events/event-processors/streaming.md#token-store) "track" the progress of a given Tracking Event Processor, they provide a sensible monitoring hook in any Axon application. Such a hook proves its usefulness when we want to rebuild our view model and we want to check when the processor has caught up with all the events.
 
 To that end the `TrackingEventProcessor` exposes the `processingStatus()` method. It returns a map where the key is the segment identifier and the value is an "Event Tracker Status". The Event Tracker Status exposes a couple of metrics:
 
 * The `Segment` it reflects the status of.
 * A boolean through `isCaughtUp()` specifying whether it is caught up with the Event Stream.
-* A boolean through `isReplaying()` specifying whether the given Segment is [replaying](events/event-processors/README.md#replaying-events).
+* A boolean through `isReplaying()` specifying whether the given Segment is [replaying](events/event-processors/streaming.md#replaying-events).
 
-* A boolean through `isMerging()` specifying whether the given Segment is [merging](events/event-processors/README.md#splitting-and-merging-tracking-tokens).
+* A boolean through `isMerging()` specifying whether the given Segment is [merging](events/event-processors/streaming.md#splitting-and-merging-tracking-tokens).
 * The `TrackingToken` of the given Segment.
 * A boolean through `isErrorState()` specifying whether the Segment is in an error state.
 * An optional `Throwable` if the Event Tracker reached an error state.
