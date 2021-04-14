@@ -4,7 +4,7 @@ Event handlers define the business logic to be performed when an event is receiv
 
 A representation of the organization of Event Processors and Event Handlers is depicted below.
 
-![Organization of Event Processors and Event Handlers](../../.gitbook/assets/event-processors.png)
+![Organization of Event Processors and Event Handlers](../../../.gitbook/assets/event-processors.png)
 
 Event Processors come in roughly two forms: Subscribing and Tracking. Subscribing Event Processors subscribe themselves to a source of Events and are invoked by the thread managed by the publishing mechanism. Tracking Event Processors, on the other hand, pull their messages from a source using a thread that it manages itself.
 
@@ -29,7 +29,7 @@ The Configuration API allows you to configure other strategies for assigning cla
 
 ## Ordering Event Handlers within a single Event Processor
 
-To order Event Handlers within an Event Processor, the order in which Event Handlers are registered \(as described in the [Registering Event Handlers](event-handlers.md#registering-event-handlers) section\) is guiding. Thus, the ordering in which Event Handlers will be called by an Event Processor for Event Handling is the same as their insertion ordering in the configuration API.
+To order Event Handlers within an Event Processor, the order in which Event Handlers are registered \(as described in the [Registering Event Handlers](../event-handlers.md#registering-event-handlers) section\) is guiding. Thus, the ordering in which Event Handlers will be called by an Event Processor for Event Handling is the same as their insertion ordering in the configuration API.
 
 If Spring is selected as the mechanism to wire everything, the ordering of the Event Handlers can be explicitly specified by adding the `@Order` annotation. This annotation should be placed at the class level of your event handler class, and an `integer` value should be provided to specify the ordering.
 
@@ -512,7 +512,7 @@ public class ResetService {
 
 It is possible to provide a change listener which can validate whenever the replay is done.
 More specifically, an `EventTrackerStatusChangeListener` can be configured through the `TrackingEventProcessorConfiguration`.
-See the [monitoring and metrics](../monitoring-and-metrics.md#event-tracker-status-a-idevent-tracker-statusa) for more specifics on the change listener.
+See the [monitoring and metrics](../../monitoring-and-metrics.md#event-tracker-status-a-idevent-tracker-statusa) for more specifics on the change listener.
 
 > **Partial Replays**
 >

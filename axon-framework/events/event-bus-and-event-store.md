@@ -2,7 +2,7 @@
 
 ## Event Bus
 
-The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides three implementations of the Event Bus: `AxonServerEventStore`, `EmbeddedEventStore` and `SimpleEventBus`. All three implementations support subscribing and tracking processors \(see [Events Processors](event-processors.md)\). However, the `AxonServerEventStore` and `EmbeddedEventStore` persist events \(see [Event Store](event-bus-and-event-store.md)\), which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
+The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides three implementations of the Event Bus: `AxonServerEventStore`, `EmbeddedEventStore` and `SimpleEventBus`. All three implementations support subscribing and tracking processors \(see [Events Processors](event-processors/event-processors.md)\). However, the `AxonServerEventStore` and `EmbeddedEventStore` persist events \(see [Event Store](event-bus-and-event-store.md)\), which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
 
 An `AxonServerEventStore` event bus/store is configured by default.
 
