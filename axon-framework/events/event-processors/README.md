@@ -29,30 +29,103 @@ The rest of this page dedicates itself towards describing the common concepts an
 
 ## Assigning handlers to processors
 
-All processors have a name, which identifies a processor instance across JVM instances. Two processors with the same name are considered as two instances of the same processor.
+All processors have a name, which identifies a processor instance across JVM instances. 
+Two processors with the same name are considered as two instances of the same processor.
 
-All event handlers are attached to a processor whose name is the package name of the Event Handler's class.
+All event handlers are attached to a processor whose name by default is the package name of the event handler's class.
 
 For example, the following classes:
 
 * `org.axonframework.example.eventhandling.MyHandler`,
 * `org.axonframework.example.eventhandling.MyOtherHandler`, and
-* `org.axonframework.example.eventhandling.module.MyHandler`
+* `org.axonframework.example.eventhandling.module.ModuleHandler`
 
 will trigger the creation of two processors:
 
-* `org.axonframework.example.eventhandling` with 2 handlers, and
-* `org.axonframework.example.eventhandling.module` with a single handler
+1. `org.axonframework.example.eventhandling` with two handlers called `MyHandler` and `MyOtherHandler`
+2. `org.axonframework.example.eventhandling.module` with the single handler `ModuleHandler`
 
-The Configuration API allows you to configure other strategies for assigning classes to processors, or even assign specific handler instances to specific processors.
+Using the package name serves as a fair default, but using dedicated names for an Event Processor and/or the Processing Group is recommended.
+The simplest approach to reach a clear naming scheme of your event handlers, is by using the `ProcessingGroup` annotation.
+This annotation resembles the Processing Group level discussed in the [introduction](README.md).
 
-## Ordering Event Handlers within a single Event Processor
+The `ProcessingGroup` annotation requires insertion of a name and can only be set on the class.
+Let us adjust the previous sample by using this annotation instead of the package names for grouping handlers:
 
-To order Event Handlers within an Event Processor, the order in which Event Handlers are registered \(as described in the [Registering Event Handlers](../event-handlers.md#registering-event-handlers) section\) is guiding. Thus, the ordering in which Event Handlers will be called by an Event Processor for Event Handling is the same as their insertion ordering in the configuration API.
+```java
+@ProcessingGroup("my-handlers")
+class MyHandler {
+    // left out event handling functions...
+}
 
-If Spring is selected as the mechanism to wire everything, the ordering of the Event Handlers can be explicitly specified by adding the `@Order` annotation. This annotation should be placed at the class level of your event handler class, and an `integer` value should be provided to specify the ordering.
+@ProcessingGroup("my-handlers")
+class MyOtherHandler{
+    // ...
+}
 
-Not that it is not possible to order event handlers which are not a part of the same event processor.
+@ProcessingGroup("module-handlers")
+class ModuleHandler {
+    // ...
+}
+```
+
+Using the `ProcessingGroup` annotation as depicted, we again construct two processors:
+
+1. `my-handlers` with two handlers called `MyHandler` and `MyOtherHandler`
+2. `module-handlers` with the single handler `ModuleHandler`
+
+If more control is required for grouping Event Handling Components, the [assignment rules](#event-handler-assignment-rules) should be consulted.
+
+### Event Handler Assignment Rules
+
+The Configuration API allows you to configure other strategies for assigning event handling classes to processors, or even assign specific handler instances to specific processors.
+These assignment rules can be separated in roughly two groups: Event Handler to Processing Group and Processing Group to Event Processor.
+Below is an exhaustive list of all the assignment rules which can be used through the `EventProcessingConfigurer`:
+
+**Event Handler to Processing Group**
+
+* `byDefaultAssignTo(String)` - defines the default Processing Group name an event handler will be assigned to.
+  Will only be taken into account if there are no more specifics rules and if the `ProcessingGroup` annotation is not used.
+* `byDefaultAssignHandlerInstancesTo(Function<Object, String>)` - defines a lambda invoked to assign an event handling instance to a desired Processing Group by returning that group's name.
+  Will only be taken into account if there are no more specifics rules and if the `ProcessingGroup` annotation is not used.
+* `byDefaultAssignHandlerTypesTo(Function<Class<?>, String>)` - defines a lambda invoked to assign an event handler type to a desired Processing Group by returning that group's name.
+  Will only be taken into account if there are no more specifics rules and if the `ProcessingGroup` annotation is not used.
+* `assignHandlerInstancesMatching(String, Predicate<Object>)` - assigns event handlers to the given Processing Group name based on a predicate ingesting an event handling instance.
+  Uses a natural priority of zero. If an instance matches several criteria, the outcome is _undefined_.
+* `assignHandlerTypesMatching(String, Predicate<Class<?>>)` - assigns event handlers to the given Processing Group name based on a predicate ingesting an event handler type.
+  Uses a natural priority of zero. If an instance matches several criteria, the outcome is _undefined_. 
+* `assignHandlerInstancesMatching(String, int, Predicate<Object>)` -  assigns event handlers to the given Processing Group name based on a predicate ingesting an event handling instance.
+  Uses the given priority to decide on rule-ordering. The higher the priority, the more important the rule is.
+  If an instance matches several criteria, the outcome is _undefined_.
+* `assignHandlerTypesMatching(String, int, Predicate<Class<?>>)` - assigns event handlers to the given Processing Group name based on a predicate ingesting an event handler type.
+  Uses the given priority to decide on rule-ordering. The higher the priority, the more important the rule is.
+  If an instance matches several criteria, the outcome is _undefined_.
+
+**Processing Group to Event Processor**
+
+* `assignProcessingGroup(String, String)` - defines a given Processing Group name belongs to the given Event Processor's name.
+* `assignProcessingGroup(Function<String, String>)` - defines a lambda invoked to assign a Processing Group name to a desired Event Processor by returning that processor's name.
+
+### Ordering Event Handlers within a processor
+
+To order event handlers within an Event Processor, the order in which event handlers are registered (as described in the [Registering Event Handlers](../event-handlers.md#registering-event-handlers) section) is guiding. 
+Thus, the ordering in which event handlers will be called by an Event Processor for event handling is the same as their insertion ordering in the Configuration API.
+
+If Spring is selected as the mechanism to wire everything, the ordering of the event handlers can be explicitly specified by adding the `@Order` annotation. 
+This annotation should be placed at the class level of your event handler class, and an `integer` value should be provided to specify the ordering.
+
+Note that it is **not possible** to order event handlers which are not a part of the same Event Processor.
+Each Event Processor acts as its own component without any intervention from other Event Processors.
+
+> **Ordering Considerations**
+> 
+> Although an order can be placed among event handlers within an Event Processor, it is recommended to go for separation instead.
+> 
+> Placing an overall ordering on event handlers means those components are inclined to interact with one another, introducing a form of coupling.
+> Due to this the event handling process will become complex to manage (e.g. for new team members).
+> Furthermore, embracing an ordering approach might lead to place _all_ event handlers in a global ordering, decreasing processing speeds in general.
+> 
+> In all, the ordering may definitely be used, but it is recommended to use it sparingly.
 
 ## Configuring processors
 
