@@ -2,13 +2,13 @@
 
 Command dispatching, as exemplified in the [Dispatching Commands](command-dispatchers.md) page, has a number of advantages. 
 Firstly, it constructs an object that clearly describes the intent of the client. 
-By logging the command, you store both the intent and related data for future reference. 
+By logging the command, you store both the intent and the related data for future reference. 
 Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. 
 
 Testing also becomes a lot easier. 
 You could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing](../testing/commands-events.md) for more on this\).
 
-The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
+The last major advantage is that it is very easy to switch between synchronous and asynchronous, as well as local versus distributed command processing.
 
 This does not mean command dispatching using explicit command objects is the only way to do it. The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way, while providing best practices as the default behavior. It is still possible to use a service layer that you can invoke to execute commands. The method will just need to start a unit of work \(see [Unit of Work](../messaging-concepts/unit-of-work.md)\) and perform a commit or rollback on it when the method is finished.
 
@@ -378,11 +378,11 @@ public DisruptorCommandBus commandBus(TransactionManager txManager, AxonConfigur
 
 ## The Command Bus - Distributed
 
-More often you want multiple instances of command buses in different JVMs to act as one. 
+Often time you would want multiple instances of command buses in different JVMs to act as one. 
 Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM while sending back any results.
 That is where the concept of 'distributing the command bus' comes in.
 
-There are a couple of concepts that are configurable, regardless of the type of distribute command bus used:
+There are a couple of concepts that are configurable, regardless of the type of distributed command bus that is being used:
 
 ### Local Segment
 
@@ -391,16 +391,16 @@ All they do is form a "bridge" between command bus implementations on different 
 
 By default, this local segment is the [`SimpleCommandBus`](infrastructure.md#simplecommandbus).
 You can configure the local segment to be any of the other local command buses too, like the [`AsynchronousCommandBus`](infrastructure.md#asynchronouscommandbus) and [`DisruptorCommandBus`](infrastructure.md#disruptorcommandbus).
-How to configure the local segment will be shown in the sections of the implementations
+The details of how to configure the local segment are shown in the implementation sections.
 
 ### Load Factor
 
 The load factor defines the amount of load an Axon application would carry compared to other instances.
-For example, if you have a two machine set up, both with a load factor of 100, both will carry an equal amount of load.
+For example, if you have a two machine set up, each with a load factor of 100, they will both carry an equal amount of load.
 
 Increasing the load factor to 200 on both would still mean that both machines receive the same amount of load.
-This points out that the load factor will only change load amongst systems if the values are in equal.
-Doing so would make sense in a heterogeneous application landscape, where for the faster machines should deal with a bigger portion of command handling than the slower machines.
+This points out that the load factor will only change the load amongst systems if the values are not equal.
+Doing so would make sense in a heterogeneous application landscape, where the faster machines should deal with a bigger portion of command handling than the slower machines.
 
 The default load factor set for the distributed `CommandBus` implementations is 100.
 The configuration changes slightly per distributed implementation and as such will be covered in those sections.
@@ -409,23 +409,24 @@ The configuration changes slightly per distributed implementation and as such wi
 
 Commands should be [routed consistently](../../architecture-overview/README.md#explicit-messaging) to the same application, especially those targeted towards a specific Aggregate.
 This ensures a single instance is in charge of the targeted aggregate, resolving the concurrent access issue and allowing for optimization like caching to work as designed.
-To component dealing with the consistent routing in an Axon application, is the `RoutingStrategy`.
+The component dealing with the consistent routing in an Axon application, is the `RoutingStrategy`.
 
 The `RoutingStrategy` receives a `CommandMessage` and based on the message returns the routing key to use.
 Two commands with the same routing key will **always** be routed to the same segment, as long as there is no topology change in the distributed set-up.
 
-At the moment, there are five implementations of the `RoutingStrategy`, where three of these are intended to be a fallback solution in case the routing key cannot be resolved:
+At the moment, there are five implementations of the `RoutingStrategy`. 
+Three of these are intended to be a fallback solution in case the routing key cannot be resolved:
 
- 1. The `AnnotationRoutingStrategy` - the **default** routing strategy expecting the `TargetAggregateIdentifier` or `RoutingKey` annotation to be present on a field inside the command class. 
+ 1. The `AnnotationRoutingStrategy` - the **default** routing strategy expects the `TargetAggregateIdentifier` or `RoutingKey` annotation to be present on a field inside the command class. 
     The annotated field or getter is searched, and the contents will be returned as the routing key for that command.
- 2. The `MetaDataRoutingStrategy` - uses a property defined during creation of this strategy to fetch the routing key from the `CommandMessage` its `MetaData`.
+ 2. The `MetaDataRoutingStrategy` - uses a property defined during creation of this strategy to fetch the routing key from the `CommandMessage`'s `MetaData`.
  3. The `ERROR` `UnresolvedRoutingKeyPolicy` - the **default fallback** that will cause an exception to be thrown when the routing key cannot be resolved from the given `CommandMessage`.
  4. The `RANDOM_KEY` `UnresolvedRoutingKeyPolicy` - will return a random value when a routing key cannot be resolved from the `CommandMessage`. 
-    This effectively means that those commands will be routed to a random segment of the command bus.
+    This means that those commands will be routed to a random segment of the command bus.
  5. The `STATIC_KEY` `UnresolvedRoutingKeyPolicy` - will return a static key \(named "unresolved"\) for unresolved routing keys. 
-    This effectively means that all those commands will be routed to the same segment, as long as the configuration of segments does not change.
+    This policy routes all commands to the same segment, as long as the configuration of segments does not change.
 
-The `AnnotationRoutingStrategy`  and `MetaDataRoutingStrategy` are considered the full implementations to configure.
+The `AnnotationRoutingStrategy` and `MetaDataRoutingStrategy` are considered the full implementations to configure.
 The `ERROR`, `RANDOM_KEY` and `STATIC_KEY` are _fallback routing strategies_ that should be configured on the annotation or meta-data implementations.
 To get a grasp how these are constructed, consider the following sample:
 
@@ -458,7 +459,7 @@ public RoutingStrategy routingStrategy() {
 {% endtab %}
 {% endtabs %}
 
-Of course a custom implementation of the `RoutingStrategy` can also be provided when necessary
+Of course, a custom implementation of the `RoutingStrategy` can also be provided when necessary.
 When we need to deviate from the default `AnnotationRoutingStrategy`, we should configure it like so: 
 
 {% tabs %}
@@ -466,8 +467,8 @@ When we need to deviate from the default `AnnotationRoutingStrategy`, we should 
 ```java
 public class AxonConfig {
     // ...  
-    public void configureRoutingStrategy(Configurer configurer, RoutingStrategy routingStrategy) {
-        configurer.registerComponent(RoutingStrategy.class, config -> routingStrategy);
+    public void configureRoutingStrategy(Configurer configurer, YourRoutingStrategy yourRoutingStrategy) {
+        configurer.registerComponent(RoutingStrategy.class, config -> yourRoutingStrategy);
     }
 }
 ```
@@ -489,8 +490,8 @@ public class AxonConfig {
 
 ### AxonServerCommandBus
 
-The `AxonServerCommandBus` is the _default_ distributed `CommandBus` implementation set by the framework.
-It connects to [AxonServer](../../axon-server-introduction.md) to submit and receive commands with.
+The `AxonServerCommandBus` is the _default_ distributed `CommandBus` implementation that is set by the framework.
+It connects to [AxonServer](../../axon-server-introduction.md), with which it can send and receive commands.
 
 As it is the default, configuring it is relatively straightforward:
 
@@ -498,17 +499,33 @@ As it is the default, configuring it is relatively straightforward:
 {% tab title="Axon Configuration API" %}
 Declare dependencies:
 ```text
-<!--somewhere in the POM file-->
-<dependency>
-    <groupId>org.axonframework</groupId>
-    <artifactId>axon-server-connector</artifactId>
-    <version>${axon.version}</version>
-</dependency>
-<dependency>
-    <groupId>org.axonframework</groupId>
-    <artifactId>axon-configuration</artifactId>
-    <version>${axon.version}</version>
-</dependency>
+<!-- somewhere in the POM file... -->
+<dependencyManagement>
+    <!-- amongst the dependencies... -->
+    <dependencies>
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-bom</artifactId>
+            <version>${version.axon}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+    <!-- ... -->
+</dependencyManagement>
+<!-- ... -->
+<dependencies>
+    <!-- amongst the dependencies... -->
+    <dependency>
+        <groupId>org.axonframework</groupId>
+        <artifactId>axon-server-connector</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.axonframework</groupId>
+        <artifactId>axon-configuration</artifactId>
+    </dependency>
+    <!-- ... -->
+</dependencies>
 ```
 
 Configure your application:
@@ -519,7 +536,7 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration();
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
-By simply declaring the `axon-spring-boot-starter` dependency, Axon will automatically configure the `AxonServerCommandBus`:
+By simply including the `axon-spring-boot-starter` dependency, Axon will automatically configure the `AxonServerCommandBus`:
 
 ```text
 <!--somewhere in the POM file-->
@@ -540,13 +557,13 @@ By simply declaring the `axon-spring-boot-starter` dependency, Axon will automat
 > 1. By excluding the `axon-server-connector` dependency.
 > 2. By setting `axon.server.enabled` to `false` when Spring Boot is used.
 >
-> When doing either of these, Axon will fallback to the not distributed [`SimpleCommandBus`](infrastructure.md#simplecommandbus), unless configured otherwise.
+> When doing any of these, Axon will fallback to the **un**distributed [`SimpleCommandBus`](infrastructure.md#simplecommandbus), unless configured otherwise.
 
 #### Local Segment and Load Factor Configuration
 
 The [load factor](#load-factor) for the `AxonServerCommandBus` is defined through the `CommandLoadFactorProvider`.
-This interface allows us to define a different load factor per command message.
-This might proof useful if some commands should be targeted towards more often to one instance in favour of the other.
+This interface allows us to distinguish between commands to, for example, use a different load factor per command message.
+This might be useful if some commands are routed more often towards one instance in favour of the other.
 
 The following should be done to configure a custom [local segment](#local-segment) and/or load factor:
 

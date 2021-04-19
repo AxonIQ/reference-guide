@@ -12,10 +12,10 @@ In order for Axon to know which instance of an Aggregate type should handle the 
 
 > **Routing in a distributed environment**
 > 
-> Regardless of the type of command, as soon as you are distributing your application (through for example Axon Server), it is recommended to specify a routing key on the command. 
-> The `@TargetAggregateIdentifier` doubles as such, but in absence of a field worthy of the annotation, the `@RoutingKey` annotation should be added to ensure the command can be routed.
+> Regardless of the type of command, as soon as you start distributing your application (through Axon Server, for example), it is recommended to specify a routing key on the command. 
+> This is the job of the `@TargetAggregateIdentifier`, but in absence of a field worthy of the annotation, the `@RoutingKey` annotation should be added to ensure the command can be routed.
 > 
-> If neither of these annotations suffices for your use case, a different `RoutingStrategy` can be configured, as is further specified in the [Routing Strategy](infrastructure.md#routing-strategy) section.
+> If neither annotation works for your use case, a different `RoutingStrategy` can be configured, as is explained in the [Routing Strategy](infrastructure.md#routing-strategy) section.
 
 Taking the `GiftCard` Aggregate as an example, we can identify two Command Handlers on the Aggregate:
 
@@ -92,7 +92,8 @@ If you prefer to use another mechanism for routing commands, the behavior can be
 >
 > When the `@CommandHandler` annotation is placed on an aggregate's constructor, the respective command will create a new instance of that aggregate and add it to the repository. 
 > Those commands do not require to target a specific aggregate instance. 
-> Therefore, those commands do not require any `@TargetAggregateIdentifier` or `@TargetAggregateVersion` annotations, nor will a custom `CommandTargetResolver` be invoked for these commands.
+> Therefore, those commands do not need either the `@TargetAggregateIdentifier` nor the `@TargetAggregateVersion` annotation.
+> Furthermore, a custom `CommandTargetResolver` will not be invoked for these commands.
 
 ### Business Logic and State Changes
 
