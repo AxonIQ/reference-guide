@@ -367,6 +367,13 @@ A list of all the configuration properties by area is denoted below. Unless expl
       style="text-align:left">JUMP_SKIP_INDEX</td>
     </tr>
     <tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">read-sequence-validation-strategy</td>
+      <td style="text-align:left">(Since 4.4.14) Sets how to handle validation errors while reading aggregates from the event store. Values are LOG and FAIL.</td>
+      <td
+      style="text-align:left">LOG</td>
+    </tr>
       <td style="text-align:left"><em><b>Logging</b></em>
       </td>
       <td style="text-align:left"></td>
