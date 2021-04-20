@@ -4,6 +4,40 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.4_
 
+### Release 4.4.8
+
+* A bug was noted whenever a query handler returned a `Future`/`CompletableFuture` in combination with a subscription query, with Axon Server as the infrastructure.
+  In this format, Axon would incorrectly use the scatter-gather query for the initial result of the subscription query.
+  Whenever the returned result was completed, this didn't cause any issues. 
+  However, for a `Future`/`CompletableFuture` a `TimeoutException` would be thrown.
+  The issue was luckily easily mitigated by changing the "number of expected results" from within the `QueryRequest` to default to 1 instead of zero.
+  As an effect, the point-to-point would be invoked instead of scatter-gather.
+  For reference, the issue can be found [here](https://github.com/AxonFramework/AxonFramework/issues/1737).
+  
+* Whenever an interface is used as the type of an `@AggregateMember` annotated field, Axon would throw a `NullPointerException`.
+  This is far from friendly, and has been changed towards an `AxonConfigurationException` in pull request [#1742](https://github.com/AxonFramework/AxonFramework/pull/1742).
+
+Note that the named issues comprise the complete changelist for [Axon Framework 4.4.8](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.4.8). 
+
+### Release 4.4.7
+
+* The [Axon Server Connector Java](https://github.com/AxonIQ/axonserver-connector-java) version 4.4.7 has been included in this release as well. 
+  As such, it's fixes (found [here](https://github.com/AxonIQ/axonserver-connector-java/releases/tag/4.4.7)) are thus also part of this release.
+
+* Contributor "krosenvold" noticed that the SQL to retrieve a stream of events was performed twice in quick concession.
+  The provided solution (in pull request [#1689](https://github.com/AxonFramework/AxonFramework/pull/1689)) would resolve this, but the problem was spotted to originate elsewhere.
+  Commit [16b7152](https://github.com/AxonFramework/AxonFramework/commit/16b71529472ddb7345bd247ee5dd930dc6bd2206) saw an end to this occurrence by making a minor tweak in the `EmbeddedEventStore`.
+
+* As rightfully noticed by user "pepperbob", there was a type discrepancy when reading events through a tracking token.
+  An event would always become a `DomainEventMessage` when read through the `EventStorageEngine`, whereas it might originally have been a regular `EventMessage`.
+  The problem has been fixed in commit [c61a95b](https://github.com/AxonFramework/AxonFramework/commit/c61a95bff14cda0ed3fea154747067560a670b4d).
+  Furthermore, the entire description of the issue can be found [here](https://github.com/AxonFramework/AxonFramework/issues/1697).
+
+* Through the use of the `AxonServerQueryBus`, a cancelled subscription query was wrongfully completed normally where it should complete exceptionally.
+  This problem is marked and resolved under pull request [#1695](https://github.com/AxonFramework/AxonFramework/pull/1695).
+
+For a detailed perspective on the release notes, please check [this](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.4.7) page. 
+
 ### Release 4.4.6
 
 * Contributor "Rafaesp" noted that a registered `CommandHandlerInterceptor` in the `AggregateTestFixture` could be invoked more often than desired.
