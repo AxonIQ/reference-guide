@@ -4,6 +4,13 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## Axon Server Standard Edition
 
+## _Release 4.5_
+
+### Release 4.5.1
+
+* Configurable strategy for aggregate events stream sequence validation (through property read-sequence-validation-strategy)
+* Fix in UI for check for updates
+
 ## _Release 4.4_
 
 ### Release 4.4.11
@@ -163,6 +170,16 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 * GRPC version update
 
 ## Axon Server Enterprise Edition
+
+## _Release 4.5_
+
+### Release 4.5.1
+
+* Configurable strategy for aggregate events stream sequence validation (through property read-sequence-validation-strategy)
+* Fix for initialization error for the transaction log
+* Fix for node not able to replicate after install snapshot procedure
+* Fix for concurrency issue in creating schedulers for auto load balancing
+* Fix in UI for check for updates
 
 ## _Release 4.4_
 
