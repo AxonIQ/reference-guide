@@ -1,10 +1,13 @@
 # JGroups
 
-JGroups is an alternative approach to distributing command bus \(commands\), besides Axon Server which is the default.
+JGroups is an alternative approach to distributing command bus \(commands\) besides Axon Server.
 
-The `JGroupsConnector` uses \(as the name already gives away\) JGroups as the underlying discovery and dispatching mechanism. Describing the feature set of JGroups is a bit too much for this reference guide, so please refer to the [JGroups User Guide](http://www.jgroups.org/ug.html) for more details.
+The `JGroupsConnector` uses \(as the name already gives away\) [JGroups](http://www.jgroups.org/) as the underlying discovery and dispatching mechanism. 
+Describing the features of JGroups is beyond the scope this reference guide
+Please refer to the [JGroups User Guide](http://www.jgroups.org/ug.html) for more information.
 
-To use the Spring JGroups components from Axon, make sure the `axon-jgroups` module is available on the classpath.
+To use the JGroups components from Axon, make sure the `axon-jgroups` module is available on the classpath through the preferred dependency management system.
+When combined with Spring Boot, the `axon-jgroups-spring-boot-starter` dependency can be included to enable auto-configuration.
 
 Since JGroups handles both discovery of nodes and the communication between them, the `JGroupsConnector` acts as both a `CommandBusConnector` and a `CommandRouter`.
 
@@ -58,13 +61,22 @@ connector.connect();
 >
 > Note that it is not required that all segments have command handlers for the same type of commands. You may use different segments for different command types altogether. The distributed command bus will always choose a node to dispatch a command to that has support for that specific type of command.
 
-## Configuration in Spring Boot
+## Configuration in Spring (Boot)
 
-If you use Spring, you may want to consider using the `JGroupsConnectorFactoryBean`. It automatically connects the connector when the `ApplicationContext` is started, and does a proper disconnect when the `ApplicationContext` is shut down. Furthermore, it uses sensible defaults for a testing environment \(but should not be considered production ready\) and autowiring for the configuration.
+If you use Spring, you may want to consider using the `JGroupsConnectorFactoryBean`. 
+It automatically connects the connector when the `ApplicationContext` is started, and does a proper disconnect when the `ApplicationContext` is shut down. 
+Furthermore, it uses sensible defaults for a testing environment \(but should not be considered production ready\) and autowiring for the configuration.
+
+If Spring Boot is used, the configuration can be further simplified by including the `axon-jgroups-spring-boot-starter` dependency. 
 
 The settings for the JGroups connector are all prefixed with `axon.distributed.jgroups`.
 
 ```text
+# enables Axon to construct the DistributedCommandBus
+axon.distributed.enabled=true
+# defines the load factor used for this segment. Defaults to 100
+axon.distributed.load-factor=100
+
 # the address to bind this instance to. By default, it attempts to find the Global IP address
 axon.distributed.jgroups.bind-addr=GLOBAL
 # the port to bind the local instance to
