@@ -6,6 +6,14 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.4_
 
+### Release 4.4.11
+
+* Configurable strategy for aggregate events stream sequence validation (through property read-sequence-validation-strategy)
+
+### Release 4.4.10
+
+* Fix for subscription queries in case of missing query handler
+
 ### Release 4.4.9
 
 * Fix for concurrency issue in listing aggregates events during appending events for the same aggregate
@@ -157,6 +165,22 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 ## Axon Server Enterprise Edition
 
 ## _Release 4.4_
+
+### Release 4.4.14
+
+* Configurable strategy for aggregate events stream sequence validation (through property read-sequence-validation-strategy)
+* Fix for initialization error for the transaction log
+* Fix for node not able to replicate after install snapshot procedure
+* Fix for concurrency issue in creating schedulers for auto load balancing
+
+### Release 4.4.13
+
+* Fix for race condition during JumpSkipIndex update
+* Fix for memory leak during peer node registration in Raft leader
+
+### Release 4.4.12
+
+* Fix for subscription queries in case of missing query handler
 
 ### Release 4.4.11
 
