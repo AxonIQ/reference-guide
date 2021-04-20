@@ -378,7 +378,7 @@ public DisruptorCommandBus commandBus(TransactionManager txManager, AxonConfigur
 
 ## The Command Bus - Distributed
 
-Often time you would want multiple instances of command buses in different JVMs to act as one. 
+Oftentimes you would want multiple instances of command buses in different JVMs to act as one. 
 Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM while sending back any results.
 That is where the concept of 'distributing the command bus' comes in.
 
@@ -409,13 +409,13 @@ The configuration changes slightly per distributed implementation and as such wi
 
 Commands should be [routed consistently](../../architecture-overview/README.md#explicit-messaging) to the same application, especially those targeted towards a specific Aggregate.
 This ensures a single instance is in charge of the targeted aggregate, resolving the concurrent access issue and allowing for optimization like caching to work as designed.
-The component dealing with the consistent routing in an Axon application, is the `RoutingStrategy`.
+The component dealing with the consistent routing in an Axon application is the `RoutingStrategy`.
 
 The `RoutingStrategy` receives a `CommandMessage` and based on the message returns the routing key to use.
 Two commands with the same routing key will **always** be routed to the same segment, as long as there is no topology change in the distributed set-up.
 
 At the moment, there are five implementations of the `RoutingStrategy`. 
-Three of these are intended to be a fallback solution in case the routing key cannot be resolved:
+Three of these are intended to be fallback solutions, in case the routing key cannot be resolved:
 
  1. The `AnnotationRoutingStrategy` - the **default** routing strategy expects the `TargetAggregateIdentifier` or `RoutingKey` annotation to be present on a field inside the command class. 
     The annotated field or getter is searched, and the contents will be returned as the routing key for that command.

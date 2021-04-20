@@ -92,7 +92,7 @@ If you prefer to use another mechanism for routing commands, the behavior can be
 >
 > When the `@CommandHandler` annotation is placed on an aggregate's constructor, the respective command will create a new instance of that aggregate and add it to the repository. 
 > Those commands do not require to target a specific aggregate instance. 
-> Therefore, those commands do not need either the `@TargetAggregateIdentifier` nor the `@TargetAggregateVersion` annotation.
+> Therefore, those commands need neither the `@TargetAggregateIdentifier` nor the `@TargetAggregateVersion` annotation.
 > Furthermore, a custom `CommandTargetResolver` will not be invoked for these commands.
 
 ### Business Logic and State Changes

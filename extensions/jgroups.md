@@ -2,7 +2,9 @@
 
 JGroups is an alternative approach to distributing command bus \(commands\) besides Axon Server.
 
-The `JGroupsConnector` uses \(as the name already gives away\) [JGroups](http://www.jgroups.org/) as the underlying discovery and dispatching mechanism. Describing the feature set of JGroups is a bit too much for this reference guide, so please refer to the [JGroups User Guide](http://www.jgroups.org/ug.html) for more information.
+The `JGroupsConnector` uses \(as the name already gives away\) [JGroups](http://www.jgroups.org/) as the underlying discovery and dispatching mechanism. 
+Describing the features of JGroups is beyond the scope this reference guide
+Please refer to the [JGroups User Guide](http://www.jgroups.org/ug.html) for more information.
 
 To use the JGroups components from Axon, make sure the `axon-jgroups` module is available on the classpath through the preferred dependency management system.
 When combined with Spring Boot, the `axon-jgroups-spring-boot-starter` dependency can be included to enable auto-configuration.
