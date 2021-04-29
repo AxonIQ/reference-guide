@@ -127,110 +127,6 @@ Each Event Processor acts as its own component without any intervention from oth
 > 
 > In all, the ordering may definitely be used, but it is recommended to use it sparingly.
 
-## Configuring processors
-
-Processors take care of the technical aspects of handling an event, regardless of the business logic triggered by each event. However, the way "regular" \(singleton, stateless\) event handlers are configured is slightly different from sagas, as different aspects are important for both types of handlers.
-
-### Event Processors
-
-By default, Axon will use Tracking Event Processors. It is possible to change how handlers are assigned and how processors are configured.
-
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-The `EventProcessingConfigurer` class defines a number of methods that can be used to define how processors need to be configured.
-
-* `registerEventProcessorFactory` allows you to define a default factory method that creates event processors for which no explicit factories have been defined.
-* `registerEventProcessor(String name, EventProcessorBuilder builder)` defines the factory method to use to create a processor with given `name`.
-
-  Note that such a processor is only created if `name` is chosen as the processor for any of the available event handler beans.
-
-* `registerTrackingEventProcessor(String name)` defines that a processor with given name should be configured as a tracking event processor, using default settings.
-
-  It is configured with a TransactionManager and a TokenStore, both taken from the main configuration by default.
-
-* `registerTrackingProcessor(String name, Function<Configuration, StreamableMessageSource<TrackedEventMessage<?>>> source, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration)` defines that a processor with given name should be configured as a tracking processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading.
-
-  The `StreamableMessageSource` defines an event source from which this processor should pull events.
-
-* `usingSubscribingEventProcessors()` sets the default to subscribing event processors instead of tracking ones.
-
-```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-    .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.usingSubscribingEventProcessors())
-    .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerEventHandler(c -> new MyEventHandler()));
-```
-{% endtab %}
-
-{% tab title="Spring Boot AutoConfiguration" %}
-```java
- // Default all processors to subscribing mode.
-@Autowired
-public void configure(EventProcessingConfigurer config) {
-    config.usingSubscribingEventProcessors();
-}
-```
-
-Certain aspects of event processors can also be configured in `application.properties`.
-
-```text
-axon.eventhandling.processors.name.mode=subscribing
-axon.eventhandling.processors.name.source=eventBus
-```
-
-If the name of an event processor contains periods `.`, use the map notation:
-
-```text
-axon.eventhandling.processors[name].mode=subscribing
-axon.eventhandling.processors[name].source=eventBus
-```
-{% endtab %}
-{% endtabs %}
-
-### Sagas
-
-It is possible to change how Sagas are configured.
-
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-Sagas are configured using the `SagaConfigurer` class:
-
-```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-    .eventProcessing(eventProcessingConfigurer -> 
-        eventProcessingConfigurer.registerSaga(
-            MySaga.class,
-            sagaConfigurer -> sagaConfigurer.configureSagaStore(c -> sagaStore)
-                .configureRepository(c -> repository)
-                .configureSagaManager(c -> manager)
-        )
-    );
-```
-{% endtab %}
-
-{% tab title="Spring Boot AutoConfiguration" %}
-The configuration of infrastructure components to operate sagas is triggered by the `@Saga` annotation \(in the `org.axonframework.spring.stereotype` package\). Axon will then configure a `SagaManager` and `SagaRepository`. The `SagaRepository` will use a `SagaStore` available in the context \(defaulting to `JPASagaStore` if JPA is found\) for the actual storage of sagas.
-
-To use different `SagaStore`s for sagas, provide the bean name of the `SagaStore` to use in the `sagaStore` attribute of each `@Saga` annotation.
-
-Sagas will have resources injected from the application context. Note that this does not mean Spring-injecting is used to inject these resources. The `@Autowired` and `@javax.inject.Inject` annotation can be used to demarcate dependencies, but they are injected by Axon by looking for these annotations on fields and methods. Constructor injection is not \(yet\) supported.
-
-To tune the configuration of sagas, it is possible to define a custom `SagaConfiguration` bean. For an annotated saga class, Axon will attempt to find a configuration for that saga. It does so by checking for a bean of type `SagaConfiguration` with a specific name. For a saga class called `MySaga`, the bean that Axon looks for is `mySagaConfiguration`. If no such bean is found, it creates a configuration based on available components.
-
-If a `SagaConfiguration` instance is present for an annotated saga, that configuration will be used to retrieve and register components for sagas of that type. If the `SagaConfiguration` bean is not named as described above, it is possible that saga will be registered twice. It will then receive events in duplicate. To prevent this, you can specify the bean name of the `SagaConfiguration` using the `@Saga` annotation:
-
-```java
-@Autowired
-public void configureSagaEventProcessing(EventProcessingConfigurer config) {
-    config.registerTokenStore("MySagaProcessor", c -> new MySagaCustomTokenStore())
-}
-```
-{% endtab %}
-{% endtabs %}
-
-> **A new Saga's Event Stream position**
->
-> The Saga `TrackingEventProcessor` will by default start its token at the head of the stream.
-
 ## Error Handling
 
 Errors are inevitable in any application. 
@@ -351,3 +247,91 @@ public interface ErrorHandler {
 ```
 
 Based on the provided `ErrorContext` object, you can decide to ignore the error, schedule retries, perform dead-letter-queue delivery or rethrow the exception.
+
+## General processor configuration
+
+Alongside [handler assignment](#assigning-handlers-to-processors) and [error handling](#error-handling), Event Processors allow configuration for other components too.
+For [Subscribing](subscribing.md) and [Streaming](streaming.md) Event Processor specific options, their respective sections should be checked.
+The remainder of this page will cover the generic configuration options for each Event Processor.
+
+### Event Processor Builders
+
+A lot of the configurable components for Event Processors can be accessed through the `EventProcessingConfigurer`.
+Some times it is easier or preferable to provide an entire function to construct an Event Processor.
+To that end, a custom `EventProcessorBuilder` can be configured:
+
+```java
+@FunctionalInterface
+interface EventProcessorBuilder {
+
+    // Note: the `EventHandlerInvoker` is the component which holds the event handling functions.
+    EventProcessor build(String name, 
+                         Configuration configuration, 
+                         EventHandlerInvoker eventHandlerInvoker);
+}
+```
+
+The `EventProcessorBuilder` functional interface provides the event processor's name, the `Configuration` and the `EventHandlerInvoker`, and requires an `EventProcessor` instance to be returned.
+Note that any Axon component that need to be set on an Event Processor (e.g. an `EventStore`) can be retrieved from the `Configuration`.
+
+The `EventProcessingConfigurer` provides two methods to configure an `EventProcessorBuilder`:
+
+1. `registerEventProcessorFactory(EventProcessorBuilder)` - allows you to define a default factory method that creates event processors for which no explicit factories have been defined
+2. `registerEventProcessor(String, EventProcessorBuilder)` - defines the factory method to use to create a processor with given `name`
+
+### Event Handler Interceptors
+
+Since the Event Processor is the invoker of event handling methods, it is a spot to configure [Message Handler Interceptors](../../messaging-concepts/message-intercepting.md) too.
+As it is dedicated to event handling, the `MessageHandlerInterceptor` is required to deal with the `EventMessage`.
+Differently put, an [EventHandlerInterceptor](../../messaging-concepts/message-intercepting.md#event-handler-interceptors) can be registered to Event Processors. 
+
+The `EventProcessingConfigurer` provides two methods to configure `MessageHandlerInterceptor` instances:
+
+- `registerDefaultHandlerInterceptor(BiFunction<Configuration, String, MessageHandlerInterceptor<? super EventMessage<?>>>)` - registers a default `MessageHandlerInterceptor` that will be configured on every Event Processor instance
+- `registerHandlerInterceptor(String, Function<Configuration, MessageHandlerInterceptor<? super EventMessage<?>>>)` - registers a `MessageHandlerInterceptor` that will be configured for the Event Processor matching the given `String`
+
+### Message Monitors
+
+Any Event Processor instances provides the means to contain a Message Monitor. 
+Message Monitors, as discussed in more detail [here](../../monitoring-and-metrics.md#metrics-a-idmetricsa), allow for monitoring the flow of messages throughout an Axon application.
+For the Event Processor it will specifically deal with the events flowing through the Event Processor towards the event handling functions.
+
+The `EventProcessingConfigurer` provides two approaches towards configuring a `MessageMonitor`:
+
+- `registerMessageMonitor(String, Function<Configuration, MessageMonitor<Message<?>>>)` - registers the given `MessageMonitor` to the Event Processor matching the given `String`
+- `registerMessageMonitorFactory(String, MessageMonitorFactory)` - registers the given `MessageMonitorFactory` to construct a `MessageMonitor` for the Event Processor matching the given `String`
+
+The `MessageMonitorFactory` provides a more fine-grained approach, used through-out the Configuration API, to construct a `MessageMonitor`:
+
+```java
+@FunctionalInterface
+public interface MessageMonitorFactory {
+    
+    MessageMonitor<Message<?>> create(Configuration configuration, 
+                                      Class<?> componentType, 
+                                      String componentName);
+}
+```
+
+The `Configuration` may be used to retrieve required dependencies to construct the `MessageMonitor`.
+The type and name reflect what infrastructure component the monitor is configured.
+Whenever the `MessageMonitorFactory` is used to construct a `MessageMonitor` for an Event Processor, it is to be expected that the `componentType` is an `EventProcessor` implementation.
+The `componentName` on the other hand would resemble the name of the Event Processor.
+
+### Transaction Management
+
+As components that deal with event handling, the Event Processor is a logical place to provide transaction configuration options.
+Note that in the majority of the scenarios the defaults will suffice.
+This section simply serves to show these options so that they may be adjusted if the application requires them to.
+
+First of these configuration options is the `TransactionManager`.
+Axon uses the `TransactionManager` to attach a transaction to every [Unit of Work](../../messaging-concepts/unit-of-work.md).
+Within a Spring environment, the `TransactionManager` defaults to a `SpringTransactionManager`, which uses Spring's `PlatformTransactionManager` under the hood.
+In non Spring environments, it would be wise to provide an implementation of this `TransactionManager` interface.
+Such an implementation only requires the definition of the `TransactionManager#startTransaction()` method.
+To adjust the transaction manager for an Event Processor, the `registerTransactionManager(String, Function<Configuration, TransactionManager>)` on the `EventProcessingConfigurer` should be used.
+
+Secondly, the desired `RollbackConfiguration` can be adjusted per Event Processor.
+It is the `RollbackConfiguration` that decide when a [Unit of Work](../../messaging-concepts/unit-of-work.md) should rollback the transaction.
+The default `RollbackConfiguration` is to rollback on any type of `Throwable`; the [Unit of Work](../../messaging-concepts/unit-of-work.md) page describes the other options you can choose.
+To adjust the default behaviour, the `registerRollbackConfiguration(String, Function<Configuration, RollbackConfiguration>)` function should be invoked on the `EventProcessingConfigurer`.
