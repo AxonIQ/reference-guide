@@ -26,6 +26,8 @@ Streaming Event Processors, on the other hand, pull their messages from a source
 
 For more specifics on either type, their respective sections should be consulted.
 The rest of this page dedicates itself towards describing the common concepts and configuration options of the Event Processor.
+Note that throughout, the `EventProcessingConfigurer` is used.
+The `EventProcessingConfigurer` is part of Axon's Configuration API, dedicated towards configuring Event Processors.
 
 ## Assigning handlers to processors
 
@@ -33,14 +35,19 @@ All processors have a name, which identifies a processor instance across JVM ins
 Two processors with the same name are considered as two instances of the same processor.
 
 All event handlers are attached to a processor whose name by default is the package name of the event handler's class.
+Furthermore, the default processor implementation used by Axon, is the [Tracking Event Processors](streaming.md#tracking-event-processor).
+The (default) event processor used can be adjusted, as is shown in the [subscribing](subscribing.md#configuring) and [streaming](streaming.md#configuring) sections.
 
-For example, the following classes:
+Event handlers, or Event Handling Components, come in roughly two flavors: "regular" \(singleton, stateless\) event handlers and [sagas](../../sagas/README.md).
+[This](../event-handlers.md#registering-event-handlers) section describes the process to register an event handler, whereas [this](../../sagas/implementation.md#configuring-a-saga) page describes the saga registration process.
 
-* `org.axonframework.example.eventhandling.MyHandler`,
-* `org.axonframework.example.eventhandling.MyOtherHandler`, and
+Now let us consider that the following event handlers have been registered:
+
+* `org.axonframework.example.eventhandling.MyHandler`
+* `org.axonframework.example.eventhandling.MyOtherHandler`
 * `org.axonframework.example.eventhandling.module.ModuleHandler`
 
-will trigger the creation of two processors:
+Without any intervention, this will trigger the creation of two processors, namely:
 
 1. `org.axonframework.example.eventhandling` with two handlers called `MyHandler` and `MyOtherHandler`
 2. `org.axonframework.example.eventhandling.module` with the single handler `ModuleHandler`
