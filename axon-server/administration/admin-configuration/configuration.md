@@ -374,6 +374,7 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td
       style="text-align:left">LOG</td>
     </tr>
+    <tr>
       <td style="text-align:left"><em><b>Logging</b></em>
       </td>
       <td style="text-align:left"></td>
@@ -396,9 +397,9 @@ A list of all the configuration properties by area is denoted below. Unless expl
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">logging.file <em>(no prefix)</em>
+      <td style="text-align:left">logging.file.name <em>(no prefix)</em>
       </td>
-      <td style="text-align:left">File name where log entries should be written to. <em>(e.g. logging.file = messaging.log)</em>
+      <td style="text-align:left">File name where log entries should be written to. Names can be an exact location or relative to the current directory. <em>(e.g. logging.file.name = messaging.log)</em>
       </td>
       <td style="text-align:left">stdout</td>
     </tr>
@@ -407,7 +408,7 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">logging.path <em>(no prefix)</em>
       </td>
       <td style="text-align:left">
-        <p>Location where log files should be created.</p>
+        <p>Location where log files should be created. Names can be an exact location or relative to the current directory. </p>
         <p><em>(e.g. logging.path = /var/log)</em>
         </p>
       </td>
