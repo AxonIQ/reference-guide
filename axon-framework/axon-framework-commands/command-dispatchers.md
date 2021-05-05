@@ -5,7 +5,7 @@ The [Command Handlers](command-handlers.md) pages provide the background on how 
 1. The Command Bus, and
 2. The Command Gateway
 
-This page will show how and when to use the command gateway and bus. How to configure and specifics on the the command gateway and bus implementations are discussed [here](implementations.md)
+This page will show how and when to use the command gateway and bus. How to configure and specifics on the command gateway and bus implementations are discussed in the [infrastructure](infrastructure.md) section.
 
 ## The Command Bus
 

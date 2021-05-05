@@ -13,4 +13,5 @@ A summary of the various sub-sections is given below.
 | [Backup and Messaging-only Nodes](backup-and-messaging-only-nodes.md) | Axon Server roles capabilities |
 | [Backups](backups.md) | Backup aspects of an Axon Server deployment |
 | [Recovery](recovery.md) | Recovery aspects of an Axon Server deployment |
+| [Plugins](plugins.md) | Managing Axon Server plugins |
 

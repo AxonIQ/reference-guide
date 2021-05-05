@@ -1,5 +1,56 @@
 # Major Releases
 
+## Release 4.5
+
+Standard Edition and Enterprise Edition
+
+New features:
+- Support for customer-defined plugins to add custom actions to adding/reading events and snapshots and executing commands and (subscription queries)
+  For more information see [plugins](../../axon-server/administration/plugins.md).
+- Search snapshots in Axon Dashboard
+
+Enhancements:
+- Flow control for reading aggregates
+- Updates in user permissions now have immediate effect (even if the user is logged in)
+- Logging of illegal access to Axon Server gRPC services
+- Improved monitoring of available disk space (see [actuator-endpoints](../../axon-server/administration/monitoring/actuator-endpoints.md))
+- List of used 3rd party libraries available from Dashboard
+- Axon Dashboard checks for Axon Server version updates
+
+Dependency updates:
+- updated gRPC and Netty versions
+- updated Spring Boot version
+- updated Swagger version
+
+Notes:
+- Due to the update of the Spring Boot version there are some minor changes to the output of the /actuator/health endpoint.
+  This endpoint now uses the element "components" instead of "details" to output the health per subcategory.
+
+- The swagger endpoint has changed from /swagger-ui.html to /swagger-ui/.
+
+Standard Edition only
+
+Bug fixes:
+- Read aggregate snapshots from closed segments fixed
+
+Enterprise Edition only
+
+New features:
+- Authentication via Google OAuth (via extension)
+- Authentication and authorization with LDAP
+- New role VIEW_CONFIGURATION allowing user read only access to the configuration of Axon Server in the Dashboard
+
+Enhancements:
+- Option to use a separate SSL key file for communication between Axon Server nodes (see property internal-private-key-file in [configuration](../../axon-server/administration/admin-configuration/configuration.md))
+- License status added to health page (see [actuator-endpoints](../../axon-server/administration/monitoring/actuator-endpoints.md))
+- Migration tool now supports migrating from a MongoDB event store to Axon Server
+
+Bug fixes:
+- memory leak in the replication group leader could cause elections
+- incorrect version number shown in login page and error page in Dashboard
+- invalid number of active subscription queries displayed in Dashboard
+- exception initializing a context for the replication group leader on restart after unclean shutdown
+
 ## Release 4.4
 
 Standard Edition and Enterprise Edition

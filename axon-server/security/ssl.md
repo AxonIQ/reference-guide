@@ -70,19 +70,29 @@ The following properties need to be setup in `axonserver.properties` for both SE
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">axoniq.axonserver.ssl.internal-cert-chain-file</td>
+      <td style="text-align:left">ssl.internal-cert-chain-file</td>
       <td style="text-align:left">
         <p>File containing the full certificate chain to be used in internal communication
-          between Axon Server nodes.</p>
+          between Axon Server nodes. If not specified, Axon Server will use the primary key file from <em>ssl.cert-chain-file</em>.</p>
         <p><em>(Axon EE only)</em>
         </p>
       </td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">axoniq.axonserver.ssl.internal-trust-manager-file</td>
+      <td style="text-align:left">ssl.internal-trust-manager-file</td>
       <td style="text-align:left">
         <p>Trusted certificates for verifying the other AxonServer&apos;s certificate.</p>
+        <p><em>(Axon EE only)</em>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">ssl.internal-private-key-file</td>
+      <td style="text-align:left">
+        <p>File containing the private key to be used in internal communication
+          between Axon Server nodes. If not specified, Axon Server will use the primary key file from <em>ssl.private-key-file</em>.</p>
         <p><em>(Axon EE only)</em>
         </p>
       </td>
@@ -90,11 +100,39 @@ The following properties need to be setup in `axonserver.properties` for both SE
   </tbody>
 </table>
 
-With Axon Server EE we have two extra settings for the internal gRPC port; “...ssl.internal-cert-chain-file” and “...ssl.internal-trust-manager-file”.
+With Axon Server EE SSL is also used for the communication between the Axon Server nodes. If the internal host names of the Axon Server
+nodes differ from the host names as they are used by clients, it is required to use another certificate (bound to the internal hostname).
+If this is the case, you can specify the certificate used for cluster-internal traffic using the “...ssl.internal-cert-chain-file” property.
 
-The first is for the PEM certificate to be used for cluster-internal traffic, if it is different from the one used for client connections. The most common reason is when the nodes use a different DNS name for internal \(cluster node to cluster node\) communication than for external connections.
+The certificate used by internal traffic may be generated using its own private key. If this is the case, you must specify the location
+of this key file in the property "...ssl.internal-private-key-file".
 
-The second is for a \(PEM\) keystore that certifies the other certificates, which may be needed when they are signed using an authority that is not available from the Java JDK’s CA keystore.
+If the certificates used for internal traffic are self-signed certificates, you must ensure that these are trusted by the other nodes.
+In this case you add the certificates (or the root certificate) in the (PEM) keystore specified by 
+the “...ssl.internal-trust-manager-file” property.
+
+## Client configuration
+
+The following properties are available for Axon client applications to use TLS/SSL for the traffic to Axon Server:
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Property Name</th>
+      <th style="text-align:left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td style="text-align:left">axon.axonserver.ssl-enabled</td>
+        <td style="text-align:left">Is SSL enabled for the traffic with Axon Server</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">axon.axonserver.cert-file</td>
+        <td style="text-align:left">(PEM) keystore containing trusted certificates, in case that the certificate 
+that is used by Axon Server is not issued by a trusted certificate authority.</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Downtime Considerations
 

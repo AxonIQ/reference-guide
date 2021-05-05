@@ -4,7 +4,8 @@ The release notes section for the Axon framework for all major/minor releases.
 
 | Release Type | Version |
 | :--- | :--- |
-| _**Major**_ | [4.4](rn-af-major-releases.md#release-4-4) |
+| _**Major**_ | [4.5](rn-af-major-releases.md#release-4-5) |
+|  | [4.4](rn-af-major-releases.md#release-4-4) |
 |  | [4.3](rn-af-major-releases.md#release-4-3) |
 |  | [4.2](rn-af-major-releases.md#release-4-2) |
 |  | [4.1](rn-af-major-releases.md#release-4-1) |
