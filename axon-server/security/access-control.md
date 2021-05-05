@@ -15,8 +15,7 @@ Because Axon Server SE deals with this differently than Axon Server EE, they wil
 | [Axon Server EE](access-control-ee.md) |
 | [Axon Framework apps](access-control-clients.md) |
 | [Axon Server CLI](access-control-cli.md) |
-| [Direct REST Api](access-control-rest.md) |
-| [Direct Access gRPC](access-control-grpc.md) |
+| [Direct access to the REST and gRPC APIs](access-control-api.md) |
 
 For Axon Server EE, we have additional sections on the external authentication extensions:
 
