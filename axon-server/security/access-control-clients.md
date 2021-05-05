@@ -38,7 +38,7 @@ Error processing command 'register-application': Invalid command
 
 * `-d` or `--description` specifies a description of the application, which will be shown in overviews.
 * `-T` or `--token` can be used to specify the token you want to use for a newly registered application.
-* `-prop` or `--property` adds an application specific property. **TODO** What does this do?
+* `-prop` or `--property` adds an application specific property. These properties will be provided to any plugin processing messages from/for that application.
 * `-t` or `--access-token` specifies the access token to authenticate at the server to which the command is sent to. For SE this should be the same as [the (admin) token set in the properties](access-control-se.md). For EE this should be the security token discussed above.
 * `-S` or `--server` can be used to specify the URL to the server that the command needs to be sent to. If this is not supplied it connects to "`http://localhost:8024`" by default.
 * `-s` or `--https` will cause the CLI to use TLS, in effect changing the URL to "`https://localhost:8024`". Note that if you also want to change the port, you'll have to use "`-S`", in which case you can leave out "`-s`".
