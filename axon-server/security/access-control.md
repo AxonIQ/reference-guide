@@ -11,19 +11,19 @@ axoniq.axonserver.accesscontrol.enabled=true
 Because Axon Server SE deals with this differently than Axon Server EE, they will be addresses separately:
 | Subject |
 | :--- |
-| (Axon Server SE)[access-control-se.md] |
-| (Axon Server EE)[access-control-ee.md] |
-| (Axon Framework apps)[access-control-clients.md] |
-| (Axon Server CLI)[access-control-cli.md] |
-| (Direct REST Api)[access-control-rest.md] |
-| (Direct Access gRPC)[access-control-grpc.md] |
+| (Axon Server SE)[./access-control-se.md] |
+| (Axon Server EE)[./access-control-ee.md] |
+| (Axon Framework apps)[./access-control-clients.md] |
+| (Axon Server CLI)[./access-control-cli.md] |
+| (Direct REST Api)[./access-control-rest.md] |
+| (Direct Access gRPC)[./access-control-grpc.md] |
 
 For Axon Server EE, we have additional sections on the external authentication extensions:
 
 | Subject |
 | :--- |
-| (LDAP Extension)[access-control-ldap.md] |
-| (OAuth2 Extension)[access-control-auth2.md] |
+| (LDAP Extension)[./access-control-ldap.md] |
+| (OAuth2 Extension)[./access-control-auth2.md] |
 
 ## Using the CLI to create a user
 
