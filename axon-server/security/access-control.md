@@ -18,6 +18,13 @@ Because Axon Server SE deals with this differently than Axon Server EE, they wil
 | (Direct REST Api)[access-control-rest.md] |
 | (Direct Access gRPC)[access-control-grpc.md] |
 
+For Axon Server EE, we have additional sections on the external authentication extensions:
+
+| Subject |
+| :--- |
+| (LDAP Extension)[access-control-ldap.md] |
+| (OAuth2 Extension)[access-control-auth2.md] |
+
 ## Using the CLI to create a user
 
 If you haven't used the cluster template to create an initial user, you can use the CLI to create it. For this you will need an admin-level access token, as described [here](access-control-cli.md). To do this execute the "`register-user`" command:
