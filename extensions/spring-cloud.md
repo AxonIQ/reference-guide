@@ -151,6 +151,8 @@ public class MyApplication {
 ```properties
 # Required to enabled the DistributedCommandBus
 axon.distributed.enabled=true
+# Defines the load factor used for this segment. Defaults to 100
+axon.distributed.load-factor=100
 # Defines the CapabilityDiscoveryMode used. Defaults to REST
 axon.distributed.spring-cloud.mode=rest
 # Defines the endpoint used to retrieve member capabilities from. Defaults to "/member-capabilities"

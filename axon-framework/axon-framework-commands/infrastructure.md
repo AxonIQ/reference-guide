@@ -1,10 +1,19 @@
 # Infrastructure
 
-Command dispatching, as exemplified in the [Dispatching Commands](command-dispatchers.md) page, has a number of advantages. First of all, there is a single object that clearly describes the intent of the client. By logging the command, you store both the intent and related data for future reference. Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. Testing also becomes a lot easier. You could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing](../testing/) for more on this\). The last major advantage is that it is very easy to switch between synchronous and asynchronous as well as local versus distributed command processing.
+Command dispatching, as exemplified in the [Dispatching Commands](command-dispatchers.md) page, has a number of advantages. 
+Firstly, it constructs an object that clearly describes the intent of the client. 
+By logging the command, you store both the intent and the related data for future reference. 
+Command handling also makes it easy to expose your command processing components to remote clients, via web services for example. 
+
+Testing also becomes a lot easier. 
+You could define test scripts by just defining the starting situation \(given\), command to execute \(when\) and expected results \(then\) by listing a number of events and commands \(see [Testing](../testing/commands-events.md) for more on this\).
+
+The last major advantage is that it is very easy to switch between synchronous and asynchronous, as well as local versus distributed command processing.
 
 This does not mean command dispatching using explicit command objects is the only way to do it. The goal of Axon is not to prescribe a specific way of working, but to support you doing it your way, while providing best practices as the default behavior. It is still possible to use a service layer that you can invoke to execute commands. The method will just need to start a unit of work \(see [Unit of Work](../messaging-concepts/unit-of-work.md)\) and perform a commit or rollback on it when the method is finished.
 
 The next sections provide an overview of the tasks related to setting up a command dispatching infrastructure with the Axon Framework.
+The API-friendlier [`CommandGateway`](#the-command-gateway) is mentioned, as well as the `CommandBus` in both a [local](#the-command-bus---local) and [distributed](#the-command-bus---distributed) environment. 
 
 ## The Command Gateway
 
@@ -22,7 +31,7 @@ Both your custom Command Gateway and the one provided by Axon need to at least b
 
 The `RetryScheduler` is capable of scheduling retries when command execution has failed. When a command fails due to an exception that is explicitly non-transient, no retries are done at all. Note that the retry scheduler is only invoked when a command fails due to a `RuntimeException`. Checked exceptions are regarded as a "business exception" and will never trigger a retry.
 
-Currently two implementations exist:
+Currently, two implementations exist:
 
 1. The `IntervalRetryScheduler` will retry a given command at set intervals until it succeeds,
 
@@ -140,60 +149,11 @@ CommandGatewayFactory factory = CommandGatewayFactory.builder()
 MyGateway myGateway = factory.createGateway(MyGateway.class);
 ```
 
-## The Command Bus
+## The Command Bus - Local
 
-The Command Bus is the mechanism that dispatches commands to their respective command handlers within an Axon application. 
-Suggestions on how to use the `CommandBus` can be found [here](command-dispatchers.md#the-command-bus). Several flavors of the command bus, with differing characteristics, exist within the framework:
-
-### AxonServerCommandBus
-
-Axon provides a command bus out of the box, the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server](../../axon-server-introduction.md) to submit and receive Commands.
-
-`AxonServerCommandBus` is a [distributed command bus](command-dispatchers.md#the-command-bus). It uses a [`SimpleCommandBus`](infrastructure.md) to handle incoming commands on different JVM's by default.
-
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-Declare dependencies:
-
-```text
-<!--somewhere in the POM file-->
-<dependency>
-    <groupId>org.axonframework</groupId>
-    <artifactId>axon-server-connector</artifactId>
-    <version>${axon.version}</version>
-</dependency>
-<dependency>
-    <groupId>org.axonframework</groupId>
-    <artifactId>axon-configuration</artifactId>
-    <version>${axon.version}</version>
-</dependency>
-```
-
-Configure your application:
-
-```java
-// Returns a Configurer instance with default components configured. `AxonServerCommandBus` is configured as Command Bus by default.
-Configurer configurer = DefaultConfigurer.defaultConfiguration();
-```
-{% endtab %}
-
-{% tab title="Spring Boot AutoConfiguration" %}
-By simply declaring dependency to `axon-spring-boot-starter`, Axon will automatically configure the Axon Server Command Bus:
-
-```text
-<!--somewhere in the POM file-->
-<dependency>
-    <groupId>org.axonframework</groupId>
-    <artifactId>axon-spring-boot-starter</artifactId>
-    <version>${axon.version}</version>
-</dependency>
-```
-
-> **Excluding the Axon Server Connector**
->
-> If you exclude `axon-server-connector` dependency you will fallback to 'non-axon-server' command bus options, the `SimpleCommandBus` \(see [below](infrastructure.md)\).
-{% endtab %}
-{% endtabs %}
+The local command bus is the mechanism that dispatches commands to their respective command handlers within an Axon application. 
+Suggestions on how to use the `CommandBus` can be found [here](command-dispatchers.md#the-command-bus). 
+Several flavors of the command bus, with differing characteristics, exist within the framework.
 
 ### SimpleCommandBus
 
@@ -206,8 +166,14 @@ Since all command processing is done in the same thread, this implementation is 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-            .configureCommandBus(c -> SimpleCommandBus.builder().transactionManager(c.getComponent(TransactionManager.class)).messageMonitor(c.messageMonitor(SimpleCommandBus.class, "commandBus")).build());
+Configurer configurer =
+    DefaultConfigurer.defaultConfiguration()
+                     .configureCommandBus(
+                        c -> SimpleCommandBus.builder()
+                                             .transactionManager(c.getComponent(TransactionManager.class))
+                                             .messageMonitor(c.messageMonitor(SimpleCommandBus.class, "commandBus"))
+                                             .build()
+                     );
 ```
 {% endtab %}
 
@@ -226,10 +192,6 @@ public SimpleCommandBus commandBus(TransactionManager txManager, AxonConfigurati
     return commandBus;
 }
 ```
-
-> **Excluding the Axon Server Connector**
->
-> If you exclude the `axon-server-connector` dependency from the `axon-spring-boot-starter` dependency, the `SimpleCommandBus` will be auto-configured for you.
 {% endtab %}
 {% endtabs %}
 
@@ -414,59 +376,259 @@ public DisruptorCommandBus commandBus(TransactionManager txManager, AxonConfigur
 {% endtab %}
 {% endtabs %}
 
-## Distributing the Command Bus
+## The Command Bus - Distributed
 
-Sometimes, you want multiple instances of command buses in different JVMs to act as one. Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM while sending back any results.
+Oftentimes you would want multiple instances of command buses in different JVMs to act as one. 
+Commands dispatched on one JVM's command bus should be seamlessly transported to a command handler in another JVM while sending back any results.
+That is where the concept of 'distributing the command bus' comes in.
 
-That is where the concept of 'distributing the command bus' comes in. The default implementation of a distributed command bus is the `AxonServerCommandBus`. It connects to the [AxonIQ AxonServer Server ](../../axon-server-introduction.md)to submit and receive Commands. Unlike the other `CommandBus` implementations, the `AxonServerCommandBus` does not invoke any handlers at all. All it does is form a "bridge" between command bus implementations on different JVM's.
+There are a couple of concepts that are configurable, regardless of the type of distributed command bus that is being used:
 
-By default, [`SimpleCommandBus`](infrastructure.md) is configured to handle incoming commands on the different JVM's. You can configure `AxonServerCommandBus` to use other command bus implementations for this purposes: [`AsynchronousCommandBus`](infrastructure.md), [`DisruptorCommandBus`](infrastructure.md).
+### Local Segment
+
+Unlike the [local](#the-command-bus---local) `CommandBus` implementations, the distributed command buses do not invoke any handlers at all.
+All they do is form a "bridge" between command bus implementations on different JVM's, delegating any received commands to the so-called _local segment_.
+
+By default, this local segment is the [`SimpleCommandBus`](infrastructure.md#simplecommandbus).
+You can configure the local segment to be any of the other local command buses too, like the [`AsynchronousCommandBus`](infrastructure.md#asynchronouscommandbus) and [`DisruptorCommandBus`](infrastructure.md#disruptorcommandbus).
+The details of how to configure the local segment are shown in the implementation sections.
+
+### Load Factor
+
+The load factor defines the amount of load an Axon application would carry compared to other instances.
+For example, if you have a two machine set up, each with a load factor of 100, they will both carry an equal amount of load.
+
+Increasing the load factor to 200 on both would still mean that both machines receive the same amount of load.
+This points out that the load factor will only change the load amongst systems if the values are not equal.
+Doing so would make sense in a heterogeneous application landscape, where the faster machines should deal with a bigger portion of command handling than the slower machines.
+
+The default load factor set for the distributed `CommandBus` implementations is 100.
+The configuration changes slightly per distributed implementation and as such will be covered in those sections.
+
+### Routing Strategy
+
+Commands should be [routed consistently](../../architecture-overview/README.md#explicit-messaging) to the same application, especially those targeted towards a specific Aggregate.
+This ensures a single instance is in charge of the targeted aggregate, resolving the concurrent access issue and allowing for optimization like caching to work as designed.
+The component dealing with the consistent routing in an Axon application is the `RoutingStrategy`.
+
+The `RoutingStrategy` receives a `CommandMessage` and based on the message returns the routing key to use.
+Two commands with the same routing key will **always** be routed to the same segment, as long as there is no topology change in the distributed set-up.
+
+At the moment, there are five implementations of the `RoutingStrategy`. 
+Three of these are intended to be fallback solutions, in case the routing key cannot be resolved:
+
+ 1. The `AnnotationRoutingStrategy` - the **default** routing strategy expects the `TargetAggregateIdentifier` or `RoutingKey` annotation to be present on a field inside the command class. 
+    The annotated field or getter is searched, and the contents will be returned as the routing key for that command.
+ 2. The `MetaDataRoutingStrategy` - uses a property defined during creation of this strategy to fetch the routing key from the `CommandMessage`'s `MetaData`.
+ 3. The `ERROR` `UnresolvedRoutingKeyPolicy` - the **default fallback** that will cause an exception to be thrown when the routing key cannot be resolved from the given `CommandMessage`.
+ 4. The `RANDOM_KEY` `UnresolvedRoutingKeyPolicy` - will return a random value when a routing key cannot be resolved from the `CommandMessage`. 
+    This means that those commands will be routed to a random segment of the command bus.
+ 5. The `STATIC_KEY` `UnresolvedRoutingKeyPolicy` - will return a static key \(named "unresolved"\) for unresolved routing keys. 
+    This policy routes all commands to the same segment, as long as the configuration of segments does not change.
+
+The `AnnotationRoutingStrategy` and `MetaDataRoutingStrategy` are considered the full implementations to configure.
+The `ERROR`, `RANDOM_KEY` and `STATIC_KEY` are _fallback routing strategies_ that should be configured on the annotation or meta-data implementations.
+To get a grasp how these are constructed, consider the following sample:
+
+{% tabs %}
+{% tab title="AnnotationRoutingStrategy" %}
+```java
+// A custom annotation can be used to drive the AnnotationRoutingStrategy
+@interface CustomRoutingAnnotation {
+}
+// Constructs a AnnotationRoutingStrategy with a different annotation and fallback: 
+public RoutingStrategy routingStrategy() {
+    return AnnotationRoutingStrategy.builder()
+                                    .annotationType(CustomRoutingAnnotation.class)
+                                    .fallbackRoutingStrategy(UnresolvedRoutingKeyPolicy.STATIC_KEY)
+                                    .build();
+}
+```
+{% endtab %}
+
+{% tab title="MetaDataRoutingStrategy" %}
+```java
+// Constructs a MetaDataRoutingStrategy with the defined meta data key and a different fallback:
+public RoutingStrategy routingStrategy() {
+    return MetaDataRoutingStrategy.builder()
+                                  .metaDataKey("my-routing-key")
+                                  .fallbackRoutingStrategy(UnresolvedRoutingKeyPolicy.RANDOM_KEY)
+                                  .build();
+}
+```
+{% endtab %}
+{% endtabs %}
+
+Of course, a custom implementation of the `RoutingStrategy` can also be provided when necessary.
+When we need to deviate from the default `AnnotationRoutingStrategy`, we should configure it like so: 
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...  
+    public void configureRoutingStrategy(Configurer configurer, YourRoutingStrategy yourRoutingStrategy) {
+        configurer.registerComponent(RoutingStrategy.class, config -> yourRoutingStrategy);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Bean
+    public RoutingStrategy routingStrategy() {
+        return /* construct your routing strategy */;
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+### AxonServerCommandBus
+
+The `AxonServerCommandBus` is the _default_ distributed `CommandBus` implementation that is set by the framework.
+It connects to [AxonServer](../../axon-server-introduction.md), with which it can send and receive commands.
+
+As it is the default, configuring it is relatively straightforward:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+Declare dependencies:
+```text
+<!-- somewhere in the POM file... -->
+<dependencyManagement>
+    <!-- amongst the dependencies... -->
+    <dependencies>
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-bom</artifactId>
+            <version>${version.axon}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+    <!-- ... -->
+</dependencyManagement>
+<!-- ... -->
+<dependencies>
+    <!-- amongst the dependencies... -->
+    <dependency>
+        <groupId>org.axonframework</groupId>
+        <artifactId>axon-server-connector</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.axonframework</groupId>
+        <artifactId>axon-configuration</artifactId>
+    </dependency>
+    <!-- ... -->
+</dependencies>
+```
+
+Configure your application:
+```java
+// The AxonServerCommandBus is configured as Command Bus by default when constructing a DefaultConfigurer.
+Configurer configurer = DefaultConfigurer.defaultConfiguration();
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+By simply including the `axon-spring-boot-starter` dependency, Axon will automatically configure the `AxonServerCommandBus`:
+
+```text
+<!--somewhere in the POM file-->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-spring-boot-starter</artifactId>
+    <version>${axon.version}</version>
+</dependency>
+```
+
+{% endtab %}
+{% endtabs %}
+
+> **Disabling Axon Server**
+>
+> There are two options to disable Axon Framework's default of using the `AxonServerCommandBus`:
+>
+> 1. By excluding the `axon-server-connector` dependency.
+> 2. By setting `axon.server.enabled` to `false` when Spring Boot is used.
+>
+> When doing any of these, Axon will fallback to the **un**distributed [`SimpleCommandBus`](infrastructure.md#simplecommandbus), unless configured otherwise.
+
+#### Local Segment and Load Factor Configuration
+
+The [load factor](#load-factor) for the `AxonServerCommandBus` is defined through the `CommandLoadFactorProvider`.
+This interface allows us to distinguish between commands to, for example, use a different load factor per command message.
+This might be useful if some commands are routed more often towards one instance in favour of the other.
+
+The following should be done to configure a custom [local segment](#local-segment) and/or load factor:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+// Somewhere in the configuration class
+public CommandBus axonServerCommandBus(CommandBus localSegment,
+                                       CommandLoadFactorProvider loadFactorProvider,
+                                       ...) {
+    return AxonServerCommandBus.builder()
+                               .localSegment(localSegment)
+                               .targetContextResolver(targetContextResolver)
+                               // All required configuration components are specified in the JavaDoc of the Builder
+                               .build();
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // The Qualifier annotation specifying "localSegment" will make this CommandBus the local segment 
+    @Bean
+    @Qualifier("localSegment")
+    public CommandBus localSegment() {
+        
+        return /* construct your local segment */;
+    }
+    
+    @Bean
+    public CommandLoadFactorProvider loadFactorProvider() {
+      return /* construct your load factor provider */;
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
 
 ### DistributedCommandBus
 
-`DistributedCommandBus` is an alternative approach to distributing command bus \(commands\). Each instance of the `DistributedCommandBus` on each JVM is called a "Segment".
+The alternative to the [`AxonServerCommandBus`](#axonservercommandbus) is the `DistributedCommandBus`.
+Each instance of the `DistributedCommandBus` on each JVM is referred to as a "Segment".
 
 ![Structure of the Distributed Command Bus](../../.gitbook/assets/distributed-command-bus.png)
 
-The `DistributedCommandBus` relies on two components: a `CommandBusConnector`, which implements the communication protocol between the JVM's, and the `CommandRouter`, which chooses a destination for each incoming command. This router defines which segment of the `DistributedCommandBus` should be given a \`command, based on a routing key calculated by a routing strategy. Two commands with the same routing key will always be routed to the same segment, as long as there is no change in the number and configuration of the segments. Generally, the identifier of the targeted aggregate is used as a routing key.
+The `DistributedCommandBus` relies on two components: 
 
-Two implementations of the `RoutingStrategy` are provided: the `MetaDataRoutingStrategy`, which uses a metadata property in the command message to find the routing key, and the `AnnotationRoutingStrategy`, which uses the `@TargetAggregateIdentifier` annotation on the Command Messages payload to extract the routing key. Obviously, you can also provide your own implementation.
+ 1. The `CommandBusConnector` - implements the communication protocol between the JVM's to send the command over the wire and to receive the response. 
+ 2. The `CommandRouter` - chooses the destination for each incoming command.
+    It defines which segment of the `DistributedCommandBus` should be given a command, based on a routing key calculated by the [routing strategy](#routing-strategy).
+    
+You can choose different flavors of these components that are available as extension modules.
+Currently, Axon provides two extensions to that end, which are:
 
-By default, the `RoutingStrategy` implementations will throw an exception when no key can be resolved from a command message. This behavior can be altered by providing a `UnresolvedRoutingKeyPolicy` in the constructor of the `MetaDataRoutingStrategy` or `AnnotationRoutingStrategy`. There are three possible policies:
-
-* `ERROR` - the default, and will cause an exception to be thrown when a Routing Key is not available
-* `RANDOM_KEY` - will return a random value when a \`routing key cannot be resolved from the command message.
-
-  This effectively means that those commands will be routed to a random segment of the command bus.
-
-* `STATIC_KEY` - Will return a static key \(being "unresolved"\) for unresolved routing keys.
-
-  This effectively means that all those commands will be routed to the same segment, as long as the configuration of segments does not change.
-
-You can choose different flavor of this components that are available in one of the extension modules:
-
-* [SpringCloud](../../extensions/spring-cloud.md) or 
-* [JGroups](../../extensions/jgroups.md).
+ 1. The [SpringCloud](../../extensions/spring-cloud.md) extension 
+ 2. The [JGroups](../../extensions/jgroups.md) extension
 
 Configuring a distributed command bus can \(mostly\) be done without any modifications in configuration files.
-
-First of all, the starters for one of the Axon distributed command bus modules needs to be included \(e.g. [JGroups](../../extensions/jgroups.md) or [Spring Cloud](../../extensions/spring-cloud.md)\).
-
-Once that is present, a single property needs to be added to the application context, to enable the distributed command bus:
+The most straightforward approach to this is to include the Spring Boot starter dependency of either the Spring Cloud or JGroups extension.
+With that in place, a single property needs to be added to the application context, to enable the `DistributedCommandBus`:
 
 ```text
 axon.distributed.enabled=true
 ```
 
-There is one setting that is independent of the type of connector used:
-
-```text
-axon.distributed.load-factor=100
-```
-
-The load factor of a Distributed Command Bus is defaulted to `100`.
-
-> **The Load Factor Explained**
->
-> The load factor defines the amount of load the instance would carry compared to others. For example, if you have a two machine set up, both with a load factor of 100, both will carry an equal amount of load. Increasing the load factor to 200 on both would still mean that both machines receive the same amount of load. Concluding, the load factor is intended to serve heterogeneous application landscapes with the means to distribute more load to faster machines than to slower machines.
-
+It is recommended to visit the respective extension pages on how to configure JGroups or Spring Cloud for the `DistributedCommandBus`.
