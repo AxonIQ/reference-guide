@@ -194,7 +194,7 @@ For using the BOM, you would add the `axon-bom` dependency to your dependency ma
 
 {% tab title="Gradle" %}
 
-For usage with Gradle, apply the dependency-management-plugin like so:    
+For usage with **Gradle Version 4.x** and below, apply the dependency-management-plugin like so:    
 ```groovy
 buildscript {
   repositories {
@@ -215,6 +215,12 @@ dependencyManagement {
   }
 }
 ```
+
+Beginning with **[Gradle version 5.0](https://docs.gradle.org/5.0/userguide/managing_transitive_dependencies.html#sec:bom_import)**, you can also omit the dependency-management plugin and instead use the `platform` dependency dsl to import maven boms:
+
+ ```
+ implementation(platform("org.axonframework:axon-bom:<VERSION>"))
+ ```
 
 {% endtab %}
 {% endtabs %}
