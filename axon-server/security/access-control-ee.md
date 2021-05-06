@@ -50,6 +50,7 @@ A summary of the various roles is depicted below
 | Role Name | Description |
 | :--- | :--- |
 | ADMIN | Administer the cluster, manage contexts, users and applications |
+| VIEW\_CONFIGURATION | View cluster configuration with contexts, users, applications, replication groups, and plugins (only for \_admin context) | 
 | CONTEXT\_ADMIN | Manage event processors within a specific context |
 | DISPATCH\_COMMANDS | Dispatch commands |
 | DISPATCH\_QUERY | Dispatch queries and subscription queries |
