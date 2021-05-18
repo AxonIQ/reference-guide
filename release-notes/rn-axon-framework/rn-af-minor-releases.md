@@ -4,6 +4,13 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.4_
 
+### Release 4.4.9
+
+Release 4.4.9 of Axon Framework has incremented _all_ used dependencies towards their latest bug release.
+This has done to resolve potentially security issues, as was reported with XStream 1.4.14 (that was resolved in 1.4.16).
+
+For those looking for the set of adjustments please take a look at tag [4.4.9](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.4.8)
+
 ### Release 4.4.8
 
 * A bug was noted whenever a query handler returned a `Future`/`CompletableFuture` in combination with a subscription query, with Axon Server as the infrastructure.
