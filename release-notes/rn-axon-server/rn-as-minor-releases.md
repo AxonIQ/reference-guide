@@ -173,13 +173,16 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.5_
 
-### Release 4.5.1
+### Release 4.5.2
 
 * Configurable strategy for aggregate events stream sequence validation (through property read-sequence-validation-strategy)
+* Fix UI check for updates
+
+### Release 4.5.1
+
 * Fix for initialization error for the transaction log
 * Fix for node not able to replicate after install snapshot procedure
-* Fix for concurrency issue in creating schedulers for auto load balancing
-* Fix in UI for check for updates
+* Fix for concurrency issue in creating schedulers for auto-loadbalancing
 
 ## _Release 4.4_
 
