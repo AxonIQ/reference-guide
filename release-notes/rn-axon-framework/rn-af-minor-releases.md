@@ -2,6 +2,29 @@
 
 Any patch release made for an Axon project is tailored towards resolving bugs. This page aims to provide a dedicated overview of patch releases per project.
 
+## _Release 4.5_
+
+### Release 4.5.1
+
+* Some internals have changed concerning command handling exceptions.
+  Within a single JVM, Axon Framework knows whether the exception is transient or not.
+  This piece of information allows the [`RetryScheduler`](../../axon-framework/axon-framework-commands/infrastructure.md#configuring-the-command-gateway) to retry a non-transient exception since those are retryable.
+  With the move towards distributed environments, the information whether an exception is transient was lost when we moved to the dedicated `CommandHandlingException` containing a details object.
+  Pull request [#1742](https://github.com/AxonFramework/AxonFramework/pull/1743) reintroduces this functionality in this release.
+
+* The new `RevisionSnapshotFilter` introduced in release 4.5 sneaked in a bug by not validating the aggregate type upon filtering.
+  Pull request [#1771](https://github.com/AxonFramework/AxonFramework/pull/1771) describes and solves the problem by introducing the aggregate type to the `RevisionSnapshotFilter`.
+
+* By enabling the [`CreationPolicy`](../../axon-framework/axon-framework-commands/command-handlers.md#aggregate-command-handler-creation-policy) for the [`DisruptorCommandBus`](../../axon-framework/axon-framework-commands/infrastructure.md#disruptorcommandbus), a timing issue was introduced with handling events.
+  Contributor "junkdog" marked the problem in issue [#1778](https://github.com/AxonFramework/AxonFramework/issues/1778), after which pull request [#1792](https://github.com/AxonFramework/AxonFramework/pull/1792) solved it.
+
+* Contributor "michaelbub" noted in issue [#1786](https://github.com/AxonFramework/AxonFramework/issues/1786) that resetting a `StreamingEventProcessor` to a point in the future reacted differently when no token was stored yet.
+  This followed from the implementation of the `ReplayToken`, which wrongfully assumed that if the given 'token at reset' was `null`, the start position should be `null` too.
+  However, the start position might be the future, and hence it should be used in favor of `null`.
+  This issue is addressed under [this](https://github.com/AxonFramework/AxonFramework/pull/1802) pull request.
+
+For a detailed perspective on the release notes, please check [this](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.1) page.
+
 ## _Release 4.4_
 
 ### Release 4.4.9
