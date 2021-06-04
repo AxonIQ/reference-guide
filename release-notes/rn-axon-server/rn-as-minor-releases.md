@@ -6,12 +6,33 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.5_
 
+### Release 4.5.2
+
+* Improved performance for reading aggregates
+
+  Axon Server is now reading events for an aggregate from multiple event store segments in parallel. The order in which
+  Axon Server returns the events remains unchanged.
+
+* Reduced memory usage for in-memory indexes
+
+  Axon Server maintains index entries for the latest event store segment in-memory. The structure of this data has been
+  changed to reduce the heap used by this index.
+
+* Improvements in shutdown process
+* Fix: Load balancing operations for processors should ignore stopped instances
+* Fix: Stop reading events when query deadline expires
+
 ### Release 4.5.1
 
 * Configurable strategy for aggregate events stream sequence validation (through property read-sequence-validation-strategy)
 * Fix in UI for check for updates
 
 ## _Release 4.4_
+
+### Release 4.4.12
+
+* Fix: Load balancing operations for processors should ignore stopped instances
+* Fix: Stop reading events when query deadline expires
 
 ### Release 4.4.11
 
@@ -173,6 +194,37 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.5_
 
+### Release 4.5.3
+
+* Improved performance for reading aggregates
+  
+  Axon Server is now reading events for an aggregate from multiple event store segments in parallel. The order in which 
+  Axon Server returns the events remains unchanged. 
+
+* Reduced memory usage for in-memory indexes
+  
+  Axon Server maintains index entries for the latest event store segment in-memory. The structure of this data has been 
+  changed to reduce the heap used by this index.    
+
+* Reduced number of files kept open as memory-mapped files
+  
+  Axon Server now only keeps a (configurable) number of event files open as memory-mapped files. Older files will be 
+  opened and closed when needed. The number of event store segments that are opened as memory mapped files can be 
+  configured through the property: axoniq.axonserver.event.memory-mapped-segments
+
+* Initialize event stores asynchronously on startup
+  
+  When Axon Server needs to recreate indexes for a context on startup, it can take some time to complete. This 
+  change makes the initialization of the context asynchronous, so that if one context takes a long time to initialize, 
+  other replication groups are already available. This also makes the HTTP endpoint available sooner, so liveliness 
+  checks succeed faster.
+
+* Improvements in shutdown process
+* Fix: Load balancing operations for processors should ignore stopped instances
+* Fix: Stop reading events when query deadline expires
+* Fix: Disparities in Context Leaders
+* Dependency update: updated xstream version used to 1.4.17
+
 ### Release 4.5.2
 
 * Configurable strategy for aggregate events stream sequence validation (through property read-sequence-validation-strategy)
@@ -185,6 +237,12 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 * Fix for concurrency issue in creating schedulers for auto-loadbalancing
 
 ## _Release 4.4_
+
+### Release 4.4.15
+
+* Fix: Load balancing operations for processors should ignore stopped instances
+* Fix: Stop reading events when query deadline expires
+* Dependency update: updated xstream version used to 1.4.17
 
 ### Release 4.4.14
 
