@@ -287,6 +287,20 @@ A list of all the configuration properties by area is denoted below. Unless expl
     </tr>
     <tr>
       <td style="text-align:left"></td>
+      <td style="text-align:left">event.memory-mapped-segments</td>
+      <td style="text-align:left">Number of recent segments that Axon Server keeps memory mapped.</td>
+      <td
+      style="text-align:left">5</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event.events-per-segment-prefetch</td>
+      <td style="text-align:left">Number of events to prefetch from disk when streaming events to the client.</td>
+      <td
+      style="text-align:left">50</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
       <td style="text-align:left">snapshot.bloom-index-fpp</td>
       <td style="text-align:left">False-positive percentage allowed for bloom index for snapshots. Decreasing
         the value increases the size of the bloom indexes.</td>
@@ -334,6 +348,13 @@ A list of all the configuration properties by area is denoted below. Unless expl
     </tr>
     <tr>
       <td style="text-align:left"></td>
+      <td style="text-align:left">snapshot.memory-mapped-segments</td>
+      <td style="text-align:left">Number of recent segments that Axon Server keeps memory mapped.</td>
+      <td
+      style="text-align:left">5</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
       <td style="text-align:left">query.limit</td>
       <td style="text-align:left"></td>
       <td style="text-align:left">200</td>
@@ -366,7 +387,6 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td
       style="text-align:left">JUMP_SKIP_INDEX</td>
     </tr>
-    <tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">read-sequence-validation-strategy</td>
@@ -1190,7 +1210,7 @@ Possible values are "none" and "onFirstInit".
 </td>
       <td
       style="text-align:left">onFirstInit</td>
-    </tr>
+   </tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">spring.servlet.multipart.max-file-size <em>(no prefix)</em></td>
