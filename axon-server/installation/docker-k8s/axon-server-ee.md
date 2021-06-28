@@ -10,10 +10,11 @@ This section is split into 3 sub-sections.
 
 AxonIQ provides a ready to use [Axon Server EE image](https://hub.docker.com/r/axoniq/axonserver-enterprise) **for development and trial purposes**. There are two images available: one with Axon Server running as the user "`root`" and one with Axon Server running as user "`axonserver`". Both images are based on "debug" images from [Google's Distroless series](https://github.com/GoogleContainerTools/distroless), which means they include a (limited) shell that allows you to connect "into" the running image and perform some commands. Naturally you should not use these for production because of this, but they are perfect for development and test environments.
 
-* The "`root`" image is available as "`axoniq/axonserver-enterprise:`_version_`-dev`" and is based on "`gcr.io/distroless/java:11-debug`". This image is particularly useful for running in Docker Desktop, as it will not have any trouble creating files and directories as user "`root`".
-* The "`axonserver`" image is available as "`axoniq/axonserver-enterprise:`_version_`-dev-nonroot`" and is based on "`gcr.io/distroless/java:11-debug-nonroot`". This image is more secure in and useful in Kubernetes and OpenShift clusters. You should take care to declare the user- and group-id, both of which are `1001` and are named "`axonserver`". Doing this will ensure that any mounted volumes will be writable by the user running Axon Server.
+* The "`root`" image of version 4.5.3 is available as "`axoniq/axonserver-enterprise:4.5.3-dev`" and is based on "`gcr.io/distroless/java:11-debug`". This image is particularly useful for running in Docker Desktop, as it will not have any trouble creating files and directories as user "`root`".
+* The "`axonserver`" image of version 4.5.3 is available as "`axoniq/axonserver-enterprise:4.5.3-dev-nonroot`" and is based on "`gcr.io/distroless/java:11-debug-nonroot`". This image is more secure and useful in Kubernetes and OpenShift clusters. You should take care to declare the user- and group-id, both of which are `1001` and are named "`axonserver`". Doing this will ensure that any mounted volumes will be writable by the user running Axon Server.
 
-The images export the following volumes:
+Version 4.5.3 is the first version for which we have released these images, and later versions will follow. Please replace "4.5.3" in this page with the appropriate version number as needed. The images export the following volumes:
+
 * "`/axonserver/config`"
 
   This where you can add configuration files, such as an additional `axonserver.properties` and the license file, although you can also opt to use e.g. Kubernetes or Docker-compose secrets. Note that Axon Server EE assumes it can write to the directory configured with "`axoniq.axonserver.enterprise.licenseDirectory`", so you don't have to put the license on all nodes.
