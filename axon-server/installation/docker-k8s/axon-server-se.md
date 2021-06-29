@@ -8,7 +8,7 @@ This section is split into 3 sub-sections.
 
 ## Docker Image
 
-Axon provides a ready to use [Axon Server SE image](https://hub.docker.com/r/axoniq/axonserver/). The image is built using a compact image from Google’s “distroless” base images at the gcr.io repository, in this case “gcr.io/distroless/java:11”.
+AxonIQ provides a ready to use [Axon Server SE image](https://hub.docker.com/r/axoniq/axonserver/). The image is built using a compact image from Google’s “distroless” base images at the gcr.io repository, in this case “gcr.io/distroless/java:11”.
 
 To run the provided image the command below can be executed. This starts Axon Server SE in a docker container with exposes the HTTP \(8024\) and GRPC \(8124\) ports to the host.
 
