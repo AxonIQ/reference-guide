@@ -6,6 +6,21 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.5_
 
+### Release 4.5.3
+
+* Fix: Reset event store with multiple segments
+* Fix: Regression in loading aggregate events performance
+* Fix: Handle queries with same request type but different response type
+* New metrics added:
+  - file.bloom.open: counts the number of bloom filter segments opened since start
+  - file.bloom.close: counts the number of bloom filter segments closed since start
+  - file.bloom.open: counts the number of bloom filter segments opened since start
+  - file.segment.open: counts the number of event store segments opened since start
+  - local.aggregate.segments: monitors the number of segments that were accessed for reading aggregate event requests
+
+Notes:
+- Default value for configuration property axoniq.axonserver.event.events-per-segment-prefetch is decreased from 50 to 10.
+
 ### Release 4.5.2
 
 * Improved performance for reading aggregates
@@ -193,6 +208,29 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 ## Axon Server Enterprise Edition
 
 ## _Release 4.5_
+
+### Release 4.5.4
+
+* Fix: Clients should not connect to a node that is unable to contact other nodes in the cluster
+  If a client requests a connection from an isolated Axon Server node, Axon Server rejects the connection, and the client
+  requests a connection from another node. If a client has a connection to an Axon Server node, and the node loses the
+  connection to the other Axon Server nodes in the cluster, Axon Server will disconnect the client. The client reconnects to another
+  node (also in 4.4.16).
+* Fix: Regression in loading aggregate events performance
+* Fix: Handle queries with same request type but different response type
+* Fix: client sometimes reconnects when other Axon Server node is restarted
+* Fix: clients are redirected to Axon Server node that is not ready yet
+* Fix: invalid version number in login and error pages
+
+* New metrics added:
+  - file.bloom.open: counts the number of bloom filter segments opened since start
+  - file.bloom.close: counts the number of bloom filter segments closed since start
+  - file.bloom.open: counts the number of bloom filter segments opened since start
+  - file.segment.open: counts the number of event store segments opened since start
+  - local.aggregate.segments: monitors the number of segments that were accessed for reading aggregate event requests
+
+Notes:
+- Default value for configuration property axoniq.axonserver.event.events-per-segment-prefetch is decreased from 50 to 10.
 
 ### Release 4.5.3
 
