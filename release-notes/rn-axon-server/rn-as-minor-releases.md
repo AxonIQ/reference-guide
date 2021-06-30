@@ -238,6 +238,14 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.4_
 
+### Release 4.4.16
+
+* Fix: Clients should not connect to a node that is unable to contact other nodes in the cluster
+  If a client requests a connection from an isolated Axon Server node, Axon Server rejects the connection, and the client
+  requests a connection from another node. If a client has a connection to an Axon Server node, and the node loses the
+  connection to the other Axon Server nodes in the cluster, Axon Server will disconnect the client. The client reconnects to another
+  node.
+
 ### Release 4.4.15
 
 * Fix: Load balancing operations for processors should ignore stopped instances
