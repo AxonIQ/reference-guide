@@ -4,6 +4,21 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.5_
 
+### Release 4.5.2
+
+* Added a missing `isReplaying` flag on the `StreamingEventProcessor`.
+Pull request [#1821](https://github.com/AxonFramework/AxonFramework/pull/1821) reintroduces this functionality in this release.
+
+* Some enhancements in regards to logging Exceptions and stacktraces when initialization fails.
+This [commit](https://github.com/AxonFramework/AxonFramework/commit/197eabea4259f98a4a06c999e4bd5ed7b373a3d4) reintroduces this functionality in this release.
+
+* Improved Axon Framework (`AxonServerEventStore`) which will now rethrown Exceptions that has a valid `Status.Code`.
+Pull request [#1842](https://github.com/AxonFramework/AxonFramework/pull/1842) reintroduces this functionality in this release.
+
+* General improvements on the `PooledStreamingEventProcessor` made across several Pull Requests.
+
+For a detailed perspective on the release notes, please check [this ](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.2) page.
+
 ### Release 4.5.1
 
 * Some internals have changed concerning command handling exceptions.
