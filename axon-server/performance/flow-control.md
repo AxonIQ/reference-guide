@@ -14,6 +14,12 @@ The client \(i.e. the Axon Application\) needs to set the following properties t
 
 _Axon Server Nodes:_
 
+Set the following properties to control 'list aggregate events' prefetch rate, per aggregate and per segment:
+
+* `axoniq.axonserver.event.aggregate.prefetch` \[5\] - Ensures that backpressure signals from clients are split into batches. The initial request amount is {prefetch}*5, and subsequent (or replenishing) request amount is {prefetch}
+* `axoniq.axonserver.event.events-per-segment-prefetch` \[10\] - the maximum prefetched events from each opened event segment (max two opened segments in parallel)
+
+
 Set the following properties to set flow control on the synchronization between nodes in an Axon Server cluster:
 
 * `axoniq.axonserver.commandFlowControl.initial-nr-of-permits` \[10000\] - number of messages that the master can initially send to replica.
@@ -22,4 +28,6 @@ Set the following properties to set flow control on the synchronization between 
 * `axoniq.axonserver.queryFlowControl.initial-nr-of-permits` \[10000\] - number of messages that the master can initially send to replica.
 * `axoniq.axonserver.queryFlowControl.nr-of-new-permits` \[5000\] - additional number of messages that the master can send to replica.
 * `axoniq.axonserver.queryFlowControl.new-permits-threshold` \[5000\] - when replica reaches this threshold in remaining messages, it sends a request with additional number of messages to receive.
+
+
 
