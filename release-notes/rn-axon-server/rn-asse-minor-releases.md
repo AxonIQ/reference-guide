@@ -1,6 +1,6 @@
-# Minor Releases
+# Minor Releases Standard Edition
 
-This page provides a dedicated overview of patch releases for the Axon Server releases
+This page provides a dedicated overview of patch releases for the Axon Server (Standard Edition) releases
 
 ## _Release 4.5_
 

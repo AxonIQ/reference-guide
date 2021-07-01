@@ -1,6 +1,6 @@
-# Minor Releases
+# Minor Releases Enterprise Edition
 
-This page provides a dedicated overview of patch releases for the Axon Server Enterprise Edition releases
+This page provides a dedicated overview of patch releases for the Axon Server (Enterprise Edition) releases
 
 ## _Release 4.5_
 
