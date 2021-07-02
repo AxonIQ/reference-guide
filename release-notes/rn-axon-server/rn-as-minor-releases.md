@@ -6,7 +6,7 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ### Release 4.5.5
 
-* Fix for contexts not starting when some contexts are using BloomFilterIndex and others are using JumpSkipIndex.
+* Fix for contexts not starting when some contexts are using BLOOM_FILTER_INDEX  and others are using JUMP_SKIP_INDEX.
 
 ### Release 4.5.4
 
