@@ -4,6 +4,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## _Release 4.5_
 
+### Release 4.5.5
+
+* Fix for contexts not starting when some contexts are using BloomFilterIndex and others are using JumpSkipIndex.
+
 ### Release 4.5.4
 
 * Fix: Clients should not connect to a node that is unable to contact other nodes in the cluster
