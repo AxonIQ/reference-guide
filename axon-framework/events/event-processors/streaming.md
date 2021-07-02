@@ -1,4 +1,27 @@
-### Multiple Event Sources
+# Streaming Event Processor
+
+The `StreamingEventProcessor`, or Streaming Processor for short, is a type of [Event Processor](README.md).
+As any Event Processor, it serves as the technical aspect to handle events by invoking the event handlers written in an Axon application.
+
+The Streaming Processor defines itself by receiving the events from a `StreamableMessageSource`.
+The `StreamableMessageSource` is an infrastructure component from which a stream of events can be opened.
+The source can also specify positions on the event stream, so-called [Tracking Tokens](#tracking-tokens), which are used as start positions when opening an event stream.
+An example of a `StreamableMessageSource` is the [`EventStore`](../event-bus-and-event-store.md#event-store), like for example [Axon Server](../../../axon-server) or an [RDBMS](../event-bus-and-event-store.md#embedded-event-store).
+
+Furthermore, Streaming Processors use separate threads to process the events retrieved from the `StreamableMessageSource`.
+This decouples `StreamingEventProcessor` from other operations (e.g., event publication or command handling), allowing for cleaner separation within any application.  
+Using separate threads allows for [parallelization](#parallel-processing) of the event load, either within a single JVM or between several. 
+
+When starting a Streaming Processor, it will open an event stream through the configured `StreamableMessageSource`.
+It keeps track of the event processing progress while traversing the stream.
+It does so by storing the Tracking Tokens, or _tokens_ for short, as each token defines a position on the event stream.
+
+Maintaining the progress makes a Streaming Processor more resilient against unintended shutdowns.
+Added, the token provides a means to [replay](#replaying-events) events by adjusting the position of tokens.
+
+All combined, the Streaming Processor allows for decoupling, parallelization, resiliency and replay-ability.
+It is these features that make the Streaming Processor the logical choice for the majority of applications.
+Due to this, the [Tracking Event Processor](#tracking-event-processor), a type of Streaming Processor, is the default Event Processor.  
 
 You can configure a Tracking Event Processor to use multiple sources when processing events. This is useful for compiling metrics across domains or simply when your events are distributed between multiple event stores.
 
