@@ -21,51 +21,116 @@ Added, the token provides a means to [replay](#replaying-events) events by adjus
 
 All combined, the Streaming Processor allows for decoupling, parallelization, resiliency and replay-ability.
 It is these features that make the Streaming Processor the logical choice for the majority of applications.
-Due to this, the [Tracking Event Processor](#tracking-event-processor), a type of Streaming Processor, is the default Event Processor.  
+Due to this, the "Tracking Event Processor", a type of Streaming Processor, is the default Event Processor.
 
-You can configure a Tracking Event Processor to use multiple sources when processing events. This is useful for compiling metrics across domains or simply when your events are distributed between multiple event stores.
+> **Default Event Processor**
+> 
+> Which `EventProcessor` type becomes the default processor depends on the event message source available in your application.
+> In the majority of use cases an Event Store is present.
+> As the Event Store is a type of `StreamableMessageSource`, the default will switch to the Tracking Event Processor.
+> 
+> If the application only has an Event Bus configured, the framework will lack a `StreamableMessageSource`.
+> In these scenarios it will fall back to the [Subscribing Event Processor](subscribing.md) as the default.
+> This implementation will use the configured `EventBus` as its `SubscribableMessageSource`.
 
-Having multiple sources means that there might be a choice of multiple events that the processor could consume at any given instant. Therefore, you can specify a `Comparator` to choose between them. The default implementation chooses the event with the oldest timestamp \(i.e. the event waiting the longest\).
+There are two implementations of Streaming Processor available in Axon Framework:
 
-Multiple sources also means that the tracking processor's polling interval needs to be divided between sources using a strategy to optimize event discovery and minimize overhead in establishing costly connections to the data sources. Therefore, you can choose which source the majority of the polling is done on using the `longPollingSource()` method in the builder. This ensures one source consumes most of the polling interval whilst also checking intermittently for events on the other sources. The default `longPollingSource` is done on the last configured source.
+1. the Tracking Event Processor (TEP for short), and
+2. the Pooled Streaming Event Processor (PSEP for short).
+
+Both implementations support the same set of operations. 
+Operations like replaying events through a [reset](#replaying-events), [parallelism](#parallel-processing) and tracking the progress with [tokens](#tracking-tokens).
+They diverge on their threading approach and work separation, as discussed in more detail in [this](#threading-differences) section.
+
+## Configuring
+
+### Configuring a Tracking Processor
+
+* `registerTrackingEventProcessor(String name)` defines that a processor with given name should be configured as a tracking event processor, using default settings.
+
+  It is configured with a TransactionManager and a TokenStore, both taken from the main configuration by default.
+
+* `registerTrackingProcessor(String name, Function<Configuration, StreamableMessageSource<TrackedEventMessage<?>>> source, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration)` defines that a processor with given name should be configured as a tracking processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading.
+
+  The `StreamableMessageSource` defines an event source from which this processor should pull events.
+
+```java
+ // Default all processors to subscribing mode.
+@Autowired
+public void configure(EventProcessingConfigurer config) {
+    config.usingSubscribingEventProcessors();
+}
+```
+
+Certain aspects of event processors can also be configured in `application.properties`.
+
+```text
+axon.eventhandling.processors.name.mode=subscribing
+axon.eventhandling.processors.name.source=eventBus
+```
+
+If the name of an event processor contains periods `.`, use the map notation:
+
+```text
+axon.eventhandling.processors[name].mode=subscribing
+axon.eventhandling.processors[name].source=eventBus
+```
+
+### Configuring a Pooled Streaming Processor
+
+
+When it comes to configuring the `PooledStreamingEventProcessor`, you can take the following approaches:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
-Create a `MultiStreamableMessageSource` using its `builder()` and register it as the message source when calling `EventProcessingConfigurer.registerTrackingEventProcessor()`.
-
-For example:
-
 ```java
-MultiStreamableMessageSource.builder()
-        .addMessageSource("eventSourceA", eventSourceA)
-        .addMessageSource("eventSourceB", eventSourceB)
-        .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
-        .trackedEventComparator(priorityA) // Where 'priorityA' is a comparator prioritizing events from eventSourceA
-        .build();
+public class Configuration {
+    
+    public void configurePooledProcessor(EventProcessingConfigurer processingConfigurer) {
+        processingConfigurer
+            // Defaults all Event Processors to PooledStreamingEventProcessors instances
+            .usingPooledStreamingEventProcessors()
+            // Configures the "processing-group" to be a PooledStreamingEventProcessors
+            .registerPooledStreamingEventProcessor("processing-group")
+            // Configures the "processing-group" to be a PooledStreamingEventProcessors, using the EventStore as a message source
+            .registerPooledStreamingEventProcessor("processing-group", config -> config.eventStore())
+            // The same "processing-group"  configuration, including a PooledStreamingProcessorConfiguration allowing complete configuration of the PooledStreamingEventProcessors 
+            .registerPooledStreamingEventProcessor(
+                "processing-group", config -> config.eventStore(),
+                (config, builder) -> builder /* Invoke the 'builder's methods for futher configuraiton'*/
+            );  
+    }
+}
 ```
 {% endtab %}
-
 {% tab title="Spring Boot AutoConfiguration" %}
-```java
-@Bean
-public MultiStreamableMessageSource multiStreamableMessageSource(EventStore eventSourceA, EventStore eventStoreB) {
-    return MultiStreamableMessageSource.builder()
-            .addMessageSource("eventSourceA", eventSourceA)
-            .addMessageSource("eventSourceB", eventSourceB)
-            .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
-            .trackedEventComparator(priorityA) // Where 'priorityA' is a comparator prioritizing events from eventSourceA
-            .build();
-}
-
-@Autowired
-public void configure(EventProcessingConfigurer config, MultiStreamableMessageSource multiStreamableMessageSource) {
-    config.registerTrackingEventProcessor("NameOfEventProcessor", c -> multiStreamableMessageSource);
-}
+```text
+# Defines that a processor "processing-group" should be a PooledStreamingEventProcessor
+axon.eventhandling.processors.processing-group.mode=pooled
+# Sets the event batch size for "processing-group" to 1024
+axon.eventhandling.processors.processing-group.batchSize=1024
+# Sets the initial number of segments for "processing-group" to 32
+axon.eventhandling.processors.processing-group.initialSegmentCount=32
 ```
 {% endtab %}
 {% endtabs %}
 
-## Token Store
+## Error Mode
+
+The error mode differs between the Tracking- and Pooled Streaming Event Processor.
+
+Whenever the [error handler](README.md#event-processor---error-handler) rethrows an exception, a `TrackingEventProcessor` will retry processing the event using an incremental back-off period.
+It will start at 1 second and double after each attempt until a maximum wait time of 60 seconds per attempt is achieved.
+This back-off time ensures that of in a distributed environment another node is able to process events, it will have the opportunity to claim the [token](#tracking-tokens) required to process the event.
+
+The `PooledStreamingEventProcessor` simply aborts the failed part of the process.
+The Pooled Streaming Processor can deal with this since the [threading model](#threading-differences) is different from the Tracking Processor.
+As such, the chance is high the failed process will be picked up quickly by another thread within the same JVM.
+This chance increases further whenever the PSEP instance is distributed over several application instances.
+
+## Tracking Tokens
+
+### Token Store
 
 Tracking event processors, unlike subscribing ones, need a token store to store their progress in. Each message a tracking processor receives through its event stream is accompanied by a token. This token allows the processor to reopen the stream at any later point, picking up where it left off with the last event.
 
@@ -121,7 +186,40 @@ public void configure(EventProcessingConfigurer epConfig) {
 
 Note that you can override the token store to use with tracking processors in the `EventProcessingConfiguration` that defines that processor. Where possible, it is recommended to use a token store that stores tokens in the same database as where the event handlers update the view models. This way, changes to the view model can be stored atomically with the changed tokens. This guarantees exactly once processing semantics.
 
-## Splitting and Merging Tracking Tokens
+> **A new Saga's Event Stream position**
+>
+> The Saga `TrackingEventProcessor` will by default start its token at the head of the stream.
+
+### Custom tracking token position
+
+Prior to Axon release 3.3, you could only reset a `TrackingEventProcessor` to the beginning of the event stream. As of version 3.3 functionality for starting a `TrackingEventProcessor` from a custom position has been introduced. The `TrackingEventProcessorConfiguration` provides the option to set an initial token for a given `TrackingEventProcessor` through the `andInitialTrackingToken(Function<StreamableMessageSource, TrackingToken>)` builder method. As an input parameter for the token builder function, we receive a `StreamableMessageSource` which gives us three possibilities to build a token:
+
+* From the head of event stream: `createHeadToken()`.
+* From the tail of event stream: `createTailToken()`.
+* From some point in time: `createTokenAt(Instant)` and `createTokenSince(duration)` -
+
+  Creates a token that tracks all events after a given time.
+
+  If there is an event exactly at that given moment in time, that event will also be taken into account.
+
+Of course, you can completely disregard the `StreamableMessageSource` input parameter and create a token by yourself.
+
+Below we can see an example of creating a `TrackingEventProcessorConfiguration` with an initial token on `"2007-12-03T10:15:30.00Z"`:
+
+```java
+public class Configuration {
+
+    public TrackingEventProcessorConfiguration customConfiguration() {
+        return TrackingEventProcessorConfiguration
+                .forSingleThreadedProcessing()
+                .andInitialTrackingToken(streamableMessageSource -> streamableMessageSource.createTokenAt(
+                        Instant.parse("2007-12-03T10:15:30.00Z")
+                ));
+    }
+}
+```
+
+### Splitting and Merging Tracking Tokens
 
 It is possible to tune the performance of Tracking Event Processors by increasing the number of threads processing events on high load by splitting segments and reducing the number of threads when load reduces by merging segments.  
 Splitting and merging is allowed at runtime which allows you to dynamically control the number of segments. This can be done through the Axon Server API or through Axon Framework using the methods `splitSegment(int segmentId)` and `mergeSegment(int segmentId)` from `TrackingEventProcessor` by providing the segmentId of the segment you want to split or merge.
@@ -323,83 +421,67 @@ See the [monitoring and metrics](../../monitoring-and-metrics.md#event-tracker-s
 >
 > How to customize a tracking token position is described [here](streaming.md#custom-tracking-token-position).
 
-## Custom tracking token position
+### Multiple Event Sources
 
-Prior to Axon release 3.3, you could only reset a `TrackingEventProcessor` to the beginning of the event stream. As of version 3.3 functionality for starting a `TrackingEventProcessor` from a custom position has been introduced. The `TrackingEventProcessorConfiguration` provides the option to set an initial token for a given `TrackingEventProcessor` through the `andInitialTrackingToken(Function<StreamableMessageSource, TrackingToken>)` builder method. As an input parameter for the token builder function, we receive a `StreamableMessageSource` which gives us three possibilities to build a token:
+You can configure a Tracking Event Processor to use multiple sources when processing events. This is useful for compiling metrics across domains or simply when your events are distributed between multiple event stores.
 
-* From the head of event stream: `createHeadToken()`.
-* From the tail of event stream: `createTailToken()`.
-* From some point in time: `createTokenAt(Instant)` and `createTokenSince(duration)` -
+Having multiple sources means that there might be a choice of multiple events that the processor could consume at any given instant. Therefore, you can specify a `Comparator` to choose between them. The default implementation chooses the event with the oldest timestamp \(i.e. the event waiting the longest\).
 
-  Creates a token that tracks all events after a given time.
+Multiple sources also means that the tracking processor's polling interval needs to be divided between sources using a strategy to optimize event discovery and minimize overhead in establishing costly connections to the data sources. Therefore, you can choose which source the majority of the polling is done on using the `longPollingSource()` method in the builder. This ensures one source consumes most of the polling interval whilst also checking intermittently for events on the other sources. The default `longPollingSource` is done on the last configured source.
 
-  If there is an event exactly at that given moment in time, that event will also be taken into account.
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+Create a `MultiStreamableMessageSource` using its `builder()` and register it as the message source when calling `EventProcessingConfigurer.registerTrackingEventProcessor()`.
 
-Of course, you can completely disregard the `StreamableMessageSource` input parameter and create a token by yourself.
-
-Below we can see an example of creating a `TrackingEventProcessorConfiguration` with an initial token on `"2007-12-03T10:15:30.00Z"`:
+For example:
 
 ```java
-public class Configuration {
+MultiStreamableMessageSource.builder()
+        .addMessageSource("eventSourceA", eventSourceA)
+        .addMessageSource("eventSourceB", eventSourceB)
+        .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
+        .trackedEventComparator(priorityA) // Where 'priorityA' is a comparator prioritizing events from eventSourceA
+        .build();
+```
+{% endtab %}
 
-    public TrackingEventProcessorConfiguration customConfiguration() {
-        return TrackingEventProcessorConfiguration
-                .forSingleThreadedProcessing()
-                .andInitialTrackingToken(streamableMessageSource -> streamableMessageSource.createTokenAt(
-                        Instant.parse("2007-12-03T10:15:30.00Z")
-                ));
-    }
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Bean
+public MultiStreamableMessageSource multiStreamableMessageSource(EventStore eventSourceA, EventStore eventStoreB) {
+    return MultiStreamableMessageSource.builder()
+            .addMessageSource("eventSourceA", eventSourceA)
+            .addMessageSource("eventSourceB", eventSourceB)
+            .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
+            .trackedEventComparator(priorityA) // Where 'priorityA' is a comparator prioritizing events from eventSourceA
+            .build();
+}
+
+@Autowired
+public void configure(EventProcessingConfigurer config, MultiStreamableMessageSource multiStreamableMessageSource) {
+    config.registerTrackingEventProcessor("NameOfEventProcessor", c -> multiStreamableMessageSource);
 }
 ```
-## Error Mode
+{% endtab %}
+{% endtabs %}
 
-A `TrackingEventProcessor` will go into Error Mode.
-Then, it will retry processing the event using an incremental back-off period.
-It will start at 1 second and double after each attempt until a maximum wait time of 60 seconds per attempt is achieved.
-This back-off time ensures that if another node is able to process events successfully, it will have the opportunity to claim the token required to process the event.
+## Threading Differences
 
-## Pooled Streaming Event Processor
+The tabbed section below is dedicated towards the difference between both implementations:
 
-Next to the `TrackingEventProcessor`, there is another `EventProcessor` implementation which provides the same operations with a different processing approach behind it.
-This is the so-called `PooledStreamingEventProcessor`.
+{% tabs %}
+{% tab title="Tracking Event Processor" %}
 
-It allows for [splitting, merging](#splitting-and-merging-tracking-tokens) and [resetting](#replaying-events) the segments of a processor, just as with the `TrackingEventProcessor`.
+The `TrackingEventProcessor`, called the Tracking Processor or "TEP" for short, is a `StreamingEventProcessor` implementation.
+The Tracking Processor uses a `ThreadFactory` to start
+
+{% endtab %}
+{% tab title="Pooled Streaming Event Processor" %}
+
 Under the hoods, it however uses two threads pools, instead of the single fixed set of threads used by the `TrackingEventProcessor`.
 The first thread pool is in charge of open a stream with the event source and to delegate all the work (e.g. which events to handle, split/merge, etc.).
 The second thread pool is dealing with all the segments the `PooledStreamingEventProcessor` could claim.
 
-When it comes to configuring the `PooledStreamingEventProcessor`, you can take the following approaches:
-
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-```java
-public class Configuration {
-    
-    public void configurePooledProcessor(EventProcessingConfigurer processingConfigurer) {
-        processingConfigurer
-            // Defaults all Event Processors to PooledStreamingEventProcessors instances
-            .usingPooledStreamingEventProcessors()
-            // Configures the "processing-group" to be a PooledStreamingEventProcessors
-            .registerPooledStreamingEventProcessor("processing-group")
-            // Configures the "processing-group" to be a PooledStreamingEventProcessors, using the EventStore as a message source
-            .registerPooledStreamingEventProcessor("processing-group", config -> config.eventStore())
-            // The same "processing-group"  configuration, including a PooledStreamingProcessorConfiguration allowing complete configuration of the PooledStreamingEventProcessors 
-            .registerPooledStreamingEventProcessor(
-                "processing-group", config -> config.eventStore(),
-                (config, builder) -> builder /* Invoke the 'builder's methods for futher configuraiton'*/
-            );  
-    }
-}
-```
-{% endtab %}
-{% tab title="Spring Boot AutoConfiguration" %}
-```text
-# Defines that a processor "processing-group" should be a PooledStreamingEventProcessor
-axon.eventhandling.processors.processing-group.mode=pooled
-# Sets the event batch size for "processing-group" to 1024
-axon.eventhandling.processors.processing-group.batchSize=1024
-# Sets the initial number of segments for "processing-group" to 32
-axon.eventhandling.processors.processing-group.initialSegmentCount=32
-```
 {% endtab %}
 {% endtabs %}
+

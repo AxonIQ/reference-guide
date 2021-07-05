@@ -35,7 +35,7 @@ All processors have a name, which identifies a processor instance across JVM ins
 Two processors with the same name are considered as two instances of the same processor.
 
 All event handlers are attached to a processor whose name by default is the package name of the event handler's class.
-Furthermore, the default processor implementation used by Axon, is the [Tracking Event Processors](streaming.md#tracking-event-processor).
+Furthermore, the default processor implementation used by Axon, is the [Tracking Event Processor](streaming.md).
 The (default) event processor used can be adjusted, as is shown in the [subscribing](subscribing.md#configuring) and [streaming](streaming.md#configuring) sections.
 
 Event handlers, or Event Handling Components, come in roughly two flavors: "regular" \(singleton, stateless\) event handlers and [sagas](../../sagas/README.md).
@@ -142,8 +142,8 @@ Depending on where they happen, you may want to respond differently.
 By default, exceptions raised by event handlers are caught in the [Processing Group layer](#processing-group---listener-invocation-error-handler), logged and processing continues with the next events. 
 When an exception is thrown when a processor is trying to commit a transaction, update a [token](streaming.md#token-store), or in any other part of the process, the exception will be propagated. 
 
-In case of a [Tracking Event Processor](streaming.md#tracking-event-processor), this means the processor will go into error mode, releasing any tokens and retrying at an incremental interval \(starting at 1 second, up to max 60 seconds\). 
-A [Subscribing Event Processor](subscribing.md) will report a publication error to the component that provided the event.
+In case of a [Streaming Event Processor](streaming.md#error-mode), this means the processor will go into error mode, releasing any tokens and retrying at an incremental interval \(starting at 1 second, up to max 60 seconds\). 
+A [Subscribing Event Processor](subscribing.md#error-mode) will report a publication error to the component that provided the event.
 
 To change this behavior there are two levels, the Processing Group and Event Processor respectively, at which you can customize how Axon deals with exceptions:
 

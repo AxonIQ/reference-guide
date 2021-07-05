@@ -7,11 +7,11 @@ The Subscribing Processor defines itself by receiving the events from a `Subscib
 The `SubscibableMessageSource` is an infrastructure component to register a Subscribing Processor too.
 
 After registration to the `SubscibableMessageSource`, the message source gives the events to the `SubscribingEventProcessor` in the order they are received.
-Example of a `SubscibableMessageSource` are the `EventBus` or the [AMQP Extension](../../../extensions/spring-amqp.md).
+Examples of a `SubscibableMessageSource` are the `EventBus` or the [AMQP Extension](../../../extensions/spring-amqp.md).
 Both the `EventBus` and AMQP Extension are simple message bus solutions for events.
 
 The simple bus solution makes the `SubscibableMessageSource` and thus the Subscribing Processor an approach to receive _current_ events only.
-Options like [replaying](streaming.md#replaying-events) are thus not an option for any Subscribing Processor as long as the `SubscibableMessageSource` follows this paradigm.
+Operations like [replaying](streaming.md#replaying-events) are thus not an option for any Subscribing Processor as long as the `SubscibableMessageSource` follows this paradigm.
 
 Furthermore, the message source will use the same thread that receives the events to invoke the registered Subscribing Processors.
 When the `EventBus` is, for example, used as the message source, this means that the event publishing thread is the same one handling the event in the Subscribing Processor.
@@ -20,7 +20,7 @@ Although this approach deserves a spot within the framework, most scenarios requ
 When, for example, an application requires event processing parallelization to get a higher performance, this can be a blocker.
 This predicament is why the `SubscribingEventProcessor` is not the default within Axon Framework.
 
-Instead, the [Tracking Event Processor](streaming.md#tracking-event-processor) takes up that role.
+Instead, the "Tracking Event Processor" (a [Streaming Processor](streaming.md#streaming-event-processor) implementation) takes up that role.
 It provides greater flexibility for developers for configuring the event processor in greater detail.
 
 > **Subscribing Processor Use Cases**
@@ -29,11 +29,6 @@ It provides greater flexibility for developers for configuring the event process
 >
 > When a model, for example, should be updated within the same thread that published the event, the Subscribing Processor becomes a reasonable solution.
 > In combination with Axon's [AMQP](../../../extensions/spring-amqp.md) or [Kafka](../../../extensions/kafka.md) extension, some of these concerns are alleviated too, making it a viable option.
-
-## Error Mode
-
-Whenever the [error handler](README.md#event-processor---error-handler) rethrows an exception, the `SubscribingEventProcessor` will have it bubble up to the publishing component of the event.
-Providing the exception to the event publisher allows the publishing component to deal with it accordingly.
 
 ## Configuring
 
@@ -113,3 +108,8 @@ axon.eventhandling.processors[my.processor].source=eventBus
 ```
 {% endtab %}
 {% endtabs %}
+
+## Error Mode
+
+Whenever the [error handler](README.md#event-processor---error-handler) rethrows an exception, the `SubscribingEventProcessor` will have it bubble up to the publishing component of the event.
+Providing the exception to the event publisher allows the publishing component to deal with it accordingly.
