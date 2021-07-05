@@ -95,6 +95,9 @@ public class AxonConfig {
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration - Properties file" %}
+Some Event Processor specifics can be configured through a properties file.
+Do note that the Java configuration provides more degrees of freedom.
+
 ```text
 axon.eventhandling.processors.my-processor.mode=subscribing
 axon.eventhandling.processors.my-processor.source=eventBus

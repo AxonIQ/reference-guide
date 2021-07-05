@@ -44,76 +44,293 @@ They diverge on their threading approach and work separation, as discussed in mo
 
 ## Configuring
 
+The Streaming Processors have several additional components that can be configured, next to the [base options](README.md#general-processor-configuration).
+If specific configuration options are present, they will be shown in their respective sections.
+This chapter will cover how to configure a [Tracking](#configuring-a-tracking-processor) or [Pooled Streaming](#configuring-a-pooled-streaming-processor) Processor respectively.
+
 ### Configuring a Tracking Processor
 
-* `registerTrackingEventProcessor(String name)` defines that a processor with given name should be configured as a tracking event processor, using default settings.
+To default every new processor instance to a `TrackingEventProcessor`, the `usingTrackingEventProcessors` method can be invoked:
 
-  It is configured with a TransactionManager and a TokenStore, both taken from the main configuration by default.
-
-* `registerTrackingProcessor(String name, Function<Configuration, StreamableMessageSource<TrackedEventMessage<?>>> source, Function<Configuration, TrackingEventProcessorConfiguration> processorConfiguration)` defines that a processor with given name should be configured as a tracking processor, and use the given `TrackingEventProcessorConfiguration` to read the configuration settings for multi-threading.
-
-  The `StreamableMessageSource` defines an event source from which this processor should pull events.
-
+{% tabs %}
+{% tab title="Axon Configuration API" %}
 ```java
- // Default all processors to subscribing mode.
-@Autowired
-public void configure(EventProcessingConfigurer config) {
-    config.usingSubscribingEventProcessors();
+public class AxonConfig { 
+    // ...
+    public void configureProcessorDefault(EventProcessingConfigurer processingConfigurer) { 
+        processingConfigurer.usingTrackingEventProcessors();  
+    }
 }
 ```
+{% endtab %}
 
-Certain aspects of event processors can also be configured in `application.properties`.
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureProcessorDefault(EventProcessingConfigurer processingConfigurer) {
+        processingConfigurer.usingTrackingEventProcessors();
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+For a specific Event Processor to be a Tracking instance, `registerTrackingEventProcessor` is used:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void configureTrackingProcessors(EventProcessingConfigurer processingConfigurer) {
+        // This configuration object allows for fine-grained control over the Tracking Processor
+        TrackingEventProcessorConfiguration tepConfig =
+              TrackingEventProcessorConfiguration.forSingleThreadedProcessing();
+        
+        // To configure a processor to be tracking ...
+        processingConfigurer.registerTrackingEventProcessor("my-processor")
+                            // ... to define a specific StreamableMessageSource ... 
+                            .registerTrackingEventProcessor(
+                                    "my-processor", conf -> /* create/return StreamableMessageSource */
+                            )
+                            // ... to provide additional configuration ...
+                            .registerTrackingEventProcessor(
+                                    "my-processor", conf -> /* create/return StreamableMessageSource */,
+                                    conf -> tepConfig
+                            );
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Java" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureTrackingProcessors(EventProcessingConfigurer processingConfigurer) {
+        // This configuration object allows for fine-grained control over the Tracking Processor
+        TrackingEventProcessorConfiguration tepConfig =
+              TrackingEventProcessorConfiguration.forSingleThreadedProcessing();
+        
+        // To configure a processor to be tracking ...
+        processingConfigurer.registerTrackingEventProcessor("my-processor")
+                            // ... to define a specific StreamableMessageSource ... 
+                            .registerTrackingEventProcessor(
+                                    "my-processor", conf -> /* create/return StreamableMessageSource */
+                            )
+                            // ... to provide additional configuration ...
+                            .registerTrackingEventProcessor(
+                                    "my-processor", conf -> /* create/return StreamableMessageSource */, 
+                                    conf -> tepConfig
+                            );
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Properties file" %}
+Some Event Processor specifics can be configured through a properties file.
+Do note that the Java configuration provides more degrees of freedom.
 
 ```text
-axon.eventhandling.processors.name.mode=subscribing
-axon.eventhandling.processors.name.source=eventBus
+axon.eventhandling.processors.my-processor.mode=tracking
+axon.eventhandling.processors.my-processor.source=eventStore
 ```
 
 If the name of an event processor contains periods `.`, use the map notation:
 
 ```text
-axon.eventhandling.processors[name].mode=subscribing
-axon.eventhandling.processors[name].source=eventBus
+axon.eventhandling.processors[my.processor].mode=tracking
+axon.eventhandling.processors[my.processor].source=eventStore
 ```
+{% endtab %}
+{% endtabs %}
 
-### Configuring a Pooled Streaming Processor
-
-
-When it comes to configuring the `PooledStreamingEventProcessor`, you can take the following approaches:
+For more fine-grained control when configuring a Tracking Processor, the `TrackingEventProcessorConfiguration` can be used.
+When invoking the `registerTrackingEventProcessor` method it can be provided, or a configuration instance can be registered explicitly:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-public class Configuration {
-    
-    public void configurePooledProcessor(EventProcessingConfigurer processingConfigurer) {
-        processingConfigurer
-            // Defaults all Event Processors to PooledStreamingEventProcessors instances
-            .usingPooledStreamingEventProcessors()
-            // Configures the "processing-group" to be a PooledStreamingEventProcessors
-            .registerPooledStreamingEventProcessor("processing-group")
-            // Configures the "processing-group" to be a PooledStreamingEventProcessors, using the EventStore as a message source
-            .registerPooledStreamingEventProcessor("processing-group", config -> config.eventStore())
-            // The same "processing-group"  configuration, including a PooledStreamingProcessorConfiguration allowing complete configuration of the PooledStreamingEventProcessors 
-            .registerPooledStreamingEventProcessor(
-                "processing-group", config -> config.eventStore(),
-                (config, builder) -> builder /* Invoke the 'builder's methods for futher configuraiton'*/
-            );  
+public class AxonConfig {
+    // ...
+    public void registerTrackingProcessorConfig(EventProcessingConfigurer processingConfigurer) {
+        TrackingEventProcessorConfiguration tepConfig =
+                TrackingEventProcessorConfiguration.forSingleThreadedProcessing();
+            
+        // To register a default tracking config ...
+        processingConfigurer.registerTrackingEventProcessorConfiguration(config -> tepConfig)
+                            // ... to register a config for a specific processor.
+                            .registerTrackingEventProcessorConfiguration("my-processor", config -> tepConfig);
     }
 }
 ```
 {% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Java" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void registerTrackingProcessorConfig(EventProcessingConfigurer processingConfigurer) {
+        TrackingEventProcessorConfiguration tepConfig =
+                  TrackingEventProcessorConfiguration.forSingleThreadedProcessing();
+    
+        // To register a default tracking config ...
+        processingConfigurer.registerTrackingEventProcessorConfiguration(config -> tepConfig)
+                            // ... to register a config for a specific processor.
+                            .registerTrackingEventProcessorConfiguration("my-processor", config -> tepConfig);
+    }
+}
+```
+{% endtab %}
+
+### Configuring a Pooled Streaming Processor
+
+To default every new processor instance to a `PooledStreamingEventProcessor`, the `usingPooledStreamingProcessors` method can be invoked:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class AxonConfig { 
+    // ...
+    public void configureProcessorDefault(EventProcessingConfigurer processingConfigurer) { 
+        processingConfigurer.usingPooledStreamingProcessors();  
+    }
+}
+```
+{% endtab %}
+
 {% tab title="Spring Boot AutoConfiguration" %}
-```text
-# Defines that a processor "processing-group" should be a PooledStreamingEventProcessor
-axon.eventhandling.processors.processing-group.mode=pooled
-# Sets the event batch size for "processing-group" to 1024
-axon.eventhandling.processors.processing-group.batchSize=1024
-# Sets the initial number of segments for "processing-group" to 32
-axon.eventhandling.processors.processing-group.initialSegmentCount=32
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureProcessorDefault(EventProcessingConfigurer processingConfigurer) {
+        processingConfigurer.usingPooledStreamingProcessors();
+    }
+}
 ```
 {% endtab %}
 {% endtabs %}
+
+For a specific Event Processor to be a Pooled Streaming instance, `registerPooledStreamingProcessor` is used:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void configurePooledStreamingProcessors(EventProcessingConfigurer processingConfigurer) {
+          // This configuration object allows for fine-grained control over the Pooled Streaming Processor
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
+                (config, builder) -> builder./* ... */;
+          
+        // To configure a processor to be pooled streaming ...
+        processingConfigurer.registerPooledStreamingEventProcessor("my-processor")
+                            // ... to define a specific StreamableMessageSource ... 
+                            .registerPooledStreamingEventProcessor(
+                                    "my-processor", conf -> /* create/return StreamableMessageSource */
+                            )
+                            // ... to provide additional configuration ...
+                            .registerPooledStreamingEventProcessor(
+                                    "my-processor", conf -> /* create/return StreamableMessageSource */, psepConfig
+                            );
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Java" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configurePooledStreamingProcessors(EventProcessingConfigurer processingConfigurer) {
+        // This configuration object allows for fine-grained control over the Pooled Streaming Processor
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
+                (config, builder) -> builder./* ... */;
+    
+        // To configure a processor to be pooled streaming ...
+        processingConfigurer.registerPooledStreamingEventProcessor("my-processor")
+                            // ... to define a specific StreamableMessageSource ... 
+                            .registerPooledStreamingEventProcessor(
+                                    "my-processor", conf -> /* create/return StreamableMessageSource */
+                            )
+                            // ... to provide additional configuration ...
+                            .registerPooledStreamingEventProcessor(
+                                    "my-processor", conf -> /* create/return StreamableMessageSource */, psepConfig
+                            );
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Properties file" %}
+Some Event Processor specifics can be configured through a properties file.
+Do note that the Java configuration provides more degrees of freedom.
+
+```text
+axon.eventhandling.processors.my-processor.mode=pooled
+axon.eventhandling.processors.my-processor.source=eventStore
+```
+
+If the name of an event processor contains periods `.`, use the map notation:
+
+```text
+axon.eventhandling.processors[my.processor].mode=pooled
+axon.eventhandling.processors[my.processor].source=eventStore
+```
+{% endtab %}
+{% endtabs %}
+
+For more fine-grained control when configuring a Pooled Streaming Processor, the `PooledStreamingProcessorConfiguration` can be used.
+When invoking the `registerPooledStreamingEventProcessor` method it can be provided, or a configuration instance can be registered explicitly.
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void registerPooledStreamingProcessorConfig(EventProcessingConfigurer processingConfigurer) {
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
+                (config, builder) -> builder./* ... */;
+          
+        // To register a default pooled streaming config ...
+        processingConfigurer.registerPooledStreamingEventProcessorConfiguration(psepConfig)
+                            // ... to register a config for a specific processor.
+                            .registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Java" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void registerPooledStreamingProcessorConfig(EventProcessingConfigurer processingConfigurer) {
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
+                (config, builder) -> builder./* ... */;
+    
+        // To register a default pooled streaming config ...
+        processingConfigurer.registerPooledStreamingEventProcessorConfiguration(psepConfig)
+                            // ... to register a config for a specific processor.
+                            .registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
+    }
+}
+```
+{% endtab %}
 
 ## Error Mode
 
