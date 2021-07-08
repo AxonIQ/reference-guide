@@ -4,6 +4,11 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## _Release 4.5_
 
+### Release 4.5.4
+
+* Fix: In case of timeout during query execution, AS sends a timeout error to the client before canceling the query.
+* Fix: Close event store segment file when reading is complete
+
 ### Release 4.5.3
 
 * Fix: Reset event store with multiple segments

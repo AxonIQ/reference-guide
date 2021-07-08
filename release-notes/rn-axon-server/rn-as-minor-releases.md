@@ -4,9 +4,16 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## _Release 4.5_
 
+### Release 4.5.6
+
+* Fix: Close event store segment file when reading is complete
+* Fix: In case of timeout during query execution, AS sends a timeout error to the client before canceling the query
+* Fix: Queries and commands not cancelled after a timeout
+* Added type (Event/Snapshot) as a tag for metric indexes on JumpSkipIndex
+
 ### Release 4.5.5
 
-* Fix for contexts not starting when some contexts are using BLOOM_FILTER_INDEX  and others are using JUMP_SKIP_INDEX.
+* Fix for contexts not starting when some contexts are using BLOOM_FILTER_INDEX and others are using JUMP_SKIP_INDEX.
 
 ### Release 4.5.4
 
