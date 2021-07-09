@@ -63,7 +63,7 @@ To that end the `TrackingEventProcessor` exposes the `processingStatus()` method
 * A boolean through `isCaughtUp()` specifying whether it is caught up with the Event Stream.
 * A boolean through `isReplaying()` specifying whether the given Segment is [replaying](events/event-processors/streaming.md#replaying-events).
 
-* A boolean through `isMerging()` specifying whether the given Segment is [merging](events/event-processors/streaming.md#splitting-and-merging-tracking-tokens).
+* A boolean through `isMerging()` specifying whether the given Segment is [merging](events/event-processors/streaming.md#splitting-and-merging-segments).
 * The `TrackingToken` of the given Segment.
 * A boolean through `isErrorState()` specifying whether the Segment is in an error state.
 * An optional `Throwable` if the Event Tracker reached an error state.

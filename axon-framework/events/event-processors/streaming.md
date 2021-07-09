@@ -14,10 +14,13 @@ Using separate threads allows for [parallelization](#parallel-processing) of the
 
 When starting a Streaming Processor, it will open an event stream through the configured `StreamableMessageSource`.
 It keeps track of the event processing progress while traversing the stream.
-It does so by storing the Tracking Tokens, or _tokens_ for short, as each token defines a position on the event stream.
+It does so by storing the Tracking Tokens, or _tokens_ for short, which are accompanied by the events.
+This solution works towards tracking the progress since the tokens specify the position of the event on the stream.
 
-Maintaining the progress makes a Streaming Processor more resilient against unintended shutdowns.
-Added, the token provides a means to [replay](#replaying-events) events by adjusting the position of tokens.
+Maintaining the progress through tokens makes a Streaming Processor
+  1. able to deal with stopping and starting the processor,
+  2. more resilient against unintended shutdowns, and
+  3. the token provides a means to [replay](#replaying-events) events by adjusting the position of tokens.
 
 All combined, the Streaming Processor allows for decoupling, parallelization, resiliency and replay-ability.
 It is these features that make the Streaming Processor the logical choice for the majority of applications.
@@ -331,6 +334,7 @@ public class AxonConfig {
 }
 ```
 {% endtab %}
+{% endtabs %}
 
 ## Error Mode
 
@@ -347,31 +351,291 @@ This chance increases further whenever the PSEP instance is distributed over sev
 
 ## Tracking Tokens
 
+A key attribute of the Streaming Event Processor is its capability to keep and maintain the processing progress.
+It does so through the `TrackingToken`; the "token" for short.
+Each message a streaming processor receives through its event stream is accompanied by such a token.
+It's this token that:
+
+1. specifies the position of the event on the overall stream, and
+2. is used by the Streaming Processor to open the event stream at the desired position on start-up.
+
+Using tokens gives the Streaming Event Processor several benefits, like:
+
+* Being able to reopen the stream at any later point, picking up where it left off with the last event.
+* Dealing with unintended shutdowns without losing track of the last events they've handled.
+* Collaboration over the event handling load. 
+  Both to make sure a single thread is actively processing events,
+   and to [parallelize](#parallel-processing) load over several threads and/or nodes of a Streaming Processor.
+* [Replaying](#replaying-events) events, by adjusting the token position of that processor.
+
+To be able to reopen the stream at a later point, the progress should be kept somewhere.
+The progress is kept by updating and saving the `TrackingToken` after handling batches of events.
+This in turn requires CRUD operation, for which the Streaming Processor uses the [`TokenStore`](#token-store).
+
+For a Streaming Processor to process any events it needs "a claim" on a `TrackingToken`.
+The processor will update this claim every time it has finished handling a batch of events.
+This so-called "claim extension" is, just as updating and saving of tokens, delegated to the Token Store.
+Hence, collaboration among Streaming Processor instances/threads is achieved through token claims.
+
+In absence of a claim, a processor will actively try to retrieve one.
+If a token claim has not been extended for a configurable period of time, other processor threads are able to "steal" the claim.
+This can, for example, happen if a processing is slow or encountered some exceptions.
+ 
+### Initial Tracking Token
+
+The Streaming Processor uses a `StreamableMessageSource` to retrieve a stream of events, which it will open on start-up.
+To open this stream it requires a `TrackingToken`, which it will fetch from the `TokenStore`.
+However, if a Streaming Processor starts for the first time there is no `TrackingToken` present to open the stream with, yet.
+
+Whenever this situation occurs, a Streaming Processor will construct an "initial token".
+By default, the initial token will start at the head of the event stream.
+Thus, the processor will begin at the start and handle anything that's present in the message source.
+This start position is configurable, as is described [here](#token-configuration).
+
+> **A Saga's Streaming Processor initial position**
+>
+> A Streaming Processor dedicated to a [Saga](../../sagas/README.md) will default the initial token to the head of the stream.
+> This ensures that the Saga does not react to events from the past, as in most cases it would introduce unwanted side effects.
+
+Conceptually there are a couple of scenarios when an initial token is build by a processor on application start up.
+The obvious one is already shared, namely when a processor starts for the first time.
+There are, however, also other situations when a token is build that might be unexpected, like:
+
+* The `TokenStore` has (accidentally) been cleared between application runs, thus losing the stored tokens.
+* The application running the processor starts in a new environment (e.g., test or acceptance) for the first time.
+* An `InMemoryTokenStore` was used and hence the processor could never persist the token to begin with.
+* The application is (accidentally) pointing to another storage solution than expected.
+
+Whenever a Streaming Processor's event handlers show unexpected behavior in the form of missed or reprocessed events, a new initial token might have been triggered.
+In those cases it is recommended to validate if any of the above situations occurred.
+
+### Token Configuration
+
+There are a couple of things that can be configured when it comes to tokens.
+The options can be separated in initial token and token claim configuration, as described in the following sections:
+
+**Initial Token**
+
+The [initial token](#initial-tracking-token) for a `StreamingEventProcessor` is configurable for every processor instance.
+When configuring the initial token builder function, the received input parameter is the `StreamableMessageSource`.
+The message source in turn gives three possibilities to build a token, namely:
+
+1. `createHeadToken()` - Creates a token from the head of event stream. This is the default value for most Streaming Processors.
+2. `createTailToken()` - Creates a token from the tail of event stream.
+3. `createTokenAt(Instant)` / `createTokenSince(Duration)` - Creates a token that tracks all events after a given time. 
+   If there is an event exactly at that given moment in time, that will also be taken into account.
+
+Of course, you can completely disregard the `StreamableMessageSource` input parameter and create a token by yourself.
+Consider the following snippets if you want to configure a different initial token:
+
+{% tabs %}
+{% tab title="Tracking Processor - Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void configureInitialTrackingToken(EventProcessingConfigurer processingConfigurer) {
+        TrackingEventProcessorConfiguration tepConfig = 
+                TrackingEventProcessorConfiguration.forSingleThreadedProcessing()
+                                                   .andInitialTrackingToken(StreamableMessageSource::createHeadToken);
+        
+        processingConfigurer.registerTrackingEventProcessorConfiguration("my-processor", config -> tepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Tracking Processor - Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureInitialTrackingToken(EventProcessingConfigurer processingConfigurer) {
+          TrackingEventProcessorConfiguration tepConfig = 
+                  TrackingEventProcessorConfiguration.forSingleThreadedProcessing()
+                                                     .andInitialTrackingToken(StreamableMessageSource::createTailToken);
+          
+          processingConfigurer.registerTrackingEventProcessorConfiguration("my-processor", config -> tepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Pooled Streaming Processor - Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void configureInitialTrackingToken(EventProcessingConfigurer processingConfigurer) {
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
+                (config, builder) -> builder.initialToken(messageSource -> messageSource.createTokenSince(
+                        messageSource -> messageSource.createTokenAt(Instant.parse("20020-12-01T10:15:30.00Z"))
+                ));
+        
+        processingConfigurer.registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Pooled Streaming Processor - Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureInitialTrackingToken(EventProcessingConfigurer processingConfigurer) {
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
+                (config, builder) -> builder.initialToken(
+                        messageSource -> messageSource.createTokenSince(Duration.ofDays(31))
+                );
+        
+        processingConfigurer.registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% endtabs %}
+
+**Token Claims**
+
+As described [here](#tracking-tokens), tokens should be claimed before a streaming processor can perform any processing work.
+There are several scenarios where a processor may keep the claim for too long.
+This can occur when, for example, the event handling process is slow or encountered an exception.
+
+In those scenarios, another processor can steal a token claims to proceed with processing.
+There are a couple of configurable values that influence this process:
+
+* `tokenClaimInterval` - Defines how long to wait between attempts to claim a segment. 
+  A processor uses this value to steal token claims from other processor threads. This value defaults to 5000 milliseconds.
+* `eventAvailabilityTimeout` - Defines the time to "wait for events" before extending the claim. 
+  Only the Tracking Event Processor uses this. The value defaults to 1000 milliseconds.
+* `claimExtensionThreshold` - Threshold to extend the claim in absence of events.
+  Only the Pooled Streaming Event Processor uses this. The value defaults 5000 milliseconds.
+
+Consider the following snippets if you want to configure any of these values:
+
+{% tabs %}
+{% tab title="Tracking Processor - Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void configureTokenClaimValues(EventProcessingConfigurer processingConfigurer) {
+        TrackingEventProcessorConfiguration tepConfig = 
+                TrackingEventProcessorConfiguration.forSingleThreadedProcessing()
+                                                   .andTokenClaimInterval(1000, TimeUnit.MILLISECONDS)
+                                                   .andEventAvailabilityTimeout(2000, TimeUnit.MILLISECONDS);
+        
+        processingConfigurer.registerTrackingEventProcessorConfiguration("my-processor", config -> tepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Tracking Processor - Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureTokenClaimValues(EventProcessingConfigurer processingConfigurer) {
+          TrackingEventProcessorConfiguration tepConfig = 
+                  TrackingEventProcessorConfiguration.forSingleThreadedProcessing()
+                                                     .andTokenClaimInterval(1000, TimeUnit.MILLISECONDS)
+                                                     .andEventAvailabilityTimeout(2000, TimeUnit.MILLISECONDS);
+          
+          processingConfigurer.registerTrackingEventProcessorConfiguration("my-processor", config -> tepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Pooled Streaming Processor - Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void configureTokenClaimValues(EventProcessingConfigurer processingConfigurer) {
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
+                (config, builder) -> builder.tokenClaimInterval(2000)
+                                            .claimExtensionThreshold(3000);
+        
+        processingConfigurer.registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Pooled Streaming Processor - Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureTokenClaimValues(EventProcessingConfigurer processingConfigurer) {
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
+                (config, builder) -> builder.tokenClaimInterval(2000)
+                                            .claimExtensionThreshold(3000);
+        
+        processingConfigurer.registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% endtabs %}
+
 ### Token Store
 
-Tracking event processors, unlike subscribing ones, need a token store to store their progress in. Each message a tracking processor receives through its event stream is accompanied by a token. This token allows the processor to reopen the stream at any later point, picking up where it left off with the last event.
+The `TokenStore` provides the CRUD operations for the `StreamingEventProcessor` to interact with `TrackingTokens`.
+The streaming processor will use the store to construct, fetch and claim tokens.
 
-The Configuration API takes the token store, as well as most other components processors need from the global configuration instance. If no token store is explicitly defined, an `InMemoryTokenStore` is used, which is _not_ recommended in production.
+When no token store is explicitly defined, an `InMemoryTokenStore` is used.
+The `InMemoryTokenStore` is _not_ recommended in most production scenarios, since progress cannot be maintained through application shutdowns.
+Unintentionally using the `InMemoryTokenStore` counts towards one of the unexpected scenarios where an [initial token](#initial-tracking-token) is created on every application start-up.
+
+> **Where to store Tokens?**
+> 
+> Where possible, it is recommended to use a token store that stores tokens in the same database as where the event handlers update the view models.
+> This way, changes to the view model can be stored atomically with the changed tokens. 
+> This guarantees exactly once processing semantics. 
+
+Note that the token store to use for a streaming processor can be configured in the `EventProcessingConfigurer`:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
-To configure a token store, use the `EventProcessingConfigurer` to define which implementation to use.
-
-To configure a default TokenStore for all processors:
+To configure a `TokenStore` for all processors:
 
 ```java
- Configurer.eventProcessing().registerTokenStore(conf -> ... create token store ...)
+public class AxonConfig { 
+    // ...
+    public void registerTokenStore(EventProcessingConfigurer processingConfigurer) {
+        TokenStore tokenStore = JpaTokenStore.builder()
+                                             // …
+                                             .build();
+    
+        processingConfigurer.registerTokenStore(config -> tokenStore);
+    }
+}
 ```
 
-Alternatively, to configure a TokenStore for a specific processor, use:
+Alternatively, to configure a `TokenStore` for a specific processor, use:
 
 ```java
-Configurer.eventProcessing().registerTokenStore("processorName", conf -> ... create token store ...)`.
+public class AxonConfig { 
+    // ...
+    public void registerTokenStore(EventProcessingConfigurer processingConfigurer, String processorName) {
+        TokenStore tokenStore = JdbcTokenStore.builder()
+                                              // …
+                                              .build();
+    
+        processingConfigurer.registerTokenStore(processorName, config -> tokenStore);
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
-The default TokenStore implementation is defined based on dependencies available in Spring Boot, in the following order:
+The default `TokenStore` implementation is defined based on dependencies available in Spring Boot, in the following order:
 
 1. If any `TokenStore` bean is defined, that bean is used
 2. Otherwise, if an `EntityManager` is available, the `JpaTokenStore` is defined.
@@ -381,72 +645,38 @@ The default TokenStore implementation is defined based on dependencies available
 To override the TokenStore, either define a bean in a Spring `@Configuration` class:
 
 ```java
-@Bean
-public TokenStore myCustomTokenStore() {
-    return new MyCustomTokenStore();
+@Configuration
+public class AxonConfig {
+    // ...
+    @Bean
+    public TokenStore myTokenStore() {
+        return JpaTokenStore.builder()
+                            // …
+                            .build();
+    }
 }
 ```
 
 Alternatively, inject the `EventProcessingConfigurer`, which allows more fine-grained customization:
 
 ```java
-@Autowired
-public void configure(EventProcessingConfigurer epConfig) {
-    epConfig.registerTokenStore(conf -> new MyCustomTokenStore());
-
-    // or, to define one for a single processor:
-    epConfig.registerTokenStore("processorName", conf -> new MyCustomTokenStore());
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void registerTokenStore(EventProcessingConfigurer processingConfigurer) {
+          TokenStore tokenStore = JdbcTokenStore.builder()
+                                                // …
+                                                .build();
+          
+          processingConfigurer.registerTokenStore(conf -> tokenStore)
+                              // or, to define one for a specific processor:
+                              .registerTokenStore("my-processor", conf -> tokenStore);
+    }
 }
 ```
 {% endtab %}
 {% endtabs %}
-
-Note that you can override the token store to use with tracking processors in the `EventProcessingConfiguration` that defines that processor. Where possible, it is recommended to use a token store that stores tokens in the same database as where the event handlers update the view models. This way, changes to the view model can be stored atomically with the changed tokens. This guarantees exactly once processing semantics.
-
-> **A new Saga's Event Stream position**
->
-> The Saga `TrackingEventProcessor` will by default start its token at the head of the stream.
-
-### Custom tracking token position
-
-Prior to Axon release 3.3, you could only reset a `TrackingEventProcessor` to the beginning of the event stream. As of version 3.3 functionality for starting a `TrackingEventProcessor` from a custom position has been introduced. The `TrackingEventProcessorConfiguration` provides the option to set an initial token for a given `TrackingEventProcessor` through the `andInitialTrackingToken(Function<StreamableMessageSource, TrackingToken>)` builder method. As an input parameter for the token builder function, we receive a `StreamableMessageSource` which gives us three possibilities to build a token:
-
-* From the head of event stream: `createHeadToken()`.
-* From the tail of event stream: `createTailToken()`.
-* From some point in time: `createTokenAt(Instant)` and `createTokenSince(duration)` -
-
-  Creates a token that tracks all events after a given time.
-
-  If there is an event exactly at that given moment in time, that event will also be taken into account.
-
-Of course, you can completely disregard the `StreamableMessageSource` input parameter and create a token by yourself.
-
-Below we can see an example of creating a `TrackingEventProcessorConfiguration` with an initial token on `"2007-12-03T10:15:30.00Z"`:
-
-```java
-public class Configuration {
-
-    public TrackingEventProcessorConfiguration customConfiguration() {
-        return TrackingEventProcessorConfiguration
-                .forSingleThreadedProcessing()
-                .andInitialTrackingToken(streamableMessageSource -> streamableMessageSource.createTokenAt(
-                        Instant.parse("2007-12-03T10:15:30.00Z")
-                ));
-    }
-}
-```
-
-### Splitting and Merging Tracking Tokens
-
-It is possible to tune the performance of Tracking Event Processors by increasing the number of threads processing events on high load by splitting segments and reducing the number of threads when load reduces by merging segments.  
-Splitting and merging is allowed at runtime which allows you to dynamically control the number of segments. This can be done through the Axon Server API or through Axon Framework using the methods `splitSegment(int segmentId)` and `mergeSegment(int segmentId)` from `TrackingEventProcessor` by providing the segmentId of the segment you want to split or merge.
-
-> **Segment Selection Considerations**
->
-> By splitting/merging using Axon Server the most appropriate segment to split or merge is chosen for you. When using the Axon Framework API directly, the segment to split/merge should be deduced by the developer themselves:
->
-> * Split: for fair balancing, a split is ideally performed on the biggest segment
-> * Merge: for fair balancing, a merge is ideally performed on the smallest segment
 
 ## Parallel processing
 
@@ -528,7 +758,19 @@ eventProcesingConfigurer.registerDefaultSequencingPolicy(conf -> /* define polic
 
 For tracking processors, it doesn't matter whether the threads handling the events are all running on the same node or on different nodes hosting the same \(logical\) tracking processor. When two instances of a tracking processor with the same name are active on different machines, they are considered two instances of the same logical processor. They will 'compete' for segments of the event stream. Each instance will 'claim' a segment, preventing events assigned to that segment from being processed on the other nodes.
 
-The `TokenStore` instance will use the JVM's name \(usually a combination of the host name and process ID\) as the default `nodeId`. This can be overridden in `TokenStore` implementations that support multi-node processing.
+### Splitting and Merging Segments
+
+It is possible to tune the performance of Streaming Event Processors by increasing the number of threads processing events on high load by splitting segments and reducing the number of threads when load reduces by merging segments.  
+Splitting and merging is allowed at runtime which allows you to dynamically control the number of segments.
+This can be done through the Axon Server API or through Axon Framework using the methods `splitSegment(int segmentId)` and `mergeSegment(int segmentId)` from `TrackingEventProcessor` by providing the segmentId of the segment you want to split or merge.
+
+> **Segment Selection Considerations**
+>
+> By splitting/merging using Axon Server the most appropriate segment to split or merge is chosen for you.
+> When using the Axon Framework API directly, the segment to split/merge should be deduced by the developer themselves:
+>
+> * Split: for fair balancing, a split is ideally performed on the biggest segment
+> * Merge: for fair balancing, a merge is ideally performed on the smallest segment
 
 ## Replaying events
 
@@ -636,9 +878,9 @@ See the [monitoring and metrics](../../monitoring-and-metrics.md#event-tracker-s
 > It is possible to provide a token position to be used when resetting a `TrackingEventProcessor`; thus, specifying from which point in the event log it should start replaying the events.
 > This would require the usage of the `TrackingEventProcessor#resetTokens(TrackingToken)` or `TrackingEventProcessor#resetTokens(Function<StreamableMessageSource<TrackedEventMessage<?>>, TrackingToken>)` method, which both provide the `TrackingToken` from which the reset should start.
 >
-> How to customize a tracking token position is described [here](streaming.md#custom-tracking-token-position).
+> How to customize a tracking token position is described [here](streaming.md#token-configuration).
 
-### Multiple Event Sources
+## Multiple Event Sources
 
 You can configure a Tracking Event Processor to use multiple sources when processing events. This is useful for compiling metrics across domains or simply when your events are distributed between multiple event stores.
 
