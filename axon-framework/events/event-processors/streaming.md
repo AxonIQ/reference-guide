@@ -43,7 +43,7 @@ There are two implementations of Streaming Processor available in Axon Framework
 
 Both implementations support the same set of operations. 
 Operations like replaying events through a [reset](#replaying-events), [parallelism](#parallel-processing) and tracking the progress with [tokens](#tracking-tokens).
-They diverge on their threading approach and work separation, as discussed in more detail in [this](#threading-differences) section.
+They diverge on their threading approach and work separation, as discussed in more detail in [this](#thread-configuration) section.
 
 ## Configuring
 
@@ -346,7 +346,7 @@ It will start at 1 second and double after each attempt until a maximum wait tim
 This back-off time ensures that of in a distributed environment another node is able to process events, it will have the opportunity to claim the [token](#tracking-tokens) required to process the event.
 
 The `PooledStreamingEventProcessor` simply aborts the failed part of the process.
-The Pooled Streaming Processor can deal with this since the [threading model](#threading-differences) is different from the Tracking Processor.
+The Pooled Streaming Processor can deal with this since the [threading model](#pooled-streaming-processor-threading) is different from the Tracking Processor.
 As such, the chance is high the failed process will be picked up quickly by another thread within the same JVM.
 This chance increases further whenever the PSEP instance is distributed over several application instances.
 
@@ -677,96 +677,519 @@ public class AxonConfig {
 {% endtab %}
 {% endtabs %}
 
-## Parallel processing
+## Parallel Processing
 
-Tracking processors can use multiple threads to process an event stream. They do so by claiming a segment which is identified by a number. Normally, a single thread will process a single segment.
+Streaming processors can use [multiple threads](#thread-configuration) to process an event stream. 
+This allows the `StreamingEventProcessor` to more efficiently process batches of events.
+As described [here](#tracking-tokens), a streaming processor's thread requires a claim on a tracking token to process events.
 
-The number of segments used can be defined. When an event processor starts for the first time, it can initialize a number of segments. This number defines the maximum number of threads that can process events simultaneously.
+Thus, to be able to parallelize the load we require several tokens per processor.
+To achieve this, each token instance represents a _segment_ of the event stream, wherein each segments is identified through a number.
+The stream segmentation approach ensures events aren't handled twice (or more), as that would otherwise introduce unintentionally duplication.
+Due to this, the Streaming Processor's API references segment claims instead of token claims throughout.
 
-Each node running of a tracking event processor will attempt to start its configured amount of threads to start processing events. The TrackingEventProcessor can claim a single segment per thread, if the configured number of threads are less than number of configured segments, some of the events might not be handled. Hence it is recommended to have the number of threads on every node more than or equal to the total number of segments.
+The number of segments used can be defined by adjusting the `initialSegmentCount` property.
+Only when a streaming processor starts for the first time can it initialize the number of segments to use.
+This requirement follows from the fact each segment is represented by a token.
+Tokens in turn can only be initialized if they are not present yet, as is explained in more detail [here](#initial-tracking-token).
 
-Event handlers may have specific expectations on the ordering of events. If this is the case, the processor must ensure these events are sent to these handlers in that specific order. Axon uses the `SequencingPolicy` for this. The `SequencingPolicy` is a function that returns a value for any given message. If the return value of the `SequencingPolicy` function is equal for two distinct event messages, it means that those messages must be processed sequentially. By default, Axon components will use the `SequentialPerAggregatePolicy`, which makes it so that events published by the same aggregate instance will be handled sequentially.
-
-A saga instance is never invoked concurrently by multiple threads. Therefore, a sequencing policy for a saga is irrelevant. Axon will ensure each saga instance receives the events it needs to process in the order they have been published on the event bus.
-
-> **Parallel processing and Subscribing Event Processors**
->
-> Note that subscribing event processors don't manage their own threads.
-> Therefore, it is not possible to configure how they should receive their events.
-> Effectively, they will always work on a sequential-per-aggregate basis, as that is generally the level of concurrency in the command handling component.
+Whenever the amount of segments needs to be adjusted during runtime, the [split and merge](#splitting-and-merging-segments) functionality can be used.
+To adjust the amount of initial segments, consider the following sample:
 
 {% tabs %}
-{% tab title="Axon Configuration API" %}
+{% tab title="Tracking Processor - Axon Configuration API" %}
+The default number of segments for a `TrackingEventProcessor`, is one.
+
 ```java
-DefaultConfigurer.defaultConfiguration()
-    .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerTrackingEventProcessor(
-            "myProcessor", 
-            c -> c.eventStore(), 
-            c -> c.getComponent(
-                TrackingEventProcessorConfiguration.class, 
-                () -> TrackingEventProcessorConfiguration.forParallelProcessing(3)
-            )
-        )
-    );
+public class AxonConfig {
+    // ...
+    public void configureSegmentCount(EventProcessingConfigurer processingConfigurer) {
+        TrackingEventProcessorConfiguration tepConfig = 
+                TrackingEventProcessorConfiguration.forParallelProcessing(2)
+                                                   .andInitialSegmentsCount(2);
+        
+        processingConfigurer.registerTrackingEventProcessorConfiguration("my-processor", config -> tepConfig);
+    }
+}
 ```
 {% endtab %}
 
-{% tab title="Spring Boot AutoConfiguration" %}
-You can configure the number of threads \(on this instance\) as well as the initial number of segments that a processor should define, if none are yet available.
+{% tab title="Tracking Processor - Spring Boot AutoConfiguration" %}
+The default number of segments for a `TrackingEventProcessor`, is one.
+
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureSegmentCount(EventProcessingConfigurer processingConfigurer) {
+          TrackingEventProcessorConfiguration tepConfig = 
+                  TrackingEventProcessorConfiguration.forParallelProcessing(2)
+                                                     .andInitialSegmentsCount(2);
+          
+          processingConfigurer.registerTrackingEventProcessorConfiguration("my-processor", config -> tepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Pooled Streaming Processor - Axon Configuration API" %}
+The default number of segments for a `PooledStreamingEventProcessor`, is sixteen.
+
+```java
+public class AxonConfig {
+    // ...
+    public void configureSegmentCount(EventProcessingConfigurer processingConfigurer) {
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
+                (config, builder) -> builder.initialSegmentCount(32);
+        
+        processingConfigurer.registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Pooled Streaming Processor - Spring Boot AutoConfiguration" %}
+The default number of segments for a `PooledStreamingEventProcessor`, is sixteen.
+
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureSegmentCount(EventProcessingConfigurer processingConfigurer) {
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
+                (config, builder) -> builder.initialSegmentCount(32);
+        
+        processingConfigurer.registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Properties File" %}
+The default number of segments for a `TrackingEventProcessor` and `PooledStreamingEventProcessor`, is one and sixteen respectively.
 
 ```text
-axon.eventhandling.processors.name.mode=tracking
-# Sets the maximum number threads to start on this node
-axon.eventhandling.processors.name.threadCount=5
+axon.eventhandling.processors.my-processor.mode=pooled
 # Sets the initial number of segments
-axon.eventhandling.processors.name.initialSegmentCount=4
+axon.eventhandling.processors.my-processor.initialSegmentCount=32
 ```
 {% endtab %}
 {% endtabs %}
 
-### Sequential processing
+> **Parallel Processing and Subscribing Event Processors**
+>
+> Note that [Subscribing Event Processor](subscribing.md) don't manage their own threads.
+> Therefore, it is not possible to configure how they should receive their events.
+> Effectively, they will always work on a sequential-per-aggregate basis, as that is generally the level of concurrency in the command handling component.
 
-Even though events are processed asynchronously from their publisher, it is often desirable to process certain events in the order they are published. In Axon this is controlled by the `SequencingPolicy`.
+The Event Handling Components a processor is in charge of may have specific expectations on the ordering of events.
+The ordering is guaranteed when only a single thread is processing events.
+Maintaining the ordering requires additional work when the stream is segmented for parallel processing, however. 
+When this is the case, the processor must ensure events are sent to these handlers in that specific order.
 
-The `SequencingPolicy` defines whether events must be handled sequentially, in parallel or a combination of both. Policies return a sequence identifier of a given event. If the policy returns an equal identifier for two events, this means that they must be handled sequentially by the event handler. A `null` sequence identifier means the event may be processed in parallel with any other event.
+Axon uses the `SequencingPolicy` for this. 
+The `SequencingPolicy` is a function that returns a value for any given message. 
+If the return value of the `SequencingPolicy` function is equal for two distinct event messages, it means that those messages must be processed sequentially. 
+By default, Axon components will use the `SequentialPerAggregatePolicy`, which makes it so that events published by the same aggregate instance will be handled sequentially.
+Check out [this](#sequential-processing) section to understand how to influence the sequencing policy.
 
-Axon provides a number of common policies you can use:
+Each node running a streaming processor will attempt to start its configured amount of threads to start processing events.
+The amount of segments that can be claimed per thread differs between the Tracking- and Pooled Streaming Event Processor.
+A tracking processor can only claim a single segment per thread, whereas the pooled streaming processor can claim any amount of segments per thread.
+These approaches provide different pros and cons for each implementation, which is further explained [here](#differences-between-tracking-and-pooled-streaming).
 
-* The `FullConcurrencyPolicy` will tell Axon that this event handler may handle all events concurrently.
-  This means that there is no relationship between the events that require them to be processed in a particular order.
+### Sequential Processing
 
-* The `SequentialPolicy` tells Axon that all events must be processed sequentially.
-  Handling of an event will start when the handling of a previous event has finished.
+Even though events are processed asynchronously from their publisher, it is often desirable to process certain events in the order they are published. 
+In Axon this is controlled by the `SequencingPolicy`.
+The `SequencingPolicy` defines whether events must be handled sequentially, in parallel or a combination of both. 
+Policies return a sequence identifier of a given event.
 
-* The default policy is the `SequentialPerAggregatePolicy`.
+If the policy returns the _same_ identifier for two events, this means that they must be handled sequentially by the Event Handling Component.
+Thus, if the `SequencingPolicy` returns a _different_ value for two events, they may be processed concurrently.
+Note that if the policy returns a `null` sequence identifier that the event may be processed in parallel with _any_ other event.
+
+> ** Parallel Processing and Sagas**
+>
+> A [saga](../../sagas/README.md) instance is *never*** invoked concurrently by multiple threads.
+> Therefore, the `SequencingPolicy` is irrelevant for a saga.
+> Axon will ensure each saga instance receives the events it needs to process in the order they have been published on the event bus.
+
+Conceptually, the `SequencingPolicy` decides whether an event belongs to a given [segment](#parallel-processing).
+Furthermore, Axon guarantees that Events which are part of the same segment are processed sequentially.
+
+The framework provides a number of policies you can use out of the box:
+
+* `SequentialPerAggregatePolicy` - The default policy.
   It will force domain events that were raised from the same aggregate to be handled sequentially.
-  However, events from different aggregates may be handled concurrently.
-  This is typically a suitable policy to use for event listeners that update details from aggregates in database tables.
+  Thus, events from different aggregates may be handled concurrently.
+  This is typically a suitable policy to use for Event Handling Components that update details from aggregates in databases.
+* `FullConcurrencyPolicy` - This policy will tell Axon that this Event Processor may handle all events concurrently.
+  This means that there is no relationship between the events that require them to be processed in a particular order.
+* `SequentialPolicy` - This policy tells Axon that all events must be processed sequentially.
+  Handling of an event will start when the handling of a previous event has finished.
+* `PropertySequencingPolicy` - When configuring this policy, the user is required to provide a property name or property extractor function.
+  This provides a flexible solution to set up a custom sequencing policy based on a common value present in your events. 
+  Note that this policy only reacts to properties present in the event class.
 
-Besides these provided policies, you can define your own. All policies must implement the `SequencingPolicy` interface. This interface defines a single method, `getSequenceIdentifierFor`, that returns the sequence identifier for a given event. Events for which an equal sequence identifier is returned must be processed sequentially. Events that produce a different sequence identifier may be processed concurrently. Policy implementations may return `null` if the event may be processed in parallel to any other event.
+Consider the following snippets when configuring a (custom) `SequencingPolicy`:  
 
+{% tabs %}
+{% tab title="Axon Configuration API" %}
 ```java
-eventProcesingConfigurer.registerSequencingPolicy("processingGroup", conf -> /* define policy */);
+public class AxonConfig {
+    // ...
+    public void configureSequencingPolicy(EventProcessingConfigurer processingConfigurer) {
+          PropertySequencingPolicy<SomeEvent, String> mySequencingPolicy = 
+                  PropertySequencingPolicy.builder(SomeEvent.class, String.class)
+                                          .propertyName("myProperty")
+                                          .build();
+          
+          processingConfigurer.registerDefaultSequencingPolicy(config -> mySequencingPolicy)
+                              // or, to define one for a specific processor:
+                              .registerSequencingPolicy("my-processor", config -> mySequencingPolicy);
+    }
+}
+```
+{% endtab %}
 
-// or, to change the default:
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureSequencingPolicy(EventProcessingConfigurer processingConfigurer,
+                                          SequencingPolicy<EventMessage<?>> mySequencingPolicy) {
 
-eventProcesingConfigurer.registerDefaultSequencingPolicy(conf -> /* define policy */);
+      processingConfigurer.registerDefaultSequencingPolicy(config -> mySequencingPolicy)
+                          // or, to define one for a specific processor:
+                          .registerSequencingPolicy("my-processor", config -> mySequencingPolicy);
+    }
+
+    @Bean
+    public SequencingPolicy<EventMessage<?>> mySequencingPolicy() {
+        return new SequentialPolicy();
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Properties File" %}
+To configure the `SequencingPolicy` in a properties file, the bean name can be used:
+
+```text
+axon.eventhandling.processors.my-processor.mode=tracking
+axon.eventhandling.processors.my-processor.sequencing-policy=mySequencingPolicy
 ```
 
-### Multi-node processing
+This does require the bean name to be present in the Application Context though:
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Bean
+    public SequencingPolicy<EventMessage<?>> mySequencingPolicy() {
+        return new FullConcurrencyPolicy();
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
 
-For tracking processors, it doesn't matter whether the threads handling the events are all running on the same node or on different nodes hosting the same \(logical\) tracking processor. When two instances of a tracking processor with the same name are active on different machines, they are considered two instances of the same logical processor. They will 'compete' for segments of the event stream. Each instance will 'claim' a segment, preventing events assigned to that segment from being processed on the other nodes.
+If the available policies do not suffice, you can define your own.
+To that end the `SequencingPolicy` interface should be implemented.
+This interface defines a single method, `getSequenceIdentifierFor(T)`, that returns the sequence identifier for a given event:
+
+```java
+public interface SequencingPolicy<T> {
+    
+    Object getSequenceIdentifierFor(T event);
+}
+```
+### Thread Configuration
+
+A Streaming Processor cannot process events in parallel without multiple threads configured.
+This can be achieved by running [several nodes](#multi-node-processing) of an application, or by configuring a `StreamingEventProcessor` to use several threads.
+The following section describes the threading differences between the Tracking- and Pooled Streaming Event Processor.
+This is followed up with samples how to configure multiple threads for the TEP and PSEP respectively.
+
+> **Thread and Segment Count**
+> 
+> Adjusting the number of threads will not automatically parallelize a Streaming Processor
+> A segment claim [is required](#parallel-processing) to let a thread process any events.
+> Hence, increasing the thread count should be paired with adjusting the segment count.
+
+#### Tracking Processor Threading
+
+The `TrackingEventProcessor` uses a `ThreadFactory` to start the process of claiming segments.
+It will use a thread per segment it can claim, until the configured amount of threads is depleted.
+Each thread will open a stream with the `StreamableMessageSource` and start processing events at their own speed.
+Other segment operations, like [split and merge](#splitting-and-merging-segments), are processed by the thread owning the segment operated on.
+
+Since the tracking processor can only claim a single segment per thread, segments may go unprocessed if there are more segments than threads.
+Hence, it is recommended to set the number of threads on every node higher than or equal to the total number of segments.
+
+To increase event handling throughput, it is recommended to change the number of threads.
+How to do this, is shown in the following sample:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void configureThreadCount(EventProcessingConfigurer processingConfigurer) {
+        TrackingEventProcessorConfiguration tepConfig =
+                TrackingEventProcessorConfiguration.forParallelProcessing(4)
+                                                   .andInitialSegmentsCount(4);
+
+        processingConfigurer.registerTrackingEventProcessorConfiguration("my-processor", config -> tepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureThreadCount(EventProcessingConfigurer processingConfigurer) {
+        TrackingEventProcessorConfiguration tepConfig =
+                TrackingEventProcessorConfiguration.forParallelProcessing(4)
+                                                   .andInitialSegmentsCount(4);
+
+        processingConfigurer.registerTrackingEventProcessorConfiguration("my-processor", config -> tepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Properties File" %}
+```text
+axon.eventhandling.processors.my-processor.mode=tracking
+axon.eventhandling.processors.my-processor.thread-count=4
+axon.eventhandling.processors.my-processor.initial-segment-count=4
+```
+{% endtab %}
+{% endtabs %}
+
+#### Pooled Streaming Processor Threading
+
+The `PooledStreamingEventProcessor` uses two threads pools instead of the single fixed set of threads used by the `TrackingEventProcessor`.
+The first thread pool is in charge of opening a stream with the event source, claiming as _many_ segments as possible and delegating all the work.
+
+The work it coordinates is foremost the events to handle, but also segment operations like [split and merge](#splitting-and-merging-segments).
+The component coordinating all the work is called the `Coordinator`. 
+The coordinator defaults to using a `ScheduledExecutorService` with a single thread, which suffices in most scenarios. 
+
+The second thread pool is dealing with all the segments the `Coordinator` of the pooled streaming processor could claim.
+The `Coordinator` starts a `WorkPackage` for each segment and provides them the events to handle.
+The work package will in turn invoke the Event Handling Components to process the events.
+These packages are run within the second thread pool, the so-called "worker executor" pool.
+The worker-pool also defaults to `ScheduledExecutorService` with a single thread.
+
+To increase event handling throughput, it is recommended to change the number of threads for the worker thread pool.
+How to do this, is shown in the following sample:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void configureThreadCount(EventProcessingConfigurer processingConfigurer) {
+        // the "name" is the name of the processor, which can be used to define the thread factory name
+        Function<String, ScheduledExecutorService> coordinatorExecutorBuilder =
+                name -> Executors.newScheduledThreadPool(1, new AxonThreadFactory("Coordinator - " + name));
+
+        Function<String, ScheduledExecutorService> workerExecutorBuilder =
+                name -> Executors.newScheduledThreadPool(16, new AxonThreadFactory("Worker - " + name));
+
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
+                (config, builder) -> builder.coordinatorExecutor(coordinatorExecutorBuilder)
+                                            .workerExecutorService(workerExecutorBuilder)
+                                            .initialSegmentCount(32);
+
+        processingConfigurer.registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureThreadCount(EventProcessingConfigurer processingConfigurer) {
+        // the "name" is the name of the processor, which can be used to define the thread factory name
+        Function<String, ScheduledExecutorService> coordinatorExecutorBuilder = 
+                name -> Executors.newScheduledThreadPool(1, new AxonThreadFactory("Coordinator - " + name));
+
+        Function<String, ScheduledExecutorService> workerExecutorBuilder =
+                name -> Executors.newScheduledThreadPool(16, new AxonThreadFactory("Worker - " + name));
+
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
+                (config, builder) -> builder.coordinatorExecutor(coordinatorExecutorBuilder)
+                                            .workerExecutorService(workerExecutorBuilder)
+                                            .initialSegmentCount(32);
+        
+        processingConfigurer.registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Properties File" %}
+```text
+axon.eventhandling.processors.my-processor.mode=pooled
+# Only the thread count of the Worker can be influenced through a properties file!
+axon.eventhandling.processors.my-processor.thread-count=16
+axon.eventhandling.processors.my-processor.initial-segment-count=32
+```
+{% endtab %}
+{% endtabs %}
+
+#### Differences between Tracking and Pooled Streaming
+
+Based on the threading approaches of the [tracking processor](#tracking-processor-threading) and [pooled streaming processor](#pooled-streaming-processor-threading), there are a couple of differences to note:
+
+* **Open Event Streams** - The tracking processor will open a stream **per** segment it claims. 
+  The pooled streaming processor will always open a single event stream and delegate the events to the segment workers.
+  Due to this, the tracking processor will use more I/O resources than the pooled streaming processor.
+  However, the TEP's segments can move at their own speed, as they have their own stream.
+  The PSEP's segments will at least process as fast as the slowest segment in the set.
+  
+* **Segment Claims per Thread** - The tracking processor can only claim a single segment per thread.
+  The pooled streaming processor can claim any amount of segments, regardless of the number of threads configured.
+  The `maxClaimedSegments` is configurable if required (the defaults is `Short.MAX`).
+  The fact the TEP can only claim a single segment per thread highlights a problem of that implementation.
+  Events will go unprocessed if there are more segments than threads when using the tracking processor, since events belong to a single segment.
+  Furthermore, it makes dynamic scaling tougher, the amount of threads cannot be adjusted at runtime.
+  Here the PSEP shows a big benefit over the TEP, since it completely drops the "one segment per thread" policy.
+  As such, partial processing is never a problem the `PooledStreamingEventProcessor` would encounter.
+  
+* **Thread Pool Configuration** - The tracking processor does not allow sharing a thread pool between different instances.
+  For the pooled streaming processor a `ScheduledExecutorService` can be configured, allowing that executor to be shared between different processor instances.
+  Thus, the PSEP provides a higher level of flexibility towards optimizing the total amount of threads used within an application.
+  This is helpful when, for example, the number of different Event Processors in a single application increases.
+  
+> **Which Streaming Processor should I use?**
+> 
+> In most scenarios, the `PooledStreamingEventProcessor` is the recommended processor implementation.
+> This can be concluded based on the segment-to-thread-count ratio, its ability to share thread pools, and the lower amount of opened event streams.
+> 
+> The `TrackingEventProcessor` would be ideal if you anticipate the processing speed between segments to differ greatly.
+> Also if the application does not have to many processor instances, the need to be able to share thread pools is loosened.
+
+#### Multi-Node Processing
+
+For streaming processors, it doesn't matter whether the threads handling the events are all running on the same node or on different nodes hosting the same \(logical\) processor.
+When two (or more) instances of a streaming processor with the same name are active on different machines, they are considered two instances of the same logical processor.
+Hence, not only a processor's threads compete for segments of the event stream, but also different instances of an application.
+
+Each instance will [claim a segment](#parallel-processing), preventing events assigned to that segment from being processed on the other nodes.
+The node identifier stored when a segment is claimed is configurable on the `TokenStore`.
+By default, it will use the JVM's name \(usually a combination of the host name and process ID\) as the `nodeId`.
+
+When in a multi-node scenario, oftentimes a fair distribution of the segments is desired.
+Otherwise, the event processing load could be distributed unequally over the active instances.
+There are roughly two approach towards balancing the amount of segments claimed per node:
+
+1. Through the [Axon Server](../../../axon-server/introduction.md) Dashboard with the load balancing feature
+2. Directly on a `StreamingEventProcessor`, with the `releaseSegment(int segmentId)` or `releaseSegment(int segmentId, long releaseDuration, TimeUnit unit)` method
+
+When Axon Server is in place, option one is recommended and easiest to use.
+Whenever Axon Server is not used, balancing can be achieved by having a streaming processor release its segments.
+By invoking the `releaseSegment` method, the `StreamingEventProcessor` will "let go of" the segment for some time.
+
+As a consequence of releasing, another node will be able to claim the segment.
+This in turn allows you to balance the load.
+By default, the segment will be released for twice the [`tokenClaimInterval`](#token-configuration).
+
+For those required to take the second approach, consider the following snippet as a form of guidance how to release segments:
+
+```java
+class StreamingProcessorService {
+    
+    // The EventProcessingConfiguration allows access to all the configured EventProcessors
+    private EventProcessingConfiguration processingConfiguration;
+
+    void releaseSegmentFor(String processorName, int segmentId) {
+        // EventProcessingConfiguration#eventProcessor(String, Class) returns an optional of the event processor
+        processingConfiguration.eventProcessor(processorName, StreamingEventProcessor.class)
+                               .ifPresent(streamingProcessor -> streamingProcessor.releaseSegment(segmentId));
+    }
+}
+```
 
 ### Splitting and Merging Segments
 
-It is possible to tune the performance of Streaming Event Processors by increasing the number of threads processing events on high load by splitting segments and reducing the number of threads when load reduces by merging segments.  
-Splitting and merging is allowed at runtime which allows you to dynamically control the number of segments.
-This can be done through the Axon Server API or through Axon Framework using the methods `splitSegment(int segmentId)` and `mergeSegment(int segmentId)` from `TrackingEventProcessor` by providing the segmentId of the segment you want to split or merge.
+The Streaming Event Processor provides scalability by supporting [parallel processing](#parallel-processing).
+Through this it is possible to tune the performance of the processor by [adjusting the number of threads](#thread-configuration).
+Only changing the number of threads is not sufficient however, since the parallelization is dictated through the number of segments.
+
+When there is a high event load the number of segment can be increased.
+The number of segments could be reduced again if the load on the streaming processor decreases.
+To change the number of segments at runtime, the _split and merge_ operations should be used.
+Splitting and merging allows you to dynamically control the number of segments.
+
+There are roughly two approaches to adjust the number of segments for a streaming processor:
+
+1. Through the [Axon Server](../../../axon-server/introduction.md) Dashboard with the split and merge buttons
+2. Directly on a `StreamingEventProcessor`, with the `splitSegment(int segmentId)` and `mergeSegment(int segmentId)` methods
+
+When Axon Server is in place, option one is recommended and easiest to use.
+Whenever Axon Server is not used and the number of segments should be adjusted, the split and merge methods should be accessible from within your application.
+For those required to take the second approach, consider the following snippet as a form of guidance:
+
+```java
+class StreamingProcessorService {
+    
+    // The EventProcessingConfiguration allows access to all the configured EventProcessors
+    private EventProcessingConfiguration processingConfiguration;
+
+    void splitSegmentFor(String processorName, int segmentId) {
+        // EventProcessingConfiguration#eventProcessor(String, Class) returns an optional of the event processor
+        processingConfiguration.eventProcessor(processorName, StreamingEventProcessor.class)
+                               .ifPresent(streamingProcessor -> {
+                                   // Use the result to check whether the operation succeeded
+                                   CompletableFuture<Boolean> result =
+                                           streamingProcessor.splitSegment(segmentId);
+                               });
+    }
+
+    void mergeSegmentFor(String processorName, int segmentId) {
+        processingConfiguration.eventProcessor(processorName, StreamingEventProcessor.class)
+                               .ifPresent(streamingProcessor -> {
+                                   // Use the result to check whether the operation succeeded
+                                   CompletableFuture<Boolean> result =
+                                           streamingProcessor.mergeSegment(segmentId);
+                               });
+    }
+}
+```
+
+Note that if you are moving towards a solution using a form of the `StreamingProcessorController`, that there are a couple of points to take into account.
+The `StreamingEventProcessor` where the split/merge operation is invoked on should be in charge of the segment being split or the segments being merged.
+Thus, either the streaming processor already has a claim on the segment(s) or it is able to claim the segment(s).
+Without the claims, the processor will simply fail the split or merge operation.
+
+To check which segments a streaming processor has a claim on, the [status of the processor](../../monitoring-and-metrics.md#event-tracker-status-a-idevent-tracker-statusa) should be checked.
+The status information shows which segments a processor instance owns.
+This guides which processor the split or merge should be invoked on.
+
+When doing a merge, the streaming processor should be in charge of **both** the provided `segmentId` and the segment it is going to be merged with.
+The segment identifier that is going to be merged with the provided `segmentId` can be calculated with the `Segment#mergeableSegmentId` method.
 
 > **Segment Selection Considerations**
 >
-> By splitting/merging using Axon Server the most appropriate segment to split or merge is chosen for you.
-> When using the Axon Framework API directly, the segment to split/merge should be deduced by the developer themselves:
+> When splitting or merging through Axon Server the most appropriate segment to split or merge is chosen for you.
+> When using the Axon Framework API directly, the segment to split or segments to merge should be deduced by the developer themselves:
 >
 > * Split: for fair balancing, a split is ideally performed on the biggest segment
 > * Merge: for fair balancing, a merge is ideally performed on the smallest segment
@@ -874,7 +1297,30 @@ See the [monitoring and metrics](../../monitoring-and-metrics.md#event-tracker-s
 
 > **Partial Replays**
 >
-> It is possible to provide a token position to be used when resetting a `TrackingEventProcessor`; thus, specifying from which point in the event log it should start replaying the events.
+> It is possible to provide a token position to be used when### Threading Differences
+
+The tabbed section below is dedicated towards the difference between both implementations:
+
+{% tabs %}
+{% tab title="Tracking Event Processor" %}
+
+The `TrackingEventProcessor`, called the Tracking Processor or "TEP" for short, is a `StreamingEventProcessor` implementation.
+The Tracking Processor uses a `ThreadFactory` to start
+
+{% endtab %}
+{% tab title="Pooled Streaming Event Processor" %}
+
+Under the hoods, it however uses two threads pools, instead of the single fixed set of threads used by the `TrackingEventProcessor`.
+The first thread pool is in charge of open a stream with the event source and to delegate all the work (e.g. which events to handle, split/merge, etc.).
+The second thread pool is dealing with all the segments the `PooledStreamingEventProcessor` could claim.
+
+{% endtab %}
+{% endtabs %}
+
+The StreamingEventProcessor can claim a single segment per thread, if the configured number of threads are less than number of configured segments, some of the events might not be handled.
+Hence it is recommended to have the number of threads on every node more than or equal to the total number of segments.
+Normally, a single thread will process a single segment.
+ resetting a `TrackingEventProcessor`; thus, specifying from which point in the event log it should start replaying the events.
 > This would require the usage of the `TrackingEventProcessor#resetTokens(TrackingToken)` or `TrackingEventProcessor#resetTokens(Function<StreamableMessageSource<TrackedEventMessage<?>>, TrackingToken>)` method, which both provide the `TrackingToken` from which the reset should start.
 >
 > How to customize a tracking token position is described [here](streaming.md#token-configuration).
@@ -922,24 +1368,3 @@ public void configure(EventProcessingConfigurer config, MultiStreamableMessageSo
 ```
 {% endtab %}
 {% endtabs %}
-
-## Threading Differences
-
-The tabbed section below is dedicated towards the difference between both implementations:
-
-{% tabs %}
-{% tab title="Tracking Event Processor" %}
-
-The `TrackingEventProcessor`, called the Tracking Processor or "TEP" for short, is a `StreamingEventProcessor` implementation.
-The Tracking Processor uses a `ThreadFactory` to start
-
-{% endtab %}
-{% tab title="Pooled Streaming Event Processor" %}
-
-Under the hoods, it however uses two threads pools, instead of the single fixed set of threads used by the `TrackingEventProcessor`.
-The first thread pool is in charge of open a stream with the event source and to delegate all the work (e.g. which events to handle, split/merge, etc.).
-The second thread pool is dealing with all the segments the `PooledStreamingEventProcessor` could claim.
-
-{% endtab %}
-{% endtabs %}
-
