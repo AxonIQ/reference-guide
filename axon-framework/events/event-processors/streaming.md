@@ -193,6 +193,7 @@ public class AxonConfig {
 }
 ```
 {% endtab %}
+{% endtabs %}
 
 ### Configuring a Pooled Streaming Processor
 
@@ -234,7 +235,7 @@ public class AxonConfig {
     public void configurePooledStreamingProcessors(EventProcessingConfigurer processingConfigurer) {
           // This configuration object allows for fine-grained control over the Pooled Streaming Processor
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
-                (config, builder) -> builder./* ... */;
+                (config, builder) -> builder/* ... */;
           
         // To configure a processor to be pooled streaming ...
         processingConfigurer.registerPooledStreamingEventProcessor("my-processor")
@@ -260,7 +261,7 @@ public class AxonConfig {
     public void configurePooledStreamingProcessors(EventProcessingConfigurer processingConfigurer) {
         // This configuration object allows for fine-grained control over the Pooled Streaming Processor
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
-                (config, builder) -> builder./* ... */;
+                (config, builder) -> builder/* ... */;
     
         // To configure a processor to be pooled streaming ...
         processingConfigurer.registerPooledStreamingEventProcessor("my-processor")
@@ -305,7 +306,7 @@ public class AxonConfig {
     // ...
     public void registerPooledStreamingProcessorConfig(EventProcessingConfigurer processingConfigurer) {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
-                (config, builder) -> builder./* ... */;
+                (config, builder) -> builder/* ... */;
           
         // To register a default pooled streaming config ...
         processingConfigurer.registerPooledStreamingEventProcessorConfiguration(psepConfig)
@@ -324,7 +325,7 @@ public class AxonConfig {
     @Autowired
     public void registerPooledStreamingProcessorConfig(EventProcessingConfigurer processingConfigurer) {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
-                (config, builder) -> builder./* ... */;
+                (config, builder) -> builder/* ... */;
     
         // To register a default pooled streaming config ...
         processingConfigurer.registerPooledStreamingEventProcessorConfiguration(psepConfig)
@@ -494,7 +495,6 @@ public class AxonConfig {
 }
 ```
 {% endtab %}
-
 {% endtabs %}
 
 **Token Claims**
@@ -581,7 +581,6 @@ public class AxonConfig {
 }
 ```
 {% endtab %}
-
 {% endtabs %}
 
 ### Token Store
