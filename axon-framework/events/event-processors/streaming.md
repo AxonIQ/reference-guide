@@ -1119,6 +1119,7 @@ class StreamingProcessorService {
     // The EventProcessingConfiguration allows access to all the configured EventProcessors
     private EventProcessingConfiguration processingConfiguration;
 
+    // ...
     void releaseSegmentFor(String processorName, int segmentId) {
         // EventProcessingConfiguration#eventProcessor(String, Class) returns an optional of the event processor
         processingConfiguration.eventProcessor(processorName, StreamingEventProcessor.class)
@@ -1153,6 +1154,7 @@ class StreamingProcessorService {
     // The EventProcessingConfiguration allows access to all the configured EventProcessors
     private EventProcessingConfiguration processingConfiguration;
 
+    // ...
     void splitSegmentFor(String processorName, int segmentId) {
         // EventProcessingConfiguration#eventProcessor(String, Class) returns an optional of the event processor
         processingConfiguration.eventProcessor(processorName, StreamingEventProcessor.class)
@@ -1194,21 +1196,119 @@ The segment identifier that is going to be merged with the provided `segmentId` 
 > * Split: for fair balancing, a split is ideally performed on the biggest segment
 > * Merge: for fair balancing, a merge is ideally performed on the smallest segment
 
-## Replaying events
+## Replaying Events
 
-When you want to rebuild projections \(view models\), replaying past events comes in handy.
-The idea is to start from the beginning of time and invoke all event handlers anew.
-The `TrackingEventProcessor` supports replaying of events.
-In order to achieve that, you should invoke the `resetTokens()` method on it.
+A benefit of streaming events is that the stream can be reopened at any point in time.
+Whenever some event handling components misbehaved, and the view models they update or actions they triggered should happen again, starting anew can be very useful.
+This is what's called "a replay"; a feature supported by the `StreamingEventProcessor`.
+The following sections describe how to [initiate a replay](#triggering-a-reset) and what [replay API](#replay-api) the framework provides.
 
-It is important to know that the tracking event processor must not be in active state when starting a reset.
-Hence it is required to be shut down first, then reset, and once successful, it can be started up again.
+### Triggering a Reset
 
-Initiating a replay through the `TrackingEventProcessor` opens up an API to tap into the process of replaying.
-It is, for example, possible to define a `@ResetHandler`, so you can do some preparations prior to resetting.
+The reset API revolves around the `resetTokens()` method and provides a couple of options:
 
-Let's take a look at how we can accomplish a replay of a tracking event processor.
-First, let's take a look at one simple projecting class:
+* `resetTokens()` - 
+  Simple reset, adjusting the `TrackingToken` to the configured [initial tracking token](#initial-tracking-token)
+* `resetTokens(R resetContext)` - 
+  Resets the `TrackingToken` to the configured [initial tracking token](#initial-tracking-token), providing the `resetContext` to the [`ResetHandlers`](#replay-api)  
+* `resetTokens(Function<StreamableMessageSource<TrackedEventMessage<?>>, TrackingToken> initialTrackingTokenSupplier)` - 
+  Resets the `TrackingToken` to the results of the `initialTrackingTokenSupplier`
+* `resetTokens(Function<StreamableMessageSource<TrackedEventMessage<?>>, TrackingToken> initialTrackingTokenSupplier, R resetContext)` - 
+  Resets the `TrackingToken` to the results of the `initialTrackingTokenSupplier`, providing the `resetContext` to the [`ResetHandlers`](#replay-api)
+* `resetTokens(TrackingToken startPosition)` - 
+  Resets the `TrackingToken` to the provided `startPosition`
+* `resetTokens(TrackingToken startPosition, R resetContext)` - 
+  Resets the `TrackingToken` to the provided `startPosition`, providing the `resetContext` to the [`ResetHandlers`](#replay-api)
+
+> **Partial Replays**
+>
+> A replay does not always have to start "from the beginning of time".
+> Partially replaying the event stream suffices for a lot of applications.
+> 
+> To perform a so-called "partial replay", it is important to provide the token at a specific point in time.
+> The `StreamableMessageSource`'s [`createTokenAt(Instant)` and `createTokenSince(Duration)`](#initial-tracking-token) can be used for this.
+> 
+> Be mindful though that when initiating a partial replay the event handlers may handle an event in the middle of model construction.
+> Hence, event handlers need to be aware certain events might not have been handled at all.
+> Making the event handlers lenient (e.g., deal with missing data) or performing manual ad-hoc replays would help in that area.
+
+As the method name suggests, the reset adjusts the [tracking token](#tracking-tokens) to a new position.
+To be able to do this reset, a streaming processor is *required* to claim all its [segments](#parallel-processing).
+This is required, as all the tokens need to be updated to their new position to start the replay. 
+
+To achieve this the streaming event processor must not be in active state when starting a reset.
+Hence, it is required to be shut down first before invoking the `resetTokens` operation.
+Once the reset was successful, it can be started up again.
+
+Consider the following sample on how to trigger a reset within an application:
+
+{% tabs %}
+{% tab title="Reset without reset context" %}
+```java
+class StreamingProcessorController {
+  
+    private EventProcessingConfiguration processingConfiguration;
+  
+    // ...
+    void resetTokensFor(String processorName) {
+        // EventProcessingConfiguration#eventProcessor(String, Class) returns an optional of the event processor
+        processingConfiguration.eventProcessor(processorName, StreamingEventProcessor.class)
+                               .ifPresent(streamingProcessor -> {
+                                   // shutdown this streaming processor
+                                   streamingProcessor.shutDown();
+                                   // reset the tokens to prepare the processor
+                                   streamingProcessor.resetTokens();
+                                   // start the processor to initiate the replay
+                                   streamingProcessor.start();
+                               });
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Reset with reset context" %}
+```java
+class StreamingProcessorController {
+    
+    private EventProcessingConfiguration processingConfiguration;
+
+    // ...
+    void resetTokensFor(String processorName, Object resetContext) {
+        // EventProcessingConfiguration#eventProcessor(String, Class) returns an optional of the event processor
+        processingConfiguration.eventProcessor(processorName, StreamingEventProcessor.class)
+                               .ifPresent(streamingProcessor -> {
+                                   // shutdown this streaming processor
+                                   streamingProcessor.shutDown();
+                                   // reset the tokens to prepare the processor
+                                   streamingProcessor.resetTokens(resetContext);
+                                   // start the processor to initiate the replay
+                                   streamingProcessor.start(); 
+                               });
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+> **Resets in multi-node environments**
+> 
+> If you are in a [multi-node](#multi-node-processing) scenario, that means *all* nodes should shut down the `StreamingEventProcessor`.
+> Otherwise another node will pick up the segments that are released by the inactive processor instance.
+> 
+> Being able to shut down or start up all streaming processor instances is most easily achieved through the [Axon Server](../../../axon-server/introduction.md) Dashboard.
+> The dashboard of an application provides a "start" and "stop" button, which will start/stop the processor on every node.
+> 
+> When Axon Server is not used, a custom endpoint can be constructed in your application.
+> The `StreamingProcessorService` sample shared above would be an ideal class to add a start and stop method as well.  
+
+### Replay API
+
+Initiating a replay through the `StreamingEventProcessor` opens up an API to tap into the process of replaying.
+It is, for example, possible to define a `@ResetHandler`.
+A `ResetHandler` annotated method is invoked as a result of `StreamingEventProcessor#resetTokens`.
+It provides a hook to prepare an Event Handling Component before the replay begins.
+
+The following sample Event Handling Component shows the available replay API:
 
 ```java
 @AllowReplay // 1.
@@ -1243,87 +1343,24 @@ public class CardSummaryProjection {
 }
 ```
 
-The `CardSummaryProjection` shows a couple of interesting things to take note of when it comes to "being aware" of a reset is in progress:
+The `CardSummaryProjection` shows a couple of interesting things to take note of when it comes to "being aware" of a replay in progress:
 
-1. An `@AllowReplay` can be used, situated either on an entire class or an `@EventHandler` annotated method. It defines whether the given class or method should be invoked when a replay is in transit.
-2. In addition to allowing a replay, `@DisallowReplay` can also be used. Similarly to `@AllowReplay` it can be placed on class level and on methods, where it serves the purpose of defining whether the class / method should **not** be invoked when a replay is in transit.
-3. To have more fine-grained control on what (not) to do during a replay, the `ReplayStatus` parameter can be added. It is an additional parameter which can be added to `@EventHandler` annotated methods, allowing conditional operations within a method to be performed based on whether a replay is in transit or not.
-4. If there is a certain pre-reset logic that should be performed, such as clearing out a projection table, the `@ResetHandler` annotation should be used. This annotation can only be placed on a method, allowing the addition of a reset context, if necessary. The `resetContext` passed along in the `@ResetHandler` originates from the operation, initiating the `TrackingEventProcessor#resetTokens(R resetContext)` method. The type of the `resetContext` is up to the user.
-
-With all this in place, we are ready to initiate a reset from our `TrackingEventProcessor`.
-To that end, we need to have access to the `TrackingEventProcessor` we want to reset.
-For this you should retrieve the `EventProcessingConfiguration` available in the main `Configuration`.
-Additionally, this is where we can provide an optional reset context to be passed along in the `@ResetHandler`:
-
-{% tabs %}
-{% tab title="Reset without reset context" %}
-```java
-public class ResetService {
-    //...
-    public void reset(Configuration config) {
-        EventProcessingConfiguration eventProcessingConfig = config.eventProcessingConfiguration();
-        eventProcessingConfig.eventProcessor("card-summary", TrackingEventProcessor.class)
-                             .ifPresent(processor -> {
-                                 processor.shutDown();
-                                 processor.resetTokens();
-                                 processor.start();
-                             });
-    }
-}
-```
-{% endtab %}
-
-{% tab title="Reset with reset context" %}
-```java
-public class ResetService {
-    //...
-    public <R> void resetWithContext(Configuration config, R resetContext) {
-        EventProcessingConfiguration eventProcessingConfig = config.eventProcessingConfiguration();
-        eventProcessingConfig.eventProcessor("card-summary", TrackingEventProcessor.class)
-                             .ifPresent(processor -> {
-                                 processor.shutDown();
-                                 processor.resetTokens(resetContext);
-                                 processor.start();
-                             });
-    }
-}
-```
-{% endtab %}
-{% endtabs %}
-
-It is possible to provide a change listener which can validate whenever the replay is done.
-More specifically, an `EventTrackerStatusChangeListener` can be configured through the `TrackingEventProcessorConfiguration`.
-See the [monitoring and metrics](../../monitoring-and-metrics.md#event-tracker-status-a-idevent-tracker-statusa) for more specifics on the change listener.
-
-> **Partial Replays**
->
-> It is possible to provide a token position to be used when### Threading Differences
-
-The tabbed section below is dedicated towards the difference between both implementations:
-
-{% tabs %}
-{% tab title="Tracking Event Processor" %}
-
-The `TrackingEventProcessor`, called the Tracking Processor or "TEP" for short, is a `StreamingEventProcessor` implementation.
-The Tracking Processor uses a `ThreadFactory` to start
-
-{% endtab %}
-{% tab title="Pooled Streaming Event Processor" %}
-
-Under the hoods, it however uses two threads pools, instead of the single fixed set of threads used by the `TrackingEventProcessor`.
-The first thread pool is in charge of open a stream with the event source and to delegate all the work (e.g. which events to handle, split/merge, etc.).
-The second thread pool is dealing with all the segments the `PooledStreamingEventProcessor` could claim.
-
-{% endtab %}
-{% endtabs %}
-
-The StreamingEventProcessor can claim a single segment per thread, if the configured number of threads are less than number of configured segments, some of the events might not be handled.
-Hence it is recommended to have the number of threads on every node more than or equal to the total number of segments.
-Normally, a single thread will process a single segment.
- resetting a `TrackingEventProcessor`; thus, specifying from which point in the event log it should start replaying the events.
-> This would require the usage of the `TrackingEventProcessor#resetTokens(TrackingToken)` or `TrackingEventProcessor#resetTokens(Function<StreamableMessageSource<TrackedEventMessage<?>>, TrackingToken>)` method, which both provide the `TrackingToken` from which the reset should start.
->
-> How to customize a tracking token position is described [here](streaming.md#token-configuration).
+1. An `@AllowReplay` can be used, situated either on an entire class or an `@EventHandler` annotated method. 
+   It defines whether the given class or method should be invoked when a replay is in transit.
+   
+2. In addition to allowing a replay, `@DisallowReplay` can also be used. 
+   Similarly to `@AllowReplay` it can be placed on class level and on methods. 
+   It serves the purpose of defining whether the class or method should **not** be invoked when a replay is in transit.
+   
+3. To have more fine-grained control on what (not) to do during a replay, the `ReplayStatus` parameter should be used. 
+   The `ReplayStatus` is an additional parameter that can be added to `@EventHandler` annotated methods.
+   It allows conditional operations in the event handlers based on whether a replay is taking place.
+   
+4. If there is a certain pre-replay logic that should be performed, such as clearing out a projection table, the `@ResetHandler` annotation should be used. 
+   This annotation can only be placed on a method.
+   It allows the addition of a "reset context" to provide more information on why the reset is taking place.
+   To include a `resetContext` the `resetTokens(R resetContext)` method (or other methods containing the `resetContext` parameter) should be invoked. 
+   The type of the `resetContext` is up to the user.
 
 ## Multiple Event Sources
 
