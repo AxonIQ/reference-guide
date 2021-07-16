@@ -9,7 +9,13 @@ The release notes section for the Axon Server for all major/minor releases.
 | | [4.3](rn-as-major-releases.md#release-4-3) |
 |  | [4.2](rn-as-major-releases.md#release-4-2) |
 |  | [4.1](rn-as-major-releases.md#release-4-1) |
-| _**Minor**_ | [4.4](rn-as-minor-releases.md#release-4-4) |
+| _**Minor (Standard Edition)**_ | [4.5](rn-asse-minor-releases.md#release-4-5) |
+|  | [4.4](rn-asse-minor-releases.md#release-4-4) |
+|  | [4.3](rn-asse-minor-releases.md#release-4-3) |
+|  | [4.2](rn-asse-minor-releases.md#release-4-2) |
+|  | [4.1](rn-asse-minor-releases.md#release-4-1) |
+| _**Minor (Enterprise Edition)**_ | [4.5](rn-as-minor-releases.md#release-4-5) |
+|  | [4.4](rn-as-minor-releases.md#release-4-4) |
 |  | [4.3](rn-as-minor-releases.md#release-4-3) |
 |  | [4.2](rn-as-minor-releases.md#release-4-2) |
 |  | [4.1](rn-as-minor-releases.md#release-4-1) |

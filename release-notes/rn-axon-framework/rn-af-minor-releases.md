@@ -4,6 +4,40 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.5_
 
+### Release 4.5.3
+
+* One new feature has been introduced in 4.5.3: the `PropertySequencingPolicy` by contributor `nils-christian`.
+  This [sequencing policy](../../axon-framework/events/event-processors.md#sequential-processing) can be configured to look for a common property in the events.
+
+* The version of the `axonserver-connector-java` has been updated to 4.5.2.
+  This update resolves a troublesome issue around permit updates for subscription queries, which exhausted the number of queries an application could have running.
+  For those curious about the solution, pull request [85](https://github.com/AxonIQ/axonserver-connector-java/pull/85) addresses this issue.
+
+* The `WorkerLauncher` runnable, used by the `TrackingEventProcessor` to start its threads, was not considered when you shut down a tracking processor.
+  As a consequence, it could start new segment operations while `shutdown` already completed "successfully."
+  Pull request [1866](https://github.com/AxonFramework/AxonFramework/pull/1866) resolves this problem, ensuring a tracking processor shuts down as intended.
+
+* Issue [1853](https://github.com/AxonFramework/AxonFramework/issues/1853) describes an issue where the [creation policy](../../axon-framework/axon-framework-commands/command-handlers.md#aggregate-command-handler-creation-policy) `always`.
+  Exceptions thrown from within a command handler annotated with `@CreationPolicy(ALWAYS)` weren't correctly propagated.
+  Pull request [1854](https://github.com/AxonFramework/AxonFramework/pull/1854) solves this issue.
+
+For an exhaustive list of all the changes, check out the [4.5.3 release notes](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.3).
+
+### Release 4.5.2
+
+* Added a missing `isReplaying` flag on the `StreamingEventProcessor`.
+Pull request [#1821](https://github.com/AxonFramework/AxonFramework/pull/1821) reintroduces this functionality in this release.
+
+* Some enhancements in regards to logging Exceptions and stacktraces when initialization fails.
+This [commit](https://github.com/AxonFramework/AxonFramework/commit/197eabea4259f98a4a06c999e4bd5ed7b373a3d4) reintroduces this functionality in this release.
+
+* Improved Axon Framework (`AxonServerEventStore`) which will now rethrown Exceptions that has a valid `Status.Code`.
+Pull request [#1842](https://github.com/AxonFramework/AxonFramework/pull/1842) reintroduces this functionality in this release.
+
+* General improvements on the `PooledStreamingEventProcessor` made across several Pull Requests.
+
+For a detailed perspective on the release notes, please check [this](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.2) page.
+
 ### Release 4.5.1
 
 * Some internals have changed concerning command handling exceptions.

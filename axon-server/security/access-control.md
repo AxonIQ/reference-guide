@@ -22,7 +22,7 @@ For Axon Server EE, we have additional sections on the external authentication e
 | Subject |
 | :--- |
 | [LDAP Extension](access-control-ldap.md) |
-| [OAuth2 Extension](access-control-auth2.md) |
+| [OAuth2 Extension](access-control-oauth2.md) |
 
 ## Using the CLI to create a user
 

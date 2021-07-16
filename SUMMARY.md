@@ -12,7 +12,8 @@
     * [Minor Releases](release-notes/rn-axon-framework/rn-af-minor-releases.md)
   * [Axon Server](release-notes/rn-axon-server/README.md)
     * [Major Releases](release-notes/rn-axon-server/rn-as-major-releases.md)
-    * [Minor Releases](release-notes/rn-axon-server/rn-as-minor-releases.md)
+    * [Minor Releases Standard Edition](release-notes/rn-axon-server/rn-asse-minor-releases.md)
+    * [Minor Releases Enterprise Edition](release-notes/rn-axon-server/rn-as-minor-releases.md)
   * [Axon Framework Extensions](release-notes/axon-framework-extensions.md)
 
 ## Getting Started

@@ -287,6 +287,20 @@ A list of all the configuration properties by area is denoted below. Unless expl
     </tr>
     <tr>
       <td style="text-align:left"></td>
+      <td style="text-align:left">event.memory-mapped-segments</td>
+      <td style="text-align:left">Number of recent segments that Axon Server keeps memory mapped.</td>
+      <td
+      style="text-align:left">5</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event.events-per-segment-prefetch</td>
+      <td style="text-align:left">Number of events to prefetch from disk when streaming events to the client.</td>
+      <td
+      style="text-align:left">50</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
       <td style="text-align:left">snapshot.bloom-index-fpp</td>
       <td style="text-align:left">False-positive percentage allowed for bloom index for snapshots. Decreasing
         the value increases the size of the bloom indexes.</td>
@@ -334,6 +348,13 @@ A list of all the configuration properties by area is denoted below. Unless expl
     </tr>
     <tr>
       <td style="text-align:left"></td>
+      <td style="text-align:left">snapshot.memory-mapped-segments</td>
+      <td style="text-align:left">Number of recent segments that Axon Server keeps memory mapped.</td>
+      <td
+      style="text-align:left">5</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
       <td style="text-align:left">query.limit</td>
       <td style="text-align:left"></td>
       <td style="text-align:left">200</td>
@@ -367,13 +388,13 @@ A list of all the configuration properties by area is denoted below. Unless expl
       style="text-align:left">JUMP_SKIP_INDEX</td>
     </tr>
     <tr>
-    <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">read-sequence-validation-strategy</td>
       <td style="text-align:left">(Since 4.4.14) Sets how to handle validation errors while reading aggregates from the event store. Values are LOG and FAIL.</td>
       <td
       style="text-align:left">LOG</td>
     </tr>
+    <tr>
       <td style="text-align:left"><em><b>Logging</b></em>
       </td>
       <td style="text-align:left"></td>
@@ -396,9 +417,9 @@ A list of all the configuration properties by area is denoted below. Unless expl
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">logging.file <em>(no prefix)</em>
+      <td style="text-align:left">logging.file.name <em>(no prefix)</em>
       </td>
-      <td style="text-align:left">File name where log entries should be written to. <em>(e.g. logging.file = messaging.log)</em>
+      <td style="text-align:left">File name where log entries should be written to. Names can be an exact location or relative to the current directory. <em>(e.g. logging.file.name = messaging.log)</em>
       </td>
       <td style="text-align:left">stdout</td>
     </tr>
@@ -407,7 +428,7 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">logging.path <em>(no prefix)</em>
       </td>
       <td style="text-align:left">
-        <p>Location where log files should be created.</p>
+        <p>Location where log files should be created. Names can be an exact location or relative to the current directory. </p>
         <p><em>(e.g. logging.path = /var/log)</em>
         </p>
       </td>
@@ -1189,7 +1210,7 @@ Possible values are "none" and "onFirstInit".
 </td>
       <td
       style="text-align:left">onFirstInit</td>
-    </tr>
+   </tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">spring.servlet.multipart.max-file-size <em>(no prefix)</em></td>
