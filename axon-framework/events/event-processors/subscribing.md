@@ -10,7 +10,7 @@ After registration to the `SubscibableMessageSource`, the message source gives t
 Examples of a `SubscibableMessageSource` are the `EventBus` or the [AMQP Extension](../../../extensions/spring-amqp.md).
 Both the `EventBus` and AMQP Extension are simple message bus solutions for events.
 
-The simple bus solution makes the `SubscibableMessageSource` and thus the Subscribing Processor an approach to receive _current_ events only.
+The simple bus solution makes the `SubscibableMessageSource` and thus the Subscribing Processor an approach to only receive _current_ events.
 Operations like [replaying](streaming.md#replaying-events) are thus not an option for any Subscribing Processor as long as the `SubscibableMessageSource` follows this paradigm.
 
 Furthermore, the message source will use the same thread that receives the events to invoke the registered Subscribing Processors.
@@ -32,8 +32,8 @@ It provides greater flexibility for developers for configuring the event process
 
 ## Configuring
 
-Other than configuring that an app uses a Subscribing Event Processor, there are no additions that are not covered [here](README.md#general-processor-configuration).
-To specify that a new Event Processors should default to a `SubscribingEventProcessor`, the `usingSubscribingEventProcessors` method is used:
+Other than configuring that an app uses a Subscribing Event Processor, everything is covered [here](README.md#general-processor-configuration).
+Firstly, to specify that a new Event Processors should default to a `SubscribingEventProcessor`, you can use the `usingSubscribingEventProcessors` method:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -95,7 +95,7 @@ public class AxonConfig {
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration - Properties file" %}
-Some Event Processor specifics can be configured through a properties file.
+A properties file allows the configuration of some fields on an Event Processor.
 Do note that the Java configuration provides more degrees of freedom.
 
 ```text
