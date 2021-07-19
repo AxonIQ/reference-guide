@@ -878,7 +878,7 @@ public class AxonConfig {
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration - Properties File" %}
-To configure the `SequencingPolicy` in a properties file, the bean name can be used:
+To configure the `SequencingPolicy` in a properties file, the bean name should be used:
 
 ```text
 axon.eventhandling.processors.my-processor.mode=tracking
@@ -1364,43 +1364,128 @@ The `CardSummaryProjection` shows a couple of interesting things to take note of
 
 ## Multiple Event Sources
 
-You can configure a Tracking Event Processor to use multiple sources when processing events. This is useful for compiling metrics across domains or simply when your events are distributed between multiple event stores.
+You can configure a Streaming Event Processor to use multiple sources to process events from.
+To process event from several sources a specific type of `StreamableMessageSource` should be configured: the `MultiStreamableMessageSource`. 
+The `MultiStreamableMessageSource` is useful when a streaming processor should act on the events from:
+* several event stores,
+* [multiple-contexts](../../../axon-server/administration/multi-context.md), or
+* from different storage types (e.g., an Event Store and a Kafka Stream)
 
-Having multiple sources means that there might be a choice of multiple events that the processor could consume at any given instant. Therefore, you can specify a `Comparator` to choose between them. The default implementation chooses the event with the oldest timestamp \(i.e. the event waiting the longest\).
+Having multiple sources means that there might be a choice of multiple events that the processor could consume at any given instant. 
+Therefore, you can specify a `Comparator` to choose between them. 
+The default implementation chooses the event with the oldest timestamp \(i.e. the event waiting the longest\).
 
-Multiple sources also means that the tracking processor's polling interval needs to be divided between sources using a strategy to optimize event discovery and minimize overhead in establishing costly connections to the data sources. Therefore, you can choose which source the majority of the polling is done on using the `longPollingSource()` method in the builder. This ensures one source consumes most of the polling interval whilst also checking intermittently for events on the other sources. The default `longPollingSource` is done on the last configured source.
+Multiple sources also means that the streaming processor's polling interval needs to be divided between sources.
+Some sources might use a strategy to optimize event discovery, thus minimizing overhead in establishing costly connections to the data sources. 
+To that end, you can choose which source the majority of the polling is done on using the `longPollingSource()` method in the builder. 
+This ensures one source consumes most of the polling interval whilst also checking intermittently for events on the other sources. 
+The default `longPollingSource` is done on the last configured source.
 
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-Create a `MultiStreamableMessageSource` using its `builder()` and register it as the message source when calling `EventProcessingConfigurer.registerTrackingEventProcessor()`.
-
-For example:
+Consider the following sample when constructing a `MultiStreamableMessageSource`:
 
 ```java
-MultiStreamableMessageSource.builder()
-        .addMessageSource("eventSourceA", eventSourceA)
-        .addMessageSource("eventSourceB", eventSourceB)
-        .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
-        .trackedEventComparator(priorityA) // Where 'priorityA' is a comparator prioritizing events from eventSourceA
-        .build();
+public class AxonConfig {
+    // ...
+    public MultiStreamableMessageSource buildMultiStreamableMessageSource(
+            StreamableMessageSource<TrackedEventMessage<?>> eventSourceA,
+            StreamableMessageSource<TrackedEventMessage<?>> eventSourceB,
+            Comparator<Map.Entry<String, TrackedEventMessage<?>>> priorityA
+    ) {
+        return MultiStreamableMessageSource.builder()
+                                           .addMessageSource("eventSourceA", eventSourceA)
+                                           .addMessageSource("eventSourceB", eventSourceB)
+                                           .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
+                                           .trackedEventComparator(priorityA) // Where 'priorityA' is a comparator prioritizing events from eventSourceA
+                                           .build();
+    }
+}
+```
+
+Assuming a `buildMultiStreamableMessageSource(...)` method is present, the outcome can be used to register a processor with the configuring `EventProcessingConfigurer`:
+
+{% tabs %}
+{% tab title="Tracking Processor - Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void configureTrackingProcessor(EventProcessingConfigurer processingConfigurer) {
+        processingConfigurer.registerTrackingEventProcessor(
+                "my-processor", config -> buildMultiStreamableMessageSource(/*...*/)
+        );
+    }
+}
 ```
 {% endtab %}
 
-{% tab title="Spring Boot AutoConfiguration" %}
+{% tab title="Tracking Processor - Spring Boot AutoConfiguration" %}
 ```java
-@Bean
-public MultiStreamableMessageSource multiStreamableMessageSource(EventStore eventSourceA, EventStore eventStoreB) {
-    return MultiStreamableMessageSource.builder()
-            .addMessageSource("eventSourceA", eventSourceA)
-            .addMessageSource("eventSourceB", eventSourceB)
-            .longPollingSource("eventSourceA") // Overrides eventSourceB as the longPollingStream
-            .trackedEventComparator(priorityA) // Where 'priorityA' is a comparator prioritizing events from eventSourceA
-            .build();
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configureTrackingProcessor(EventProcessingConfigurer processingConfigurer) {
+        processingConfigurer.registerTrackingEventProcessor(
+                "my-processor", config -> buildMultiStreamableMessageSource(/*...*/)
+        );
+    }
 }
+```
+{% endtab %}
 
-@Autowired
-public void configure(EventProcessingConfigurer config, MultiStreamableMessageSource multiStreamableMessageSource) {
-    config.registerTrackingEventProcessor("NameOfEventProcessor", c -> multiStreamableMessageSource);
+{% tab title="Pooled Streaming Processor - Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void configurePooledStreamingProcessor(EventProcessingConfigurer processingConfigurer) {
+        processingConfigurer.registerPooledStreamingEventProcessor(
+                "my-processor", config -> buildMultiStreamableMessageSource(/*...*/)
+        );
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Pooled Streaming Processor - Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowired
+    public void configurePooledStreamingProcessor(EventProcessingConfigurer processingConfigurer) {
+        processingConfigurer.registerPooledStreamingEventProcessor(
+                "my-processor", config -> buildMultiStreamableMessageSource(/*...*/)
+        );
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration - Properties File" %}
+To configure a `StreamableMessageSource` in a properties file, the bean name should be used:
+
+```text
+axon.eventhandling.processors.my-processor.mode=pooled
+axon.eventhandling.processors.my-processor.source=multiStreamableMessageSource
+```
+
+This does require the bean name to be present in the Application Context though:
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Bean
+    public MultiStreamableMessageSource multiStreamableMessageSource(
+            StreamableMessageSource<TrackedEventMessage<?>> eventSourceA,
+            StreamableMessageSource<TrackedEventMessage<?>> eventSourceB,
+            Comparator<Map.Entry<String, TrackedEventMessage<?>>> priorityA
+    ) {
+        return MultiStreamableMessageSource.builder()
+                                           .addMessageSource("eventSourceA", eventSourceA)
+                                           .addMessageSource("eventSourceB", eventSourceB)
+                                           .longPollingSource("eventSourceA")
+                                           .trackedEventComparator(priorityA)
+                                           .build();
+    }
 }
 ```
 {% endtab %}
