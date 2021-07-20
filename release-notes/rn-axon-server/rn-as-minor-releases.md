@@ -89,6 +89,11 @@ Notes:
 
 ## _Release 4.4_
 
+### Release 4.4.17
+
+* Fix: Failure in the initialization of a node in leader role now prevents the node from moving to leader role
+* Fix: Message from another node with a higher term must force node into follower state if it is in leader state
+
 ### Release 4.4.16
 
 * Fix: Clients should not connect to a node that is unable to contact other nodes in the cluster
