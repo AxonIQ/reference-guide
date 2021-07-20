@@ -6,6 +6,11 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## _Release 4.4_
 
+### Release 4.4.12
+
+* Fix: Load balancing operations for processors should ignore stopped instances
+* Fix: Stop reading events when query deadline expires
+
 ### Release 4.4.11
 
 * Configurable strategy for aggregate events stream sequence validation (through property read-sequence-validation-strategy)
@@ -165,6 +170,11 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 ## Axon Server Enterprise Edition
 
 ## _Release 4.4_
+
+### Release 4.4.17
+
+* Fix: Failure in the initialization of a node in leader role now prevents the node from moving to leader role
+* Fix: Message from another node with a higher term must force node into follower state if it is in leader state
 
 ### Release 4.4.16
 
