@@ -4,6 +4,14 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## _Release 4.5_
 
+### Release 4.5.7
+
+* Fix: Improve loading aggregate events performance for clients connected to a follower
+* Fix: Failure in the initialization of a node in leader role now prevents the node from moving to leader role
+* Fix: Message from another node with a higher term must force node into follower state if it is in leader state
+* Fix: Improved error handling and feedback when uploading invalid plugins
+* Fix: Increase default settings for spring.servlet.multipart.max-request-size and spring.servlet.multipart.max-file-size to 25MB
+
 ### Release 4.5.6.1
 
 * Fix: Close event store segment file when reading is complete
