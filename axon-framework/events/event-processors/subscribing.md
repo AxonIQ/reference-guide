@@ -3,15 +3,15 @@
 The `SubscribingEventProcessor`, or Subscribing Processor for short, is a type of [Event Processor](README.md).
 As any Event Processor, it serves as the technical aspect to handle events by invoking the event handlers written in an Axon application.
 
-The Subscribing Processor defines itself by receiving the events from a `SubscibableMessageSource`.
-The `SubscibableMessageSource` is an infrastructure component to register a Subscribing Processor too.
+The Subscribing Processor defines itself by receiving the events from a `SubscribableMessageSource`.
+The `SubscribableMessageSource` is an infrastructure component to register a Subscribing Processor too.
 
-After registration to the `SubscibableMessageSource`, the message source gives the events to the `SubscribingEventProcessor` in the order they are received.
-Examples of a `SubscibableMessageSource` are the `EventBus` or the [AMQP Extension](../../../extensions/spring-amqp.md).
+After registration to the `SubscribableMessageSource`, the message source gives the events to the `SubscribingEventProcessor` in the order they are received.
+Examples of a `SubscribableMessageSource` are the `EventBus` or the [AMQP Extension](../../../extensions/spring-amqp.md).
 Both the `EventBus` and AMQP Extension are simple message bus solutions for events.
 
-The simple bus solution makes the `SubscibableMessageSource` and thus the Subscribing Processor an approach to only receive _current_ events.
-Operations like [replaying](streaming.md#replaying-events) are thus not an option for any Subscribing Processor as long as the `SubscibableMessageSource` follows this paradigm.
+The simple bus solution makes the `SubscribableMessageSource` and thus the Subscribing Processor an approach to only receive _current_ events.
+Operations like [replaying](streaming.md#replaying-events) are thus not an option for any Subscribing Processor as long as the `SubscribableMessageSource` follows this paradigm.
 
 Furthermore, the message source will use the same thread that receives the events to invoke the registered Subscribing Processors.
 When the `EventBus` is, for example, used as the message source, this means that the event publishing thread is the same one handling the event in the Subscribing Processor.

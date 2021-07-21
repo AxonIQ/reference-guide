@@ -151,7 +151,7 @@ class MySaga {
 
 Although the defaults lead us to a working Saga environment, it is recommended to define the [`SagaStore`](#saga-repository-and-saga-store) to use.
 The `SagaStore` represents the mechanism that 'physically' stores the Saga instances, for which it uses the `AnnotatedSagaRepository` \(the default\) to store and retrieve Saga instances.
-Providing no storage means for a Saga means Axon defaults to an `InMemorySagaStore`, thus not persisting the Saga on shutdown.
+If no `SagaStore` is configured Axon defaults an `InMemorySagaStore`, thus not persisting the Saga on shutdown.
 To configure a `SagaStore` for `MySaga` consider the following snippet:
 
 {% tabs %}
