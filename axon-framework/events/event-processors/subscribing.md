@@ -11,14 +11,14 @@ Examples of a `SubscribableMessageSource` are the `EventBus` or the [AMQP Extens
 Both the `EventBus` and AMQP Extension are simple message bus solutions for events.
 
 The simple bus solution makes the `SubscribableMessageSource` and thus the Subscribing Processor an approach to only receive _current_ events.
-Operations like [replaying](streaming.md#replaying-events) are thus not an option for any Subscribing Processor as long as the `SubscribableMessageSource` follows this paradigm.
+Operations like [replaying](streaming.md#replaying-events) are, therefore, not an option for any Subscribing Processor as long as the `SubscribableMessageSource` follows this paradigm.
 
 Furthermore, the message source will use the same thread that receives the events to invoke the registered Subscribing Processors.
 When the `EventBus` is, for example, used as the message source, this means that the event publishing thread is the same one handling the event in the Subscribing Processor.
 
 Although this approach deserves a spot within the framework, most scenarios require further decoupling of components by separating the threads as well.
 When, for example, an application requires event processing parallelization to get a higher performance, this can be a blocker.
-This predicament is why the `SubscribingEventProcessor` is not the default within Axon Framework.
+This predicament is why the `SubscribingEventProcessor` is not the default in Axon Framework.
 
 Instead, the "Tracking Event Processor" (a [Streaming Processor](streaming.md#streaming-event-processor) implementation) takes up that role.
 It provides greater flexibility for developers for configuring the event processor in greater detail.

@@ -382,8 +382,8 @@ If no explicit `eventSerializer` is configured, events are serialized using the 
 
 ## Distributing Events
 
-The use of an `EventStore` provides a simple way towards distributing events: by sharing the data source.
-This is the approach taken with [Axon Server](../../axon-server-introduction.md), for example.
+The use of an `EventStore` provides a simple way of distributing events: by sharing the data source.
+This is the approach taken by [Axon Server](../../axon-server-introduction.md), for example.
 
 Such an approach will also suffice whenever the [`EmbeddedEventStore`](#embedded-event-store) is used.
 Doing so requires the correct configuration of each application instance to point to the same data source.
