@@ -12,12 +12,12 @@ The image below depicts a representation of the organization of Event Processors
 Axon has a layered approach towards organizing event handlers.
 First, an event handler is positioned in a _Processing Group_.
 Each event handler, or "Event Handling Component," will only ever belong to a single Processing Group.
-The Processing Group provides a level of configurable non-functional requirements, like [error handling](#processing-group---listener-invocation-error-handler) and the [sequencing policy](streaming.md#sequential-processing).
+The Processing Group provides a level of configurable non-functional requirements, like [error handling](#processing-group-listener-invocation-error-handler) and the [sequencing policy](streaming.md#sequential-processing).
 
 The Event Processors, in turn, is in charge of the Processing Group.
 An Event Processor will control 1 to N Processing Groups, although there will be a one-to-one mapping in most cases.
 Similar to the Event Handling Component, a Processing Group will belong to a single Event Processor.
-This last layer allows the definition of the type of Event Processor used and concepts like the threading model and a more fine-grained degree of [error handling](#event-processor---error-handler).
+This last layer allows the definition of the type of Event Processor used and concepts like the threading model and a more fine-grained degree of [error handling](#event-processor-error-handler).
 
 Event Processors come in roughly two forms: [Subscribing](subscribing.md) and [Streaming](streaming.md).
 
@@ -139,7 +139,7 @@ Each Event Processor acts as an isolated component without any intervention from
 Errors are inevitable in any application.
 Depending on where they happen, you may want to respond differently.
 
-By default, exceptions raised by event handlers are caught in the [Processing Group layer](#processing-group---listener-invocation-error-handler), logged, and processing continues with the following events.
+By default, exceptions raised by event handlers are caught in the [Processing Group layer](#processing-group-listener-invocation-error-handler), logged, and processing continues with the following events.
 When an exception is thrown when a processor is trying to commit a transaction, update a [token](streaming.md#token-store), or in any other part of the process, the exception will be propagated.
 
 In the case of a [Streaming Event Processor](streaming.md#error-mode), this means the processor will go into error mode, releasing any tokens and retrying at an incremental interval \(starting at 1 second, up to max 60 seconds\).
@@ -200,7 +200,7 @@ public interface ListenerInvocationErrorHandler {
 ```
 
 You can choose to retry, ignore or rethrow the exception.
-The exception will bubble up to the [Event Processor level](#event-processor---error-handler) when rethrown.
+The exception will bubble up to the [Event Processor level](#event-processor-error-handler) when rethrown.
 
 ### Event Processor - Error Handler
 
@@ -258,7 +258,7 @@ Based on the provided `ErrorContext` object, you can decide to ignore the error,
 ## General processor configuration
 
 Alongside [handler assignment](#assigning-handlers-to-processors) and [error handling](#error-handling), Event Processors allow configuration for other components too.
-For [Subscribing](subscribing.md) and [Streaming](streaming.md) Event Processor specific options, their respective sections should be checked.
+For [Subscribing](subscribing.md#configuring) and [Streaming](streaming.md#configuring) Event Processor specific options, their respective sections should be checked.
 The remainder of this page will cover the generic configuration options for each Event Processor.
 
 ### Event Processor Builders
