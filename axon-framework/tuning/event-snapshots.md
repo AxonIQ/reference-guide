@@ -173,22 +173,84 @@ There is one type of snapshot event that is treated differently: the `AggregateS
 
 ## Caching
 
-A well designed command handling module should pose no problems when implementing caching. Especially when using event sourcing, loading an aggregate from an Event Store is an expensive operation. With a properly configured cache in place, loading an aggregate can be converted into a pure in-memory process.
+A well-designed command handling module should pose no problems when implementing caching.
+Especially when using event sourcing, loading an aggregate from an Event Store can be an expensive operation.
+With a properly configured cache in place, loading an aggregate can be converted into a pure in-memory process.
 
-Here are a few guidelines that help you get the most out of your caching solution:
+To that end, Axon allows the configuration of a `Cache` object.
+The framework currently provides several implementations to choose from:
 
-* Make sure the unit of work never needs to perform a rollback for functional reasons.
+* `WeakReferenceCache` - An in-memory cache solution. In most scenarios, this is a good start.
+* `EhCacheAdapter` -
+  An `AbstractCacheAdapter`, wrapping [EhCache](https://www.ehcache.org/) into a usable solution for Axon.
+* `JCacheAdapter` -
+  An `AbstractCacheAdapter`, wrapping [JCache](https://www.javadoc.io/doc/javax.cache/cache-api/1.0.0/index.html) into a usable solution for Axon.
+* `AbstractCacheAdapter` - Abstract implementation towards supporting Axon's `Cache` API.
+  Helpful in writing an adapter for a cache implementation that Axon does not support out of the box.
 
-  A rollback means that an aggregate has reached an invalid state. Axon will automatically invalidate the cache entries involved. The next request will force the aggregate to be reconstructed from its events. If you use exceptions as a potential \(functional\) return value, you can configure a `RollbackConfiguration` on your command bus. By default, the unit of work will be rolled back on runtime exceptions for command handlers, and on all exceptions for event handlers.
+Before configuring a `Cache`, please consider the following guidelines.
+They will help you get the most out of your caching solution:
 
-* All commands for a single aggregate must arrive on the machine that has the aggregate in its cache.
+* **Make sure the unit of work never needs to perform a rollback for functional reasons.**
+  A rollback means that an aggregate has reached an invalid state.
+  Axon will automatically invalidate the cache entries involved.
+  The following request will force the aggregate to be reconstructed from its events.
+  If you use exceptions as a potential \(functional\) return value, you can configure a `RollbackConfiguration` on your command bus.
+  By default, the configuration will roll back the unit of work on unchecked exceptions for command handlers and on all exceptions for event handlers.
 
-  This means that commands should be consistently routed to the same machine, for as long as that machine is "healthy". Routing commands consistently prevents the cache from going stale. A hit on a stale cache will cause a command to be executed and fail at the moment events are stored in the event store. By default, Axon's distributed command bus components will use consistent hashing to route commands.
+* **All commands for a single aggregate must arrive on the machine with the aggregate in its cache.**
+  This requirement means that commands should be consistently routed to the same machine for as long as that machine is "healthy."
+  Routing commands consistently prevents the cache from going stale.
+  A hit on a stale cache will cause a command to be executed and fail when events are stored in the event store.
+  By default, Axon's distributed command bus components will use consistent hashing to route commands.
 
-* Configure a sensible time to live / time to idle.
+* **Configure a sensible time to live / time to idle.**
+  By default, caches tend to have a relatively short time to live, a matter of minutes.
+  For a command handling component with consistent routing, a longer time-to-idle and time-to-live is usually better.
+  This setting prevents the need to re-initialize an aggregate based on its events because its cache entry expired.
+  The time-to-live of your cache should match the expected lifetime of your aggregate.
 
-  By default, caches have a tendency to have a relatively short time to live, a matter of minutes. For a command handling component with consistent routing, a longer time-to-idle and time-to-live is usually better. This prevents the need to re-initialize an aggregate based on its events, just because its cache entry expired. The time-to-live of your cache should match the expected lifetime of your aggregate.
+* **Cache data in-memory.**
+  For proper optimization, caches should keep data in-memory \(and preferably on-heap\) for best performance.
+  This approach prevents the need to \(re\)serialize aggregates when storing to disk and even off-heap.
 
-* Cache data in-memory.
+To configure a cache for your Aggregates, consider the following snippet:
 
-  For true optimization, caches should keep data in-memory \(and preferably on-heap\) for best performance. This prevents the need to \(re\)serialize aggregates when storing to disk and even off-heap.
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // ...
+    public void configureAggregateWithCache(Configurer configurer) {
+        AggregateConfigurer<GiftCard> giftCardConfigurer =
+                AggregateConfigurer.defaultConfiguration(GiftCard.class)
+                                   .configureCache(config -> new WeakReferenceCache());
+        
+        configurer.configureAggregate(giftCardConfigurer);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+The `Aggregate` annotation allows specification of the cache bean:
+```java
+@Aggregate(cache = "giftCardCache")
+public class GiftCard {
+    // state, command handlers and event sourcing handlers...
+}
+```
+
+This approach does require the bean name to be present in the Application Context of course:
+
+```java
+@Configuration
+public class AxonConfig {
+    // ...
+    @Bean
+    public Cache giftCardCache() { 
+        return new WeakReferenceCache();
+    }
+}
+```
+{% endtab %}
