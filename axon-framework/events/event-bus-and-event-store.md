@@ -2,7 +2,7 @@
 
 ## Event Bus
 
-The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides three implementations of the Event Bus: `AxonServerEventStore`, `EmbeddedEventStore` and `SimpleEventBus`. All three implementations support subscribing and tracking processors \(see [Events Processors](event-processors.md)\). However, the `AxonServerEventStore` and `EmbeddedEventStore` persist events \(see [Event Store](event-bus-and-event-store.md)\), which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
+The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides three implementations of the Event Bus: `AxonServerEventStore`, `EmbeddedEventStore` and `SimpleEventBus`. All three implementations support subscribing and tracking processors \(see [Events Processors](event-processors/README.md)\). However, the `AxonServerEventStore` and `EmbeddedEventStore` persist events \(see [Event Store](event-bus-and-event-store.md)\), which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
 
 An `AxonServerEventStore` event bus/store is configured by default.
 
@@ -380,3 +380,16 @@ It is possible to use a different serializer for the storage of events, than all
 
 If no explicit `eventSerializer` is configured, events are serialized using the main serializer that has been configured \(which defaults to the `XStreamSerializer`\).
 
+## Distributing Events
+
+The use of an `EventStore` provides a simple way of distributing events: by sharing the data source.
+This is the approach taken by [Axon Server](../../axon-server-introduction.md), for example.
+
+Such an approach will also suffice whenever the [`EmbeddedEventStore`](#embedded-event-store) is used.
+Doing so requires the correct configuration of each application instance to point to the same data source.
+Listing _all_ possible data sources is out of the scope of this guide however.
+The documentation for the chosen source should thus be read for specifics on this.
+
+Alternatively, you can choose other components to distribute events.
+Axon provides a couple of these as [extension modules](../../extensions) for example [Spring AMQP](../../extensions/spring-amqp.md) or [Kafka](../../extensions/kafka.md).
+Note that neither of these are intended as an [Event Store](#event-store), but **only** as a message broker.
