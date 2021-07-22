@@ -114,5 +114,5 @@ axon.eventhandling.processors[my.processor].source=eventBus
 
 ## Error Mode
 
-Whenever the [error handler](README.md#event-processor---error-handler) rethrows an exception, the `SubscribingEventProcessor` will have it bubble up to the publishing component of the event.
+Whenever the [error handler](README.md#event-processor-error-handler) rethrows an exception, the `SubscribingEventProcessor` will have it bubble up to the publishing component of the event.
 Providing the exception to the event publisher allows the publishing component to deal with it accordingly.

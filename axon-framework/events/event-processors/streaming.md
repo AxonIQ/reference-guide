@@ -6,7 +6,7 @@ As any Event Processor, it serves as the technical aspect to handle events by in
 The Streaming Processor defines itself by receiving the events from a `StreamableMessageSource`.
 The `StreamableMessageSource` is an infrastructure component through which we can open a stream of events.
 The source can also specify positions on the event stream, so-called [Tracking Tokens](#tracking-tokens), used as start positions when opening an event stream.
-An example of a `StreamableMessageSource` is the [`EventStore`](../event-bus-and-event-store.md#event-store), like for example [Axon Server](../../../axon-server) or an [RDBMS](../event-bus-and-event-store.md#embedded-event-store).
+An example of a `StreamableMessageSource` is the [`EventStore`](../event-bus-and-event-store.md#event-store), like for example [Axon Server](../../../axon-server-introduction.md) or an [RDBMS](../event-bus-and-event-store.md#embedded-event-store).
 
 Furthermore, Streaming Processors use separate threads to process the events retrieved from the `StreamableMessageSource`.
 Using separate threads decouples the `StreamingEventProcessor` from other operations (e.g., event publication or command handling), allowing for cleaner separation within any application.  
@@ -341,7 +341,7 @@ public class AxonConfig {
 
 The error mode differs between the Tracking- and Pooled Streaming Event Processor.
 
-Whenever the [error handler](README.md#event-processor---error-handler) rethrows an exception, a `TrackingEventProcessor` will retry processing the event using an incremental back-off period.
+Whenever the [error handler](README.md#event-processor-error-handler) rethrows an exception, a `TrackingEventProcessor` will retry processing the event using an incremental back-off period.
 It will start at 1 second and double after each attempt until it reaches the maximum wait time of 60 seconds per attempt.
 This back-off time ensures that in a distributed environment, when another node is able to process events, it will have the opportunity to claim the [token](#tracking-tokens) required to process the event.
 
@@ -813,7 +813,7 @@ Note that if the policy returns a `null` sequence identifier, the event may be p
 
 > ** Parallel Processing and Sagas**
 >
-> A [saga](../../sagas/README.md) instance is *never*** invoked concurrently by multiple threads.
+> A [saga](../../sagas/README.md) instance is **never** invoked concurrently by multiple threads.
 > Therefore, the `SequencingPolicy` is irrelevant for a saga.
 > Axon will ensure each saga instance receives the events it needs to process in the order they have been published on the event bus.
 
