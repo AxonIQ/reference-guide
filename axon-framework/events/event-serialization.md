@@ -164,3 +164,24 @@ public class SerializerConfiguration {
 ```
 {% endtab %}
 {% endtabs %}
+
+### Default Typing
+
+Sometimes the objects serialized by Axon will contain lists or collections of data.
+For XStream, this poses no problem, as it will automatically add the type information to the serialized format.
+Jackson does not do this out of the box, however.
+
+You can configure the `ObjectMapper` to add default typing information, but the `JacksonSerializer's` builder also provides a method to enable this for you.
+With `JacksonSerializer.Builder#defaultTyping`, you will automatically enable the addition of types to the serialized format for lists and collections.
+Consider the following sample on how to enable default typing for the `JacksonSerializer`:
+
+```java
+public class SerializerConfiguration { 
+    // ...
+    public Serializer buildSerializer() {
+          return JacksonSerializer.builder()
+                                  .defaultTyping()
+                                  .build();
+    }
+}
+```
