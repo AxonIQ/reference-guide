@@ -59,11 +59,29 @@ The `JpaSagaStore` is configured with an `EntityManagerProvider`, which provides
 
 ### JdbcSagaStore
 
-The `JdbcSagaStore` uses plain JDBC to store stage instances and their association values. Similar to the `JpaSagaStore`, saga instances do not need to be aware of how they are stored. They are serialized using a serializer.
+The `JdbcSagaStore` uses plain JDBC to store stage instances and their association values.
+Similar to the `JpaSagaStore`, saga instances do not need to be aware of how they are stored. The store serializes the saga instances using a serializer.
 
-The `JdbcSagaStore` is initialized with either a `DataSource` or a `ConnectionProvider`. While not required, when initializing with a `ConnectionProvider`, it is recommended to wrap the implementation in a `UnitOfWorkAwareConnectionProviderWrapper`. It will check the current Unit of Work for an already open database connection, to ensure that all activity within a unit of work is done on a single connection.
+You should configure the `JdbcSagaStore` with either a `DataSource` or a `ConnectionProvider`.
+While not required, when initializing with a `ConnectionProvider`, it is recommended to wrap the implementation in a `UnitOfWorkAwareConnectionProviderWrapper`.
+It will check the current Unit of Work for an already open database connection to ensure that all activity within a unit of work is done on a single connection.
 
-Unlike JPA, the `JdbcSagaRepository` uses plain SQL statements to store and retrieve information. This may mean that some operations depend on the database specific SQL dialect. It may also be the case that certain database vendors provide non-standard features that you would like to use. To allow for this, you can provide your own `SagaSqlSchema`. The `SagaSqlSchema` is an interface that defines all the operations the repository needs to perform on the underlying database. It allows you to customize the SQL statement executed for each operation. The default is the `GenericSagaSqlSchema`. Other implementations available are `PostgresSagaSqlSchema`, `Oracle11SagaSqlSchema` and `HsqlSagaSchema`.
+Unlike JPA, the `JdbcSagaRepository` uses plain SQL statements to store and retrieve information.
+This approach may mean that some operations depend on the database-specific SQL dialect.
+It may also be that certain database vendors provide non-standard features that you would like to use.
+To allow for this, you can provide your own `SagaSqlSchema`.
+The `SagaSqlSchema` is an interface that defines all the operations the repository needs to perform on the underlying database.
+It allows you to customize the SQL statement executed for each operation. The default is the `GenericSagaSqlSchema`.
+Other implementations available are `PostgresSagaSqlSchema`, `Oracle11SagaSqlSchema` and `HsqlSagaSchema`.
+
+> **Schema Construction**
+>
+> Note that Axon does not create the database schema for you out of the box.
+> Neither when using Spring Boot, for example.
+>
+> To construct the schema, `JdbcSagaStore#createSchema` should be invoked.
+> By default, this will use the `GenericSagaSqlSchema`.
+> You can change the schema by configuring a different version through the `JdbcSagaStore.Builder`.
 
 ### MongoSagaStore
 
