@@ -123,7 +123,7 @@ Since an upcaster only adjusts an event from one version to another, it is param
 The component in charge of that ordering is the `EventUpcasterChain`.
 The upcaster chain is what the `EventStore` uses to attach all the upcast functions to the event stream.
 
-When configuring your upcasters, most scenarios will not require you to touch the ' EventUpcasterChain` directly.
+When configuring your upcasters, most scenarios will not require you to touch the `EventUpcasterChain` directly.
 Instead, consider the following snippets when it comes to registering upcasters:
 
 {% tabs %}
