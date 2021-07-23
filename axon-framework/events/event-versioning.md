@@ -85,61 +85,120 @@ public class ComplaintEvent {
 Upcaster from 1.0 revision to 2.0 revision:
 
 ```java
-// Upcaster from 1.0 revision to 2.0 revision
-public class ComplaintEventUpcaster extends SingleEventUpcaster {
+public class ComplaintEvent1_to_2Upcaster extends SingleEventUpcaster {
 
-    private static SimpleSerializedType targetType = 
-           new SimpleSerializedType(ComplainEvent.class.getTypeName(), "1.0");
+   private static final SimpleSerializedType TARGET_TYPE =
+           new SimpleSerializedType(ComplaintEvent.class.getTypeName(), "1.0");
 
-    @Override
-    protected boolean canUpcast(IntermediateEventRepresentation 
-                                    intermediateRepresentation) {
-        return intermediateRepresentation.getType().equals(targetType);
-    }
+   @Override
+   protected boolean canUpcast(IntermediateEventRepresentation intermediateRepresentation) {
+      return intermediateRepresentation.getType().equals(TARGET_TYPE);
+   }
 
-    @Override
-    protected IntermediateEventRepresentation doUpcast(
-                        IntermediateEventRepresentation intermediateRepresentation) {
-        return intermediateRepresentation.upcastPayload(
-                new SimpleSerializedType(targetType.getName(), "2.0"),
-                org.dom4j.Document.class,
-                document -> {
-                    document.getRootElement()
-                            .addElement("description")
-                            .setText("no complaint description"); // Default value
-                    return document;
-                }
-        );
-    }
+   @Override
+   protected IntermediateEventRepresentation doUpcast(
+           IntermediateEventRepresentation intermediateRepresentation
+   ) {
+      return intermediateRepresentation.upcastPayload(
+              new SimpleSerializedType(TARGET_TYPE.getName(), "2.0"),
+              org.dom4j.Document.class,
+              document -> {
+                 document.getRootElement()
+                         .addElement("description")
+                         .setText("no complaint description"); // Default value
+                 return document;
+              }
+      );
+   }
 }
 ```
 
-Spring Boot configuration:
+### Configuring an Upcaster
+
+After choosing an upcaster type and constructing your first instance, it is time to configure it in your application.
+Important in the configuration is knowing that upcasters need to be invoked in order.
+Events tend to move through several format iterations, each with its own upcasting requirements.
+Since an upcaster only adjusts an event from one version to another, it is paramount to maintain the ordering of the upcasters.
+
+The component in charge of that ordering is the `EventUpcasterChain`.
+The upcaster chain is what the `EventStore` uses to attach all the upcast functions to the event stream.
+
+When configuring your upcasters, most scenarios will not require you to touch the `EventUpcasterChain` directly.
+Instead, consider the following snippets when it comes to registering upcasters:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+@Configuration
+public class AxonConfig {
+   // ...
+   public void configureUpcasters(Configurer configurer) {
+      // The method invocation order imposes the upcaster ordering
+      configurer.registerEventUpcaster(config -> new ComplaintEvent0_to_1Upcaster())
+                .registerEventUpcaster(config -> new ComplaintEvent1_to_2Upcaster());
+   }
+}
+```
+{% endtab %}
+
+{% tab title="Auto Configuration - @Order annotation" %}
+Axon honors Spring's `Order` annotation on upcasters.
+The numbers used in the annotation will dictate the ordering.
+The lower the number, the earlier it is registered to the upcaster chain:
+
+```java
+@Component
+@Order(0)
+public class ComplaintEvent0_to_1Upcaster extends SingleEventUpcaster {
+   // upcaster implementation...
+
+}
+
+@Component
+@Order(1)
+public class ComplaintEvent1_to_2Upcaster extends SingleEventUpcaster {
+   // upcaster implementation...
+
+}
+```
+
+The annotation can be placed both on the class itself, or on bean creation methods:
 
 ```java
 @Configuration
-public class AxonConfiguration {
+public class AxonConfig {
+   // ...
+   @Bean
+   @Order(0)
+   public SingleEventUpcaster complaintEventUpcasterOne() {
+      return new ComplaintEvent0_to_1Upcaster();
+   }
 
-    @Bean
-    public SingleEventUpcaster myUpcaster() {
-        return new ComplaintEventUpcaster();
-    }
-
-    @Bean
-    public JpaEventStorageEngine eventStorageEngine(Serializer eventSerializer,
-                                                    Serializer snapshotSerializer,
-                                                    DataSource dataSource,
-                                                    SingleEventUpcaster myUpcaster,
-                                                    EntityManagerProvider entityManagerProvider,
-                                                    TransactionManager transactionManager) throws SQLException {
-        return JpaEventStorageEngine.builder()
-                                    .eventSerializer(eventSerializer)
-                                    .snapshotSerializer(snapshotSerializer)
-                                    .dataSource(dataSource)
-                                    .entityManagerProvider(entityManagerProvider)
-                                    .transactionManager(transactionManager)
-                                    .upcasterChain(myUpcaster)
-                                    .build();
-    }
+   @Bean
+   @Order(1)
+   public SingleEventUpcaster complaintEventUpcasterTwo() {
+      return new ComplaintEvent0_to_1Upcaster();
+   }
 }
 ```
+
+{% endtab %}
+
+{% tab title="Auto Configuration - EventUpcasterChain bean" %}
+Adding an `EventUpcasterChain` bean to the Application Context will tell Axon to configure it for your event source:
+
+```java
+@Configuration
+public class AxonConfig {
+   // ...
+   @Bean
+   public EventUpcasterChain eventUpcasterChain() {
+      return new EventUpcasterChain(
+              new ComplaintEvent0_to_1Upcaster(),
+              new ComplaintEvent0_to_1Upcaster()
+      );
+   }
+}
+```
+{% endtab %}
+{% endtabs %}
