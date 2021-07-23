@@ -1,26 +1,27 @@
 # Event Handlers
 
-In Axon, an object may declare a number of event handler methods, by annotating them with `@EventHandler`. The declared parameters of the method define which events it will receive.
+An _Event Handler_ is a method that is capable of handling an `EventMessage`.
+As such, the method will react to the occurrences within an application.
 
-Axon provides out-of-the-box support for the following parameter types:
+In Axon, an _object_ may declare several event handlers by annotating them with `@EventHandler`.
+This _object_ is most often referred to as an _Event Handling Component_, or sometimes an Event Handler too.
+When drafting an `@EventHandler` annotated method, the declared parameters of the method define which events it will receive.
 
-* The first parameter is always the payload of the event message. In the case where the event handler does not need access to the payload of the message, you can specify the expected payload type on the `@EventHandler` annotation. When specified, the first parameter is resolved using the rules specified below. Do not configure the payload type on the annotation if you want the payload to be passed as a parameter.
-* Parameters annotated with `@MetaDataValue` will resolve to the metadata value with the key as indicated on the annotation. If `required` is `false` \(default\), `null` is passed when the metadata value is not present. If `required` is `true`, the resolver will not match and prevent the method from being invoked when the metadata value is not present.
-* Parameters of type `MetaData` will have the entire `MetaData` of an `EventMessage` injected.
-* Parameters annotated with `@Timestamp` and of type `java.time.Instant` \(or `java.time.temporal.Temporal`\) will resolve to the timestamp of the `EventMessage`. This is the time at which the event was generated.
-* Parameters annotated with `@SequenceNumber` and of type `java.lang.Long` or `long` will resolve to the `sequenceNumber` of a `DomainEventMessage`. This provides the order in which the event was generated \(within the scope of the aggregate it originated from\). It is important to note that `DomainEventMessage` **can only** originate from an Aggregate. Event which thus have been published directly on the `EventBus`/`EventGateway` are _not_ implementations of the `DomainEventMessage` and as such will not resolve a sequence number. 
-* Parameters assignable to message will have the entire `EventMessage` injected \(if the message is assignable to that parameter\). If the first parameter is of type message, it effectively matches an event of any type, even if generic parameters would suggest otherwise. Due to type erasure, Axon cannot detect what parameter is expected. In such case, it is best to declare a parameter of the payload type, followed by a parameter of type message.
-* Parameters of type `TrackingToken` will have the current `TrackingToken` related to the processed Event injected.
-* When using Spring and the Axon Configuration is activated \(either by including the Axon Spring Boot Starter module\), any other parameters will resolve to autowired beans, if exactly one injectable candidate is available in the application context. This allows you to inject resources directly into `@EventHandler` annotated methods.
+Arguably the most important parameter of an event handler is the first parameter which refers to the payload of an `EventMessage`.
+If the event handler does not need access to the payload of the message, you can specify the expected payload type on the `@EventHandler` annotation.
 
-You can configure additional `ParameterResolver`s by implementing the `ParameterResolverFactory` interface and creating a file named `/META-INF/service/org.axonframework.common.annotation.ParameterResolverFactory` containing the fully qualified name of the implementing class.
+Do not configure the payload type on the annotation if you want the payload to be passed as a parameter.
+For an exhaustive list of all parameters, we refer to [this](../messaging-concepts/supported-parameters-annotated-handlers.md#supported-parameters-for-event-handlers) section.
 
-In all circumstances, at most one event handler method is invoked per listener instance. Axon will search for the most specific method to invoke, using following rules:
+In all circumstances, at most one event handler method is invoked per listener instance.
+Axon will search for the most specific method to invoke, using the following rules:
 
-1. On the actual instance level of the class hierarchy \(as returned by `this.getClass()`\), all annotated methods are evaluated
-2. If one or more methods are found of which all parameters can be resolved to a value, the method with the most specific type is chosen and invoked
-3. If no methods are found on this level of the class hierarchy, the super type is evaluated the same way
-4. When the top level of the hierarchy is reached, and no suitable event handler is found, the event is ignored.
+1. On the actual instance level of the class hierarchy \(as returned by `this.getClass()`\), all annotated methods are evaluated.
+2. If the framework finds one or more methods for which it can resolve all parameters to a value, the method with the most specific type is chosen and invoked.
+3. If the framework finds no methods on this level of the class hierarchy, the supertype is evaluated the same way.
+4. When it reaches the top level of the hierarchy and no suitable event handler is found, the event is ignored.
+
+Consider the following Event Handling Component sample to explain the event handler invocation rules further: 
 
 ```java
 // assume EventB extends EventA 
@@ -48,37 +49,52 @@ public class SubListener extends TopListener {
 }
 ```
 
-In the example above, the handler methods of `SubListener` will be invoked for all instances of `EventB` as well as `EventC` \(as it extends `EventB`\). In other words, the handler methods of `TopListener` will not receive any invocations for `EventC` at all. Since `EventA` is not assignable to `EventB` \(it is its superclass\), those will be processed by the handler method in `TopListener`.
+In the example above, Axon will invoke the handler methods of `SubListener` for all instances of `EventB` and `EventC` \(as it extends `EventB`\).
+In other words, the handler methods of `TopListener` will not receive any invocations for `EventC` at all.
+Since `EventA` is not assignable to `EventB` \(it is its superclass\), the `TopListener's` handler method will process them.
 
 ## Registering event handlers
 
-Event handling components are defined using an `EventProcessingConfigurer`, which can be accessed from the global Axon `Configurer`. `EventProcessingConfigurer` is used to configure an `EventProcessingConfiguration`. Typically, an application will have a single `EventProcessingConfiguration` defined, but larger more modular applications may choose to define one per module.
+Event handling Components are defined using an `EventProcessingConfigurer`, which can be accessed from the global Axon `Configurer`.
+`EventProcessingConfigurer` is used to configure an `EventProcessingConfiguration`.
+Typically, an application will have a single `EventProcessingConfiguration` defined, but larger, more modular applications may define one per module.
 
-To register objects with `@EventHandler` methods, use the `registerEventHandler()` method on the `EventProcessingConfigurer`:
+To register objects with `@EventHandler` methods, consider the following samples:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
-```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-                                         .registerEventHandler(conf -> new MyEventHandlerClass()));
-```
-
-or with configuring the event processor
+The `Configurer` exposes several options towards registering an Event Handling Component:
 
 ```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-                                         .eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer
-                                             .registerEventHandler(conf -> new MyEventHandlerClass()));
+public class AxonConfig {
+
+    // ...
+    public void configureEventHandler(Configurer configurer) {
+        configurer.registerEventHandler(config -> new MyEventHandlingComponent());
+
+        // or, when the handling component contains several message handler types:
+        configurer.registerMessageHandler(config -> new MyEventHandlingComponent());
+
+        // or, directly on the EventProcessingConfigurer:
+        configurer.eventProcessing()
+                  .registerEventHandler(config -> new MyEventHandlingComponent());
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot Autoconfiguration" %}
+In a Spring Boot environment, simply adding the Event Handling Components to the Application Context is sufficient:
+
 ```java
 @Component
-public class MyEventHandlerClass {
-    // contains @EventHandler(s)
+public class MyEventHandlingComponent {
+
+    @EventHandler
+    public void on(SomeEvent event) {
+        // ...
+    }
 }
 ```
 {% endtab %}
 {% endtabs %}
-
