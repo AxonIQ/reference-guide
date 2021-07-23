@@ -84,6 +84,8 @@ public class ComplaintEvent {
 
 Upcaster from 1.0 revision to 2.0 revision:
 
+{% tabs %}
+{% tab title="Event serialized with XStream" %}
 ```java
 public class ComplaintEvent1_to_2Upcaster extends SingleEventUpcaster {
 
@@ -112,6 +114,38 @@ public class ComplaintEvent1_to_2Upcaster extends SingleEventUpcaster {
    }
 }
 ```
+{% endtab %}
+
+{% tab title="Event serialized with Jackson" %}
+```java
+public class ComplaintEvent1_to_2Upcaster extends SingleEventUpcaster {
+   // upcaster implementation...
+
+   private static final SimpleSerializedType TARGET_TYPE =
+           new SimpleSerializedType(ComplaintEvent.class.getTypeName(), "1.0");
+
+   @Override
+   protected boolean canUpcast(IntermediateEventRepresentation intermediateRepresentation) {
+      return intermediateRepresentation.getType().equals(TARGET_TYPE);
+   }
+
+   @Override
+   protected IntermediateEventRepresentation doUpcast(
+           IntermediateEventRepresentation intermediateRepresentation
+   ) {
+      return intermediateRepresentation.upcastPayload(
+              new SimpleSerializedType(TARGET_TYPE.getName(), "2.0"),
+              com.fasterxml.jackson.databind.JsonNode.class,
+              event -> { 
+                  ((ObjectNode) event).put("description", "no complaint description");
+                  return event;
+              }
+      );
+   }
+}
+```
+{% endtab %}
+{% endtabs %}
 
 ### Configuring an Upcaster
 
