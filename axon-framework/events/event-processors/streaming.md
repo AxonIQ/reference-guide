@@ -592,6 +592,18 @@ When no token store is explicitly defined, an `InMemoryTokenStore` is used.
 The `InMemoryTokenStore` is _not_ recommended in most production scenarios since it cannot maintain the progress through application shutdowns.
 Unintentionally using the `InMemoryTokenStore` counts towards one of the unexpected scenarios where the framework creates an [initial token](#initial-tracking-token) on each application start-up.
 
+The framework provides a couple of `TokenStore` implementations:
+
+- `InMemoryTokenStore` - A `TokenStore` implementation that keeps the tokens in memory.
+  This implementation does not suffice as a production-ready store in most applications.
+- `JpaTokenStore` - A `TokenStore` implementation using JPA to store the tokens with.
+  Expects that a table is constructed based on the `org.axonframework.eventhandling.tokenstore.jpa.TokenEntry`.
+  It is easily auto-configurable with, for example, Spring Boot.
+- `JdbcTokenStore` - A `TokenStore` implementation using JDBC to store the tokens with.
+  Expects that the schema is constructed through the `JdbcTokenStore#createSchema(TokenTableFactory)` method.
+  Several `TokenTableFactory` can be chosen here, like the `GenericTokenTableFactory`, `PostgresTokenTableFactory` or `Oracle11TokenTableFactory` implementation.
+- `MongoTokenStore`- A `TokenStore` implementation using Mongo to store the tokens with.
+
 > **Where to store Tokens?**
 >
 > Where possible, we recommend using a token store that stores tokens in the same database as to where the event handlers update the view models.
@@ -636,10 +648,10 @@ public class AxonConfig {
 {% tab title="Spring Boot AutoConfiguration" %}
 The default `TokenStore` implementation is defined based on dependencies available in Spring Boot, in the following order:
 
-1. If any `TokenStore` bean is defined, that bean is used
+1. If any `TokenStore` bean is defined, that bean is used.
 2. Otherwise, if an `EntityManager` is available, the `JpaTokenStore` is defined.
-3. Otherwise, if a `DataSource` is defined, the `JdbcTokenStore` is created
-4. Lastly, the `InMemoryToken` store is used
+3. Otherwise, if a `DataSource` is defined, the `JdbcTokenStore` is created.
+4. Lastly, the `InMemoryToken` store is used.
 
 To override the TokenStore, either define a bean in a Spring `@Configuration` class:
 
