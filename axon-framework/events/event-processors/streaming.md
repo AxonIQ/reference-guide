@@ -395,7 +395,7 @@ This start position is configurable, as is described [here](#token-configuration
 
 > **A Saga's Streaming Processor initial position**
 >
-> A Streaming Processor dedicated to a [Saga](../../sagas/README.md) will default the initial token to the head of the stream.
+> A Streaming Processor dedicated to a [Saga](../../sagas/README.md) will default the initial token to the tail of the stream.
 > The default initial token position ensures that the Saga does not react to events from the past, as in most cases, this would introduce unwanted side effects.
 
 Conceptually there are a couple of scenarios when a processor builds an initial token on application startup.
