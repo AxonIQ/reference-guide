@@ -4,14 +4,14 @@ An _Event Handler_ is a method that is capable of handling an `EventMessage`.
 As such, the method will react to the occurrences within an application.
 
 In Axon, an _object_ may declare several event handlers by annotating them with `@EventHandler`.
-This _object_ is most often referred to as an _Event Handling Component_, or sometimes an Event Handler too.
+This _object_ is most often referred to as an _Event Handling Component_, or simply an Event Handler.
 When drafting an `@EventHandler` annotated method, the declared parameters of the method define which events it will receive.
 
 Arguably the most important parameter of an event handler is the first parameter which refers to the payload of an `EventMessage`.
 If the event handler does not need access to the payload of the message, you can specify the expected payload type on the `@EventHandler` annotation.
 
 Do not configure the payload type on the annotation if you want the payload to be passed as a parameter.
-For an exhaustive list of all parameters, we refer to [this](../messaging-concepts/supported-parameters-annotated-handlers.md#supported-parameters-for-event-handlers) section.
+For a complete list of all parameters, we refer to [this](../messaging-concepts/supported-parameters-annotated-handlers.md#supported-parameters-for-event-handlers) section.
 
 In all circumstances, at most one event handler method is invoked per listener instance.
 Axon will search for the most specific method to invoke, using the following rules:
