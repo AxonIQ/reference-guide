@@ -14,7 +14,7 @@ Before we get into the setup, a short introduction to the concept of clusters an
 
 A cluster of Axon Server nodes will provide multiple connection points for \(Axon Framework-based\) client applications, and thus share the load of managing message delivery and event storage. Client applications will dynamically connect to a node in the cluster and automatically reconnect to another, should the node that they are currently connected to become unreachable.‌ This ensures a highly available deployment.
 
-Within a single cluster you can define _**contexts**_. Contexts are comparable to logical databases in a RDBMS. They allow for strong segregation without requiring deploying and managing full instances. They may be used for "bounded contexts" in the DDD sense, multi-tenancy \(with a context per tenant\), and have different retention policies.
+Within a single cluster you can define _**contexts**_. Contexts are comparable to logical databases in a RDBMS. They allow for strong separation without requiring deploying and managing full instances. They may be used for "bounded contexts" in the DDD sense, multi-tenancy \(with a context per tenant\), and have different retention policies.
 
 The [Clustering](../../administration/clustering.md) and [Contexts](../../administration/multi-context.md) sections provide more insights into these aspects.
 
@@ -190,7 +190,7 @@ The UI console displays the newly initialized admin node as shown below \(assumi
 
 ![Additional node registered.](../../../.gitbook/assets/admin_node_additional_node1.png)
 
-A production grade setup would require more advanced configuration. For example an Axon Server EE node can be assigned to play different roles within a cluster - it may serve as an admin node, providing services to configure the cluster and keep it running, next to the “regular” event store and messaging functions. It can also be configured to only service specific _**contexts**_ in various roles. Contexts are comparable to logical databases in a RDBMS. They allow for strong segregation without requiring deploying and managing full instances.
+A production grade setup would require more advanced configuration. For example an Axon Server EE node can be assigned to play different roles within a cluster - it may serve as an admin node, providing services to configure the cluster and keep it running, next to the “regular” event store and messaging functions. It can also be configured to only service specific _**contexts**_ in various roles. Contexts are comparable to logical databases in a RDBMS. They allow for strong separation without requiring deploying and managing full instances.
 
 This is detailed in the [Clustering](../../administration/clustering.md) and the [Contexts](../../administration/multi-context.md) sections.
 
