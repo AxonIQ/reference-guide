@@ -384,12 +384,14 @@ Token stealing can, for example, happen if event processing is slow or encounter
  
 ### Initial Tracking Token
 
+> Please note that we will be referring to the oldest (very first) token as the "tail" of the stream, and the most recent (the latest) token as the "head" of the stream in this document. 
+
 The Streaming Processor uses a `StreamableMessageSource` to retrieve a stream of events that will open on start-up.
 It requires a `TrackingToken` to open this stream, which it will fetch from the `TokenStore`.
 However, if a Streaming Processor starts for the first time, there is no `TrackingToken` present to open the stream with yet.
 
 Whenever this situation occurs, a Streaming Processor will construct an "initial token."
-By default, the initial token will start at the head of the event stream.
+By default, the initial token will start at the tail of the event stream.
 Thus, the processor will begin at the start and handle every event present in the message source.
 This start position is configurable, as is described [here](#token-configuration).
 
@@ -421,8 +423,8 @@ The [initial token](#initial-tracking-token) for a `StreamingEventProcessor` is 
 When configuring the initial token builder function, the received input parameter is the `StreamableMessageSource`.
 The message source, in turn, gives three possibilities to build a token, namely:
 
-1. `createHeadToken()` - Creates a token from the head of the event stream. Creating head tokens is the default value for most Streaming Processors.
-2. `createTailToken()` - Creates a token from the tail of the event stream.
+1. `createHeadToken()` - Creates a token from the head of the event stream. 
+2. `createTailToken()` - Creates a token from the tail of the event stream. Creating tail tokens is the default value for most Streaming Processors.
 3. `createTokenAt(Instant)` / `createTokenSince(Duration)` - Creates a token that tracks all events after a given time.
    If there is an event precisely at that given moment in time, it will also be taken into account.
 
