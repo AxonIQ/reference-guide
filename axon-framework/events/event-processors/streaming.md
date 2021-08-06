@@ -12,10 +12,14 @@ Furthermore, Streaming Processors use separate threads to process the events ret
 Using separate threads decouples the `StreamingEventProcessor` from other operations (e.g., event publication or command handling), allowing for cleaner separation within any application.  
 Using separate threads allows for [parallelization](#parallel-processing) of the event load, either within a single JVM or between several.
 
-When starting a Streaming Processor, it will open an event stream through the configured `StreamableMessageSource`.
+When starting a Streaming Processor, it will open an event stream through the configured `StreamableMessageSource`. The first time a stream has started, it, by default, will begin at the tail (the oldest/the very first token) of the stream.
 It keeps track of the event processing progress while traversing the stream.
 It does so by storing the Tracking Tokens, or _tokens_ for short, accompanying the events.
 This solution works towards tracking the progress since the tokens specify the event's position on the stream.
+
+> **Head or Tail?**
+> 
+> Note that the oldest token is located at the tail of the stream and the latest (newest) token is positioned at the head of the streaming event processor. 
 
 Maintaining the progress through tokens makes a Streaming Processor
 1. able to deal with stopping and starting the processor,
