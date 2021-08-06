@@ -4,6 +4,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## _Release 4.5_
 
+### Release 4.5.6
+
+* Fix: Memory leak in subscription query registrations
+
 ### Release 4.5.5
 
 * Fix: Improved error handling and feedback when uploading invalid plugins
