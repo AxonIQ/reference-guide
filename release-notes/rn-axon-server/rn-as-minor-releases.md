@@ -4,6 +4,14 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## _Release 4.5_
 
+### Release 4.5.8
+
+* Fix: Memory leak in subscription query registrations
+* Fix: Different error code and message when context not available or context does not exist during client connect
+  Axon Server now returns error code AXONIQ-1302 if the client requests a connection for an unknown context. If  
+  the context is not active Axon Server returns AXONIQ-1400. 
+
+
 ### Release 4.5.7
 
 * Fix: Improve loading aggregate events performance for clients connected to a follower
