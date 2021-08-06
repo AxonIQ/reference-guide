@@ -55,15 +55,15 @@ Another good approach to track the flow of messages throughout an Axon applicati
 
 ### Event Tracker Status <a id="event-tracker-status"></a>
 
-Since [Tracking Tokens](events/event-processors.md#token-store) "track" the progress of a given Tracking Event Processor, they provide a sensible monitoring hook in any Axon application. Such a hook proves its usefulness when we want to rebuild our view model and we want to check when the processor has caught up with all the events.‌
+Since [Tracking Tokens](events/event-processors/streaming.md#token-store) "track" the progress of a given Tracking Event Processor, they provide a sensible monitoring hook in any Axon application. Such a hook proves its usefulness when we want to rebuild our view model and we want to check when the processor has caught up with all the events.
 
-To that end the `TrackingEventProcessor` exposes the `processingStatus()` method. It returns a map where the key is the segment identifier and the value is an "Event Tracker Status". The Event Tracker Status exposes a couple of metrics:‌
+To that end the `TrackingEventProcessor` exposes the `processingStatus()` method. It returns a map where the key is the segment identifier and the value is an "Event Tracker Status". The Event Tracker Status exposes a couple of metrics:
 
 * The `Segment` it reflects the status of.
 * A boolean through `isCaughtUp()` specifying whether it is caught up with the Event Stream.
-* A boolean through `isReplaying()` specifying whether the given Segment is ​[replaying](events/event-processors.md#replaying-events).
+* A boolean through `isReplaying()` specifying whether the given Segment is [replaying](events/event-processors/streaming.md#replaying-events).
 
-* A boolean through `isMerging()` specifying whether the given Segment is [​merging](events/event-processors.md#splitting-and-merging-tracking-tokens).
+* A boolean through `isMerging()` specifying whether the given Segment is [merging](events/event-processors/streaming.md#splitting-and-merging-segments).
 * The `TrackingToken` of the given Segment.
 * A boolean through `isErrorState()` specifying whether the Segment is in an error state.
 * An optional `Throwable` if the Event Tracker reached an error state.
@@ -89,7 +89,7 @@ Do note that this means the change listener will be invoked _often_, as it is ex
 
 ## Metrics <a id="metrics"></a>
 
-Interesting metrics in a message centric system come in several forms and flavors, like count, capacity and latency for example. Axon Framework allows you to retrieve such measurements through the use of the `axon-metrics` or `axon-micrometer` module. With these modules you can register a number of `MessageMonitor` implementations to your messaging components, like the [`CommandBus`](axon-framework-commands/command-dispatchers.md#the-command-bus), [`EventBus`](events/event-bus-and-event-store.md#event-bus), [`QueryBus`](queries/query-dispatchers.md#the-query-bus-and-query-gateway) and [`EventProcessors`](events/event-processors.md).‌
+Interesting metrics in a message centric system come in several forms and flavors, like count, capacity and latency for example. Axon Framework allows you to retrieve such measurements through the use of the `axon-metrics` or `axon-micrometer` module. With these modules you can register a number of `MessageMonitor` implementations to your messaging components, like the [`CommandBus`](axon-framework-commands/command-dispatchers.md#the-command-bus), [`EventBus`](events/event-bus-and-event-store.md#event-bus), [`QueryBus`](queries/query-dispatchers.md#the-query-bus-and-query-gateway) and [`EventProcessors`](events/event-processors/README.md).
 
 `axon-metrics` module uses [Dropwizard Metrics](https://metrics.dropwizard.io/) for registering the measurements correctly. That means that `MessageMonitors` are registered against the Dropwizard `MetricRegistry`.‌
 

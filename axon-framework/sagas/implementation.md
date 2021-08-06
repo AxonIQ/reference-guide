@@ -50,40 +50,13 @@ Events need to be redirected to the appropriate saga instances. To do so, some i
 
 ### Saga Manager
 
-Like any component that handles events, the processing is done by an event processor. However, sagas are not singleton instances handling events. They have individual life cycles which need to be managed.
+Like any component that handles events, the processing is done by an [Event Processor](../events/event-processors/README.md). 
+However, Sagas are not singleton instances handling events. 
+They have individual life cycles that need to be managed.
 
-Axon supports life cycle management through the `AnnotatedSagaManager`, which is provided to an event processor to perform the actual invocation of handlers. It is initialized using the type of the saga to manage, as well as a `SagaRepository` where sagas of that type can be stored and retrieved. A single `AnnotatedSagaManager` can only manage a single saga type.
-
-When using the Configuration API, Axon will use sensible defaults for most components. However, it is highly recommended to define a `SagaStore` implementation to use. The `SagaStore` is the mechanism that 'physically' stores the saga instances somewhere. The `AnnotatedSagaRepository` \(the default\) uses the `SagaStore` to store and retrieve Saga instances as they are required.
-
-{% tabs %}
-{% tab title="Axon Configuration API" %}
-```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration();
-        configurer.eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer
-                .registerSaga(MySaga.class,
-                              // Axon defaults to an in-memory SagaStore,
-                              // defining another is recommended
-                              sagaConfigurer -> sagaConfigurer.configureSagaStore(c -> new JpaSagaStore(...))));
-
-// alternatively, it is possible to register a single SagaStore for all Saga types:
-configurer.registerComponent(SagaStore.class, c -> new JpaSagaStore(...));
-```
-{% endtab %}
-
-{% tab title="Spring Boot AutoConfiguration" %}
-```java
-@Saga(sagaStore = "mySagaStore")
-public class MySaga {...}
-...
-// somewhere in configuration
-@Bean
-public SagaStore mySagaStore() {
-    return new MongoSagaStore(...); // default is JpaSagaStore
-}
-```
-{% endtab %}
-{% endtabs %}
+Axon supports life cycle management through the `AnnotatedSagaManager`, which is provided to an Event Processor to perform the actual invocation of handlers. 
+It is initialized using the type of the Saga to manage, as well as a [`SagaRepository`](#saga-repository-and-saga-store) where Sagas of that type can be stored and retrieved. 
+A single `AnnotatedSagaManager` can only manage a single Saga type.
 
 ### Saga repository and saga store
 
@@ -129,3 +102,103 @@ To configure caching, simply wrap any `SagaStore` in a `CachingSagaStore`. The c
 
 The latter two arguments may refer to the same cache, or to different ones. This depends on the eviction requirements of your specific application.
 
+## Configuring a Saga
+
+Although a Saga requires a [manager](#saga-manager), [repository / store](#saga-repository-and-saga-store) and wiring to the right message busses, configuring a Saga is straightforward.
+When using the Configuration API, Axon will use sensible defaults for most components.
+
+As a specific type of [Event Handling Component](../events/event-handlers.md), configuration of a Saga is closely related to the configuration of [Event Processors](../events/event-processors/README.md).
+Due to this, configuring a processor will impact the behaviour of a Saga, albeit on a non-functional level.
+The configuration of [error handling](../events/event-processors/README.md#error-handling) or [processor assignment rules](../events/event-processors/README.md#assigning-handlers-to-processors), for example, are thus equally valid for Sagas as long as the right processor name is used during configuration.
+
+> **Default Saga Processor name**
+> 
+> As a Saga is a type of event handler, it is part of an Event Processor.
+> Without defining any [assignment rules](../events/event-processors/README.md#assigning-handlers-to-processors), a Saga's processor name equals the Saga name appended with "Processor",
+>
+> With a Saga called `MySaga`, that would mean the processor is called `MySagaProcessor`.
+
+Internally, Axon uses a `SagaConfigurer` to construct the Saga, Saga Manager, Saga Repository and Saga Store.
+A default configuration for a Saga called `MySaga` would look as follows:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+As a specific type of event handler, registering a Saga is done through the `EventProcessingConfigurer`:
+
+```java
+class AxonConfig {
+
+    void configureMySaga(EventProcessingConfigurer eventProcessingConfigurer) {
+        eventProcessingConfigurer.registerSaga(MySaga.class);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+In a Spring environment, the Saga implementation should be annotated with `@Saga` to auto-configure it:
+
+```java
+import org.axonframework.spring.stereotype.Saga;
+
+@Saga
+class MySaga {
+    // saga implementation left out...
+}
+```
+{% endtab %}
+{% endtabs %}
+
+Although the defaults lead us to a working Saga environment, it is recommended to define the [`SagaStore`](#saga-repository-and-saga-store) to use.
+The `SagaStore` represents the mechanism that 'physically' stores the Saga instances, for which it uses the `AnnotatedSagaRepository` \(the default\) to store and retrieve Saga instances.
+If no `SagaStore` is configured Axon defaults an `InMemorySagaStore`, thus not persisting the Saga on shutdown.
+To configure a `SagaStore` for `MySaga` consider the following snippet:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+To define a custom `SagaStore`, the `SagaConfigurer` should be used through the `EventProcessingConfigurer#registerSaga(Class<T>, Consumer<SagaConfigurer<T>>)` method:
+
+```java
+class AxonConfig {
+
+    void configureMySaga(EventProcessingConfigurer eventProcessingConfigurer,
+                         EntityManagerProvider entityManagerProvider) {
+        eventProcessingConfigurer.registerSaga(
+                MySaga.class,
+                sagaConfigurer -> sagaConfigurer.configureSagaStore(
+                        c -> JpaSagaStore.builder()
+                                         .entityManagerProvider(entityManagerProvider)
+                                         .build()
+                )
+        );
+    }
+}
+```
+Alternatively, a default store can be defined through `EventProcessingConfigurer#registerSagaStore(Function<Configuration, SagaStore>)` method.
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
+When Spring Boot is used and JPA or JDBC is on the classpath, then Axon auto-configures a `JpaSagaStore` or `JdbcSagaStore` respectively.
+To provide a custom `SagaStore`, providing a bean to the application context and defining the bean name on the `@Saga` annotation suffices: 
+
+```java
+import org.axonframework.spring.stereotype.Saga;
+
+@Saga(sagaStore = "mySagaStore")
+public class MySaga {
+    // saga implementation left out...
+}
+
+@Configuration
+class AxonConfig {
+
+    @Bean
+    public SagaStore mySagaStore(DataSource dataSource) {
+        return JdbcSagaStore.builder()
+                            .dataSource(dataSource)
+                            .build();
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
