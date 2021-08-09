@@ -19,7 +19,7 @@ This solution works towards tracking the progress since the tokens specify the e
 
 > **Head or Tail?**
 > 
-> Note that the oldest token is located at the tail of the stream, and the latest (newest) token is positioned at the head of the stream. 
+> The oldest (very first) token is located at the tail of the stream, and the latest (newest) token is positioned at the head of the stream. 
 
 Maintaining the progress through tokens makes a Streaming Processor
 1. able to deal with stopping and starting the processor,
