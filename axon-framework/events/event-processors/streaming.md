@@ -388,8 +388,6 @@ Token stealing can, for example, happen if event processing is slow or encounter
  
 ### Initial Tracking Token
 
-> Please note that we will be referring to the oldest (very first) token as the "tail" of the stream, and the most recent (the latest) token as the "head" of the stream in this document. 
-
 The Streaming Processor uses a `StreamableMessageSource` to retrieve a stream of events that will open on start-up.
 It requires a `TrackingToken` to open this stream, which it will fetch from the `TokenStore`.
 However, if a Streaming Processor starts for the first time, there is no `TrackingToken` present to open the stream with yet.
