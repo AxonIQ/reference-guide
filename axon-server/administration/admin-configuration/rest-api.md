@@ -11,5 +11,5 @@ A list of the resources is provided below.
 | context | Maintenance of contexts | /v1/context |
 | cluster | Maintenance of clusters | /v1/cluster |
 
-The complete API documentation is available at {AXON\_SERVER\_URL}/swagger-ui.html
+The complete API documentation is available at {AXON\_SERVER\_URL}/swagger-ui/index.html
 
