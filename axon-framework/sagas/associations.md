@@ -12,7 +12,7 @@ Imagine a saga that has been created for a transaction around an Order. The saga
 
 Here is the code for such a Saga:
 {% tabs %}
-{% tab title="Axon Configuration API" %}
+{% tab title="Spring Boot AutoConfiguration" %}
 ```java
 @Saga
 public class OrderManagementSaga {
@@ -52,7 +52,7 @@ public class OrderManagementSaga {
 }
 ```
 {% endtab %}
-{% tab title="Spring Boot AutoConfiguration" %}
+{% tab title="Axon Configuration API" %}
 ```java
 public class OrderManagementSaga {
 
