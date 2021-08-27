@@ -13,6 +13,7 @@ Imagine a saga that has been created for a transaction around an Order. The saga
 Here is the code for such a Saga:
 
 ```java
+@Saga
 public class OrderManagementSaga {
 
     private boolean paid = false;
