@@ -11,7 +11,48 @@ Associating a saga with a concept is done in several ways. First of all, when a 
 Imagine a saga that has been created for a transaction around an Order. The saga is automatically associated with the Order, as the method is annotated with `@StartSaga`. The saga is responsible for creating an Invoice for that Order, and tell Shipping to create a Shipment for it. Once both the Shipment has arrived and the Invoice has been paid, the transaction is completed and the saga is closed.
 
 Here is the code for such a Saga:
+{% tabs %}
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Saga
+public class OrderManagementSaga {
 
+    private boolean paid = false;
+    private boolean delivered = false;
+    @Inject
+    private transient CommandGateway commandGateway;
+
+    @StartSaga
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(OrderCreatedEvent event) {
+        // client generated identifiers
+        ShippingId shipmentId = createShipmentId();
+        InvoiceId invoiceId = createInvoiceId();
+        // associate the Saga with these values, before sending the commands
+        SagaLifecycle.associateWith("shipmentId", shipmentId);
+        SagaLifecycle.associateWith("invoiceId", invoiceId);
+        // send the commands
+        commandGateway.send(new PrepareShippingCommand(...));
+        commandGateway.send(new CreateInvoiceCommand(...));
+    }
+
+    @SagaEventHandler(associationProperty = "shipmentId")
+    public void handle(ShippingArrivedEvent event) {
+        delivered = true;
+        if (paid) { SagaLifecycle.end(); }
+    }
+
+    @SagaEventHandler(associationProperty = "invoiceId")
+    public void handle(InvoicePaidEvent event) {
+        paid = true;
+        if (delivered) { SagaLifecycle.end(); }
+    }
+
+    // ...
+}
+```
+{% endtab %}
+{% tab title="Axon Configuration API" %}
 ```java
 public class OrderManagementSaga {
 
@@ -49,6 +90,7 @@ public class OrderManagementSaga {
     // ...
 }
 ```
-
+{% endtab %}
+{% endtabs %}
 By allowing clients to generate an identifier, a saga can be easily associated with a concept, without the need for a request-response type command. We associate the event with these concepts before publishing the command. This way, we are guaranteed to also catch events generated as part of this command. This will end the saga once the invoice is paid and the shipment has arrived.
 
