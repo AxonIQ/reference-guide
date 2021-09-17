@@ -4,6 +4,17 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## _Release 4.5_
 
+### Release 4.5.9
+
+* Fix: UI issues when running with another context root
+* Fix: UI does not refresh the icons for event processor streams
+* Fix: Balancing processors for a processing group containing special characters does not work from the UI
+* Fix: UI is not updated when the auto-balancing strategy is changed
+* Fix: Warning logged when a client closes an  event stream while it is reading from old segments
+* Fix: Removing a replication group fails when one or more nodes are not connected
+* Fix: Concurrency issue while registering command handlers and query handlers
+* Remove timing metrics for commands/queries for clients no longer connected
+
 ### Release 4.5.8
 
 * Fix: Memory leak in subscription query registrations
