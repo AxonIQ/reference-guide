@@ -254,14 +254,14 @@ A list of all the configuration properties by area is denoted below. Unless expl
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">event.primary-cleanup-delay</td>
-      <td style="text-align:left">Delay to clear ByfeBuffers from off-heap memory for writable segments.</td>
+      <td style="text-align:left">Delay to clear ByteBuffers from off-heap memory for writable segments.</td>
       <td
       style="text-align:left">15</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">event.secondary-cleanup-delay</td>
-      <td style="text-align:left">Delay to clear ByfeBuffers from off-heap memory for read-only segments.</td>
+      <td style="text-align:left">Delay to clear ByteBuffers from off-heap memory for read-only segments.</td>
       <td
       style="text-align:left">15</td>
     </tr>
@@ -315,14 +315,14 @@ A list of all the configuration properties by area is denoted below. Unless expl
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">snapshot.primary-cleanup-delay</td>
-      <td style="text-align:left">Delay to clear ByfeBuffers from off-heap memory for writable segments.</td>
+      <td style="text-align:left">Delay to clear ByteBuffers from off-heap memory for writable segments.</td>
       <td
       style="text-align:left">15</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">snapshot.secondary-cleanup-delay</td>
-      <td style="text-align:left">Delay to clear ByfeBuffers from off-heap memory for read-only segments.</td>
+      <td style="text-align:left">Delay to clear ByteBuffers from off-heap memory for read-only segments.</td>
       <td
       style="text-align:left">15</td>
     </tr>

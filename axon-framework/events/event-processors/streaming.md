@@ -12,10 +12,14 @@ Furthermore, Streaming Processors use separate threads to process the events ret
 Using separate threads decouples the `StreamingEventProcessor` from other operations (e.g., event publication or command handling), allowing for cleaner separation within any application.  
 Using separate threads allows for [parallelization](#parallel-processing) of the event load, either within a single JVM or between several.
 
-When starting a Streaming Processor, it will open an event stream through the configured `StreamableMessageSource`.
+When starting a Streaming Processor, it will open an event stream through the configured `StreamableMessageSource`. The first time a stream has started, it, by default, will begin at the tail (the oldest/the very first token) of the stream.
 It keeps track of the event processing progress while traversing the stream.
 It does so by storing the Tracking Tokens, or _tokens_ for short, accompanying the events.
 This solution works towards tracking the progress since the tokens specify the event's position on the stream.
+
+> **Head or Tail?**
+> 
+> The oldest (very first) token is located at the tail of the stream, and the latest (newest) token is positioned at the head of the stream. 
 
 Maintaining the progress through tokens makes a Streaming Processor
 1. able to deal with stopping and starting the processor,
@@ -389,7 +393,7 @@ It requires a `TrackingToken` to open this stream, which it will fetch from the 
 However, if a Streaming Processor starts for the first time, there is no `TrackingToken` present to open the stream with yet.
 
 Whenever this situation occurs, a Streaming Processor will construct an "initial token."
-By default, the initial token will start at the head of the event stream.
+By default, the initial token will start at the tail of the event stream.
 Thus, the processor will begin at the start and handle every event present in the message source.
 This start position is configurable, as is described [here](#token-configuration).
 
@@ -421,8 +425,8 @@ The [initial token](#initial-tracking-token) for a `StreamingEventProcessor` is 
 When configuring the initial token builder function, the received input parameter is the `StreamableMessageSource`.
 The message source, in turn, gives three possibilities to build a token, namely:
 
-1. `createHeadToken()` - Creates a token from the head of the event stream. Creating head tokens is the default value for most Streaming Processors.
-2. `createTailToken()` - Creates a token from the tail of the event stream.
+1. `createHeadToken()` - Creates a token from the head of the event stream. 
+2. `createTailToken()` - Creates a token from the tail of the event stream. Creating tail tokens is the default value for most Streaming Processors.
 3. `createTokenAt(Instant)` / `createTokenSince(Duration)` - Creates a token that tracks all events after a given time.
    If there is an event precisely at that given moment in time, it will also be taken into account.
 
