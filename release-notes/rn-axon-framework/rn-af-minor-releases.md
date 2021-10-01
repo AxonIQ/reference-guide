@@ -4,6 +4,25 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## _Release 4.5_
 
+### Release 4.5.4
+
+* First and foremost, we updated the XStream version to 1.4.18. This upgrade was a requirement since several [CVE's](https://x-stream.github.io/changes.html) were noted for XStream version 1.4.17. 
+  As a consequence of XStream's solution imposed through the CVE's, everybody is required to specify the security context of an `XStream` instance. 
+  This change also has an impact on Axon Framework since the `XStreamSerializer` is the default serializer. 
+  So as of this release, any usages of the default `XStreamSerializer` will come with warnings, stating it is highly recommended to use an `XStream` instance for which the security context is set through types or wildcards. 
+  When your application uses Spring Boot, Axon will default to selecting the secured types based on your `@ComponentScan` annotated beans (e.g., like the `@SpringBootApplication` annotation). 
+  For those interested in the details of the solution, check out [this](https://github.com/AxonFramework/AxonFramework/pull/1917) pull request.
+
+* User 'nils-christian' noted in issue [#1892](https://github.com/AxonFramework/AxonFramework/issues/1892) that Axon executed Upcaster beans in a Spring environment in the incorrect order. 
+  This ordering issue was due to a misconception in deducing the `@Order` annotation on upcaster beans. 
+  We resolved the problem in pull request [#1895](https://github.com/AxonFramework/AxonFramework/pull/1895).
+
+* We noticed a `TokenStore` operation that Axon did not invoke within a transaction. 
+  In most scenarios, this worked out, but when using Micronaut, for example, this (correctly) caused an exception. 
+  After spotting the issue, we resolved it in [this](https://github.com/AxonFramework/AxonFramework/pull/1908) pull request.
+
+For an exhaustive list of all the changes, check out the [4.5.4 release notes](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.4).
+
 ### Release 4.5.3
 
 * One new feature has been introduced in 4.5.3: the `PropertySequencingPolicy` by contributor `nils-christian`.
