@@ -7,6 +7,14 @@
 * [Axon Server](introduction/axon-server.md)
 * [Release Notes](introduction/release-notes/release-notes.md)
     * [Bug Fixes](introduction/release-notes/bug-fixes.md)
+    * [Extensions](introduction/release-notes/rn-extensions/README.md)
+      * [AMQP](introduction/release-notes/rn-extensions/rn-amqp/README.md)
+      * [CDI](introduction/release-notes/rn-extensions/rn-cdi/README.md)
+      * [JGroups](introduction/release-notes/rn-extensions/rn-jgroups/README.md)
+      * [Kafka](introduction/release-notes/rn-extensions/rn-kafka/README.md)
+      * [Mongo](introduction/release-notes/rn-extensions/rn-mongo/README.md)
+      * [Spring Cloud](introduction/release-notes/rn-extensions/rn-springcloud/README.md)
+      * [Tracing](introduction/release-notes/rn-extensions/rn-tracing/README.md)
 
 ## Setting Up
 

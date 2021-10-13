@@ -47,10 +47,3 @@ The bugs marked for release 4.0 were issues introduced to new features or enhanc
 As such they should not have impacted users in any way.
 Regardless, the full list can be found
  [here](https://github.com/AxonFramework/AxonFramework/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Release+4.0%22++label%3A%22Type%3A+Bug%22).
-
-## Axon Framework Extensions
-
-### Mongo 4.0.1
-
-The Mongo extension incorrectly used the content type instead of the tokens type upon storing a serialized token.
-The issue was marked and resolved under [#1](https://github.com/AxonFramework/extension-mongo/issues/1).
