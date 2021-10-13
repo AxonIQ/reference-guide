@@ -14,7 +14,15 @@
     * [Major Releases](release-notes/rn-axon-server/rn-as-major-releases.md)
     * [Minor Releases Standard Edition](release-notes/rn-axon-server/rn-asse-minor-releases.md)
     * [Minor Releases Enterprise Edition](release-notes/rn-axon-server/rn-as-minor-releases.md)
-  * [Axon Framework Extensions](release-notes/axon-framework-extensions.md)
+  * [Axon Framework Extensions](release-notes/rn-extensions/README.md)
+    * [AMQP](release-notes/rn-extensions/rn-amqp/README.md)
+    * [CDI](release-notes/rn-extensions/rn-cdi/README.md)
+    * [JGroups](release-notes/rn-extensions/rn-jgroups/README.md)
+    * [Kafka](release-notes/rn-extensions/rn-kafka/README.md)
+    * [Mongo](release-notes/rn-extensions/rn-mongo/README.md)
+    * [Reactor](release-notes/rn-extensions/rn-reactor/README.md)
+    * [Spring Cloud](release-notes/rn-extensions/rn-springcloud/README.md)
+    * [Tracing](release-notes/rn-extensions/rn-tracing/README.md)
 
 ## Getting Started
 
