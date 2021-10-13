@@ -8,7 +8,7 @@ This release has seen a bunch of adjustments towards the Spring Cloud extension,
 Firstly, the introduction of the `CapabilityDiscoveryMode` and secondly the automatic process added to this project:
 
 * Introduced GitHub Actions to build, test and push snapshots of the Spring Cloud Extension, as has been marked in pull request [#68](https://github.com/AxonFramework/extension-springcloud/pull/68).
-* Dependabot was introduced, ensuring all versions will be as up to date as possible.
+* Dependabot was introduced, ensuring all versions will be as up-to-date as possible.
 * JUnit4 has been removed entirely, in favor of JUnit 5.
 * The `CapabilityDiscoveryMode` mode has been introduced through issue [#23](https://github.com/AxonFramework/extension-springcloud/issues/23).
   This approach allows for more flexibility when it comes to defining how command routing information should be retrieved and shared.
@@ -29,7 +29,7 @@ For a complete list of all changes, see [this](https://github.com/AxonFramework/
 
 When using the [Kubernetes](https://spring.io/projects/spring-cloud-kubernetes) implementation of Spring Cloud the
 `SpringCloudCommandRouter` would throw `NullPointerException`s.
-This occurs because Spring Cloud Kubernetes does not support the `ServiceInstance`'s meta data field,
+This occurs because Spring Cloud Kubernetes does not support the `ServiceInstance`'s metadata field,
 which the `SpringCloudCommandRouter` relies on.
 [This](https://github.com/AxonFramework/extension-springcloud/pull/10) pull request introduced a null check to ensure
 the null pointer would not be thrown again.
