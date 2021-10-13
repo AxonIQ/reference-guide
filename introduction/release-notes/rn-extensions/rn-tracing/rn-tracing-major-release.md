@@ -2,6 +2,16 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Tracing Extension.
 
+## Release 4.3
+
+* Pull request [#33](https://github.com/AxonFramework/extension-tracing/pull/33) introduces tracing for scatter-gather and subscription queries.
+  This introduction means that we can make a full release of the Axon Tracing Extension.
+
+* Traces for query messages now have tags included.
+  We also introduced additional test cases to validate the entire process, as seen in [this](https://github.com/AxonFramework/extension-tracing/pull/42) issue.
+
+For a complete list of all changes, we refer to [this](https://github.com/AxonFramework/extension-tracing/issues?q=is%3Aclosed+milestone%3A%22Release+4.3%22) page.
+
 ## Release 4.2
 
 We did not introduce any significant changes other than updating the extension to use Axon Framework release 4.2.
