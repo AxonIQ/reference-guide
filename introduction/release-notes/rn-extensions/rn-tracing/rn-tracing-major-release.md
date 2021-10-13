@@ -15,8 +15,11 @@ As such, users should consider we might introduce API changes in future releases
 ## Release 4.1
 
 * The constructors of the `TracingCommandGateway` and `TracingQueryGateway` are now protected, since issue [#9](https://github.com/AxonFramework/extension-tracing/issues/9).
-  This allows these classes to be extended, if necessary.
+  This change allows users to extend these classes if necessary.
 
 * As off issue [#7](https://github.com/AxonFramework/extension-tracing/issues/7), the spans now contain defaults operation names and tags.
 
-You can find a complete list of the changes [here](https://github.com/AxonFramework/extension-tracing/issues?q=is%3Aclosed+milestone%3A%22Release+4.1%22) 
+You can find a complete list of the changes [here](https://github.com/AxonFramework/extension-tracing/issues?q=is%3Aclosed+milestone%3A%22Release+4.1%22)
+
+Note that this extension currently is in a _milestone_ state.
+As such, users should consider we might introduce API changes in future releases.
