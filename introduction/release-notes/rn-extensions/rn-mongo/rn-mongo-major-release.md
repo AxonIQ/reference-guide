@@ -12,3 +12,7 @@ Next to that, it complies with Axon Framework's 4.0 release.
 Contributor `mwlynch` introduced a small improvement on the `MongoTokenStore` and `MongoEventStorageEngine`.
 Namely, he removed the `@PostConstruct` annotation from the `ensureIndexes()` methods and moved the invocation to the constructor.
 For the specific changes, we refer to [this](https://github.com/AxonFramework/extension-mongo/pull/2) pull request.
+
+## Release 4.2
+
+We did not introduce any significant changes other than updating the extension to use Axon Framework release 4.2.

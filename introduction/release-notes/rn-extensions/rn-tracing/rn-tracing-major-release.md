@@ -23,3 +23,10 @@ You can find a complete list of the changes [here](https://github.com/AxonFramew
 
 Note that this extension currently is in a _milestone_ state.
 As such, users should consider we might introduce API changes in future releases.
+
+## Release 4.2
+
+We did not introduce any significant changes other than updating the extension to use Axon Framework release 4.2.
+
+Note that this extension currently is in a _milestone_ state.
+As such, users should consider we might introduce API changes in future releases.

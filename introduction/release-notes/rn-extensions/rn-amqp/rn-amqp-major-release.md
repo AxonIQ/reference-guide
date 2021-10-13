@@ -13,3 +13,7 @@ A version predicament caused the extension to load the wrong package for the `Ch
 We resolved this issue for release 4.1 [here](https://github.com/AxonFramework/extension-amqp/issues/1).
 
 Furthermore, we updated the dependency on Axon Framework to 4.1.
+
+## Release 4.2
+
+We did not introduce any significant changes other than updating the extension to use Axon Framework release 4.2.
