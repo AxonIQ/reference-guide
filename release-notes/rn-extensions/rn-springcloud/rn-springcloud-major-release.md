@@ -2,6 +2,19 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Spring Cloud Extension.
 
+## Release 4.4
+
+This release has seen a bunch of adjustments towards the Spring Cloud extension, which can be grouped into two categories.
+Firstly, the introduction of the `CapabilityDiscoveryMode` and secondly the automatic process added to this project:
+
+* Introduced GitHub Actions to build, test and push snapshots of the Spring Cloud Extension, as has been marked in pull request [#68](https://github.com/AxonFramework/extension-springcloud/pull/68).
+* Dependabot was introduced, ensuring all versions will be as up to date as possible.
+* JUnit4 has been removed entirely, in favor of JUnit 5.
+* The `CapabilityDiscoveryMode` mode has been introduced through issue [#23](https://github.com/AxonFramework/extension-springcloud/issues/23).
+  This approach allows for more flexibility when it comes to defining how command routing information should be retrieved and shared.
+
+For a full list of all the changes, please check the [release notes](https://github.com/AxonFramework/extension-springcloud/releases/tag/axon-springcloud-4.4).
+
 ## Release 4.3
 
 * Issue [#14](https://github.com/AxonFramework/extension-springcloud/pull/14) implements the `CommandBusConnector#localSegment`.

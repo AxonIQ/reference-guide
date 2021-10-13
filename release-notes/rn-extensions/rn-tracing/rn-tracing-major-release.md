@@ -2,6 +2,16 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Tracing Extension.
 
+## Release 4.4
+
+* Pull request [#78](https://github.com/AxonFramework/extension-tracing/pull/78) introduces an enhancement for users of this extension.
+  With the `MessageTagBuilderService` they have more configuration options for selecting the desired tags per message type.
+
+* When using Spring Boot, the gateway bean names this extension builds clashed with Axon Frameworks default `CommandGateway` and `QueryGateway` beans.
+  Contributor `guilhermeblanco` marked this in issue [#79](https://github.com/AxonFramework/extension-tracing/issues/79), which we resolved in pull request [#86](https://github.com/AxonFramework/extension-tracing/pull/86).
+
+You can find a list of all changes made in release 4.4 [here](https://github.com/AxonFramework/extension-tracing/issues?q=is%3Aclosed+milestone%3A%22Release+4.4%22).
+
 ## Release 4.3
 
 * Pull request [#33](https://github.com/AxonFramework/extension-tracing/pull/33) introduces tracing for scatter-gather and subscription queries.

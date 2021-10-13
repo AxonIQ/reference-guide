@@ -2,6 +2,12 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon AMQP Extension.
 
+## Release 4.4
+
+* Issue [#3](https://github.com/AxonFramework/extension-amqp/pull/3) introduces support for Spring Boot Developer Tools.
+
+* We introduce dependabot, which updated the log4j version. 
+
 ## Release 4.3
 
 We did not introduce any significant changes other than updating the extension to use Axon Framework release 4.3.

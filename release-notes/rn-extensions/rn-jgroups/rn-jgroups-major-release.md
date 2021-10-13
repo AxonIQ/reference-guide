@@ -2,6 +2,12 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon JGroups Extension.
 
+## Release 4.4
+
+* Issue [#9](https://github.com/AxonFramework/extension-jgroups/pull/9) introduces support for Spring Boot Developer Tools.
+
+* We introduce dependabot, which updated the log4j version.
+
 ## Release 4.3
 
 * Issue [#7](https://github.com/AxonFramework/extension-jgroups/pull/7) implements the `CommandBusConnector#localSegment`.
