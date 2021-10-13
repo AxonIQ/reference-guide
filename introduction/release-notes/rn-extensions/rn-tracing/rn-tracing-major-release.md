@@ -2,14 +2,11 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Tracing Extension.
 
-## Release 4.0
+## Release 4.2
 
-We introduced the Tracing extension with lots of help from our contributor Christophe Bouhier at Trifork.
-The tracing logic used originates from the [Open Tracing API](https://opentracing.io/).
+We did not introduce any significant changes other than updating the extension to use Axon Framework release 4.2.
 
-You can find a complete list of all changes [here](https://github.com/AxonFramework/extension-tracing/issues?q=is%3Aclosed+milestone%3A%22Release+4.0%22).
-
-It's currently in a _milestone_ state, as it doesn't trace all `QueryGateway` operations.
+Note that this extension currently is in a _milestone_ state.
 As such, users should consider we might introduce API changes in future releases.
 
 ## Release 4.1
@@ -24,9 +21,12 @@ You can find a complete list of the changes [here](https://github.com/AxonFramew
 Note that this extension currently is in a _milestone_ state.
 As such, users should consider we might introduce API changes in future releases.
 
-## Release 4.2
+## Release 4.0
 
-We did not introduce any significant changes other than updating the extension to use Axon Framework release 4.2.
+We introduced the Tracing extension with lots of help from our contributor Christophe Bouhier at Trifork.
+The tracing logic used originates from the [Open Tracing API](https://opentracing.io/).
 
-Note that this extension currently is in a _milestone_ state.
+You can find a complete list of all changes [here](https://github.com/AxonFramework/extension-tracing/issues?q=is%3Aclosed+milestone%3A%22Release+4.0%22).
+
+It's currently in a _milestone_ state, as it doesn't trace all `QueryGateway` operations.
 As such, users should consider we might introduce API changes in future releases.
