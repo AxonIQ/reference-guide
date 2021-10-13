@@ -19,6 +19,7 @@
     * [JGroups](release-notes/rn-extensions/rn-jgroups/README.md)
     * [Kafka](release-notes/rn-extensions/rn-kafka/README.md)
     * [Mongo](release-notes/rn-extensions/rn-mongo/README.md)
+    * [Reactor](release-notes/rn-extensions/rn-reactor/README.md)
     * [Spring Cloud](release-notes/rn-extensions/rn-springcloud/README.md)
     * [Tracing](release-notes/rn-extensions/rn-tracing/README.md)
 
