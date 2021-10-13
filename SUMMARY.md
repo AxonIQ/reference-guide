@@ -13,14 +13,14 @@
   * [Axon Server](release-notes/rn-axon-server/README.md)
     * [Major Releases](release-notes/rn-axon-server/rn-as-major-releases.md)
     * [Minor Releases](release-notes/rn-axon-server/rn-as-minor-releases.md)
-  * [Axon Framework Extensions](introduction/release-notes/rn-extensions/README.md)
-    * [AMQP](introduction/release-notes/rn-extensions/rn-amqp/README.md)
-    * [CDI](introduction/release-notes/rn-extensions/rn-cdi/README.md)
-    * [JGroups](introduction/release-notes/rn-extensions/rn-jgroups/README.md)
-    * [Kafka](introduction/release-notes/rn-extensions/rn-kafka/README.md)
-    * [Mongo](introduction/release-notes/rn-extensions/rn-mongo/README.md)
-    * [Spring Cloud](introduction/release-notes/rn-extensions/rn-springcloud/README.md)
-    * [Tracing](introduction/release-notes/rn-extensions/rn-tracing/README.md)
+  * [Axon Framework Extensions](release-notes/rn-extensions/README.md)
+    * [AMQP](release-notes/rn-extensions/rn-amqp/README.md)
+    * [CDI](release-notes/rn-extensions/rn-cdi/README.md)
+    * [JGroups](release-notes/rn-extensions/rn-jgroups/README.md)
+    * [Kafka](release-notes/rn-extensions/rn-kafka/README.md)
+    * [Mongo](release-notes/rn-extensions/rn-mongo/README.md)
+    * [Spring Cloud](release-notes/rn-extensions/rn-springcloud/README.md)
+    * [Tracing](release-notes/rn-extensions/rn-tracing/README.md)
 
 ## Getting Started
 
