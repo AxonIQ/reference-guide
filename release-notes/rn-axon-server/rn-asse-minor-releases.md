@@ -2,7 +2,7 @@
 
 This page provides a dedicated overview of patch releases for the Axon Server (Standard Edition) releases
 
-## _Release 4.5_
+## Release 4.5
 
 ### Release 4.5.7
 
@@ -61,7 +61,7 @@ Notes:
 * Configurable strategy for aggregate events stream sequence validation (through property read-sequence-validation-strategy)
 * Fix in UI for check for updates
 
-## _Release 4.4_
+## Release 4.4
 
 ### Release 4.4.12
 
@@ -127,7 +127,7 @@ Notes:
 * Improved handling of full queue to client
 * Fix the refresh of the event processor status
 
-## _Release 4.3_
+## Release 4.3
 
 ### Release 4.3.6
 
@@ -161,7 +161,7 @@ Notes:
 * Updated gRPC/Netty versions
 * Prevent errors in log (sending ad-hoc result to client that has gone, sending heartbeat to client that has gone)
 
-## _Release 4.2_
+## Release 4.2
 
 ### Release 4.2.4
 
@@ -183,7 +183,7 @@ Notes:
 
 * Fixes required for enterprise edition only
 
-## _Release 4.1_
+## Release 4.1
 
 ### Release 4.1.7
 
