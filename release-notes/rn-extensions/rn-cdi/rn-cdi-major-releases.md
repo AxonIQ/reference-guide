@@ -2,17 +2,17 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon CDI Extension.
 
-## Release 4.5
+## Release 4.5 - Alpha
 
 This is a new _alpha_ release, using Axon Framework release 4.5.
 Since this is an alpha release, users should consider we might introduce API changes in future releases.
 
-## Release 4.1
+## Release 4.1 - Alpha
 
 This is a new _alpha_ release, using Axon Framework release 4.1.
 Since this is an alpha release, users should consider we might introduce API changes in future releases.
 
-## Release 4.0
+## Release 4.0 - Alpha
 
 The CDI extension is updated to work with Axon Framework 4.0.
 

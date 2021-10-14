@@ -3,7 +3,7 @@
 Any patch release made for an Axon project aims to resolve bugs.
 This page provides an overview of patch releases for the Axon Reactor Extension.
 
-## _Release 4.4_
+## Release 4.4
 
 ### Release 4.4.3
 
