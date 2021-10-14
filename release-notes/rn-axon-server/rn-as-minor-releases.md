@@ -4,7 +4,7 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## Axon Server Standard Edition
 
-## _Release 4.4_
+## Release 4.4
 
 ### Release 4.4.12
 
@@ -70,7 +70,7 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 * Improved handling of full queue to client
 * Fix the refresh of the event processor status
 
-## _Release 4.3_
+## Release 4.3
 
 ### Release 4.3.6
 
@@ -104,7 +104,7 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 * Updated gRPC/Netty versions
 * Prevent errors in log (sending ad-hoc result to client that has gone, sending heartbeat to client that has gone)
 
-## _Release 4.2_
+## Release 4.2
 
 ### Release 4.2.4
 
@@ -126,7 +126,7 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 * Fixes required for enterprise edition only
 
-## _Release 4.1_
+## Release 4.1
 
 ### Release 4.1.7
 
@@ -169,7 +169,7 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 ## Axon Server Enterprise Edition
 
-## _Release 4.4_
+## Release 4.4
 
 ### Release 4.4.17
 
@@ -291,7 +291,7 @@ This page aims to provide a dedicated overview of patch releases for the Axon Se
 
 * Fix for migration of contexts created before version 4.3
 
-## _Release 4.3_
+## Release 4.3
 
 ### Release 4.3.7
 
@@ -369,7 +369,7 @@ _axoniq.axonserver.executor-thread-count_=4 \(reduced from 8, configures the num
 * Clean up of server shutdown process
 * Fixed error when adding a non-existing node to a context
 
-## _Release 4.2_
+## Release 4.2
 
 ### Release 4.2.6
 
@@ -403,7 +403,7 @@ _axoniq.axonserver.executor-thread-count_=4 \(reduced from 8, configures the num
 * Fix for UI issue: after deleting an application the buttons no longer work
 * On auto-load-balance of a event processor group only request the current status from applications with this processor group
 
-## _Release 4.1_
+## Release 4.1
 
 ### Release 4.1.9
 
