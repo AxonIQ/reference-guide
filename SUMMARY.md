@@ -9,6 +9,7 @@
     * [Bug Fixes](introduction/release-notes/bug-fixes.md)
     * [Extensions](introduction/release-notes/rn-extensions/README.md)
       * [AMQP](introduction/release-notes/rn-extensions/rn-amqp/README.md)
+        * [Major](introduction/release-notes/rn-extensions/rn-amqp/rn-amqp-major-release.md)
       * [CDI](introduction/release-notes/rn-extensions/rn-cdi/README.md)
       * [JGroups](introduction/release-notes/rn-extensions/rn-jgroups/README.md)
       * [Kafka](introduction/release-notes/rn-extensions/rn-kafka/README.md)
