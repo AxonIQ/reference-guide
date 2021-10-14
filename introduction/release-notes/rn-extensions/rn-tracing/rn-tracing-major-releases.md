@@ -2,7 +2,7 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Tracing Extension.
 
-## Release 4.0
+## Release 4.0 - Milestone
 
 We introduced the Tracing extension with lots of help from our contributor Christophe Bouhier at Trifork.
 The tracing logic used originates from the [Open Tracing API](https://opentracing.io/).

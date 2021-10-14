@@ -1,8 +1,9 @@
 # Minor Releases
 
-Any patch release made for an Axon project is tailored towards resolving bugs. This page aims to provide a dedicated overview of patch releases per project.
+Any patch release made for an Axon project aims to resolve bugs. 
+This page provides an overview of patch releases for the Axon Mongo Extension.
 
-## _Release 4.0_
+## Release 4.0
 
 ### Release 4.0.1
 
