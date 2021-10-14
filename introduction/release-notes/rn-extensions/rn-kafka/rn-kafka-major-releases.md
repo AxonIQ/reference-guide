@@ -2,6 +2,10 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Kafka Extension.
 
+## Release 4.0
+
+Release 4.0 has seen several release candidates:
+
 ## Release 4.0 - Release Candidate 3
 
 We solidified the API of the Kafka extension with the following main points:
