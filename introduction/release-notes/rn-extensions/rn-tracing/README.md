@@ -8,3 +8,4 @@ The release notes section for the Axon Tracing Extension for all major/minor rel
 |  | [4.2](rn-tracing-major-releases.md#release-42---milestone) |
 |  | [4.1](rn-tracing-major-releases.md#release-41---milestone) |
 |  | [4.0](rn-tracing-major-releases.md#release-40---milestone) |
+| _**Minor**_ | [4.3](rn-tracing-minor-releases.md#release-43) |
