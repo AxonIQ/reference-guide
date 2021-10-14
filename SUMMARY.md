@@ -18,9 +18,9 @@
         * [Major Releases](introduction/release-notes/rn-extensions/rn-kafka/rn-kafka-major-releases.md)
       * [Mongo](introduction/release-notes/rn-extensions/rn-mongo/README.md)
         * [Major Releases](introduction/release-notes/rn-extensions/rn-mongo/rn-mongo-major-releases.md)
+        * [Minor Releases](introduction/release-notes/rn-extensions/rn-mongo/rn-mongo-minor-releases.md)
       * [Spring Cloud](introduction/release-notes/rn-extensions/rn-springcloud/README.md)
         * [Major Releases](introduction/release-notes/rn-extensions/rn-springcloud/rn-springcloud-major-releases.md)
-        * [Minor Releases](introduction/release-notes/rn-extensions/rn-springcloud/rn-springcloud-major-releases.md)
       * [Tracing](introduction/release-notes/rn-extensions/rn-tracing/README.md)
         * [Major Releases](introduction/release-notes/rn-extensions/rn-tracing/rn-tracing-major-releases.md)
 
