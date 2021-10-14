@@ -2,6 +2,19 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Tracing Extension.
 
+## Release 4.5
+
+* Contributor `aupodogov` provided an optimization in the `OpenTraceHandlerInterceptor`, by replace an `orElse` for `orElseGet`, in pull request [#103](https://github.com/AxonFramework/extension-tracing/pull/103).
+  
+* We introduced a sample module that shows how to use this extension.
+  You can find the module [here](https://github.com/AxonFramework/extension-tracing/tree/master/tracing-axon-example).
+
+* Spring Boot ordering sometimes didn't wire the tracing gateways.
+  To solve this, we enforced the ordering through an `AutoConfigureBefore` annotation on the `TracingAutoConfiguration`.
+  We marked this under issue [#105](https://github.com/AxonFramework/extension-tracing/issues/105) and solved it in [this](https://github.com/AxonFramework/extension-tracing/pull/106) pull request.
+
+We refer to the 4.5 [release notes](https://github.com/AxonFramework/extension-tracing/releases/tag/axon-tracing-4.5) for a complete list of all changes.
+
 ## Release 4.4
 
 * Pull request [#78](https://github.com/AxonFramework/extension-tracing/pull/78) introduces an enhancement for users of this extension.

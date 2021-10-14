@@ -2,6 +2,17 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon AMQP Extension.
 
+## Release 4.5
+
+* Issue [#5](https://github.com/AxonFramework/extension-amqp/pull/5) introduces dependabot.
+  This updated a large amount of the versions used by this extension.
+
+* We updated all tests to a more current testing solution.
+  This means we introduced [Testcontainers](https://www.testcontainers.org/) and updated JUnit to version 5.
+  You can find the made changes in [this](https://github.com/AxonFramework/extension-amqp/pull/44) pull request.
+
+You can check [this](https://github.com/AxonFramework/extension-amqp/releases/tag/axon-amqp-4.5) page for a complete list of all changes.
+
 ## Release 4.4
 
 * Issue [#3](https://github.com/AxonFramework/extension-amqp/pull/3) introduces support for Spring Boot Developer Tools.

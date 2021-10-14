@@ -2,6 +2,12 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon JGroups Extension.
 
+## Release 4.5
+
+* We added automatic release note construction through Git Workflow in issue [#32](https://github.com/AxonFramework/extension-jgroups/pull/32).
+
+You can check the release note [here](https://github.com/AxonFramework/extension-jgroups/releases/tag/axon-jgroups-4.5) for a complete list of all changes.
+
 ## Release 4.4
 
 * Issue [#9](https://github.com/AxonFramework/extension-jgroups/pull/9) introduces support for Spring Boot Developer Tools.
