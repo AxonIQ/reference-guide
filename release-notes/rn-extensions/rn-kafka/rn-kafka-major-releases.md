@@ -2,6 +2,15 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Kafka Extension.
 
+## Release 4.5
+
+Release 4.5 marks the point where the Kafka Extension moved away from the release candidate state.
+We marked this effort under issue [#167](https://github.com/AxonFramework/extension-kafka/pull/167), which upgraded this project to Axon Framework 4.5.
+
+Before the upgrade, we validated whether the last remaining outstanding issues required work on our end.
+None of them imposed changes on the extension side but instead warranted adjustments for the user.
+As such, the change list for this release is meager but does conclude the 'release candidate state.'
+
 ## Release 4.0
 
 Release 4.0 has seen several release candidates:
