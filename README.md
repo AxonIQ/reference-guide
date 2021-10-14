@@ -17,7 +17,7 @@ The Reference Guide is split into 4 sections
 | [Quick Start](getting-started/quick-start.md) | Details the Quick Start toolkit that Axon provides to easily familiarize with the basic concepts of Axon Framework and Axon Server |
 | [Axon Framework](axon-framework/introduction.md) | Details the building of Axon Framework based applications. |
 | [Axon Server](axon-server/introduction.md) | Details the Installation/Setup and Maintenance of Axon Server \(SE/EE\). |
-| [Axon Framework Extensions](release-notes/axon-framework-extensions.md) | Details the extensions that Axon Framework provides to integrate with existing enterprise infrastructure\(s\). |
+| [Axon Framework Extensions](release-notes/rn-extensions) | Details the extensions that Axon Framework provides to integrate with existing enterprise infrastructure\(s\). |
 
 ## License\(s\)
 
