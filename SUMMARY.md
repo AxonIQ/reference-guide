@@ -22,6 +22,8 @@
       * [Major Releases](release-notes/rn-extensions/rn-jgroups/rn-jgroups-major-releases.md)
     * [Kafka](release-notes/rn-extensions/rn-kafka/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-kafka/rn-kafka-major-releases.md)
+    * [Kotlin](release-notes/rn-extensions/rn-kotlin/README.md)
+      * [Experimental Releases](release-notes/rn-extensions/rn-kotlin/rn-kotlin-experimental-releases.md)
     * [Mongo](release-notes/rn-extensions/rn-mongo/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-mongo/rn-mongo-major-releases.md)
       * [Minor Releases](release-notes/rn-extensions/rn-mongo/rn-mongo-minor-releases.md)
