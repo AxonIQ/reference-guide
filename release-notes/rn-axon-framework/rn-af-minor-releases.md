@@ -2,7 +2,7 @@
 
 Any patch release made for an Axon project is tailored towards resolving bugs. This page aims to provide a dedicated overview of patch releases per project.
 
-## _Release 4.5_
+## Release 4.5
 
 ### Release 4.5.4
 
@@ -78,7 +78,7 @@ For a detailed perspective on the release notes, please check [this](https://git
 
 For a detailed perspective on the release notes, please check [this](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.1) page.
 
-## _Release 4.4_
+## Release 4.4
 
 ### Release 4.4.9
 
@@ -209,7 +209,7 @@ There was an off by one scenario when an Event Processor started reading events 
 This meant that the first event in the event store was systematically skipped.
 The bug was resolved in [this](https://github.com/AxonFramework/AxonFramework/commit/3a055407437589bc1388cecca0b6e2f0bc61ea26) commit.
 
-## _Release 4.3_
+## Release 4.3
 
 ### Release 4.3.5
 
@@ -299,7 +299,7 @@ For a complete list of all resolved bugs we refer to the [issue tracker](https:/
 
 For a complete list of all resolved bugs we refer to the [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?q=is%3Aclosed+milestone%3A%22Release+4.3.1%22++label%3A%22Type%3A+Bug%22+).
 
-## _Release 4.2_
+## Release 4.2
 
 ### Release 4.2.2
 
@@ -339,7 +339,7 @@ For a complete list of all resolved bugs we refer to the [issue tracker](https:/
 
 For a complete list of all resolved bugs we refer to the [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Release+4.2.1%22++label%3A%22Type%3A+Bug%22).
 
-## _Release 4.1_
+## Release 4.1
 
 ### Release 4.1.2
 

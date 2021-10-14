@@ -1,4 +1,4 @@
-# Table of contents
+# Table of Contents
 
 * [Introduction](README.md)
 * [Architecture Overview](architecture-overview/README.md)
@@ -14,7 +14,29 @@
     * [Major Releases](release-notes/rn-axon-server/rn-as-major-releases.md)
     * [Minor Releases Standard Edition](release-notes/rn-axon-server/rn-asse-minor-releases.md)
     * [Minor Releases Enterprise Edition](release-notes/rn-axon-server/rn-as-minor-releases.md)
-  * [Axon Framework Extensions](release-notes/axon-framework-extensions.md)
+  * [Axon Framework Extensions](release-notes/rn-extensions/README.md)
+    * [AMQP](release-notes/rn-extensions/rn-amqp/README.md)
+      * [Major Releases](release-notes/rn-extensions/rn-amqp/rn-amqp-major-releases.md)
+    * [CDI](release-notes/rn-extensions/rn-cdi/README.md)
+      * [Major Releases](release-notes/rn-extensions/rn-cdi/rn-cdi-major-releases.md)
+    * [JGroups](release-notes/rn-extensions/rn-jgroups/README.md)
+      * [Major Releases](release-notes/rn-extensions/rn-jgroups/rn-jgroups-major-releases.md)
+    * [Kafka](release-notes/rn-extensions/rn-kafka/README.md)
+      * [Major Releases](release-notes/rn-extensions/rn-kafka/rn-kafka-major-releases.md)
+    * [Kotlin](release-notes/rn-extensions/rn-kotlin/README.md)
+      * [Experimental Releases](release-notes/rn-extensions/rn-kotlin/rn-kotlin-experimental-releases.md)
+    * [Mongo](release-notes/rn-extensions/rn-mongo/README.md)
+      * [Major Releases](release-notes/rn-extensions/rn-mongo/rn-mongo-major-releases.md)
+      * [Minor Releases](release-notes/rn-extensions/rn-mongo/rn-mongo-minor-releases.md)
+    * [Reactor](release-notes/rn-extensions/rn-reactor/README.md)
+      * [Major Releases](release-notes/rn-extensions/rn-reactor/rn-reactor-major-releases.md)
+      * [Minor Releases](release-notes/rn-extensions/rn-reactor/rn-reactor-minor-releases.md)
+    * [Spring Cloud](release-notes/rn-extensions/rn-springcloud/README.md)
+      * [Major Releases](release-notes/rn-extensions/rn-springcloud/rn-springcloud-major-releases.md)
+      * [Minor Releases](release-notes/rn-extensions/rn-springcloud/rn-springcloud-minor-releases.md)
+    * [Tracing](release-notes/rn-extensions/rn-tracing/README.md)
+      * [Major Releases](release-notes/rn-extensions/rn-tracing/rn-tracing-major-releases.md)
+      * [Minor Releases](release-notes/rn-extensions/rn-tracing/rn-tracing-minor-releases.md)
 
 ## Getting Started
 

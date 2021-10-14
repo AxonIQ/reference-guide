@@ -2,7 +2,7 @@
 
 This page provides a dedicated overview of patch releases for the Axon Server (Enterprise Edition) releases
 
-## _Release 4.5_
+## Release 4.5
 
 ### Release 4.5.9
 
@@ -106,7 +106,7 @@ Notes:
 * Fix for node not able to replicate after install snapshot procedure
 * Fix for concurrency issue in creating schedulers for auto-loadbalancing
 
-## _Release 4.4_
+## Release 4.4
 
 ### Release 4.4.17
 
@@ -228,7 +228,7 @@ Notes:
 
 * Fix for migration of contexts created before version 4.3
 
-## _Release 4.3_
+## Release 4.3
 
 ### Release 4.3.7
 
@@ -306,7 +306,7 @@ _axoniq.axonserver.executor-thread-count_=4 \(reduced from 8, configures the num
 * Clean up of server shutdown process
 * Fixed error when adding a non-existing node to a context
 
-## _Release 4.2_
+## Release 4.2
 
 ### Release 4.2.6
 
@@ -340,7 +340,7 @@ _axoniq.axonserver.executor-thread-count_=4 \(reduced from 8, configures the num
 * Fix for UI issue: after deleting an application the buttons no longer work
 * On auto-load-balance of a event processor group only request the current status from applications with this processor group
 
-## _Release 4.1_
+## Release 4.1
 
 ### Release 4.1.9
 
