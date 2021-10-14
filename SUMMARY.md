@@ -27,6 +27,7 @@
       * [Minor Releases](release-notes/rn-extensions/rn-mongo/rn-mongo-minor-releases.md)
     * [Reactor](release-notes/rn-extensions/rn-reactor/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-reactor/rn-reactor-major-releases.md)
+      * [Minor Releases](release-notes/rn-extensions/rn-reactor/rn-reactor-minor-releases.md)
     * [Spring Cloud](release-notes/rn-extensions/rn-springcloud/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-springcloud/rn-springcloud-major-releases.md)
       * [Minor Releases](release-notes/rn-extensions/rn-springcloud/rn-springcloud-minor-releases.md)
