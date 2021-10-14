@@ -9,12 +9,20 @@
     * [Bug Fixes](introduction/release-notes/bug-fixes.md)
     * [Extensions](introduction/release-notes/rn-extensions/README.md)
       * [AMQP](introduction/release-notes/rn-extensions/rn-amqp/README.md)
+        * [Major Releases](introduction/release-notes/rn-extensions/rn-amqp/rn-amqp-major-releases.md)
       * [CDI](introduction/release-notes/rn-extensions/rn-cdi/README.md)
+        * [Major Releases](introduction/release-notes/rn-extensions/rn-cdi/rn-cdi-major-releases.md)
       * [JGroups](introduction/release-notes/rn-extensions/rn-jgroups/README.md)
+        * [Major Releases](introduction/release-notes/rn-extensions/rn-jgroups/rn-jgroups-major-releases.md)
       * [Kafka](introduction/release-notes/rn-extensions/rn-kafka/README.md)
+        * [Major Releases](introduction/release-notes/rn-extensions/rn-kafka/rn-kafka-major-releases.md)
       * [Mongo](introduction/release-notes/rn-extensions/rn-mongo/README.md)
+        * [Major Releases](introduction/release-notes/rn-extensions/rn-mongo/rn-mongo-major-releases.md)
+        * [Minor Releases](introduction/release-notes/rn-extensions/rn-mongo/rn-mongo-minor-releases.md)
       * [Spring Cloud](introduction/release-notes/rn-extensions/rn-springcloud/README.md)
+        * [Major Releases](introduction/release-notes/rn-extensions/rn-springcloud/rn-springcloud-major-releases.md)
       * [Tracing](introduction/release-notes/rn-extensions/rn-tracing/README.md)
+        * [Major Releases](introduction/release-notes/rn-extensions/rn-tracing/rn-tracing-major-releases.md)
 
 ## Setting Up
 
