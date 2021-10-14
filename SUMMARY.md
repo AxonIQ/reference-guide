@@ -33,6 +33,7 @@
       * [Minor Releases](release-notes/rn-extensions/rn-springcloud/rn-springcloud-minor-releases.md)
     * [Tracing](release-notes/rn-extensions/rn-tracing/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-tracing/rn-tracing-major-releases.md)
+      * [Minor Releases](release-notes/rn-extensions/rn-tracing/rn-tracing-minor-releases.md)
 
 ## Getting Started
 
