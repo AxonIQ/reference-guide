@@ -2,14 +2,14 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Tracing Extension.
 
-## Release 4.2
+## Release 4.2 - Milestone
 
 We did not introduce any significant changes other than updating the extension to use Axon Framework release 4.2.
 
 Note that this extension currently is in a _milestone_ state.
 As such, users should consider we might introduce API changes in future releases.
 
-## Release 4.1
+## Release 4.1 - Milestone
 
 * The constructors of the `TracingCommandGateway` and `TracingQueryGateway` are now protected, since issue [#9](https://github.com/AxonFramework/extension-tracing/issues/9).
   This change allows users to extend these classes if necessary.
@@ -21,7 +21,7 @@ You can find a complete list of the changes [here](https://github.com/AxonFramew
 Note that this extension currently is in a _milestone_ state.
 As such, users should consider we might introduce API changes in future releases.
 
-## Release 4.0
+## Release 4.0 - Milestone
 
 We introduced the Tracing extension with lots of help from our contributor Christophe Bouhier at Trifork.
 The tracing logic used originates from the [Open Tracing API](https://opentracing.io/).
