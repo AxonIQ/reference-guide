@@ -2,6 +2,21 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Mongo Extension.
 
+## Release 4.5
+
+* We introduced a dedicated sample project to the Mongo Extension.
+  The sample is written in Kotlin and shows how to use the `MongoEventStorageEngine` and `MongoTokenStore`.
+  For those interested, you can find the pull request [here](https://github.com/AxonFramework/extension-mongo/pull/65).
+
+* Contributor `erikrz` provided an issue **and** pull request to allow the `MongoTokenStore` index to be automatically validated.
+  Issue [#51](https://github.com/AxonFramework/extension-mongo/issues/51) marks the request, whereas [#53](https://github.com/AxonFramework/extension-mongo/pull/53) marks the pull request.
+
+* The `MongoTokenStore` now implements the `retrieveStorageIdentifier` method, as of pull request [#139](https://github.com/AxonFramework/extension-mongo/pull/139).
+  This change allows clustered environments, like Axon Server, to tell apart the Mongo Databases of Event Processors. 
+  This further benefits split, merge and release operations performed in a distributed environment.
+
+We refer to the [release notes](https://github.com/AxonFramework/extension-mongo/releases/tag/axon-mongo-4.5) for a complete list of all changes.
+
 ## Release 4.4
 
 * Issue [#10](https://github.com/AxonFramework/extension-mongo/pull/10) introduces support for Spring Boot Developer Tools.
