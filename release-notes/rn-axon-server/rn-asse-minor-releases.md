@@ -4,6 +4,13 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.5
 
+### Release 4.5.8
+
+* Update Felix to version 7.0.1 to support java 17
+* Update JQuery to version 3.6.0
+* Fix: incorrect login url when AS is invoked behind a reverse proxy
+* Fix: NullPointerException in health check
+
 ### Release 4.5.7
 
 * Fix: UI issues when running with another context root

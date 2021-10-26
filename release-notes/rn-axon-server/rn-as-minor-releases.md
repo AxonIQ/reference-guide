@@ -4,13 +4,32 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.10
+
+* Fix: improved data validations for contexts, replication groups, users and applications to prevent issues applying log
+  entries
+* The install snapshot is interrupted any time there is a communication problem between the two nodes.
+* Improvements to avoid race conditions reserving sequence numbers in case of multiple leader elections.
+* Raft group configuration changes are handled through Scheduled Task to resume after leadership changes.
+* Performance improvements during install snapshot
+* Improvements in performance and resources usage during replication. Reduction of unnecessary leader election.
+* Fix: prospect nodes are not transformed into followers during the preemptive install snapshot.
+* Fix: delete all contexts information when the install snapshot fails
+* Improvements in logging
+* Fix: the configuration change fails when the "add node request" is received when the node is not the leader.
+* Improvements in performances for creation of new applications
+* Update Felix to version 7.0.1 to support java 17
+* Update JQuery to version 3.6.0
+* Fix: incorrect login url when AS is invoked behind a reverse proxy
+* Fix: NullPointerException in health check
+
 ### Release 4.5.9
 
 * Fix: UI issues when running with another context root
 * Fix: UI does not refresh the icons for event processor streams
 * Fix: Balancing processors for a processing group containing special characters does not work from the UI
 * Fix: UI is not updated when the auto-balancing strategy is changed
-* Fix: Warning logged when a client closes an  event stream while it is reading from old segments
+* Fix: Warning logged when a client closes an event stream while it is reading from old segments
 * Fix: Removing a replication group fails when one or more nodes are not connected
 * Fix: Concurrency issue while registering command handlers and query handlers
 * Remove timing metrics for commands/queries for clients no longer connected
