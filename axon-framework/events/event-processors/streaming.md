@@ -849,6 +849,7 @@ The framework provides several policies you can use out of the box:
 * `PropertySequencingPolicy` - When configuring this policy, the user is required to provide a property name or property extractor function.
   This implementation provides a flexible solution to set up a custom sequencing policy based on a standard value present in your events.
   Note that this policy only reacts to properties present in the event class.
+* `MetaDataSequencingPolicy` - When configuring this policy, the user is required to provide a `metaDataKey` to be used. This implementation provides a flexible solution to set up a custom sequencing policy based on a standard value present in your events' metadata.
 
 Consider the following snippets when configuring a (custom) `SequencingPolicy`:
 
