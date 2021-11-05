@@ -275,7 +275,7 @@ When using Flux as return type, we can control backpressure, stream cancellation
 >
 > Once consumer of streaming query receives Flux to subscribe to, transaction will be considered completed successfully. That means, that any subsequent messages on the stream will not be part of transaction. 
 > This includes errors, and as transaction is already over, error will not be propagated to transaction to invoke any rollback methods.
-> This has implication that streaming query should not be used within Unit Of Work (within messages handlers or any other transactional methods) to chaining other transactional actions (like sending a command or query).
+> This has implication that streaming query should not be used within Unit Of Work (within message handlers or any other transactional methods) to chaining other transactional actions (like sending a command or query).
 >
 
 #### Backpressure
