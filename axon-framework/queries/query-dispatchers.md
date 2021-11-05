@@ -227,5 +227,94 @@ commandGateway.sendAndWait(new RedeemCmd("gc1", amount));
 
    Since we subscribed to updates with the `println()` method, the update will be printed out once it is received.
 
+
+### Streaming queries
+
+The Streaming query allows a client to stream large database result sets. The Streaming query relies on reactive stream model, specifically the `Flux` and `Mono` types. Using streaming query, does not imply that reactive db drivers need to be used, users can hook to the stream and control the flow of data.
+
+
+Streaming query is flexible enough to be used with **any** query return type. That means that any return type that is not Flux will automatically be converted to Flux, based on that Flux will return single or multiple items.
+
+```java
+@QueryHandler
+public List<CardSummary> handle(FetchCardSummariesQuery query) {
+        ...
+    return cardRepository.findAll(); //1
+}
+        ...
+
+public Flux<CardSummary> consumer() {
+        return queryGateway.query(query, ResponseTypes.fluxOf(CardSummary.class)); //2
+}
+```
+
+1. We are querying the `cardRepository` for all the cards, that can potently return a large result set containing thousands of items.
+2. We are using the `queryGateway` to issue the query. If we used `multipleInstanceOf(CardSummary.class)` we would get large list transferred as single result message over the network, potentially causing a buffer overflow and max message size violation.
+Instead, we are using `ResponseTypes.fluxOf(CardSummary.class)`, that will chunk the result set into smaller messages and return a Flux of CardSummary.
+
+Natively, if we want fine-grained control of the producing stream we can use Flux as return type:
+
+```java
+@QueryHandler
+public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
+        ...
+    return r2dbcCardRepository.findAll(); 
+}
+```
+
+When using Flux as return type, we can control backpressure, stream cancellation and implement more complex features like pagination without a need to use reactive DB driver for projection.
+
+> **Note**
+>
+> Backpressure and stream cancellation features are only available with Axon Server 4.6 + version. Streaming queries used with pre Axon Server 4.6 version will work, but without these important features.
+> 
+
+#### Backpressure
+Backpressure is important feature in reactive systems that allows consumer to control the flow of data, and not to be overwhelmed by the producer.
+The streaming query implements pull-based back-pressure strategy, which means that the producer will not emit any data until the consumer is ready to receive it.
+
+Under the hood, backpressure does `Hop to Hop` signal propagation (see below) and inherits gRPC's[ HTTP2-based backpressure model](https://developers.google.com/web/fundamentals/performance/http2/#flow_control).
+
+As a result, backpressure will not behave intuitively and will not propagate exact request signal from consumer to producer. 
+HTTP2 flow control has internal buffer based on message size, Axon Framework and Axon Server prefetch messages into internal buffers based on message count. 
+Result is that the producer will send number of messages until it fills all the buffers, then backpressure will kick in.
+
+todo include diagram
+
+
+> **Hop to hop**
+>
+>Back-pressure signal is propagated per hop which is not an end to end connection,
+> which allows intermediate Axon Server to handle backpressure between two connections
+> and pre-fetch additional messages to increase overall performance.
+>
+
+#### Cancellation
+The Streaming query can be implemented as infinitive stream, so it's important to cancel it when the client is not interested in receiving any more data.
+Use operators that can cancel stream to signal producer that you are not interested in receiving more data.
+
+It's important to note that similar to backpressure, cancellation signal is per hop, meaning it's propagated over the network to Axon Server and then to producer, which can produce some latency in stream cancellation.
+Not to worry, any messages produced after consumer signaled cancellation will be ignored.
+
+```java
+public Flux<CardSummary> consumer() {
+        return queryGateway.query(query, ResponseTypes.fluxOf(CardSummary.class))
+            .take(100)
+            .takeUntil(message -> somePredicate.test(message));
+}
+```
+
+Example above shows usage of `take` operators to limit the number of items to be emitted. Consumer will always receive exact number of messages, but producer could produce more messages due to signal latency.
+
+
+> **Can streaming query replace subscription query?**
+>
+> Depends on your setup, but most likely not. 
+> First, we would need assume that projection side uses compliant reactive db driver. 
+> Second, not all db drivers can stream updates for table changes out of the box.
+> PostgreSQL does support LISTEN and NOTIFY features, and MongoDB supports tailorable cursor, but this is something that client needs to implement himself.
+> Subscription queries are still important feature of Axon Framework that has no alternative when used with traditional db drivers.
+>
+
 [Axon Coding Tutorial \#5: - Connecting the UI](https://youtu.be/lxonQnu1txQ)
 
