@@ -235,6 +235,8 @@ The Streaming query allows a client to stream large database result sets. The St
 
 Streaming query is flexible enough to be used with **any** query return type. That means that any return type that is not Flux will automatically be converted to Flux, based on that Flux will return single or multiple items.
 
+Using `fluxOf` as ResponseType will engage streaming query underling mechanism.
+
 ```java
 @QueryHandler
 public List<CardSummary> handle(FetchCardSummariesQuery query) {
