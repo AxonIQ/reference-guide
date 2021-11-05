@@ -308,6 +308,10 @@ public Flux<CardSummary> consumer() {
 
 Example above shows usage of `take` operators to limit the number of items to be emitted. Consumer will always receive exact number of messages, but producer could produce more messages due to signal latency.
 
+> **Note**
+>
+> The `reactor-core` dependency is mandatory for usage of streaming queries. However, it is a compile time dependency and it is not required for other Axon features.
+
 
 > **Can streaming query replace subscription query?**
 >
