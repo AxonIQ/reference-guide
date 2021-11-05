@@ -269,7 +269,14 @@ When using Flux as return type, we can control backpressure, stream cancellation
 > **Note**
 >
 > Backpressure and stream cancellation features are only available with Axon Server 4.6 + version. Streaming queries used with pre Axon Server 4.6 version will work, but without these important features.
-> 
+>
+
+> **Transaction leaking**
+>
+> Once consumer of streaming query receives Flux to subscribe to, transaction will be considered completed successfully. That means, that any subsequent messages on the stream will not be part of transaction. 
+> This includes errors, and as transaction is already over, error will not be propagated to transaction to invoke any rollback methods.
+> This has implication that streaming query should not be used within Unit Of Work (within messages handlers or any other transactional methods) to chaining other transactional actions (like sending a command or query).
+>
 
 #### Backpressure
 Backpressure is important feature in reactive systems that allows consumer to control the flow of data, and not to be overwhelmed by the producer.
@@ -307,6 +314,15 @@ public Flux<CardSummary> consumer() {
 ```
 
 Example above shows usage of `take` operators to limit the number of items to be emitted. Consumer will always receive exact number of messages, but producer could produce more messages due to signal latency.
+
+
+#### Error handling
+
+Producer that produce an error by calling onError(Throwable) will terminate the call with a AxonServerRemoteQueryHandlingException. 
+The client will have its onError(Throwable) subscription handler called as expected.
+
+Exceptions do not flow from consumer to producer. 
+Instead, consumer error will trigger cancel signal that will be propagated to producer, and effectively cancel the stream, without producer knowing the reason.
 
 > **Note**
 >
