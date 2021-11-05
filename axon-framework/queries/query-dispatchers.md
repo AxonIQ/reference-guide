@@ -318,7 +318,7 @@ Example above shows usage of `take` operators to limit the number of items to be
 > Depends on your setup, but most likely not. 
 > First, we would need assume that projection side uses compliant reactive db driver. 
 > Second, not all db drivers can stream updates for table changes out of the box.
-> PostgreSQL does support LISTEN and NOTIFY features, and MongoDB supports tailorable cursor, but this is something that client needs to implement himself.
+> For example, PostgreSQL support LISTEN and NOTIFY features, and MongoDB supports tailorable cursor, but this is something that client needs to set up himself.
 > Subscription queries are still important feature of Axon Framework that has no alternative when used with traditional db drivers.
 >
 
