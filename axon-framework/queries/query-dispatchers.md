@@ -230,12 +230,19 @@ commandGateway.sendAndWait(new RedeemCmd("gc1", amount));
 
 ### Streaming queries
 
-The Streaming query allows a client to stream large database result sets. The Streaming query relies on reactive stream model, specifically the `Flux` and `Mono` types. Using streaming query, does not imply that reactive db drivers need to be used, users can hook to the stream and control the flow of data.
+The Streaming query allows a client to stream large database result sets. The Streaming query relies on reactive stream model, specifically the `Flux` type. Using streaming query, does not imply that reactive db drivers need to be used, users can hook to the stream and control the flow of data.
 
 
 Streaming query is flexible enough to be used with **any** query return type. That means that any return type that is not Flux will automatically be converted to Flux, based on that Flux will return single or multiple items.
 
-Using `fluxOf` as ResponseType will engage streaming query underling mechanism.
+Query gateway provides nifty `streamingQuery` method to utilize streaming query easily. 
+It's simple to use, and requires just two parameters: query and expected response type class.
+`streamingQuery` method **is lazy**, meaning query is sent once Flux is subscribed to.
+
+
+It is also possible to utilize streaming query with `query` method: `queryGateway.query(query,  ResponseTypes.fluxOf(CardSummary.class))`.
+However, this approach is **eager** and less intuitive as it requires more boilerplate code.
+In this case `query` method will send query immediately and return CompletableFuture which returns a payload of type Flux, that needs to be subscribed to.
 
 ```java
 @QueryHandler
@@ -246,13 +253,13 @@ public List<CardSummary> handle(FetchCardSummariesQuery query) {
         ...
 
 public Flux<CardSummary> consumer() {
-        return queryGateway.query(query, ResponseTypes.fluxOf(CardSummary.class)); //2
+        return queryGateway.streamingQuery(query, CardSummary.class); //2
 }
 ```
 
 1. We are querying the `cardRepository` for all the cards, that can potently return a large result set containing thousands of items.
 2. We are using the `queryGateway` to issue the query. If we used `multipleInstanceOf(CardSummary.class)` we would get large list transferred as single result message over the network, potentially causing a buffer overflow and max message size violation.
-Instead, we are using `ResponseTypes.fluxOf(CardSummary.class)`, that will chunk the result set into smaller messages and return a Flux of CardSummary.
+Instead, we are using `streamingQuery(query, CardSummary.class)`, that will convert our response to Flux stream and chunk the result set into smaller messages of CardSummary.
 
 Natively, if we want fine-grained control of the producing stream we can use Flux as return type:
 
@@ -260,11 +267,11 @@ Natively, if we want fine-grained control of the producing stream we can use Flu
 @QueryHandler
 public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
         ...
-    return r2dbcCardRepository.findAll(); 
+    return reactiveCardRepository.findAll(); 
 }
 ```
 
-When using Flux as return type, we can control backpressure, stream cancellation and implement more complex features like pagination without a need to use reactive DB driver for projection.
+When using Flux as return type, we can control backpressure, stream cancellation and implement more complex features like pagination.
 
 > **Note**
 >
@@ -274,22 +281,19 @@ When using Flux as return type, we can control backpressure, stream cancellation
 > **Transaction leaking**
 >
 > Once consumer of streaming query receives Flux to subscribe to, transaction will be considered completed successfully. That means, that any subsequent messages on the stream will not be part of transaction. 
-> This includes errors, and as transaction is already over, error will not be propagated to transaction to invoke any rollback method on parent transaction.
+> This includes errors, and as transaction is already over, error will not be propagated to parent transaction to invoke any rollback method.
 > This has implication that streaming query should not be used within Unit Of Work (within message handlers or any other transactional methods) to chaining other transactional actions (like sending a command or query).
 >
 
 #### Backpressure
 Backpressure is important feature in reactive systems that allows consumer to control the flow of data, and not to be overwhelmed by the producer.
-The streaming query implements pull-based back-pressure strategy, which means that the producer will not emit any data until the consumer is ready to receive it.
+The streaming query implements pull-based back-pressure strategy, which means that the producer will emit data until when consumer is ready to receive it.
 
 Under the hood, backpressure does `Hop to Hop` signal propagation (see below) and inherits gRPC's[ HTTP2-based backpressure model](https://developers.google.com/web/fundamentals/performance/http2/#flow_control).
 
 As a result, backpressure will not behave intuitively and will not propagate exact request signal from consumer to producer. 
-HTTP2 flow control has internal buffer based on message size, Axon Framework and Axon Server prefetch messages into internal buffers based on message count. 
+HTTP/2 and Netty flow control has internal buffers based on message size, Axon Framework and Axon Server prefetch messages into internal buffers based on message count. 
 Result is that the producer will send number of messages until it fills all the buffers, then backpressure will kick in.
-
-todo include diagram
-
 
 > **Hop to hop**
 >
@@ -307,7 +311,7 @@ Not to worry, any messages produced after consumer signaled cancellation will be
 
 ```java
 public Flux<CardSummary> consumer() {
-        return queryGateway.query(query, ResponseTypes.fluxOf(CardSummary.class))
+        return queryGateway.streamingQuery(query, CardSummary.class)
             .take(100)
             .takeUntil(message -> somePredicate.test(message));
 }
