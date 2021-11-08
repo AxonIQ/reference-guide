@@ -289,7 +289,7 @@ When using Flux as return type, we can control backpressure, stream cancellation
 Backpressure is important feature in reactive systems that allows consumer to control the flow of data, and not to be overwhelmed by the producer.
 The streaming query implements pull-based back-pressure strategy, which means that the producer will emit data until when consumer is ready to receive it.
 
-Under the hood, backpressure does `Hop to Hop` signal propagation (see below) and inherits gRPC's[ HTTP2-based backpressure model](https://developers.google.com/web/fundamentals/performance/http2/#flow_control).
+Under the hood, backpressure does `Hop to Hop` signal propagation (see below) and inherits gRPC's [HTTP2-based backpressure model](https://developers.google.com/web/fundamentals/performance/http2/#flow_control).
 
 As a result, backpressure will not behave intuitively and will not propagate exact request signal from consumer to producer. 
 HTTP/2 and Netty flow control has internal buffers based on message size, Axon Framework and Axon Server prefetch messages into internal buffers based on message count. 
