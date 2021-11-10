@@ -332,6 +332,18 @@ Instead, consumer error will trigger cancel signal that will be propagated to pr
 >
 > The `reactor-core` dependency is mandatory for usage of streaming queries. However, it is a compile time dependency and it is not required for other Axon features.
 
+> **Note**
+> 
+> It's recommended to set a timeout on a query handler side in case of finite stream to protect against malfunctioning consumer or producer.
+> 
+>```java
+>@QueryHandler
+>public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
+>...
+>return reactiveCardRepository.findAll().timeout(Duration.ofSeconds(5));
+>}
+>```
+
 
 > **Can streaming query replace subscription query?**
 >
