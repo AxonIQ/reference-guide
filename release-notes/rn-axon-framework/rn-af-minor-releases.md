@@ -4,6 +4,29 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.5
 
+### Release 4.5.5
+
+* The auto-configuration we introduced for `XStream` used a suboptimal approach. 
+  We assumed searching for the `@ComponentScan` would suffice but didn't consider that Spring enabled SpEL operations in the annotation's properties. 
+  This approach thus caused some applications to break on start-up. 
+  As such, this approach is replaced entirely by using the outcome of the `AutoConfigurationPackages#get(BeanFactory)` method. 
+  For those interested in the details of the solution, check out [this](https://github.com/AxonFramework/AxonFramework/pull/1976) pull request. Kudos to contributor `maverick1601` for drafting issue [#1963](https://github.com/AxonFramework/AxonFramework/issues/1963) explaining the predicament.
+
+* We introduced an optimization towards updating the `TrackingToken`. 
+  In (distributed) environments where the configuration states several segments per Streaming Processor, there are always threads receiving events that they're not in charge of due to the configured `SequencingPolicy`. 
+  The old implementation eagerly updated the token in such scenarios, but this didn't benefit the end-user immediately. 
+  Pull request [#1999](https://github.com/AxonFramework/AxonFramework/pull/1999) introduce a wait period for 'event-less-batches', for both the `TrackingEventProcessor` and `PooledStreamingEventProcessor`. 
+  This adjustment minimizes the number of token updates performed by both processor implementations.
+
+* The introduction of Spring Boot version 2.6.0 brought an issue to light within Axon's Spring usage. 
+  The `AbstractAnnotationHandlerBeanPostProcessor` took `FactoryBean` instances into account when searching for message handling methods. 
+  This approach, however, is not recommended by Spring, which they enforced in their latest release. 
+  The result was circular dependency exceptions on start-up whenever somebody used Spring Boot 2.6.0.
+  The fix was simple, though, as we should simply ignore `FactoryBean` instances. 
+  After spotting the issue, we resolved it in [this](https://github.com/AxonFramework/AxonFramework/pull/2013) pull request.
+
+For an exhaustive list of all the changes, check out the [4.5.5 release notes](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.5).
+
 ### Release 4.5.4
 
 * First and foremost, we updated the XStream version to 1.4.18. This upgrade was a requirement since several [CVE's](https://x-stream.github.io/changes.html) were noted for XStream version 1.4.17. 
