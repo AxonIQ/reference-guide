@@ -4,6 +4,12 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.5
 
+### Release 4.5.9
+
+* Updated gRPC and Netty versions
+* Improved logging on client application disconnects
+* Fix: missing/double icons on plugin page
+
 ### Release 4.5.8
 
 * Update Felix to version 7.0.1 to support java 17

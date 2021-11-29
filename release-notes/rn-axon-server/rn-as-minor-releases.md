@@ -4,6 +4,15 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.11
+
+* Fix: removed unnecessary index file reads when loading an aggregate with up-to-date snapshot
+* Fix: missing/double icons on plugin, users and application pages
+* Fix: cluster template fails to create contexts if there are applications or users with roles for all contexts
+* Improved logging on client application disconnects
+* Updated gRPC and Netty versions
+* Updated XStream version
+
 ### Release 4.5.10
 
 * Fix: improved data validations for contexts, replication groups, users and applications to prevent issues applying log
