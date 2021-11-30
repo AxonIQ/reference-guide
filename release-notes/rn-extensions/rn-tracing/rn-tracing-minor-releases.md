@@ -3,6 +3,18 @@
 Any patch release made for an Axon project aims to resolve bugs.
 This page provides an overview of patch releases for the Axon Tracing Extension.
 
+## Release 4.5
+
+### Release 4.5.2
+
+* Bumped Axon Framework version used from 4.5. to 4.5.5 [here](https://github.com/AxonFramework/extension-tracing/commit/3cad35ce3fdba6e4398bb5471383685ecf2b686e) commit.
+* An edge case was fixed where the `QueryGateway` could throws a `NullPointerException`. The fix for it was done [here](https://github.com/AxonFramework/extension-tracing/pull/218).
+
+
+### Release 4.5.1
+
+* With the release of Spring-Boot 2.6.0, the problem with circular dependencies came to light. To make it possible to use tracing-extension together with spring-boot 2.6.0, a circular dependency on our code was fixed as can be seen [here](https://github.com/AxonFramework/extension-tracing/commit/b4de5e3347568a7b5ca3c646ef96cdf4d1293f71).
+
 ## Release 4.3
 
 ### Release 4.3.1
