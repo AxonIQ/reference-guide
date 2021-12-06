@@ -28,13 +28,13 @@ In both cases, it returns the full path to that file \(.zip\), which can then be
 
 ## _Event Stream Segments_
 
-The event stream segments are either closed and immutable, or still open for new events. For the closed segments, it is feasible to only backup the ones that haven't been backed-up yet, since the ones that have been are guaranteed not to change.
+The event stream segments are either closed and immutable, or still open for new events. For the closed segments, it is feasible to only back up the ones that haven't been backed-up yet, since the ones that have been are guaranteed not to change.
 
 For both Axon Server SE/EE, a call to the GET endpoint `http://[server]/v1/backup/filenames` with event type \(either `EVENT` or `SNAPSHOT`\), the context name and optionally the last segment that has already been backed up will return a list of file names belonging to segments that haven't been backed up yet, but which are now safe to backup by simply copying them.‌
 
 For Axon SE, the _\[server\]_ is the single Axon Server SE node while in the case of Axon EE, the _\[server\]_ could be any node that is a PRIMARY member node for the context that needs to be backed up.
 
-In addition, you may choose to back up the current segment file that is being written to. These are files with names larger than the last name returned to the filenames from the backup endpoint. It is important to overwrite this file with subsequent backups, because no guarantees can be given about the completeness of this file. This means the filename of this file should not be used to construct the "lastSegmentBackedUp" in subsequent requests to the backup endpoint.‌
+In addition, you may choose to back up the current segment file that is being written to. These are files with names larger than the last entry name returned to the filenames from the backup endpoint. It is important to overwrite this file with subsequent backups, because no guarantees can be given about the completeness of this file. This means the filename of this file should not be used to construct the "lastSegmentBackedUp" in subsequent requests to the backup endpoint.‌
 
 ## _Log Entry Segments \(only for Axon Server EE\)_
 
