@@ -434,3 +434,10 @@ class CardSummaryProjection {
 ```
 {% endtab %}
 {% endtabs %}
+
+> **Exception Handling for Aggregate Constructors**
+> 
+> The `@ExceptionHandler` annotated methods require an existing component instance to work.
+> Because of this, exception handlers **do not** work for (command handling) constructors of an aggregate.
+> 
+> If you thus expect exceptions on an aggregate's command handler that you need to handle differently, it is recommended to use Axon's [creation policy](../axon-framework-commands/command-handlers.md#aggregate-command-handler-creation-policy).
