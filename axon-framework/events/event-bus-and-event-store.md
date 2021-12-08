@@ -404,12 +404,19 @@ The former would require the applications to point to the same data source, wher
 
 However, sharing the event store is not recommended whenever the applications do not belong to the same context.
 Instead, we should protect the boundary of the contexts, both from the event's perspective and the storage solution.
+Since accessing the same source directly isn't an option, in this case, we require a different solution to share events.
 
 To distribute events between bounded contexts, you can use Axon Server's [multi-context](../../axon-server/administration/multi-context.md) solution, for example.
-The former requires application registration to specific contexts, firstly.
+The multi-context support requires application registration to specific contexts, firstly.
 Secondly, you can open a stream to another context through the `AxonServerEventStore#createStreamableMessageSourceForContext(String)` operation.
 With this source in hand, you can configure a [Streaming Processor](event-processors/streaming.md) to start reading from it.
 
-Alternatively, you can choose a message broker to distribute events.
+Alternatively, you can use a message broker to distribute events between contexts.
 Axon provides a couple of these as [extension modules](../../extensions), for example [Spring AMQP](../../extensions/spring-amqp.md) or [Kafka](../../extensions/kafka.md).
-Note that neither of these is intended as an [Event Store](#event-store), but **only** as a message broker.
+
+Although this allows further event distribution, we still recommend consciously sharing _the correct_ events.
+Ideally, we add a form of context mapping, like an anti-corruption layer, between the contexts.
+In other words, we recommend using a separate component that maps the events from the local context to a shared language right before distribution.
+
+This mapper would publish the messages on the AMQP queue or Kafka topic, for example.
+When it comes to Axon Server, we could, for example, use a distinct shared/global context to contain the shared language.
