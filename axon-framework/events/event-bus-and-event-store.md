@@ -393,14 +393,23 @@ If no explicit `eventSerializer` is configured, events are serialized using the 
 
 ## Distributing Events
 
-The use of an `EventStore` provides a simple way of distributing events: by sharing the data source.
-This is the approach taken by [Axon Server](../../axon-server-introduction.md), for example.
+To distribute events between applications, it is paramount to know whether the applications belong to the same [bounded context](../../architecture-overview/ddd-cqrs-concepts.md#bounded-context).
+If they do, they're allowed to understand each other's language.
+In other words, they should be free to understand the events altogether.
 
-Such an approach will also suffice whenever the [`EmbeddedEventStore`](#embedded-event-store) is used.
-Doing so requires the correct configuration of each application instance to point to the same data source.
-Listing _all_ possible data sources is out of the scope of this guide however.
-The documentation for the chosen source should thus be read for specifics on this.
+As such, we can share the `EventStore`'s data source between these applications typically suffices.
+We may thus achieve distribution by utilizing the source itself.
+You can use both the [`EmbeddedEventStore`](#embedded-event-store) and [Axon Server](../../axon-server-introduction.md) for this.
+The former would require the applications to point to the same data source, whereas the latter would require the applications to partake in the same context.
 
-Alternatively, you can choose other components to distribute events.
-Axon provides a couple of these as [extension modules](../../extensions) for example [Spring AMQP](../../extensions/spring-amqp.md) or [Kafka](../../extensions/kafka.md).
-Note that neither of these are intended as an [Event Store](#event-store), but **only** as a message broker.
+However, sharing the event store is not recommended whenever the applications do not belong to the same context.
+Instead, we should protect the boundary of the contexts, both from the event's perspective and the storage solution.
+
+To distribute events between bounded contexts, you can use Axon Server's [multi-context](../../axon-server/administration/multi-context.md) solution, for example.
+The former requires application registration to specific contexts, firstly.
+Secondly, you can open a stream to another context through the `AxonServerEventStore#createStreamableMessageSourceForContext(String)` operation.
+With this source in hand, you can configure a [Streaming Processor](event-processors/streaming.md) to start reading from it.
+
+Alternatively, you can choose a message broker to distribute events.
+Axon provides a couple of these as [extension modules](../../extensions), for example [Spring AMQP](../../extensions/spring-amqp.md) or [Kafka](../../extensions/kafka.md).
+Note that neither of these is intended as an [Event Store](#event-store), but **only** as a message broker.
