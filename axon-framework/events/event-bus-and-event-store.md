@@ -393,22 +393,22 @@ If no explicit `eventSerializer` is configured, events are serialized using the 
 
 ## Distributing Events
 
-To distribute events between applications, it is paramount to know whether the applications belong to the same [bounded context](../../architecture-overview/ddd-cqrs-concepts.md#bounded-context).
-If they do, they're allowed to understand each other's language.
-In other words, they should be free to understand the events altogether.
+To distribute events between applications, it is important to know whether the applications belong to the same [bounded context](../../architecture-overview/ddd-cqrs-concepts.md#bounded-context).
+Applications within the same context "speak the same language."
+In other words, they communicate using the same set of messages and thus events.
 
-As such, we can share the `EventStore`'s data source between these applications typically suffices.
+As such, we can share the `EventStore`'s data source between these applications.
 We may thus achieve distribution by utilizing the source itself.
 You can use both the [`EmbeddedEventStore`](#embedded-event-store) and [Axon Server](../../axon-server-introduction.md) for this.
 The former would require the applications to point to the same data source, whereas the latter would require the applications to partake in the same context.
 
-However, sharing the event store is not recommended whenever the applications do not belong to the same context.
-Instead, we should protect the boundary of the contexts, both from the event's perspective and the storage solution.
-Since accessing the same source directly isn't an option, in this case, we require a different solution to share events.
+However, sharing the entire event API is not recommended whenever the applications do not belong to the same context.
+Instead, we should protect the boundary of the contexts, except for some clearly defined cross-boundary messages.
+Since accessing the same source isn't an option, we require a different solution to share events.
 
 To distribute events between bounded contexts, you can use Axon Server's [multi-context](../../axon-server/administration/multi-context.md) solution, for example.
-The multi-context support requires application registration to specific contexts, firstly.
-Secondly, you can open a stream to another context through the `AxonServerEventStore#createStreamableMessageSourceForContext(String)` operation.
+The multi-context support requires application registration to specific contexts.
+Then, you can open a stream to another context through the `AxonServerEventStore#createStreamableMessageSourceForContext(String)` operation.
 With this source in hand, you can configure a [Streaming Processor](event-processors/streaming.md) to start reading from it.
 
 Alternatively, you can use a message broker to distribute events between contexts.
@@ -418,5 +418,5 @@ Although this allows further event distribution, we still recommend consciously 
 Ideally, we add a form of context mapping, like an anti-corruption layer, between the contexts.
 In other words, we recommend using a separate component that maps the events from the local context to a shared language right before distribution.
 
-This mapper would publish the messages on the AMQP queue or Kafka topic, for example.
+For example, this mapper would publish the messages on the AMQP queue or Kafka topic.
 When it comes to Axon Server, we could, for example, use a distinct shared/global context to contain the shared language.
