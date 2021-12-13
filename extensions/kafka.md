@@ -284,7 +284,10 @@ Albeit the default, this implementation allows for some customization, such as h
 
 The `SequencingPolicy` can be adjusted to change the behaviour of the record key being used. The default sequencing policy is the `SequentialPerAggregatePolicy`, which leads to the aggregate identifier of an event being the key of a `ProducerRecord` and `ConsumerRecord`.
 
-The format of an event message defines an API between the producer and the consumer of the message. This API may change over time leading to incompatibility between the structure of the event class on the receiver side to the structure of the message, if old format is transmitted. Axon addresses the topic of [Event Versioning](../axon-framework/events/event-versioning.md) by introducing Event Upcasters. The `DefaultKafkaMessageConverter` will use provided `EventUpcasterChain` and run the upcasting process on the `MetaData` and `Payload` of individual messages converted from `ConsumerRecord` before those are passed to the `Serializer` and are converted to `Event` instances.
+The format of an event message defines an API between the producer and the consumer of the message. 
+This API may change over time, leading to incompatibility between the event class' structure on the receiving side and the event structure of a message containing the old format. 
+Axon addresses the topic of [Event Versioning](../axon-framework/events/event-versioning.md) by introducing Event Upcasters. 
+The `DefaultKafkaMessageConverter` will use a provided `EventUpcasterChain` and run the upcasting process on the `MetaData` and `Payload` of individual messages converted from `ConsumerRecord` before those are passed to the `Serializer` and converted into `Event` instances.
 
 Note that the upcasters are feed with messages one-by-one, which limits the upcasters to one-to-one or one-to-many only. If your upcaster are implemented in many-to-one manner, they won't be able to operate inside the extension yet.
 
