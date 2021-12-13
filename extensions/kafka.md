@@ -273,7 +273,8 @@ This API may change over time, leading to incompatibility between the event clas
 Axon addresses the topic of [Event Versioning](../axon-framework/events/event-versioning.md) by introducing Event Upcasters. 
 The `DefaultKafkaMessageConverter` will use a provided `EventUpcasterChain` and run the upcasting process on the `MetaData` and `Payload` of individual messages converted from `ConsumerRecord` before those are passed to the `Serializer` and converted into `Event` instances.
 
-Note that the upcasters are feed with messages one-by-one, which limits the upcasters to one-to-one or one-to-many only. If your upcaster are implemented in many-to-one manner, they won't be able to operate inside the extension yet.
+Note that the `KafkaMessageConverter` feeds the upcasters with messages one-by-one, limiting it to one-to-one or one-to-many upcasting <b>only</b>. 
+Upcasters performing a many-to-one or many-to-many operation thus won't be able to operate inside the extension (yet).
 
 Lastly, the `Serializer` used by the converter can be adjusted. See the [Serializer](../axon-framework/events/event-serialization.md) section for more details on this.
 
