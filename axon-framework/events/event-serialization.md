@@ -27,7 +27,7 @@ To that end, the `Configuration` API allows you to define default, message and e
    These objects are generally not shared between different applications, and most of these classes aren't expected to have some of the getters and setters that are, for example, typically required by Jackson based serializers.
    A flexible, general purpose serializer like [XStream](http://x-stream.github.io/) is quite suited for this purpose.
 
-By default all three `Serializer` flavors are set to use the `XStreamSerializer`, which internally uses [XStream](http://x-stream.github.io/) to serialize objects to an XML format. XML is a verbose format to serialize to, but XStream has the major benefit of being able to serialize virtually anything. This verbosity is typically fine when storing tokens, sagas or snapshots, but for messages \(and specifically events\) XML might prove to cost too much due to its serialized size. Thus for optimization reasons you can configure different serializers for your messages. Another very valid reason for customizing serializers is to achieve interoperability between different \(Axon\) applications, where the receiving end potentially enforces a specific serialized format.
+By default, all three `Serializer` flavors are set to use the `XStreamSerializer`, which internally uses [XStream](http://x-stream.github.io/) to serialize objects to an XML format. XML is a verbose format to serialize to, but XStream has the major benefit of being able to serialize virtually anything. This verbosity is typically fine when storing tokens, sagas or snapshots, but for messages \(and specifically events\) XML might prove to cost too much due to its serialized size. Thus for optimization reasons you can configure different serializers for your messages. Another very valid reason for customizing serializers is to achieve interoperability between different \(Axon\) applications, where the receiving end potentially enforces a specific serialized format.
 
 There is an implicit ordering between the configurable serializer. If no event `Serializer` is configured, the event de-/serialization will be performed by the message `Serializer`. In turn, if no message `Serializer` is configured, the default `Serializer` will take that role.
 
@@ -39,15 +39,44 @@ See the following example on how to configure each serializer specifically, were
 public class SerializerConfiguration {
 
     public void serializerConfiguration(Configurer configurer) {
-        // By default we want the XStreamSerializer
-        XStreamSerializer defaultSerializer = XStreamSerializer.defaultSerializer();
-        // But for all our messages we'd prefer the JacksonSerializer due to JSON its smaller format
+        // By default, we want the XStreamSerializer
+        XStream xStream = new XStream();
+        // Set the secure types on the xStream instance
+        XStreamSerializer defaultSerializer = XStreamSerializer.builder()
+                                                               .xStream(xStream)
+                                                               .build();
+        
+        // But for all our messages we'd prefer the JacksonSerializer due to JSON's smaller format
         JacksonSerializer messageSerializer = JacksonSerializer.defaultSerializer();
 
         configurer.configureSerializer(configuration -> defaultSerializer)
                   .configureMessageSerializer(configuration -> messageSerializer)
                   .configureEventSerializer(configuration -> messageSerializer);
     }
+}
+```
+{% endtab %}
+{% tab title="Spring Boot AutoConfiguration - Configuration class" %}
+```java
+@Configuration
+public class SerializerConfiguration {
+
+   // By default, we want the XStreamSerializer
+   @Bean
+   public Serializer defaultSerializer() {
+      // Set the secure types on the xStream instance
+      XStream xStream = new XStream();
+      return XStreamSerializer.builder()
+                              .xStream(xStream)
+                              .build();
+   }
+
+   // But for all our messages we'd prefer the JacksonSerializer due to JSON's smaller format
+   @Bean
+   @Qualifier("messageSerializer")
+   public Serializer messageSerializer() {
+      return JacksonSerializer.defaultSerializer();
+   }
 }
 ```
 {% endtab %}
