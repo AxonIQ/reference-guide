@@ -271,7 +271,7 @@ The `SequencingPolicy` can be adjusted to change the behaviour of the record key
 The format of an event message defines an API between the producer and the consumer of the message. 
 This API may change over time, leading to incompatibility between the event class' structure on the receiving side and the event structure of a message containing the old format. 
 Axon addresses the topic of [Event Versioning](../axon-framework/events/event-versioning.md) by introducing Event Upcasters. 
-The `DefaultKafkaMessageConverter` will use a provided `EventUpcasterChain` and run the upcasting process on the `MetaData` and `Payload` of individual messages converted from `ConsumerRecord` before those are passed to the `Serializer` and converted into `Event` instances.
+The `DefaultKafkaMessageConverter` supports this by provisioning an `EventUpcasterChain` and run the upcasting process on the `MetaData` and `Payload` of individual messages converted from `ConsumerRecord` before those are passed to the `Serializer` and converted into `Event` instances.
 
 Note that the `KafkaMessageConverter` feeds the upcasters with messages one-by-one, limiting it to one-to-one or one-to-many upcasting <b>only</b>. 
 Upcasters performing a many-to-one or many-to-many operation thus won't be able to operate inside the extension (yet).
