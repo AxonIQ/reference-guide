@@ -4,6 +4,14 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.12
+
+* Fix: performance issue reading aggregates with first sequence number larger than last sequence number in the event
+  store
+* Fix: access controller ignores the context name in the role when using non-standard authentication/authorization
+* Fix: during install snapshot for admin RG, the nodes' role was not set
+* Improvement: catch exceptions during connection to other AS nodes
+
 ### Release 4.5.11
 
 * Fix: removed unnecessary index file reads when loading an aggregate with up-to-date snapshot
