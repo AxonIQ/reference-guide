@@ -13,7 +13,7 @@ Axon provides a ready to use [Axon Server SE image](https://hub.docker.com/r/axo
 To run the provided image the command below can be executed. This starts Axon Server SE in a docker container with exposes the HTTP \(8024\) and GRPC \(8124\) ports to the host.
 
 ```bash
-$ docker run -d --name  -p 8024:8024 -p 8124:8124 axoniq/axonserver
+$ docker run -d --name axonserver  -p 8024:8024 -p 8124:8124 axoniq/axonserver
 ```
 
 A quick verification of the running docker container can be done by querying the REST API that is available to retrieve configuration information for a running Axon Server instance.
