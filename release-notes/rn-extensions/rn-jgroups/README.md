@@ -10,3 +10,4 @@ The release notes section for the Axon JGroups Extension for all major/minor rel
 |  | [4.2](rn-jgroups-major-releases.md#release-42) |
 |  | [4.1](rn-jgroups-major-releases.md#release-41) |
 |  | [4.0](rn-jgroups-major-releases.md#release-40) |
+| _**Minor**_ | [4.5](rn-jgroups-minor-releases.md#release-45) |

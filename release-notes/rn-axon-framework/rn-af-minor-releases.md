@@ -4,6 +4,22 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.5
 
+### Release 4.5.6
+
+* Although Axon Framework doesn't use the log4j-core dependency directly, we updated it to the most recent version for ease of mind.
+  You can follow these increments in issues [#2038](https://github.com/AxonFramework/AxonFramework/pull/2038), [#2040](https://github.com/AxonFramework/AxonFramework/pull/2040) and [#2052](https://github.com/AxonFramework/AxonFramework/pull/2052).
+
+* Contributor `jasperfect` spotted a predicament with duplicate aggregate creation combined with using caches.
+  Axon didn't invalidate the cache as it should have, causing unexpected behavior.
+  You can find the issue description [here](https://github.com/AxonFramework/AxonFramework/issues/2017).
+  Additionally, you can find the pull request solving the problem [here](https://github.com/AxonFramework/AxonFramework/pull/2027).
+
+* Contributor `shubhojitr` stated in issue [#2051](https://github.com/AxonFramework/AxonFramework/issues/2051) that the `axonserver-connector-java` project pulled in a non-secure version of `grpc-netty`.
+  As this isn't an issue on Axon Framework itself, we solved the problem under the connector project.
+  As a follow-up, we incremented the framework's version for the `axonserver-connector-java` project to 4.5.4, which contains the most recent version of the `grpc-bom`.
+
+For an exhaustive list of all the changes, check out the [4.5.6 release notes](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.6).
+
 ### Release 4.5.5
 
 * The auto-configuration we introduced for `XStream` used a suboptimal approach. 
