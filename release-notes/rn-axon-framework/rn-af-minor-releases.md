@@ -4,6 +4,13 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.5
 
+### Release 4.5.7
+
+This [release](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.7) contains a single fix.
+Namely, pull request [#2067](https://github.com/AxonFramework/AxonFramework/pull/2067).
+This pull request solves a bug that had the `PooledStreamingEventProcessor` not handle new events resulting from an `EventMultiUpcaster`.
+The kudos for spotting the bug go to [Magnus Heino](https://discuss.axoniq.io/u/daysleeper75), which started a discussion on our [forum](https://discuss.axoniq.io/t/events-other-than-first-event-created-by-contextawareeventmultiupcaster-are-not-processed-by-eventhandler/3756) after he noticed the issue.
+
 ### Release 4.5.6
 
 * Although Axon Framework doesn't use the log4j-core dependency directly, we updated it to the most recent version for ease of mind.
