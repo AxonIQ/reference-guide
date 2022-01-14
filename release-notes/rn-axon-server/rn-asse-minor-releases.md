@@ -4,6 +4,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.5
 
+### Release 4.5.10
+
+* Updated gRPC version from 1.42.0 to 1.42.2 to avoid CVE-2021-22569
+
 ### Release 4.5.9
 
 * Updated gRPC and Netty versions

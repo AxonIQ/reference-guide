@@ -4,6 +4,12 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.13
+
+* Fix: node fails to synchronize with the leader if the leader became leader immediately after it had installed a snapshot
+* Updated version of LDAP extension in the package
+* Updated gRPC version from 1.42.0 to 1.42.2 to avoid CVE-2021-22569
+
 ### Release 4.5.12
 
 * Fix: performance issue reading aggregates with first sequence number larger than last sequence number in the event
