@@ -4,7 +4,7 @@
 The Kafka Extension currently only has a Release Candidate. Due to this, minor releases of the extension or Axon Framework may include breaking changes to the APIs.
 {% endhint %}
 
-Apache Kafka is a very popular system for publishing and consuming events. Its architecture is fundamentally different from most messaging systems, and combines speed with reliability.
+Apache Kafka is a very popular system for publishing and consuming events. Its architecture is fundamentally different from most messaging systems and combines speed with reliability.
 
 Axon provides an extension dedicated to _publishing_ and _receiving_ event messages from Kafka. The Kafka Extension should be regarded as an alternative approach to distributing events, besides \(the default\) Axon Server.
 
@@ -20,39 +20,23 @@ Note that Kafka is a perfectly fine event distribution mechanism, but it is not 
 
 When Event Messages are published to an Event Bus \(or Event Store\), they can be forwarded to a Kafka topic using the `KafkaPublisher`. To achieve this it will utilize a Kafka `Producer`, retrieved through Axon's `ProducerFactory`. The `KafkaPublisher` in turn receives the events to publish from a `KafkaEventPublisher`.
 
-Since the `KafkaEventPublisher` is an event message handler in Axon terms, we can provide it to any [Event Processor](../axon-framework/events/event-processors.md) to receive the published events. The choice of event processor which brings differing characteristics for event publication to Kafka:
+Since the `KafkaEventPublisher` is an event message handler in Axon terms, we can provide it to any [Event Processor](../axon-framework/events/event-processors/README.md) to receive the published events. The choice of event processor which brings differing characteristics for event publication to Kafka:
 
-* **Subscribing Event Processor** - publication of messages to Kafka will occur in the same thread \(and Unit of Work\)
-
-  which published the events to the event bus.
-
+* **Subscribing Event Processor** - publication of messages to Kafka will occur in the same thread \(and Unit of Work\) which published the events to the event bus.
   This approach ensures failure to publish to Kafka enforces failure of the initial event publication on the event bus
 
-* **Tracking Event Processor** - publication of messages to Kafka is run in a different thread \(and Unit of Work\)
-
-  then the one which published the events to the event bus.
-
+* **Tracking Event Processor** - publication of messages to Kafka is run in a different thread \(and Unit of Work\) than the one which published the events to the event bus.
   This approach ensures the event has been published on the event bus regardless of whether publication to Kafka works
 
 When setting up event publication it is also important to take into account which `ConfirmationMode` is used. The `ConfirmationMode` influences the process of actually producing an event message on a Kafka topic, but also what kind of `Producer` the `ProducerFactory` will instantiate:
 
-* **TRANSACTIONAL** - This will require the `Producer` to start, commit and \(in case of failure\) rollback the
+* **TRANSACTIONAL** - This will require the `Producer` to start, commit and \(in case of failure\) rollback the transaction of publishing an event message.
+  Alongside this, it will create a pool of `Producer` instances in the `ProducerFactory` to avoid continuous creation of new ones, requiring the user to provide a "transactional id prefix" to uniquely identify every `Producer` in the pool.
 
-  transaction of publishing an event message.
-
-  Alongside this, it will create a pool of `Producer` instances in the `ProducerFactory` to avoid continuous creation of
-
-  new ones, requiring the user to provide a "transactional id prefix" to uniquely identify every `Producer` in the pool.
-
-* **WAIT\_FOR\_ACK** - Setting "WAIT\_FOR\_ACK" as the `ConfirmationMode` will require the `Producer` instance to wait for
-
-  a default of 1 second \(configurable on the `KafkaPublisher`\) until the event message publication has been acknowledged.
-
+* **WAIT\_FOR\_ACK** - Setting "WAIT\_FOR\_ACK" as the `ConfirmationMode` will require the `Producer` instance to wait for a default of 1 second \(configurable on the `KafkaPublisher`\) until the event message publication has been acknowledged.
   Alongside this, it will create a single, shareable `Producer` instance from within the `ProducerFactory`.
 
-* **NONE** - This is the _default_ mode, which only ensures a single,
-
-  shareable `Producer` instance from within the `ProducerFactory`.
+* **NONE** - This is the _default_ mode, which only ensures a single, shareable `Producer` instance from within the `ProducerFactory`.
 
 ### Configuring Event Publication to Kafka
 
@@ -83,7 +67,7 @@ public class KafkaEventPublicationConfiguration {
 The second infrastructure component to introduce is the `KafkaPublisher`, which has a hard requirement on the `ProducerFactory`. Additionally, this would be the place to define the Kafka topic upon which Axon event messages will be published. Note that the `KafkaPublisher` needs to be `shutDown` properly, to ensure all `Producer` instances are properly closed.
 
 ```java
-public class KafkaEventPublicationConfiguration { 
+public class KafkaEventPublicationConfiguration {
     // ...
 
     public KafkaPublisher<String, byte[]> kafkaPublisher(String topic,
@@ -121,7 +105,7 @@ public class KafkaEventPublicationConfiguration {
                                          clazz -> clazz.isAssignableFrom(KafkaEventPublisher.class)
                                  )
                                  .registerSubscribingEventProcessor(processingGroup);
-        // Replace `registerSubscribingEventProcessor` for `registerTrackingEventProcessor` to use a tracking processor 
+        // Replace `registerSubscribingEventProcessor` for `registerTrackingEventProcessor` to use a tracking processor
     }
     // ...
 }
@@ -135,7 +119,7 @@ The topic-partition pair events have been published in also has impact on event 
 
 ## Consuming Events from Kafka
 
-Event messages in an Axon application can be consumed through either a Subscribing or a Tracking [Event Processor](../axon-framework/events/event-processors.md). Both options are maintained when it comes to consuming events from a Kafka topic, which from a set-up perspective translates to a [SubscribableMessageSource](kafka.md#consuming-events-with-a-subscribable-message-source) or a [StreamableKafkaMessageSource](kafka.md#consuming-events-with-a-streamable-message-source) respectively, Both will be described in more detail later on, as we first shed light on the general requirements for event consumption in Axon through Kafka.
+Event messages in an Axon application can be consumed through either a Subscribing or a Tracking [Event Processor](../axon-framework/events/event-processors/README.md). Both options are maintained when it comes to consuming events from a Kafka topic, which from a set-up perspective translates to a [SubscribableMessageSource](kafka.md#consuming-events-with-a-subscribable-message-source) or a [StreamableKafkaMessageSource](kafka.md#consuming-events-with-a-streamable-message-source) respectively, Both will be described in more detail later on, as we first shed light on the general requirements for event consumption in Axon through Kafka.
 
 Both approaches use a similar mechanism to poll events with a Kafka `Consumer`, which breaks down to a combination of a `ConsumerFactory` and a `Fetcher`. The extension provides a `DefaultConsumerFactory`, whose sole requirement is a `Map` of configuration properties. The `Map` contains the settings to use for the Kafka `Consumer` client, such as the Kafka instance locations. Please check the Kafka [documentation](https://kafka.apache.org/) for the possible settings and their values.
 
@@ -169,7 +153,7 @@ public class KafkaEventConsumptionConfiguration {
 
 Using the `SubscribableKafkaMessageSource` means you are inclined to use a `SubscribingEventProcessor` to consume the events in your event handlers.
 
-When using this source, Kafka's idea of pairing `Consumer` instances into "Consumer Groups" is used. This is strengthened by making the `groupId` upon source construction a _hard requirement_. To use a common `groupId` essentially means that the event-stream-workload can be shared on Kafka's terms, whereas a `SubscribingEventProcessor` typically works on it's own accord regardless of the number of instances. The workload sharing can be achieved by having several application instances with the same `groupId` or by adjusting the consumer count through the `SubscribableKafkaMessageSource`'s builder. The same benefit holds for [resetting ](../axon-framework/events/event-processors.md#replaying-events)an event stream, which in Axon is reserved to the `TrackingEventProcessor`, but is now opened up through Kafka's own API's.
+When using this source, Kafka's idea of pairing `Consumer` instances into "Consumer Groups" is used. This is strengthened by making the `groupId` upon source construction a _hard requirement_. To use a common `groupId` essentially means that the event-stream-workload can be shared on Kafka's terms, whereas a `SubscribingEventProcessor` typically works on it's own accord regardless of the number of instances. The workload sharing can be achieved by having several application instances with the same `groupId` or by adjusting the consumer count through the `SubscribableKafkaMessageSource`'s builder. The same benefit holds for [resetting](../axon-framework/events/event-processors/streaming.md#replaying-events) an event stream, which in Axon is reserved to the `TrackingEventProcessor`, but is now opened up through Kafka's own API's.
 
 Although the `SubscribableKafkaMessageSource` thus provides the niceties the tracking event processor normally provides, it does come with two catches:
 
@@ -238,7 +222,7 @@ If only a single subscribing event processor will be subscribed to the kafka mes
 
 Using the `StreamableKafkaMessageSource` means you are inclined to use a `TrackingEventProcessor` to consume the events in your event handlers.
 
-Where as the [subscribable kafka message source](kafka.md#consuming-events-with-a-subscribable-message-source) uses Kafka's idea of sharing the workload through multiple `Consumer` instances in the same "Consumer Group", the streamable approach enforces a **unique** consumer group per `Consumer` instance. Axon requires uniquely identified consumer group/`Consumer` pairs to \(1\) ensure event ordering and \(2\) to guarantee that each instance/thread receives the correct portion of the event stream during [parallel processing](../axon-framework/events/event-processors.md#parallel-processing). The distinct group id is derived by the `StreamableKafkaMessageSource` through a `groupIdPrefix` and a `groupdIdSuffixFactory`, which are adjustable through the source's builder.
+Where as the [subscribable kafka message source](kafka.md#consuming-events-with-a-subscribable-message-source) uses Kafka's idea of sharing the workload through multiple `Consumer` instances in the same "Consumer Group", the streamable approach enforces a **unique** consumer group per `Consumer` instance. Axon requires uniquely identified consumer group/`Consumer` pairs to \(1\) ensure event ordering and \(2\) to guarantee that each instance/thread receives the correct portion of the event stream during [parallel processing](../axon-framework/events/event-processors/streaming.md#parallel-processing). The distinct group id is derived by the `StreamableKafkaMessageSource` through a `groupIdPrefix` and a `groupdIdSuffixFactory`, which are adjustable through the source's builder.
 
 ```java
 public class KafkaEventConsumptionConfiguration {
@@ -284,6 +268,14 @@ Albeit the default, this implementation allows for some customization, such as h
 
 The `SequencingPolicy` can be adjusted to change the behaviour of the record key being used. The default sequencing policy is the `SequentialPerAggregatePolicy`, which leads to the aggregate identifier of an event being the key of a `ProducerRecord` and `ConsumerRecord`.
 
+The format of an event message defines an API between the producer and the consumer of the message. 
+This API may change over time, leading to incompatibility between the event class' structure on the receiving side and the event structure of a message containing the old format. 
+Axon addresses the topic of [Event Versioning](../axon-framework/events/event-versioning.md) by introducing Event Upcasters. 
+The `DefaultKafkaMessageConverter` supports this by provisioning an `EventUpcasterChain` and run the upcasting process on the `MetaData` and `Payload` of individual messages converted from `ConsumerRecord` before those are passed to the `Serializer` and converted into `Event` instances.
+
+Note that the `KafkaMessageConverter` feeds the upcasters with messages one-by-one, limiting it to one-to-one or one-to-many upcasting <b>only</b>. 
+Upcasters performing a many-to-one or many-to-many operation thus won't be able to operate inside the extension (yet).
+
 Lastly, the `Serializer` used by the converter can be adjusted. See the [Serializer](../axon-framework/events/event-serialization.md) section for more details on this.
 
 ```java
@@ -291,10 +283,12 @@ public class KafkaMessageConversationConfiguration {
     // ...
     public KafkaMessageConverter<String, byte[]> kafkaMessageConverter(Serializer serializer,
                                                                        SequencingPolicy<? super EventMessage<?>> sequencingPolicy,
-                                                                       BiFunction<String, Object, RecordHeader> headerValueMapper) {
+                                                                       BiFunction<String, Object, RecordHeader> headerValueMapper,
+                                                                       EventUpcasterChain upcasterChain) {
         return DefaultKafkaMessageConverter.builder()
-                                           .serializer(serializer)                  // Hard requirement
-                                           .sequencingPolicy(sequencingPolicy)      // Defaults to a "SequentialPerAggregatePolicy"
+                                           .serializer(serializer)                                      // Hard requirement
+                                           .sequencingPolicy(sequencingPolicy)            // Defaults to a "SequentialPerAggregatePolicy"
+                                           .upcasterChain(upcasterChain)                     // Defaults to empty upcaster chain
                                            .headerValueMapper(headerValueMapper)    // Defaults to "HeaderUtils#byteMapper()"
                                            .build();
     }
@@ -386,4 +380,3 @@ axon:
 > The auto configured `StreamableKafkaMessageSource` can be toggled off by setting the `axon.kafka.consumer.event-processing-mode` to `subscribing`.
 >
 > Note that this **does not** create a `SubscribableKafkaMessageSource` for you out of the box. To set up a subscribable message, we recommend to read [this](kafka.md#consuming-events-with-a-subscribable-message-source) section.
-

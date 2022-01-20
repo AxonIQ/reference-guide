@@ -45,8 +45,8 @@ The following 5-part video tutorial offers a quick start guided path to understa
 | [Part - 1](https://www.youtube.com/watch?v=tqn9p8Duy54) | Structure of an Axon Framework Application |
 | [Part - 2](https://www.youtube.com/watch?v=vnCxjWZrrk0) | Core API development |
 | [Part - 3](https://www.youtube.com/watch?v=7oy4w5THFEU) | Command Model of the Application |
-| [Part - 4](https://www.youtube.com/watch?v=jS1vfc5EohM&t=297s) | Query Model of the Application |
-| [Part - 5](https://www.youtube.com/watch?v=lxonQnu1txQ&t=413s) | Connecting the UI |
+| [Part - 4](https://www.youtube.com/watch?v=jS1vfc5EohM) | Query Model of the Application |
+| [Part - 5](https://www.youtube.com/watch?v=lxonQnu1txQ) | Connecting the UI |
 
 ### Axon Server
 

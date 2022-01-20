@@ -12,7 +12,7 @@ As such, the `HandlerExecutionException` should only be returned as an exception
 Axon provides a more concrete implementation of this exception for failed command and query handling, respectively the `CommandExecutionException` and `QueryExecutionException`.
 
 The usefulness of a dedicated handler execution exception becomes clearer in a distributed application environment where, for example, there is a dedicated application for dealing with commands and another application tasked with the query side. 
-Due to the application segregation, you loose any certainty that both applications can access the same classes, which thus holds for any exception classes. 
+Due to the application division, you loose any certainty that both applications can access the same classes, which thus holds for any exception classes. 
 To support and encourage this decoupling, Axon will generify any exception which is a result of Command or Query Handling.
 
 To maintain support for conditional logic dependent on the type of exception thrown in a distributed scenario, it is possible to provide details in a `HandlerExecutionException`. 

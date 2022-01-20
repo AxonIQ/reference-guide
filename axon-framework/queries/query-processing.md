@@ -1,6 +1,6 @@
 # Query Processing
 
-Processing [queries ](./)as a dedicated type of message is in line with segregating out query models when following [CQRS](../../architecture-overview/ddd-cqrs-concepts.md). Although creating a query handling layer is fairly straight-forward, using Axon Framework for this part of the application has a number of benefits.
+Processing [queries ](./)as a dedicated type of message is in line with separating the query models when following [CQRS](../../architecture-overview/ddd-cqrs-concepts.md). Although creating a query handling layer is fairly straight-forward, using Axon Framework for this part of the application has a number of benefits.
 
 Through providing the functionality to describe query handling methods \(as further explained in [this ](query-handlers.md)section\) and a dedicated bus for query messages, common message features such as[ interceptors](../messaging-concepts/message-intercepting.md) and [message monitoring](../monitoring-and-metrics.md) can be used.
 

@@ -2,7 +2,7 @@
 
 ## Event Bus
 
-The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides three implementations of the Event Bus: `AxonServerEventStore`, `EmbeddedEventStore` and `SimpleEventBus`. All three implementations support subscribing and tracking processors \(see [Events Processors](event-processors.md)\). However, the `AxonServerEventStore` and `EmbeddedEventStore` persist events \(see [Event Store](event-bus-and-event-store.md)\), which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
+The `EventBus` is the mechanism that dispatches events to the subscribed event handlers. Axon provides three implementations of the Event Bus: `AxonServerEventStore`, `EmbeddedEventStore` and `SimpleEventBus`. All three implementations support subscribing and tracking processors \(see [Events Processors](event-processors/README.md)\). However, the `AxonServerEventStore` and `EmbeddedEventStore` persist events \(see [Event Store](event-bus-and-event-store.md)\), which allows you to replay them at a later stage. The `SimpleEventBus` has a volatile storage and 'forgets' events as soon as they have been published to subscribed components.
 
 An `AxonServerEventStore` event bus/store is configured by default.
 
@@ -175,64 +175,75 @@ public EventStorageEngine storageEngine(Serializer defaultSerializer,
 
 #### JdbcEventStorageEngine
 
-The JDBC event storage engine uses a JDBC Connection to store events in a JDBC compatible data storage. Typically, these are relational databases. Theoretically, anything that has a JDBC driver could be used to back the `JdbcEventStorageEngine`.
+The JDBC event storage engine uses a JDBC Connection to store events in a JDBC compatible data storage.
+Typically, these are relational databases.
+Theoretically, anything that has a JDBC driver could be used to back the `JdbcEventStorageEngine`.
 
-Similar to its JPA counterpart, the `JDBCEventStorageEngine` stores events in entries. By default, each event is stored in a single entry, which corresponds with a row in a table. One table is used for events and another for snapshots.
+Similar to its JPA counterpart, the `JDBCEventStorageEngine` stores events in entries.
+By default, each event is stored in a single entry, which corresponds with a row in a table.
+The storage engine uses one table for events and another for snapshots.
 
-The `JdbcEventStorageEngine` uses a `ConnectionProvider` to obtain connections. Typically, these connections can be obtained directly from a `DataSource`. However, Axon will bind these connections to a unit of work, so that a single connection is used within a unit of work. This ensures that a single transaction is used to store all events, even when multiple units of work are nested in the same thread.
+The `JdbcEventStorageEngine` uses a `ConnectionProvider` to obtain connections.
+Typically, the engine can obtain these connections directly from a `DataSource`.
+However, Axon will bind these connections to a `UnitOfWork` to use a single connection within a unit of work.
+This approach ensures that the framework uses a single transaction to store all events, even when multiple units of work are nested in the same thread.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-// Returns a Configurer instance with default components configured. 
-// We explicitly set `JdbcEventStorageEngine` as desired engine for Embedded Event Store.
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-    .configureEmbeddedEventStore(
-        c -> JdbcEventStorageEngine.builder()
-            .connectionProvider(connectionProvider)
-            .transactionManager(NoTransactionManager.INSTANCE)
-            .build()
-    );
+public class AxonConfig {
+    // ...
+    public void configureJdbcEventStorage(Configurer configurer, 
+                                          EventTableFactory eventTableFactory) {
+        configurer.configureEmbeddedEventStore(
+                config -> {
+                    JdbcEventStorageEngine jdbcStorageEngine = 
+                            JdbcEventStorageEngine.builder()
+                                                  .connectionProvider(connectionProvider)
+                                                  .transactionManager(NoTransactionManager.INSTANCE)
+                                                  .build();
+                    
+                    // If the schema has not been constructed yet, the createSchema method can be used: 
+                    jdbcStorageEngine.createSchema(eventTableFactory);
+                }
+        );
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
+By having JDBC on the classpath, Axon's `JdbcAutoConfiguration` will automatically generate the `JdbcEventStorageEngine` for you.
+All that might be left is the creation of the schema.
+Axon can help you here with the `createSchema` operation:
+
 ```java
-// The Event store `EmbeddedEventStore` delegates actual storage and retrieval of events to an `EventStorageEngine`.
-@Bean
-public EmbeddedEventStore eventStore(EventStorageEngine storageEngine, AxonConfiguration configuration) {
-    return EmbeddedEventStore.builder()
-            .storageEngine(storageEngine)
-            .messageMonitor(configuration.messageMonitor(EventStore.class, "eventStore"))
-            .build();
+@Configuration
+public class AxonConfig {
+    // ...
+    @Autowire
+    public void createJdbcEventStorageSchema(JdbcEventStorageEngine jdbcStorageEngine, 
+                                             EventTableFactory eventTableFactory) { 
+        jdbcStorageEngine.createSchema(eventTableFactory);
+    }
 }
 ```
 
 > **Data sources providers with Spring**
 >
-> Spring users are recommended to use the `SpringDataSourceConnectionProvider` to attach a connection from a `DataSource` to an existing transaction.
+> We recommend that Spring users use the `SpringDataSourceConnectionProvider` to attach a connection from a `DataSource` to an existing transaction.
 
-```java
-// EventStorageEngine implementation that uses JDBC to store and fetch events.
-@Bean
-public JdbcEventStorageEngine eventStorageEngine(ConnectionProvider connectionProvider) {
-    return JdbcEventStorageEngine.builder()
-            .connectionProvider(connectionProvider)
-            .transactionManager(NoTransactionManager.INSTANCE)
-            .build();
-```
-
-> **Excluding the Axon Server Connector**
->
-> If you exclude the `axon-server-connector` dependency from `axon-spring-boot-starter` the `EmbeddedEventStore` will be auto-configured for you, if a concrete implementation of `EventStorageEngine` is available. When it is desired to use JDBC as the Event Storage approach, you can provide a `JdbcEventStorageEngine` bean directly or let it be auto configured by Axon by exposing a `DataSource` bean.
 {% endtab %}
 {% endtabs %}
 
 > **SQL Statement Customizability**
 >
-> Databases have slight deviations between what's the optimal SQL statement to perform in differing scenarios. As optimizing for all possibilities out there is beyond the scope of the framework, it is possible to adjust the default statements being used.
+> Databases have slight deviations from what's the optimal SQL statement to perform in differing scenarios.
+> Since optimizing for all possibilities out there is beyond the framework's scope, you can adjust the default statements used by the storage engine.
 >
-> Check the `JdbcEventStorageEngineStatements` utility class for the default statements used by the `JdbcEventStorageEngine`. Further more, the `org.axonframework.eventsourcing.eventstore.jdbc.statements` package contains the set of adjustable statements. Each of these statement-builders can be customized through the `JdbcEventStorageEngine.Builder`.
+> Check the `JdbcEventStorageEngineStatements` utility class for the default statements used by the `JdbcEventStorageEngine`.
+> Furthermore, the `org.axonframework.eventsourcing.eventstore.jdbc.statements` package contains the set of adjustable statements.
+> Each of these statement-builders can be customized through the `JdbcEventStorageEngine.Builder`.
 
 #### MongoEventStorageEngine
 
@@ -380,3 +391,32 @@ It is possible to use a different serializer for the storage of events, than all
 
 If no explicit `eventSerializer` is configured, events are serialized using the main serializer that has been configured \(which defaults to the `XStreamSerializer`\).
 
+## Distributing Events
+
+To distribute events between applications, it is important to know whether the applications belong to the same [bounded context](../../architecture-overview/ddd-cqrs-concepts.md#bounded-context).
+Applications within the same context "speak the same language."
+In other words, they communicate using the same set of messages and thus events.
+
+As such, we can share the `EventStore`'s data source between these applications.
+We may thus achieve distribution by utilizing the source itself.
+You can use both the [`EmbeddedEventStore`](#embedded-event-store) and [Axon Server](../../axon-server-introduction.md) for this.
+The former would require the applications to point to the same data source, whereas the latter would require the applications to partake in the same context.
+
+However, sharing the entire event API is not recommended whenever the applications do not belong to the same context.
+Instead, we should protect the boundary of the contexts, except for some clearly defined cross-boundary messages.
+Since accessing the same source isn't an option, we require a different solution to share events.
+
+To distribute events between bounded contexts, you can use Axon Server's [multi-context](../../axon-server/administration/multi-context.md) solution, for example.
+The multi-context support requires application registration to specific contexts.
+Then, you can open a stream to another context through the `AxonServerEventStore#createStreamableMessageSourceForContext(String)` operation.
+With this source in hand, you can configure a [Streaming Processor](event-processors/streaming.md) to start reading from it.
+
+Alternatively, you can use a message broker to distribute events between contexts.
+Axon provides a couple of these as [extension modules](../../extensions), for example [Spring AMQP](../../extensions/spring-amqp.md) or [Kafka](../../extensions/kafka.md).
+
+Although this allows further event distribution, we still recommend consciously sharing _the correct_ events.
+Ideally, we add a form of context mapping, like an anti-corruption layer, between the contexts.
+In other words, we recommend using a separate component that maps the events from the local context to a shared language right before distribution.
+
+For example, this mapper would publish the messages on the AMQP queue or Kafka topic.
+When it comes to Axon Server, we could, for example, use a distinct shared/global context to contain the shared language.

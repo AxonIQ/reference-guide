@@ -329,28 +329,115 @@ For more specifics on which parameters are resolvable for the `Message` being ha
 
 ### @ExceptionHandler
 
-The `@MessageHandlerInterceptor` allows for a more specific version of an intercepting function too.
+The `@MessageHandlerInterceptor` also allows for a more specific version of an intercepting function.
 Namely, an `@ExceptionHandler` annotated method.
-A function annotated with `@ExceptionHandler` will be regarded as a handler interceptor which will _only_ be invoked for exceptional results.
-Using annotated functions to this end for example allow you to throw a more domain specific exception as a result of a thrown database/service exception.
-You can introduce an `@ExceptionHandler` which reacts to all exceptions, or specify which exceptions annotated handler reacts on as shown here:
 
+The framework invokes `@ExceptionHandler` annotated methods _only_ for exceptional results of message handling.
+Using exception handlers like this, for example, allows you to throw more domain-specific exceptions as a result of a thrown database/service exception.
+Or, you can catch an aggregate-specific exception and translate it to a generic error code.
+
+To Axon, an exception handler is just like any other message handling method.
+You can thus wire all [default parameters](supported-parameters-annotated-handlers.md) to an exception handler, similar to command, event, and query handlers.
+Hence, you can add the exception, payload, `MetaData`, and other options to the `@ExceptionHandler` annotated function.
+
+You can introduce `@ExceptionHandler` annotated methods in any message handling component.
+Furthermore, you can choose to react to all exceptions or define specific exception/message combinations to which the handler should respond.
+Check the following samples for some snippets on how to use this:
+
+{% tabs %}
+{% tab title="Aggregate Exception Handlers" %}
 ```java
-public class CardSummaryProjection {
+class GiftCard {
 
-    /*
-     * Some @EventHandler and @QueryHandler annotated methods
-     */
+    // State, command handlers and event sourcing handlers omitted for brevity
+
     @ExceptionHandler
-    public void handle(Exception exception) {
-        // How you prefer to react to this generic exception,
-        //  for example by throwing a domain specific exception.
+    public void handleAll(Exception exception) {
+        // Handles all exceptions thrown within this component generically
     }
 
-    @ExceptionHandler(resultType = IllegalArgumentException.class)
-    public void handle(IllegalArgumentException exception) {
-        // How you prefer to react to the IllegalArgumentException,
-        //  for example by throwing a domain specific exception.
+    @ExceptionHandler
+    public void handleIssueCardExceptions(IssueCardCommand command) {
+        // Handles all exceptions thrown from the IssueCardCommand handler within this component
+    }
+
+    @ExceptionHandler(payloadType = IssueCardCommand.class)
+    public void handleIssueCardExceptions() {
+        // Handles all exceptions thrown from the IssueCardCommand handler within this component
+    }
+
+    @ExceptionHandler
+    public void handleIllegalStateExceptions(IllegalStateException exception) {
+        // Handles all IllegalStateExceptions thrown within this component
+    }
+
+    @ExceptionHandler(resultType = IllegalStateException.class)
+    public void handleIllegalStateExceptions(Exception exception) {
+        // Handles all IllegalStateExceptions thrown within this component
+    }
+
+    @ExceptionHandler
+    public void handleIllegalStateExceptionsFromIssueCard(IssueCardCommand command,
+                                                          IllegalStateException exception) {
+        // Handles all IllegalStateExceptions thrown from the IssueCardCommand handler within this component
+    }
+
+    @ExceptionHandler(resultType = IllegalStateException.class, payloadType = IssueCardCommand.class)
+    public void handleIllegalStateExceptionsFromIssueCard() {
+        // Handles all IllegalStateExceptions thrown from the IssueCardCommand handler within this component
     }
 }
 ```
+{% endtab %}
+{% tab title="Projector Exception Handlers" %}
+```java
+class CardSummaryProjection {
+
+    // Repositories/Services, event handlers and query handlers omitted for brevity
+
+    @ExceptionHandler
+    public void handleAll(Exception exception) {
+        // Handles all exceptions thrown within this component generically
+    }
+
+    @ExceptionHandler
+    public void handleFindCardQueryExceptions(FindCardQuery query) {
+        // Handles all exceptions thrown from the FindCardQuery handler within this component
+    }
+
+    @ExceptionHandler(payloadType = FindCardQuery.class)
+    public void handleFindCardQueryExceptions() {
+        // Handles all exceptions thrown from the FindCardQuery handler within this component
+    }
+
+    @ExceptionHandler
+    public void handleIllegalArgumentExceptions(IllegalArgumentException exception) {
+        // Handles all IllegalArgumentExceptions thrown within this component
+    }
+
+    @ExceptionHandler(resultType = IllegalArgumentException.class)
+    public void handleIllegalArgumentExceptions(Exception exception) {
+        // Handles all IllegalArgumentExceptions thrown within this component
+    }
+
+    @ExceptionHandler
+    public void handleIllegalArgumentExceptionsFromCardIssued(CardIssuedEvent event,
+                                                              IllegalArgumentException exception) {
+        // Handles all IllegalArgumentExceptions thrown from the CardIssuedEvent handler within this component
+    }
+
+    @ExceptionHandler(resultType = IllegalArgumentException.class, payloadType = CardIssuedEvent.class)
+    public void handleIllegalArgumentExceptionsFromCardIssued() {
+        // Handles all IllegalArgumentExceptions thrown from the CardIssuedEvent handler within this component
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+> **Exception Handling for Aggregate Constructors**
+> 
+> The `@ExceptionHandler` annotated methods require an existing component instance to work.
+> Because of this, exception handlers **do not** work for (command handling) constructors of an aggregate.
+> 
+> If you thus expect exceptions on an aggregate's command handler that you need to handle differently, it is recommended to use Axon's [creation policy](../axon-framework-commands/command-handlers.md#aggregate-command-handler-creation-policy).

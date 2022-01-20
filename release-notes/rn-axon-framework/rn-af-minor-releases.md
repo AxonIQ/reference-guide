@@ -2,7 +2,91 @@
 
 Any patch release made for an Axon project is tailored towards resolving bugs. This page aims to provide a dedicated overview of patch releases per project.
 
-## _Release 4.5_
+## Release 4.5
+
+### Release 4.5.7
+
+This [release](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.7) contains a single fix.
+Namely, pull request [#2067](https://github.com/AxonFramework/AxonFramework/pull/2067).
+This pull request solves a bug that had the `PooledStreamingEventProcessor` not handle new events resulting from an `EventMultiUpcaster`.
+The kudos for spotting the bug go to [Magnus Heino](https://discuss.axoniq.io/u/daysleeper75), which started a discussion on our [forum](https://discuss.axoniq.io/t/events-other-than-first-event-created-by-contextawareeventmultiupcaster-are-not-processed-by-eventhandler/3756) after he noticed the issue.
+
+### Release 4.5.6
+
+* Although Axon Framework doesn't use the log4j-core dependency directly, we updated it to the most recent version for ease of mind.
+  You can follow these increments in issues [#2038](https://github.com/AxonFramework/AxonFramework/pull/2038), [#2040](https://github.com/AxonFramework/AxonFramework/pull/2040) and [#2052](https://github.com/AxonFramework/AxonFramework/pull/2052).
+
+* Contributor `jasperfect` spotted a predicament with duplicate aggregate creation combined with using caches.
+  Axon didn't invalidate the cache as it should have, causing unexpected behavior.
+  You can find the issue description [here](https://github.com/AxonFramework/AxonFramework/issues/2017).
+  Additionally, you can find the pull request solving the problem [here](https://github.com/AxonFramework/AxonFramework/pull/2027).
+
+* Contributor `shubhojitr` stated in issue [#2051](https://github.com/AxonFramework/AxonFramework/issues/2051) that the `axonserver-connector-java` project pulled in a non-secure version of `grpc-netty`.
+  As this isn't an issue on Axon Framework itself, we solved the problem under the connector project.
+  As a follow-up, we incremented the framework's version for the `axonserver-connector-java` project to 4.5.4, which contains the most recent version of the `grpc-bom`.
+
+For an exhaustive list of all the changes, check out the [4.5.6 release notes](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.6).
+
+### Release 4.5.5
+
+* The auto-configuration we introduced for `XStream` used a suboptimal approach. 
+  We assumed searching for the `@ComponentScan` would suffice but didn't consider that Spring enabled SpEL operations in the annotation's properties. 
+  This approach thus caused some applications to break on start-up. 
+  As such, this approach is replaced entirely by using the outcome of the `AutoConfigurationPackages#get(BeanFactory)` method. 
+  For those interested in the details of the solution, check out [this](https://github.com/AxonFramework/AxonFramework/pull/1976) pull request. Kudos to contributor `maverick1601` for drafting issue [#1963](https://github.com/AxonFramework/AxonFramework/issues/1963) explaining the predicament.
+
+* We introduced an optimization towards updating the `TrackingToken`. 
+  In (distributed) environments where the configuration states several segments per Streaming Processor, there are always threads receiving events that they're not in charge of due to the configured `SequencingPolicy`. 
+  The old implementation eagerly updated the token in such scenarios, but this didn't benefit the end-user immediately. 
+  Pull request [#1999](https://github.com/AxonFramework/AxonFramework/pull/1999) introduce a wait period for 'event-less-batches', for both the `TrackingEventProcessor` and `PooledStreamingEventProcessor`. 
+  This adjustment minimizes the number of token updates performed by both processor implementations.
+
+* The introduction of Spring Boot version 2.6.0 brought an issue to light within Axon's Spring usage. 
+  The `AbstractAnnotationHandlerBeanPostProcessor` took `FactoryBean` instances into account when searching for message handling methods. 
+  This approach, however, is not recommended by Spring, which they enforced in their latest release. 
+  The result was circular dependency exceptions on start-up whenever somebody used Spring Boot 2.6.0.
+  The fix was simple, though, as we should simply ignore `FactoryBean` instances. 
+  After spotting the issue, we resolved it in [this](https://github.com/AxonFramework/AxonFramework/pull/2013) pull request.
+
+For an exhaustive list of all the changes, check out the [4.5.5 release notes](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.5).
+
+### Release 4.5.4
+
+* First and foremost, we updated the XStream version to 1.4.18. This upgrade was a requirement since several [CVE's](https://x-stream.github.io/changes.html) were noted for XStream version 1.4.17. 
+  As a consequence of XStream's solution imposed through the CVE's, everybody is required to specify the security context of an `XStream` instance. 
+  This change also has an impact on Axon Framework since the `XStreamSerializer` is the default serializer. 
+  So as of this release, any usages of the default `XStreamSerializer` will come with warnings, stating it is highly recommended to use an `XStream` instance for which the security context is set through types or wildcards. 
+  When your application uses Spring Boot, Axon will default to selecting the secured types based on your `@ComponentScan` annotated beans (e.g., like the `@SpringBootApplication` annotation). 
+  For those interested in the details of the solution, check out [this](https://github.com/AxonFramework/AxonFramework/pull/1917) pull request.
+
+* User 'nils-christian' noted in issue [#1892](https://github.com/AxonFramework/AxonFramework/issues/1892) that Axon executed Upcaster beans in a Spring environment in the incorrect order. 
+  This ordering issue was due to a misconception in deducing the `@Order` annotation on upcaster beans. 
+  We resolved the problem in pull request [#1895](https://github.com/AxonFramework/AxonFramework/pull/1895).
+
+* We noticed a `TokenStore` operation that Axon did not invoke within a transaction. 
+  In most scenarios, this worked out, but when using Micronaut, for example, this (correctly) caused an exception. 
+  After spotting the issue, we resolved it in [this](https://github.com/AxonFramework/AxonFramework/pull/1908) pull request.
+
+For an exhaustive list of all the changes, check out the [4.5.4 release notes](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.4).
+
+### Release 4.5.3
+
+* One new feature has been introduced in 4.5.3: the `PropertySequencingPolicy` by contributor `nils-christian`.
+  This [sequencing policy](../../axon-framework/events/event-processors.md#sequential-processing) can be configured to look for a common property in the events.
+
+* The version of the `axonserver-connector-java` has been updated to 4.5.2.
+  This update resolves a troublesome issue around permit updates for subscription queries, which exhausted the number of queries an application could have running.
+  For those curious about the solution, pull request [85](https://github.com/AxonIQ/axonserver-connector-java/pull/85) addresses this issue.
+
+* The `WorkerLauncher` runnable, used by the `TrackingEventProcessor` to start its threads, was not considered when you shut down a tracking processor.
+  As a consequence, it could start new segment operations while `shutdown` already completed "successfully."
+  Pull request [1866](https://github.com/AxonFramework/AxonFramework/pull/1866) resolves this problem, ensuring a tracking processor shuts down as intended.
+
+* Issue [1853](https://github.com/AxonFramework/AxonFramework/issues/1853) describes an issue where the [creation policy](../../axon-framework/axon-framework-commands/command-handlers.md#aggregate-command-handler-creation-policy) `always`.
+  Exceptions thrown from within a command handler annotated with `@CreationPolicy(ALWAYS)` weren't correctly propagated.
+  Pull request [1854](https://github.com/AxonFramework/AxonFramework/pull/1854) solves this issue.
+
+For an exhaustive list of all the changes, check out the [4.5.3 release notes](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.3).
 
 ### Release 4.5.2
 
@@ -17,7 +101,7 @@ Pull request [#1842](https://github.com/AxonFramework/AxonFramework/pull/1842) r
 
 * General improvements on the `PooledStreamingEventProcessor` made across several Pull Requests.
 
-For a detailed perspective on the release notes, please check [this ](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.2) page.
+For a detailed perspective on the release notes, please check [this](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.2) page.
 
 ### Release 4.5.1
 
@@ -40,7 +124,7 @@ For a detailed perspective on the release notes, please check [this ](https://gi
 
 For a detailed perspective on the release notes, please check [this](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.1) page.
 
-## _Release 4.4_
+## Release 4.4
 
 ### Release 4.4.9
 
@@ -171,7 +255,7 @@ There was an off by one scenario when an Event Processor started reading events 
 This meant that the first event in the event store was systematically skipped.
 The bug was resolved in [this](https://github.com/AxonFramework/AxonFramework/commit/3a055407437589bc1388cecca0b6e2f0bc61ea26) commit.
 
-## _Release 4.3_
+## Release 4.3
 
 ### Release 4.3.5
 
@@ -261,7 +345,7 @@ For a complete list of all resolved bugs we refer to the [issue tracker](https:/
 
 For a complete list of all resolved bugs we refer to the [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?q=is%3Aclosed+milestone%3A%22Release+4.3.1%22++label%3A%22Type%3A+Bug%22+).
 
-## _Release 4.2_
+## Release 4.2
 
 ### Release 4.2.2
 
@@ -301,7 +385,7 @@ For a complete list of all resolved bugs we refer to the [issue tracker](https:/
 
 For a complete list of all resolved bugs we refer to the [issue tracker](https://github.com/AxonFramework/AxonFramework/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Release+4.2.1%22++label%3A%22Type%3A+Bug%22).
 
-## _Release 4.1_
+## Release 4.1
 
 ### Release 4.1.2
 

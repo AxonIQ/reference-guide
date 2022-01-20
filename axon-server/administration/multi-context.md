@@ -2,7 +2,7 @@
 
 > Note: This feature is only available on the Enterprise Edition of AxonServer
 
-To recap the definition as we have seen in the [clustering](multi-context.md) section, contexts allow for strong segregation of data without requiring deploying and managing full instances.
+To recap the definition as we have seen in the [clustering](multi-context.md) section, contexts allow for strong separation of data without requiring deploying and managing full instances.
 
 An Axon Server EE cluster can be setup to store events for multiple contexts. Each context has it own set of files \(containing Event/Snapshot data\) stored in a separate directory. Axon Server will replicate the context data to a number of nodes depending on the replication group the context is assigned to. When you are creating a context you can either add it to an already existing replication group, or create a new replication group for this context. More on replication groups can be found in the [replication groups](replication-groups.md) section.
 
