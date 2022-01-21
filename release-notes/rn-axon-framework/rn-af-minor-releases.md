@@ -4,6 +4,18 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.5
 
+### Release 4.5.8
+
+This release brings two adjustments worth mentioning to the framework.
+Namely:
+
+1. We spotted a bug within the `PooledStreamingEventProcessor` (PSEP).
+   More specifically, whenever a subset of the tokens for the PSEP existed, calculating the lower bound of a token would cause failures.
+   We addressed this predicament in pull request [#2082](https://github.com/AxonFramework/AxonFramework/pull/2082).
+2. We introduce an enhancement in the API of the `CommandGateway`.
+   You can now directly insert `MetaData` whenever using the `CommandGateway#send` or `CommandGateway#sendAndWait` operations.
+   You can verify the changes [#here](https://github.com/AxonFramework/AxonFramework/pull/2085).
+
 ### Release 4.5.7
 
 This [release](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.7) contains a single fix.
