@@ -6,10 +6,10 @@ When you set the "`axoniq.axonserver.access-control.enabled`" property to "`true
 
 In Axon Server SE, there are two tokens that can be defined:
 
-| Property | Purpose |
-| :--- | :--- |
-| `axoniq.axonserver.token` | Define a token with normal (limited) rights. |
-| `axoniq.axonserver.adminToken`| Define a token with administrative rights. Can also be specified as "`axoniq.axonserver.admin-token`". |
+| Property                                | Purpose |
+|:----------------------------------------| :--- |
+| `axoniq.axonserver.accesscontrol.token` | Define a token with normal (limited) rights. |
+| `axoniq.axonserver.accesscontrol.adminToken`          | Define a token with administrative rights. Can also be specified as "`axoniq.axonserver.admin-token`". |
 
 Generally, you will use the admin-token only for the CLI, to issue commands for managing user accounts and plugins. Axon Framework based applications should only need the non-admin token. If you whish to use tools to access the REST API directly, you must add an HTTP header named "`AxonIQ-Access-Token`", as in the following example:
 
