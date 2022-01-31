@@ -2,6 +2,18 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Spring Cloud Extension.
 
+## Release 4.5
+
+There is one mentionable adjustment apart from a multitude of dependency updates.
+
+The `IgnoreListingDiscoveryMode`, which ignores `ServiceInstances` that don't contain any command handling capabilities,
+now evicts the ignored entries after a configurable timeframe. This solution ensures instances that were ignored for a retryable
+reason will be reevaluated after (by default) one minute. You can check up on the solution for this in pull
+request [#168](https://github.com/AxonFramework/extension-springcloud/pull/168).
+
+For a full list of all the changes, please check
+the [release notes](https://github.com/AxonFramework/extension-springcloud/releases/tag/axon-springcloud-4.5).
+
 ## Release 4.4
 
 This release has seen a bunch of adjustments towards the Spring Cloud extension, which can be grouped into two categories.
