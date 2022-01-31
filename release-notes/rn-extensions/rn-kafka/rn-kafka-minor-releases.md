@@ -5,6 +5,12 @@ This page provides an overview of patch releases for the Axon Kafka Extension.
 
 ## Release 4.5
 
+### Release 4.5.3
+
+The 4.5.3 release 're-enables' [Spring Cloud Developer Tools](https://docs.spring.io/spring-boot/docs/1.5.16.RELEASE/reference/html/using-boot-devtools.html) for the Kafka Extension.
+The support for this was accidentally removed, marked contributor `tiger-seo` in issue [#240](https://github.com/AxonFramework/extension-kafka/issues/240).
+Commit [9bc2345](https://github.com/AxonFramework/extension-kafka/commit/9bc2345692f445e1ee2575c601956078d06946df) reinstantes this behavior. 
+
 ### Release 4.5.2
 
 This release only includes two commits, namely [245536f](https://github.com/AxonFramework/extension-kafka/commit/245536fa99086857ca63da752773c562af962da4) and [e8ddb9d](https://github.com/AxonFramework/extension-kafka/commit/e8ddb9dc77e1ab66c09a0a279394f9b5e331d6a1).
