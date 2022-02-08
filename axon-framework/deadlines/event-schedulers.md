@@ -35,7 +35,7 @@ As such, it is a *hard requirement* to use Axon Server as your Event Store solut
 Just as the `QuartzEventScheduler`, the `AxonServerEventScheduler` is a reliable and enterprise-worthy implementation of the `EventScheduler` interface.
 Creating a `AxonServerEventScheduler` can be done through its builder, whose sole requirement is the `AxonServerConnectionManager`.
 
-It is important to note that both the `QuartzEventScheduler` and `AxonServerEventScheduler` should use the [event `Serializer`](../events/event-serialization.md#event-serialization) to serialize and deserialize the scheduled event.
+It is important to note that both the `QuartzEventScheduler` and `AxonServerEventScheduler` should use the [event `Serializer`](../serialization.md#event-serialization) to serialize and deserialize the scheduled event.
 If the `Serializer` used by the scheduler does not align with the `Seralizer` used by the event store, exceptional scenarios should be expected.
 The Quartz implementation's `Serializer` can be set by defining a different `EventJobDataBinder`, whereas the Axon Server implementation allows defining the used `Serializer` directly through the builder.
 

@@ -276,7 +276,7 @@ The `DefaultKafkaMessageConverter` supports this by provisioning an `EventUpcast
 Note that the `KafkaMessageConverter` feeds the upcasters with messages one-by-one, limiting it to one-to-one or one-to-many upcasting <b>only</b>. 
 Upcasters performing a many-to-one or many-to-many operation thus won't be able to operate inside the extension (yet).
 
-Lastly, the `Serializer` used by the converter can be adjusted. See the [Serializer](../axon-framework/events/event-serialization.md) section for more details on this.
+Lastly, the `Serializer` used by the converter can be adjusted. See the [Serializer](../axon-framework/serialization.md) section for more details on this.
 
 ```java
 public class KafkaMessageConversationConfiguration {
