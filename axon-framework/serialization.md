@@ -1,19 +1,29 @@
-# Event Serialization
+# Serialization
 
-Event stores need a way to serialize the event to prepare it for storage. By default, Axon uses the `XStreamSerializer`, which uses [XStream](http://x-stream.github.io/) to serialize events into XML. XStream is reasonably fast and is more flexible than Java Serialization. Furthermore, the result of XStream serialization is human readable. This makes it quite useful for logging and debugging purposes.
+The flow of messages between (micro)services and storage of events requires preparation of the messages through serialization.
+Axon uses the `XStreamSerializer` by default, which uses [XStream](http://x-stream.github.io/) to serialize into and deserialize from XML.
+XStream is reasonably fast, and the result of serialization is human-readable.
+This makes it quite useful for logging and debugging purposes.
 
-The `XStreamSerializer` can be configured. You can define aliases it should use for certain packages, classes or even fields. Besides being a nice way to shorten potentially long names, aliases can also be used when class definitions of events change. For more information about aliases, visit the [XStream website](http://x-stream.github.io/).
+The `XStreamSerializer` allows further customization if that's required.
+You can, for example, define aliases for specific packages, classes, or even fields.
+In addition to being an excellent way to shorten potentially long names, you can also use aliases when class definitions of the serialized objects change.
+For more information about aliases, visit the [XStream website](http://x-stream.github.io/).
 
-Alternatively, Axon also provides the `JacksonSerializer`, which uses [Jackson](https://github.com/FasterXML/jackson) to serialize events into JSON. While it produces a more compact serialized form, it does require that classes stick to the conventions \(or configuration\) required by Jackson.
+Additionally, Axon provides the `JacksonSerializer`. 
+This `Serializer` implementation uses [Jackson](https://github.com/FasterXML/jackson) to serialize objects into and deserialize from JSON.
+It produces a more compact serialized form, while requiring those classes to stick to Jackson's conventions \(or configuration\).
+The compact format makes it ideal for events, commands, and queries, as it minimizes the storage space and package size.
 
-You may also implement your own serializer, simply by creating a class that implements `Serializer`, and configuring the event store to use that implementation instead of the default.
+You may also implement your own serializer simply by creating a class that implements `Serializer` and setting it within Axon's configuration for the desired infrastructure components.
 
 ## Serializer Implementations
 
-Serializers come in several flavors in the Axon Framework and are used for a variety of subjects. Currently you can choose between the `XStreamSerializer`, `JacksonSerializer` and `JavaSerializer` to serialize messages \(commands/queries/events\), tokens, snapshots and sagas in an Axon application.
+`Serializers` come in several flavors in Axon Framework and are used for various things. 
+Currently, you can choose between the `XStreamSerializer` and `JacksonSerializer` to serialize messages \(commands/queries/events\), tokens, snapshots and sagas in an Axon application.
 
 As there are several objects to be serialized, it is typically desired to chose which serializer handles which object. 
-To that end, the `Configuration` API allows you to define default, message and event serializers, which lead to the following object-serialization break down:
+To that end, the `Configuration` API allows you to define default, `message` and `event` serializers, which lead to the following object-serialization break down:
 
 1. The Event `Serializer` is in charge of de-/serializing event messages.
    Events are typically stored in an event store for a long period of time.
@@ -25,9 +35,24 @@ To that end, the `Configuration` API allows you to define default, message and e
 
 3. The default `Serializer` is in charge of de-/serializing the remainder, being the tokens, snapshots and sagas.
    These objects are generally not shared between different applications, and most of these classes aren't expected to have some of the getters and setters that are, for example, typically required by Jackson based serializers.
-   A flexible, general purpose serializer like [XStream](http://x-stream.github.io/) is quite suited for this purpose.
+   A flexible, general-purpose serializer like [XStream](http://x-stream.github.io/) is quite ideal for this purpose.
 
-By default, all three `Serializer` flavors are set to use the `XStreamSerializer`, which internally uses [XStream](http://x-stream.github.io/) to serialize objects to an XML format. XML is a verbose format to serialize to, but XStream has the major benefit of being able to serialize virtually anything. This verbosity is typically fine when storing tokens, sagas or snapshots, but for messages \(and specifically events\) XML might prove to cost too much due to its serialized size. Thus for optimization reasons you can configure different serializers for your messages. Another very valid reason for customizing serializers is to achieve interoperability between different \(Axon\) applications, where the receiving end potentially enforces a specific serialized format.
+By default, all three `Serializer` flavors are set to use the `XStreamSerializer`, which internally uses [XStream](http://x-stream.github.io/) to serialize objects to an XML format. 
+XML is verbose, but XStream has the major benefit of being able to serialize virtually anything.
+
+> *XStream and JDK 17*
+> 
+> Although XStream can "serialize virtually anything," more recent versions of the JDK impede its flexibility.
+> This predicament comes down to XStream's reflective approach to finding out how to de-/serialize *any* object, which has become problematic with Java's intent to secure its internals.
+> Hence, if you're using JDK 17, the chances are that objects (e.g., your sagas) intended for serialization require additional configuration.
+> 
+> On some occasions configuring XStream's security settings is sufficient.
+> Other times you will have to introduce custom [`Converters`](https://x-stream.github.io/converters.html) to de-/serialize specific types.
+> If you prefer not to deal with specific XStream settings, it might be better to use the `JacksonSerializer` throughout your Axon application.
+
+XML's verbosity is typically fine when storing tokens, sagas, or snapshots, but for messages \(and specifically events\) XML might cost too much due to its serialized size. 
+Thus for optimization reasons you can configure different serializers for your messages. 
+Another very valid reason for customizing serializers is to achieve interoperability between different \(Axon\) applications, where the receiving end potentially enforces a specific serialized format.
 
 There is an implicit ordering between the configurable serializer. If no event `Serializer` is configured, the event de-/serialization will be performed by the message `Serializer`. In turn, if no message `Serializer` is configured, the default `Serializer` will take that role.
 
@@ -102,33 +127,6 @@ axon:
 {% endtab %}
 {% endtabs %}
 
-## Serializing events vs 'the rest'
-
-It is possible to use a different serializer for the storage of events, than all other objects that Axon needs to serialize \(such as commands, snapshots, sagas, etc\). While the `XStreamSerializer`'s capability to serialize virtually anything makes it a very decent default, its output is not always a form that makes it nice to share with other applications. The `JacksonSerializer` creates much nicer output, but requires a certain structure in the objects to serialize. This structure is typically present in events, making it a very suitable event serializer.
-
-Using the Configuration API, you can simply register an event serializer as follows:
-
-```java
-Configurer configurer = ... // initialize
-configurer.configureEventSerializer(conf -> /* create serializer here*/);
-```
-
-If no explicit `eventSerializer` is configured, events are serialized using the main serializer that has been configured \(which defaults to the `XStreamSerializer`\).
-
-## ContentTypeConverters
-
-An [upcaster ](event-versioning.md#event-upcasting) works on a given content type \(e.g. dom4j Document\). To provide extra flexibility between upcasters, content types between chained upcasters may vary. Axon will try to convert between the content types automatically by using `ContentTypeConverter`s. It will search for the shortest path from type `x` to type `y`, perform the conversion and pass the converted value into the requested upcaster. For performance reasons, conversion will only be performed if the `canUpcast` method on the receiving upcaster yields true.
-
-The `ContentTypeConverter`s may depend on the type of serializer used. Attempting to convert a `byte[]` to a dom4j `Document` will not make any sense unless a `Serializer` was used that writes an event as XML. Axon Framework will only use the generic content type converters (such as the one converting a `String` to `byte[]` or a `byte[]` to `InputStream`) and the converters configured on the Serializer that will be used to deserialize the message. That means if you use a JSON based serializer, you would be able to convert to and from JSON-specific formats.
-
-> **Tip**
->
-> To achieve the best performance, ensure that all upcasters in the same chain \(where one's output is another's input\) work on the same content type.
-
-If Axon does not provide the content type conversion that you need, you can always write one yourself by implementing the `ContentTypeConverter` interface.
-
-The `XStreamSerializer` supports dom4j as well as XOM as XML document representations. The `JacksonSerializer` supports Jackson's `JsonNode`.
-
 ## Serializer Tuning
 
 Several things might be considered when the serialization process proofs to not be up to par with the expectations.
@@ -151,7 +149,7 @@ When you serialize messages yourself, and want to benefit from the `Serializatio
 
 ### Different serializer for events
 
-When using event sourcing, serialized events can stick around for a long time. Therefore, consider the format to which they are serialized carefully. Consider configuring a separate serializer for events, carefully optimizing for the way they are stored. The JSON format generated by Jackson is generally more suitable for the long term than XStream's XML format. For more information on how to configure your`EventSerializer` to something different, check out the documentation about [Serializers](event-serialization.md).
+When using event sourcing, serialized events can stick around for a long time. Therefore, consider the format to which they are serialized, carefully. Consider configuring a separate serializer for events, carefully optimized for the way they are stored. The JSON format generated by Jackson is generally more suitable for the long term than XStream's XML format. For more information on how to configure your`EventSerializer` to something different, check out the documentation about [Serializers](serialization.md).
 
 ### Lenient Deserialization
 
@@ -214,3 +212,25 @@ public class SerializerConfiguration {
     }
 }
 ```
+
+### ContentTypeConverters
+
+An [upcaster](events/event-versioning.md#event-upcasting) works on a given content type \(e.g. dom4j Document\). 
+To provide extra flexibility between upcasters, content types between chained upcasters may vary. 
+Axon will try to convert between the content types automatically by using a `ContentTypeConverter`. 
+It will search for the shortest path from type `x` to type `y`, perform the conversion and pass the converted value into the requested upcaster. 
+For performance reasons, conversion will only be performed if the `canUpcast` method on the receiving upcaster yields true.
+
+The `ContentTypeConverter` may depend on the type of serializer used. 
+Attempting to convert a `byte[]` to a dom4j `Document` will not make any sense unless a `Serializer` was used that writes an event as XML. 
+Axon Framework will only use the generic content type converters (such as the one converting a `String` to `byte[]` or a `byte[]` to `InputStream`) and the converters configured on the Serializer that will be used to deserialize the message. 
+That means if you use a JSON based serializer, you would be able to convert to and from JSON-specific formats.
+
+> **Tip**
+>
+> To achieve the best performance, ensure that all upcasters in the same chain \(where one's output is another's input\) work on the same content type.
+
+If Axon does not provide the content type conversion that you need, you can always write one yourself by implementing the `ContentTypeConverter` interface.
+
+The `XStreamSerializer` supports dom4j as well as XOM as XML document representations. 
+The `JacksonSerializer` supports Jackson's `JsonNode` and `ObjectNode`.
