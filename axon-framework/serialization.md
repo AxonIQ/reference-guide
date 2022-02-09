@@ -7,7 +7,7 @@ This makes it quite useful for logging and debugging purposes.
 
 The `XStreamSerializer` allows further customization if that's required.
 You can, for example, define aliases for specific packages, classes, or even fields.
-Besides being an excellent way to shorten potentially long names, you can also use aliases when class definitions of the serialized objects change.
+In addition to being an excellent way to shorten potentially long names, you can also use aliases when class definitions of the serialized objects change.
 For more information about aliases, visit the [XStream website](http://x-stream.github.io/).
 
 Next to that, Axon also provides the `JacksonSerializer`. 
