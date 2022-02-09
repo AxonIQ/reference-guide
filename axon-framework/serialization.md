@@ -19,7 +19,7 @@ You may also implement your own serializer simply by creating a class that imple
 
 ## Serializer Implementations
 
-`Serializers` come in several flavors in the Axon Framework and are used for a variety of subjects. 
+`Serializers` come in several flavors in Axon Framework and are used for various things. 
 Currently, you can choose between the `XStreamSerializer` and `JacksonSerializer` to serialize messages \(commands/queries/events\), tokens, snapshots and sagas in an Axon application.
 
 As there are several objects to be serialized, it is typically desired to chose which serializer handles which object. 
