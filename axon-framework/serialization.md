@@ -6,7 +6,7 @@ XStream is reasonably fast, and the result of serialization is human-readable.
 This makes it quite useful for logging and debugging purposes.
 
 The `XStreamSerializer` allows further customization if that's required.
-You can, for example, define aliases it should use for specific packages, classes, or even fields.
+You can, for example, define aliases for specific packages, classes, or even fields.
 Besides being an excellent way to shorten potentially long names, you can also use aliases when class definitions of the serialized objects change.
 For more information about aliases, visit the [XStream website](http://x-stream.github.io/).
 
