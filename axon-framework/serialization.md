@@ -50,7 +50,7 @@ XML is verbose, but XStream has the major benefit of being able to serialize vir
 > Other times you will have to introduce custom [`Converters`](https://x-stream.github.io/converters.html) to de-/serialize specific types.
 > If you prefer not to deal with specific XStream settings, it might be better to use the `JacksonSerializer` throughout your Axon application.
 
-XMLs verbosity is typically fine when storing tokens, sagas or snapshots, but for messages \(and specifically events\) XML might prove to cost too much due to its serialized size. 
+XML's verbosity is typically fine when storing tokens, sagas, or snapshots, but for messages \(and specifically events\) XML might cost too much due to its serialized size. 
 Thus for optimization reasons you can configure different serializers for your messages. 
 Another very valid reason for customizing serializers is to achieve interoperability between different \(Axon\) applications, where the receiving end potentially enforces a specific serialized format.
 
