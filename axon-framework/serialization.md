@@ -46,7 +46,7 @@ XML is verbose, but XStream has the major benefit of being able to serialize vir
 > This predicament comes down to XStream's reflective approach to finding out how to de-/serialize *any* object, which has become problematic with Java's intent to secure its internals.
 > Hence, if you're using JDK 17, the chances are that objects (e.g., your sagas) intended for serialization require additional configuration.
 > 
-> On some occasions setting XStream's security settings is sufficient.
+> On some occasions configuring XStream's security settings is sufficient.
 > Other times you will have to introduce custom [`Converters`](https://x-stream.github.io/converters.html) to de-/serialize specific types.
 > If you prefer not to deal with specific XStream settings, it might be better to use the `JacksonSerializer` throughout your Axon application.
 
