@@ -10,7 +10,7 @@ You can, for example, define aliases for specific packages, classes, or even fie
 In addition to being an excellent way to shorten potentially long names, you can also use aliases when class definitions of the serialized objects change.
 For more information about aliases, visit the [XStream website](http://x-stream.github.io/).
 
-Next to that, Axon also provides the `JacksonSerializer`. 
+Additionally, Axon provides the `JacksonSerializer`. 
 This `Serializer` implementation uses [Jackson](https://github.com/FasterXML/jackson) to serialize objects into and deserialize from JSON.
 It produces a more compact serialized form, while requiring those classes to stick to Jackson's conventions \(or configuration\).
 The compact format makes it ideal for events, commands, and queries, as it minimizes the storage space and package size.
