@@ -26,7 +26,7 @@ Configurer configurer = DefaultConfigurer.defaultConfiguration()
 by configuring the following property:
 
 ```text
-axon.axonserver.heartbeat.auto-configuration.enabled=true
+axon.axonserver.heartbeat.enabled=true
 ```
 {% endtab %}
 {% endtabs %}
