@@ -38,7 +38,7 @@ To that end, the `Configuration` API allows you to define default, `message` and
    A flexible, general-purpose serializer like [XStream](http://x-stream.github.io/) is quite ideal for this purpose.
 
 By default, all three `Serializer` flavors are set to use the `XStreamSerializer`, which internally uses [XStream](http://x-stream.github.io/) to serialize objects to an XML format. 
-XML is a verbose format to serialize to, but XStream has the major benefit of being able to serialize virtually anything.
+XML is verbose, but XStream has the major benefit of being able to serialize virtually anything.
 
 > *XStream and JDK 17*
 > 
