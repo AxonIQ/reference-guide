@@ -12,7 +12,7 @@ For more information about aliases, visit the [XStream website](http://x-stream.
 
 Next to that, Axon also provides the `JacksonSerializer`. 
 This `Serializer` implementation uses [Jackson](https://github.com/FasterXML/jackson) to serialize objects into and deserialize from JSON.
-It produces a more compact serialized form, while it requires that classes stick to Jackson's conventions \(or configuration\).
+It produces a more compact serialized form, while requiring those classes to stick to Jackson's conventions \(or configuration\).
 The compact format makes it ideal for events, commands, and queries, as it minimizes the storage space and package size.
 
 You may also implement your own serializer simply by creating a class that implements `Serializer` and setting it within Axon's configuration for the desired infrastructure components.
