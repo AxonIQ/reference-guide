@@ -35,7 +35,7 @@ To that end, the `Configuration` API allows you to define default, `message` and
 
 3. The default `Serializer` is in charge of de-/serializing the remainder, being the tokens, snapshots and sagas.
    These objects are generally not shared between different applications, and most of these classes aren't expected to have some of the getters and setters that are, for example, typically required by Jackson based serializers.
-   A flexible, general purpose serializer like [XStream](http://x-stream.github.io/) is quite suited for this purpose.
+   A flexible, general-purpose serializer like [XStream](http://x-stream.github.io/) is quite ideal for this purpose.
 
 By default, all three `Serializer` flavors are set to use the `XStreamSerializer`, which internally uses [XStream](http://x-stream.github.io/) to serialize objects to an XML format. 
 XML is a verbose format to serialize to, but XStream has the major benefit of being able to serialize virtually anything.
