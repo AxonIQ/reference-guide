@@ -1,6 +1,6 @@
 # Serialization
 
-The flow of messages between (micro)services and storage of events requires preparation of the messages through serialization/
+The flow of messages between (micro)services and storage of events requires preparation of the messages through serialization.
 Axon uses the `XStreamSerializer` by default, which in turn [XStream](http://x-stream.github.io/) to serialize into and deserialize from XML.
 XStream is reasonably fast, and the result of serialization is human-readable.
 This makes it quite useful for logging and debugging purposes.
