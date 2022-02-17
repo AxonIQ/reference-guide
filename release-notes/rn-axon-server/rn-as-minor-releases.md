@@ -4,6 +4,12 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.14
+
+* Fix: not able to move to leader state when there are entries that have not been applied yet after recreating a context
+* Fix: option to prevent the usage of the SpringPhysicalNamingStrategy in the migration tool
+* Performance improvement for reading event processor re-balance configuration per context.
+
 ### Release 4.5.13
 
 * Fix: node fails to synchronize with the leader if the leader became leader immediately after it had installed a snapshot
