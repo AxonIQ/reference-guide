@@ -4,7 +4,7 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
-### Release 4.5.14
+### Release 4.5.15
 
 * Fix: duplicated entries in users table after install snapshot
 * Fix: Axon Server does not start when Dynatrace OneAgent is running
