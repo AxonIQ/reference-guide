@@ -111,7 +111,7 @@ This query handler will provide us with the list of GiftCard states. Once our Gi
 
 ```java
 @EventHandler
-public void on(RedeemedEvt evt) {
+public void on(RedeemedEvt event) {
     // 1.
     CardSummary summary = entityManager.find(CardSummary.class, event.getId());
     summary.setRemainingValue(summary.getRemainingValue() - event.getAmount());
