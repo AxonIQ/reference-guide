@@ -240,9 +240,10 @@ It's simple to use and requires just two parameters: the query payload and the e
 Note that the `streamingQuery` method **is lazy**, meaning the query is sent once the `Flux` is subscribed to.
 
 
-It is also possible to utilize streaming query with `query` method: `queryGateway.query(query,  ResponseTypes.fluxOf(CardSummary.class))`.
+It is also possible to utilize the streaming query with the  [Point-to-Point query](query-dispatchers.md#point-to-point-queries) method: `queryGateway.query(query,  ResponseTypes.fluxOf(CardSummary.class))`.
 However, this approach is **eager** and less intuitive as it requires more boilerplate code.
-In this case `query` method will send query immediately and return CompletableFuture which returns a payload of type Flux, that needs to be subscribed to.
+In this case, the `query` method will send the query immediately and return a `CompletableFuture`.
+This `CompletableFuture` returns a payload of type `Flux` that you subscribe to.
 
 ```java
 @QueryHandler
