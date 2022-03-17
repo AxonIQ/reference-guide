@@ -286,9 +286,10 @@ When using Flux as return type, we can control backpressure, stream cancellation
 > This has implication that streaming query should not be used within Unit Of Work (within message handlers or any other transactional methods) to chaining other transactional actions (like sending a command or query).
 >
 
-#### Backpressure
-Backpressure is important feature in reactive systems that allows consumer to control the flow of data, and not to be overwhelmed by the producer.
-The streaming query implements pull-based back-pressure strategy, which means that the producer will emit data when consumer is ready to receive it.
+#### Streaming Back-pressure
+
+Back-pressure is an essential feature in reactive systems that allows consumers to control the data flow, ensuring they are not overwhelmed by the producer.
+The streaming query implements a pull-based back-pressure strategy, which means that the producer will emit data when the consumer is ready to receive it.
 
 Under the hood, backpressure does `Hop to Hop` signal propagation (see below) and inherits gRPC's [HTTP2-based backpressure model](https://developers.google.com/web/fundamentals/performance/http2/#flow_control).
 
