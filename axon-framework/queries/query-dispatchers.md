@@ -235,9 +235,9 @@ The streaming query allows a client to, for example, stream large database resul
 
 The streaming query is flexible enough to use **any** query return type. That means that any return type that is not a `Flux` will automatically be converted to `Flux`. The `Flux` will return single or multiple items based on that.
 
-Query gateway provides nifty `streamingQuery` method to utilize streaming query easily. 
-It's simple to use, and requires just two parameters: query and expected response type class.
-`streamingQuery` method **is lazy**, meaning query is sent once Flux is subscribed to.
+The `QueryGateway` provides the `streamingQuery` method to utilize the streaming query. 
+It's simple to use and requires just two parameters: the query payload and the expected response type class.
+Note that the `streamingQuery` method **is lazy**, meaning the query is sent once the `Flux` is subscribed to.
 
 
 It is also possible to utilize streaming query with `query` method: `queryGateway.query(query,  ResponseTypes.fluxOf(CardSummary.class))`.
