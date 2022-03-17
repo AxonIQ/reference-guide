@@ -307,8 +307,7 @@ Result is that the producer will send number of messages until it fills all the 
 #### Cancellation
 
 The streaming query can be implemented as an infinitive stream.
-Hence it's important to cancel it when the client is not interested in receiving any more data.
-Use operators that can cancel stream to signal producer that you are not interested in receiving more data.
+Hence it's important to cancel it once the client is not interested in receiving any more data.
 
 It's important to note that similar to backpressure, cancellation signal is per hop, meaning it's propagated over the network to Axon Server and then to producer, which can produce some latency in stream cancellation.
 Not to worry, any messages produced after consumer signaled cancellation will be ignored.
