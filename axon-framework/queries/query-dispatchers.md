@@ -233,7 +233,7 @@ commandGateway.sendAndWait(new RedeemCmd("gc1", amount));
 The streaming query allows a client to, for example, stream large database result sets. The streaming query relies on the reactive stream model, specifically the `Flux` type.
 
 
-Streaming query is flexible enough to be used with **any** query return type. That means that any return type that is not Flux will automatically be converted to Flux, based on that Flux will return single or multiple items.
+The streaming query is flexible enough to use **any** query return type. That means that any return type that is not a `Flux` will automatically be converted to `Flux`. The `Flux` will return single or multiple items based on that.
 
 Query gateway provides nifty `streamingQuery` method to utilize streaming query easily. 
 It's simple to use, and requires just two parameters: query and expected response type class.
