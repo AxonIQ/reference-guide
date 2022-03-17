@@ -233,17 +233,11 @@ commandGateway.sendAndWait(new RedeemCmd("gc1", amount));
 The streaming query allows a client to, for example, stream large database result sets. The streaming query relies on the reactive stream model, specifically the `Flux` type.
 
 
-The streaming query is flexible enough to use **any** query return type. That means that any return type that is not a `Flux` will automatically be converted to `Flux`. The `Flux` will return single or multiple items based on that.
+The streaming query is flexible enough to handle **any** query return type. That means that any return type that is not a `Flux` will automatically be converted to `Flux`. The `Flux` will emit one or multiple items based on query handler.
 
 The `QueryGateway` provides the `streamingQuery` method to utilize the streaming query. 
 It's simple to use and requires just two parameters: the query payload and the expected response type class.
 Note that the `streamingQuery` method **is lazy**, meaning the query is sent once the `Flux` is subscribed to.
-
-
-It is also possible to utilize the streaming query with the  [Point-to-Point query](query-dispatchers.md#point-to-point-queries) method: `queryGateway.query(query,  ResponseTypes.fluxOf(CardSummary.class))`.
-However, this approach is **eager** and less intuitive as it requires more boilerplate code.
-In this case, the `query` method will send the query immediately and return a `CompletableFuture`.
-This `CompletableFuture` returns a payload of type `Flux` that you subscribe to.
 
 ```java
 @QueryHandler
@@ -274,11 +268,6 @@ public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
 
 When using Flux as return type, we can control backpressure, stream cancellation and implement more complex features like pagination.
 
-> **Note**
->
-> Backpressure and stream cancellation features are only available with Axon Server 4.6 + version. Streaming queries used with pre Axon Server 4.6 version will work, but without these important features.
->
-
 > **Transaction leaking**
 >
 > Once consumer of streaming query receives Flux to subscribe to, transaction will be considered completed successfully. That means, that any subsequent messages on the stream will not be part of transaction. 
@@ -286,31 +275,18 @@ When using Flux as return type, we can control backpressure, stream cancellation
 > This has implication that streaming query should not be used within Unit Of Work (within message handlers or any other transactional methods) to chaining other transactional actions (like sending a command or query).
 >
 
-#### Streaming Back-pressure
+#### Streaming back-pressure
 
-Back-pressure is an essential feature in reactive systems that allows consumers to control the data flow, ensuring they are not overwhelmed by the producer.
+Back-pressure (flow control) is an essential feature in reactive systems that allows consumers to control the data flow, ensuring they are not overwhelmed by the producer.
 The streaming query implements a pull-based back-pressure strategy, which means that the producer will emit data when the consumer is ready to receive it.
 
-Under the hood, backpressure does `Hop to Hop` signal propagation (see below) and inherits gRPC's [HTTP2-based backpressure model](https://developers.google.com/web/fundamentals/performance/http2/#flow_control).
-
-As a result, backpressure will not behave intuitively and will not propagate exact request signal from consumer to producer. 
-HTTP/2 and Netty flow control has internal buffers based on message size, Axon Framework and Axon Server prefetch messages into internal buffers based on message count. 
-Result is that the producer will send number of messages until it fills all the buffers, then backpressure will kick in.
-
-> **Hop to hop**
->
->Back-pressure signal is propagated per hop which is not an end to end connection,
-> which allows intermediate Axon Server to handle backpressure between two connections
-> and pre-fetch additional messages to increase overall performance.
->
+If you are using Axon Server, for more information see flow control [documentation](../../axon-server/performance/flow-control.md).
 
 #### Cancellation
 
 The streaming query can be implemented as an infinitive stream.
-Hence it's important to cancel it once the client is not interested in receiving any more data.
+Hence, it's important to cancel it once the client is not interested in receiving any more data.
 
-It's important to note that similar to backpressure, cancellation signal is per hop, meaning it's propagated over the network to Axon Server and then to producer, which can produce some latency in stream cancellation.
-Not to worry, any messages produced after consumer signaled cancellation will be ignored.
 
 ```java
 public Flux<CardSummary> consumer() {
@@ -320,42 +296,41 @@ public Flux<CardSummary> consumer() {
 }
 ```
 
-Example above shows usage of `take` operators to limit the number of items to be emitted. Consumer will always receive exact number of messages, but producer could produce more messages due to signal latency.
+Example above shows usage of `take` operators to limit the number of items to be emitted.
 
 
 #### Error handling
 
-Producer that produce an error by calling onError(Throwable) will terminate the call with a AxonServerRemoteQueryHandlingException. 
-The client will have its onError(Throwable) subscription handler called as expected.
+Producer that produces an error by calling `onError(Throwable)` will terminate the handler execution and the consumer will have its `onError(Throwable)` subscription handler called as expected.
 
-Exceptions do not flow from consumer to producer. 
-Instead, consumer error will trigger cancel signal that will be propagated to producer, and effectively cancel the stream, without producer knowing the reason.
+Exceptions do not flow upstream (from consumer to producer). 
+If an error happens on consumer side, consumer error will trigger cancel signal that will be propagated to producer, and effectively cancel the stream, without producer knowing the reason.
 
-> **Note**
+It's recommended to set a timeout on a query handler side in case of finite stream to protect against malfunctioning consumer or producer.
+
+```java
+@QueryHandler
+public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
+...
+return reactiveCardRepository.findAll().timeout(Duration.ofSeconds(5));
+}
+```
+Example above shows usage of `timeout` operator to cancel a request of response has not observed during 5 second span.
+
+
+
+**Can streaming query replace subscription query?**
+
+Depends on your setup, but most likely not. 
+First, we would need assume that projection side uses compliant reactive db driver.
+Second, not all db drivers can stream updates for table changes out of the box.
+For example, PostgreSQL support LISTEN and NOTIFY features, and MongoDB supports tailorable cursor, but this is something that client needs to set up himself.
+Subscription queries are still important feature of Axon Framework that has no alternative when used with traditional db drivers.
+
+> **Reactor dependecy**
 >
 > The `reactor-core` dependency is mandatory for usage of streaming queries. However, it is a compile time dependency and it is not required for other Axon features.
 
-> **Note**
-> 
-> It's recommended to set a timeout on a query handler side in case of finite stream to protect against malfunctioning consumer or producer.
-> 
->```java
->@QueryHandler
->public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
->...
->return reactiveCardRepository.findAll().timeout(Duration.ofSeconds(5));
->}
->```
-
-
-> **Can streaming query replace subscription query?**
->
-> Depends on your setup, but most likely not. 
-> First, we would need assume that projection side uses compliant reactive db driver. 
-> Second, not all db drivers can stream updates for table changes out of the box.
-> For example, PostgreSQL support LISTEN and NOTIFY features, and MongoDB supports tailorable cursor, but this is something that client needs to set up himself.
-> Subscription queries are still important feature of Axon Framework that has no alternative when used with traditional db drivers.
->
 
 [Axon Coding Tutorial \#5: - Connecting the UI](https://youtu.be/lxonQnu1txQ)
 
