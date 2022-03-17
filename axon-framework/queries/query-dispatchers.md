@@ -230,7 +230,7 @@ commandGateway.sendAndWait(new RedeemCmd("gc1", amount));
 
 ### Streaming queries
 
-The Streaming query allows a client to stream large database result sets. The Streaming query relies on reactive stream model, specifically the `Flux` type. Using streaming query, does not imply that reactive db drivers need to be used, users can hook to the stream and control the flow of data.
+The streaming query allows a client to, for example, stream large database result sets. The streaming query relies on the reactive stream model, specifically the `Flux` type. Using the streaming query does not imply that reactive database drivers should be used. Users can hook to the stream and control the flow of data.
 
 
 Streaming query is flexible enough to be used with **any** query return type. That means that any return type that is not Flux will automatically be converted to Flux, based on that Flux will return single or multiple items.
