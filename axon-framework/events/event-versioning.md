@@ -53,6 +53,16 @@ As described earlier, the `Upcaster` interface does not upcast a single event; i
 * `ContextAwareEventMultiUpcaster` - a one-to-many implementation of an upcaster, which can store context of events during the process. This abstract implementation is a combination of the `EventMultiUpcaster` and `ContextAwareSingleEventUpcaster`, and thus services the goal of keeping context of `IntermediateEventRepresentations` and upcasting one such representation to several. This implementation is useful if you not only want to copy a field from one event to another, but have the requirement to generate several new events in the process.
 * `EventTypeUpcaster` - a full upcaster implementation dedicated to changing the event type. The `EventTypeUpcaster` is an implementation of the `SingleEventUpcaster` with predefined `canUpcast` and `doUpcast` functions to be able to change an event from one event type to another. This can be used to for example change the class or package name of an event with ease. To create an `EventTypeUpcaster`, it is recommended to use the `EventTypeUpcaster#from(String expectedPayloadType, expectedRevision)` and `EventTypeUpcaster.Builder#to(upcastedPayloadType, upcastedRevision)` methods.
 
+> **What's a part of the context in a Context-Aware Upcasters?**
+> 
+> A context-aware upcaster allows you to collect state from previous events.
+> As upcasters work on a stream of events, all that can ever belong to the context, is the state from that stream.
+> 
+> However, this "stream of events" is not identical at all times.
+> For example, when an aggregate is event-sourced, the event stream consists of aggregate instance-specific events.
+> Furthermore, the stream of events starts from the [tracking token's](event-processors/streaming.md#tracking-tokens) position for a [Streaming Event Processor](event-processors/streaming.md).
+> Hence, the context contains different state depending on what's included in the event stream.
+
 ### Writing an Upcaster
 
 The following Java snippets will serve as a basic example of a one-to-one upcaster \(the `SingleEventUpcaster`\).
