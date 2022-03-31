@@ -253,11 +253,11 @@ public Flux<CardSummary> consumer() {
 }
 ```
 
-1. We are querying the `cardRepository` for all the cards, that can potently return a large result set containing thousands of items.
-2. We are using the `queryGateway` to issue the query. If we used `multipleInstanceOf(CardSummary.class)` we would get large list transferred as single result message over the network, potentially causing a buffer overflow and max message size violation.
-Instead, we are using `streamingQuery(query, CardSummary.class)`, that will convert our response to Flux stream and chunk the result set into smaller messages of CardSummary.
+1. We are querying the `cardRepository` for all the cards. The repository can potentially return a result set containing thousands of items.
+2. We are using the `queryGateway` to issue the query. If we used `multipleInstanceOf(CardSummary.class)`, we would get an extensive list transferred as a single result message over the network. This result can potentially cause a buffer overflow or maximum message size violation.
+Instead of the multiple-instance-of approach, we use the `streamingQuery(query, CardSummary.class)`. This method will convert our response to a stream and chunk the result into smaller messages containing the `CardSummary` instances.
 
-Natively, if we want fine-grained control of the producing stream we can use Flux as return type:
+Natively, if we want fine-grained control of the producing stream, we can use `Flux` as the return type:
 
 ```java
 @QueryHandler
@@ -267,7 +267,7 @@ public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
 }
 ```
 
-When using Flux as return type, we can control backpressure, stream cancellation and implement more complex features like pagination.
+When using a `Flux` as the return type, we can control backpressure, stream cancellation and implement more complex features like pagination.
 
 > **Transaction Leaking Concerns**
 >
