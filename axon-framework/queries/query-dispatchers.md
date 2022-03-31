@@ -318,7 +318,7 @@ Essentially to protect against malfunctioning consumers or producers.
 @QueryHandler
 public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
 ...
-return reactiveCardRepository.findAll().timeout(Duration.ofSeconds(5));
+    return reactiveCardRepository.findAll().timeout(Duration.ofSeconds(5));
 }
 ```
 Example above shows usage of `timeout` operator to cancel a request of response has not observed during 5 second span.
