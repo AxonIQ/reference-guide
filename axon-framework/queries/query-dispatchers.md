@@ -304,12 +304,15 @@ The example above shows how the `take` operator limits the number of items to be
 
 #### Error handling
 
-Producer that produces an error by calling `onError(Throwable)` will terminate the handler execution and the consumer will have its `onError(Throwable)` subscription handler called as expected.
+A producer that produces an error by calling `onError(Throwable)` will terminate the handler execution.
+The consumer will, in turn, have its `onError(Throwable)` subscription handler called.
 
-Exceptions do not flow upstream (from consumer to producer). 
-If an error happens on consumer side, consumer error will trigger cancel signal that will be propagated to producer, and effectively cancel the stream, without producer knowing the reason.
+Note that exceptions do not flow upstream (from consumer to producer). 
+If an error happens on the consumer side, the consumer error will trigger a cancel signal propagated to the producer.
+This signal will effectively cancel the stream without the producer knowing the reason.
 
-It's recommended to set a timeout on a query handler side in case of finite stream to protect against malfunctioning consumer or producer.
+Hence it's recommended to set a timeout on the query handler's side in case of a finite stream.
+Essentially to protect against malfunctioning consumers or producers.
 
 ```java
 @QueryHandler
