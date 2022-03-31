@@ -321,7 +321,7 @@ public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
     return reactiveCardRepository.findAll().timeout(Duration.ofSeconds(5));
 }
 ```
-Example above shows usage of `timeout` operator to cancel a request of response has not observed during 5 second span.
+The example above shows how the `timeout` operator is used to cancel a request if no responses have been observed during a five-second timespan.
 
 > **Reactor dependency**
 >
