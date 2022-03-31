@@ -31,7 +31,8 @@ Set the following properties to set flow control on the synchronization between 
 
 ## Streaming query
 
-Flow control and stream cancellation features are only available with Axon Server 4.6 + version. Streaming queries used with pre Axon Server 4.6 version will work, but without these important features.
+Flow control and stream cancellation features are only available with Axon Server 4.6.0 and up. 
+When streaming queries are used with Axon Server versions before 4.6.0, it will work although without the following essential features.
 Under the hood, backpressure does `Hop to Hop` signal propagation (see below) and inherits gRPC's [HTTP2-based backpressure model](https://developers.google.com/web/fundamentals/performance/http2/#flow_control).
 
 As a result, backpressure will not behave intuitively and will not propagate exact request signal from consumer to producer.
