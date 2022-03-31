@@ -13,7 +13,7 @@ The `QueryBus` is the mechanism that dispatches queries to query handlers. Queri
 
 The `QueryGateway` is a convenient interface towards the query dispatching mechanism. While you are not required to use a gateway to dispatch queries, it is generally the easiest option to do so. It abstracts certain aspects for you, like the necessity to wrap a Query payload in a Query Message.
 
-Regardless whether you choose to use the `QueryBus` or the `QueryGateway`, both provide several types of queries. Axon Framework makes a distinction between three types, being:
+Regardless whether you choose to use the `QueryBus` or the `QueryGateway`, both provide several types of queries. Axon Framework makes a distinction between four types, being:
 
 1. [Point-to-Point queries](query-dispatchers.md#point-to-point-queries),
 2. [Scatter-Gather queries](query-dispatchers.md#scatter-gather-queries), 
