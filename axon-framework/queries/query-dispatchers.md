@@ -320,16 +320,6 @@ return reactiveCardRepository.findAll().timeout(Duration.ofSeconds(5));
 ```
 Example above shows usage of `timeout` operator to cancel a request of response has not observed during 5 second span.
 
-
-
-**Can streaming query replace subscription query?**
-
-Depends on your setup, but most likely not. 
-First, we would need assume that projection side uses compliant reactive db driver.
-Second, not all db drivers can stream updates for table changes out of the box.
-For example, PostgreSQL support LISTEN and NOTIFY features, and MongoDB supports tailorable cursor, but this is something that client needs to set up himself.
-Subscription queries are still important feature of Axon Framework that has no alternative when used with traditional db drivers.
-
 > **Reactor dependecy**
 >
 > The `reactor-core` dependency is mandatory for usage of streaming queries. However, it is a compile time dependency and it is not required for other Axon features.
