@@ -288,16 +288,18 @@ If you are using Axon Server, for more information see the [flow control documen
 The streaming query can be implemented as an infinitive stream.
 Hence, it's important to cancel it once the client is not interested in receiving any more data.
 
+The following sample shows how this could be achieved:
+
 
 ```java
 public Flux<CardSummary> consumer() {
         return queryGateway.streamingQuery(query, CardSummary.class)
-            .take(100)
-            .takeUntil(message -> somePredicate.test(message));
+                           .take(100)
+                           .takeUntil(message -> somePredicate.test(message));
 }
-```
+\```
 
-Example above shows usage of `take` operators to limit the number of items to be emitted.
+The example above shows how the `take` operator limits the number of items to be emitted.
 
 
 #### Error handling
