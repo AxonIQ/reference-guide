@@ -240,6 +240,8 @@ The `QueryGateway` provides the `streamingQuery` method to utilize the streaming
 It's simple to use and requires just two parameters: the query payload and the expected response type class.
 Note that the `streamingQuery` method **is lazy**, meaning the query is sent once the `Flux` is subscribed to.
 
+Let's see how to use the `streamingQuery` method:
+
 ```java
 @QueryHandler
 public List<CardSummary> handle(FetchCardSummariesQuery query) {
