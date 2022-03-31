@@ -35,9 +35,11 @@ Flow control and stream cancellation features are only available with Axon Serve
 When streaming queries are used with Axon Server versions before 4.6.0, it will work although without the following essential features.
 Under the hood, backpressure does `Hop to Hop` signal propagation (see below) and inherits gRPC's [HTTP2-based backpressure model](https://developers.google.com/web/fundamentals/performance/http2/#flow_control).
 
-As a result, backpressure will not behave intuitively and will not propagate exact request signal from consumer to producer.
-HTTP/2 and Netty flow control has internal buffers based on message size, Axon Framework and Axon Server prefetch messages into internal buffers based on message count.
-Result is that the producer will send number of messages until it fills all the buffers, then backpressure will kick in.
+As a result, backpressure will not behave intuitively and will not propagate exact request signals from consumer to producer.
+HTTP/2 and Netty flow control have internal buffers based on message size. 
+In turn, Axon Framework and Axon Server prefetch messages into internal buffers based on message count.
+The result is that the producer will send a number of messages until it fills all the buffers.
+Only then will backpressure kick in.
 
 > **Hop to hop**
 >
