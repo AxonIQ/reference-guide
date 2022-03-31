@@ -320,7 +320,7 @@ return reactiveCardRepository.findAll().timeout(Duration.ofSeconds(5));
 ```
 Example above shows usage of `timeout` operator to cancel a request of response has not observed during 5 second span.
 
-> **Reactor dependecy**
+> **Reactor dependency**
 >
 > The `reactor-core` dependency is mandatory for usage of streaming queries. However, it is a compile time dependency and it is not required for other Axon features.
 
