@@ -269,12 +269,12 @@ public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
 
 When using Flux as return type, we can control backpressure, stream cancellation and implement more complex features like pagination.
 
-> **Transaction leaking**
+> **Transaction Leaking Concerns**
 >
-> Once consumer of streaming query receives Flux to subscribe to, transaction will be considered completed successfully. That means, that any subsequent messages on the stream will not be part of transaction. 
-> This includes errors, and as transaction is already over, error will not be propagated to parent transaction to invoke any rollback method.
-> This has implication that streaming query should not be used within Unit Of Work (within message handlers or any other transactional methods) to chaining other transactional actions (like sending a command or query).
->
+> Once a consumer of the streaming query receives the `Flux` to subscribe to, the transaction will be considered completed successfully. 
+> That means that any subsequent messages on the stream will not be part of the transaction, including errors.
+> As the transaction is already over an error will not be propagated to the parent transaction to invoke any rollback method.
+> This has the implication that the streaming query should not be used within a Unit Of Work (within message handlers or any other transactional methods) to chain other transactional actions (like sending a command or query).
 
 #### Streaming back-pressure
 
