@@ -281,7 +281,7 @@ When using Flux as return type, we can control backpressure, stream cancellation
 Back-pressure (flow control) is an essential feature in reactive systems that allows consumers to control the data flow, ensuring they are not overwhelmed by the producer.
 The streaming query implements a pull-based back-pressure strategy, which means that the producer will emit data when the consumer is ready to receive it.
 
-If you are using Axon Server, for more information see flow control [documentation](../../axon-server/performance/flow-control.md).
+If you are using Axon Server, for more information see the [flow control documentation](../../axon-server/performance/flow-control.md).
 
 #### Cancellation
 
