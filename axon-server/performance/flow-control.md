@@ -43,10 +43,8 @@ Only then will backpressure kick in.
 
 > **Hop to hop**
 >
->Back-pressure signal is propagated per hop which is not an end to end connection,
-> which allows intermediate Axon Server to handle backpressure between two connections
-> and pre-fetch additional messages to increase overall performance.
->
+> The backpressure signal is propagated per-hop.
+> This approach makes it not an end-to-end connection that allows intermediate Axon Server instances to handle backpressure between two connections and pre-fetch additional messages to increase overall performance.
 
 It's important to note that similar to backpressure, cancellation signal is per hop, meaning it's propagated over the network to Axon Server and then to producer, which can produce some latency in stream cancellation.
 Not to worry, any messages produced after consumer signaled cancellation will be ignored.
