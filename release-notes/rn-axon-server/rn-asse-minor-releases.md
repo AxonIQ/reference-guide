@@ -4,6 +4,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.5
 
+### Release 4.5.11
+
+* Updated Spring Boot version to 2.5.12 to fix CVE-2022-22965
+
 ### Release 4.5.10
 
 * Updated gRPC version from 1.42.0 to 1.42.2 to avoid CVE-2021-22569

@@ -4,6 +4,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.16
+
+* Updated Spring Boot version to 2.5.12 to fix CVE-2022-22965
+
 ### Release 4.5.15
 
 * Fix: duplicated entries in users table after install snapshot
