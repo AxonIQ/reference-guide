@@ -55,14 +55,17 @@ Another good approach to track the flow of messages throughout an Axon applicati
 
 ### Event Tracker Status <a id="event-tracker-status"></a>
 
-Since [Tracking Tokens](events/event-processors/streaming.md#token-store) "track" the progress of a given Tracking Event Processor, they provide a sensible monitoring hook in any Axon application. Such a hook proves its usefulness when we want to rebuild our view model and we want to check when the processor has caught up with all the events.
+Since [Tracking Tokens](events/event-processors/streaming.md#token-store) "track" the progress of a given Streaming Event Processor, they provide a sensible monitoring hook in any Axon application. 
+Such a hook proves its usefulness when we want to rebuild our view model and we want to check when the processor has caught up with all the events.
 
-To that end the `TrackingEventProcessor` exposes the `processingStatus()` method. It returns a map where the key is the segment identifier and the value is an "Event Tracker Status". The Event Tracker Status exposes a couple of metrics:
+To that end the `StreamingEventProcessor` exposes the `processingStatus()` method. 
+It returns a map where the key is the segment identifier and the value is an "Event Tracker Status". 
+
+The Event Tracker Status exposes a couple of metrics:
 
 * The `Segment` it reflects the status of.
 * A boolean through `isCaughtUp()` specifying whether it is caught up with the Event Stream.
 * A boolean through `isReplaying()` specifying whether the given Segment is [replaying](events/event-processors/streaming.md#replaying-events).
-
 * A boolean through `isMerging()` specifying whether the given Segment is [merging](events/event-processors/streaming.md#splitting-and-merging-segments).
 * The `TrackingToken` of the given Segment.
 * A boolean through `isErrorState()` specifying whether the Segment is in an error state.
@@ -74,18 +77,6 @@ To that end the `TrackingEventProcessor` exposes the `processingStatus()` method
 * An optional `Long` through `mergeCompletedPosition()` defining the position on the `TrackingToken` when merging will be completed.
   This field will be `null` in case the `isMerging()` returns `false`.
   It is possible to derive an estimated duration of merging by comparing the current position with this field.
-
-Some scenarios call for a means to react on _when_ the status' of a processor changes.
-For example, whenever the status switches from replay being `true` or `false`.
-To that end, a `EventTrackerStatusChangeListener` can be configured through the `TrackingEventProcessorConfiguration` for a `TrackingEventProcessor`.
-
-The `EventTrackerStatusChangeListener` is a functional interface defining an `onEventTrackerStatusChange(Map<Integer, EventTrackerStatus>)` method, which will be invoked by the `TrackingEventProcessor` whenever there is a significant change in any one of the `EventTrackerStatus` objects.
-The collection of integer to `EventTrackerStatus` provides the status' which have caused the change listener to be invoked.
-This thus allows you to check the given `EventTrackerStatus`' to react accordingly.
-
-Know that by default, the processor will only invoke the change listener if any of the boolean fields has changed.
-If it is required to react on the position changes as well, you can provide a `EventTrackerStatusChangeListener` which overrides the `validatePositions` method to return `true`.
-Do note that this means the change listener will be invoked _often_, as it is expected to handle lots of events.   
 
 ## Metrics <a id="metrics"></a>
 

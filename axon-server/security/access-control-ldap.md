@@ -10,16 +10,17 @@ subdirectory of the working directory of Axon Server:
 
 ```text
 $ mkdir exts
-$ unzip -j axon-server-extension-ldap-4.5-bin.zip -d exts
+$ unzip -j axon-server-extension-ldap-4.5.1-bin.zip -d exts
 Archive:  axon-server-extension-ldap-4.5-bin.zip
-  inflating: exts/axon-server-extension-ldap-4.5-SNAPSHOT.jar
+  inflating: exts/axon-server-extension-ldap-4.5.1-sources.jar
+  inflating: exts/axon-server-extension-ldap-4.5.1.jar
   inflating: exts/javax.inject-1.jar
-  inflating: exts/spring-ldap-core-2.3.2.RELEASE.jar
-  inflating: exts/spring-security-ldap-5.1.9.RELEASE.jar
+  inflating: exts/spring-ldap-core-2.3.4.RELEASE.jar
+  inflating: exts/spring-security-ldap-5.4.7.jar
 $
 ```
 
-Note that the actual version numbers may differ in your case.
+Note that version 4.5.1 is the current version at the time of Axon Server 4.5.13.
 
 ## Configuring the LDAP Extension
 
@@ -46,6 +47,16 @@ The options used are:
     As an alternative, for example when you want to use a TLS-secured connection, you can provide the URL to the LDAP
     server, such as "`ldaps://ldap-server.local`".
 
+* `axoniq.axonserver.enterprise.ldap.initialBindUserDN`
+
+    If the LDAP server does not accept unauthenticated initial binds, set the DN of the user for that, for example
+    "`cn=admin,dc=demo,dc=io`". Only if both this property and the corresponding password are set, will they be used.
+
+* `axoniq.axonserver.enterprise.ldap.initialBindPassword`
+
+    If the LDAP server does not accept unauthenticated initial binds, set the password for that. Only if both
+    this property and the corresponding User DN are set, will they be used.
+
 * `axoniq.axonserver.enterprise.ldap.search-base`
 
     This setting provides the base context for searching users, for example "`ou=people,dc=planetexpress,dc=com`".
@@ -55,14 +66,38 @@ The options used are:
     This is the filter to be used for searching, so you typically add object types, and the attribute to match on. An
     example would be "`(&(objectClass=inetOrgPerson)(uid={0}))`". The "`{0}`" notation is used to place the username.
 
-* `axoniq.axonserver.enterprise.ldap.group-base`
+  * `axoniq.axonserver.enterprise.ldap.group-base`
 
-    Similarly to the "`search-base`" setting, you can add a "`group-base`". This setting is optional.
+      Similarly to the "`search-base`" setting, you can add a "`group-base`". This setting is optional and normally not
+      needed.
 
 * `axoniq.axonserver.enterprise.ldap.group-filter`
 
     The "`group-filter`" is the search pattern for groups, which will be translated to roles, for example
     "`(&(objectclass=Group)(member={0}))`"
+
+### Active Directory specific settings
+
+When using ActiveDirectory, the following properties are needed:
+
+* `axoniq.axonserver.enterprise.ldap.activeDirectory`
+
+    This must be set to "`true`".
+* `axoniq.axonserver.enterprise.ldap.adDomain`
+
+    This must be set to the AD Domain serviced by the controller.
+
+An example of an Active Directory configuration is:
+
+```properties
+axoniq.axonserver.accesscontrol.enabled=true
+axoniq.axonserver.enterprise.ldap.enabled=true
+axoniq.axonserver.enterprise.ldap.activeDirectory=true
+axoniq.axonserver.enterprise.ldap.serverName=my-ad
+axoniq.axonserver.enterprise.ldap.adDomain=demo.io
+axoniq.axonserver.enterprise.ldap.searchFilter=(&(objectClass=user)(sAMAccountName={1}))
+axoniq.axonserver.enterprise.ldap.roles.AxonAdmin=ADMIN@_admin
+```
 
 ## Linking LDAP groups to roles in Axon Server
 

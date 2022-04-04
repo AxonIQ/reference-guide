@@ -4,6 +4,21 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.16
+
+* Updated Spring Boot version to 2.5.12 to fix CVE-2022-22965
+
+### Release 4.5.15
+
+* Fix: duplicated entries in users table after install snapshot
+* Fix: Axon Server does not start when Dynatrace OneAgent is running
+
+### Release 4.5.14
+
+* Fix: not able to move to leader state when there are entries that have not been applied yet after recreating a context
+* Fix: option to prevent the usage of the SpringPhysicalNamingStrategy in the migration tool
+* Performance improvement for reading event processor re-balance configuration per context.
+
 ### Release 4.5.13
 
 * Fix: node fails to synchronize with the leader if the leader became leader immediately after it had installed a snapshot

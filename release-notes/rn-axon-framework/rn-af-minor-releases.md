@@ -4,6 +4,32 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.5
 
+### Release 4.5.9
+
+This release brings three adjustments worth mentioning to the framework, namely:
+
+1. Contributor `oysteing` opened issue [#2154](https://github.com/AxonFramework/AxonFramework/issues/2154),
+    describing that the `ReplayStatus` enumeration never entered the `REPLAY` status for a `PooledStreamingEventProcessor`. 
+   We resolved this finding in pull request [#2168](https://github.com/AxonFramework/AxonFramework/pull/2168) by ensuring the `TrackingToken` carries the replay status as intended.
+2. The `AggregateTestFixture` incorrectly assumed a test succeeded in the absence of an exception when you would use the `expectExceptionMessage` validation step. 
+   We resolved this predicament in pull request [#2127](https://github.com/AxonFramework/AxonFramework/pull/2127).
+3. Lastly, we further upgraded the XStream dependency for a CVE in [this](https://github.com/AxonFramework/AxonFramework/pull/2097) pull request. 
+   This time, for [CVE-2021-43859](https://x-stream.github.io/CVE-2021-43859.html).
+
+For an exhaustive list of the changes in 4.5.9, we refer to the [release notes](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.9).
+
+### Release 4.5.8
+
+This release brings two adjustments worth mentioning to the framework.
+Namely:
+
+1. We spotted a bug within the `PooledStreamingEventProcessor` (PSEP).
+   More specifically, whenever a subset of the tokens for the PSEP existed, calculating the lower bound of a token would cause failures.
+   We addressed this predicament in pull request [#2082](https://github.com/AxonFramework/AxonFramework/pull/2082).
+2. We introduce an enhancement in the API of the `CommandGateway`.
+   You can now directly insert `MetaData` whenever using the `CommandGateway#send` or `CommandGateway#sendAndWait` operations.
+   You can verify the changes [#here](https://github.com/AxonFramework/AxonFramework/pull/2085).
+
 ### Release 4.5.7
 
 This [release](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.7) contains a single fix.
