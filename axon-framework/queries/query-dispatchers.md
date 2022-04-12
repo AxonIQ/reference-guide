@@ -13,11 +13,12 @@ The `QueryBus` is the mechanism that dispatches queries to query handlers. Queri
 
 The `QueryGateway` is a convenient interface towards the query dispatching mechanism. While you are not required to use a gateway to dispatch queries, it is generally the easiest option to do so. It abstracts certain aspects for you, like the necessity to wrap a Query payload in a Query Message.
 
-Regardless whether you choose to use the `QueryBus` or the `QueryGateway`, both provide several types of queries. Axon Framework makes a distinction between three types, being:
+Regardless whether you choose to use the `QueryBus` or the `QueryGateway`, both provide several types of queries. Axon Framework makes a distinction between four types, being:
 
 1. [Point-to-Point queries](query-dispatchers.md#point-to-point-queries),
-2. [Scatter-Gather queries](query-dispatchers.md#scatter-gather-queries), and
-3. [Subscription queries](query-dispatchers.md#subscription-queries)
+2. [Scatter-Gather queries](query-dispatchers.md#scatter-gather-queries), 
+3. [Subscription queries](query-dispatchers.md#subscription-queries) and
+4. [Streaming queries](query-dispatchers.md#streaming-queries)
 
 ### Point-to-Point queries
 
@@ -111,7 +112,7 @@ This query handler will provide us with the list of GiftCard states. Once our Gi
 
 ```java
 @EventHandler
-public void on(RedeemedEvt evt) {
+public void on(RedeemedEvt event) {
     // 1.
     CardSummary summary = entityManager.find(CardSummary.class, event.getId());
     summary.setRemainingValue(summary.getRemainingValue() - event.getAmount());
@@ -226,6 +227,108 @@ commandGateway.sendAndWait(new RedeemCmd("gc1", amount));
    which will result in the emission of an update.
 
    Since we subscribed to updates with the `println()` method, the update will be printed out once it is received.
+
+
+### Streaming queries
+
+The streaming query allows a client to, for example, stream large database result sets. The streaming query relies on the reactive stream model, specifically the `Flux` type.
+
+
+The streaming query is flexible enough to handle **any** query return type. That means that any return type that is not a `Flux` will automatically be converted to `Flux`. The `Flux` will emit one or multiple items based on query handler.
+
+The `QueryGateway` provides the `streamingQuery` method to utilize the streaming query. 
+It's simple to use and requires just two parameters: the query payload and the expected response type class.
+Note that the `streamingQuery` method **is lazy**, meaning the query is sent once the `Flux` is subscribed to.
+
+Let's see how to use the `streamingQuery` method:
+
+```java
+@QueryHandler
+public List<CardSummary> handle(FetchCardSummariesQuery query) {
+        ...
+    return cardRepository.findAll(); //1
+}
+        ...
+
+public Flux<CardSummary> consumer() {
+        return queryGateway.streamingQuery(query, CardSummary.class); //2
+}
+```
+
+1. We are querying the `cardRepository` for all the cards. The repository can potentially return a result set containing thousands of items.
+2. We are using the `queryGateway` to issue the query. If we used `multipleInstanceOf(CardSummary.class)`, we would get an extensive list transferred as a single result message over the network. This result can potentially cause a buffer overflow or maximum message size violation.
+Instead of the multiple-instance-of approach, we use the `streamingQuery(query, CardSummary.class)`. This method will convert our response to a stream and chunk the result into smaller messages containing the `CardSummary` instances.
+
+Natively, if we want fine-grained control of the producing stream, we can use `Flux` as the return type:
+
+```java
+@QueryHandler
+public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
+        ...
+    return reactiveCardRepository.findAll(); 
+}
+```
+
+When using a `Flux` as the return type, we can control backpressure, stream cancellation and implement more complex features like pagination.
+
+> **Transaction Leaking Concerns**
+>
+> Once a consumer of the streaming query receives the `Flux` to subscribe to, the transaction will be considered completed successfully. 
+> That means that any subsequent messages on the stream will not be part of the transaction, including errors.
+> As the transaction is already over an error will not be propagated to the parent transaction to invoke any rollback method.
+> This has the implication that the streaming query should not be used within a Unit Of Work (within message handlers or any other transactional methods) to chain other transactional actions (like sending a command or query).
+
+#### Streaming back-pressure
+
+Back-pressure (flow control) is an essential feature in reactive systems that allows consumers to control the data flow, ensuring they are not overwhelmed by the producer.
+The streaming query implements a pull-based back-pressure strategy, which means that the producer will emit data when the consumer is ready to receive it.
+
+If you are using Axon Server, for more information see the [flow control documentation](../../axon-server/performance/flow-control.md).
+
+#### Cancellation
+
+The streaming query can be implemented as an infinitive stream.
+Hence, it's important to cancel it once the client is not interested in receiving any more data.
+
+The following sample shows how this could be achieved:
+
+
+```java
+public Flux<CardSummary> consumer() {
+        return queryGateway.streamingQuery(query, CardSummary.class)
+                           .take(100)
+                           .takeUntil(message -> somePredicate.test(message));
+}
+\```
+
+The example above shows how the `take` operator limits the number of items to be emitted.
+
+
+#### Error handling
+
+A producer that produces an error by calling `onError(Throwable)` will terminate the handler execution.
+The consumer will, in turn, have its `onError(Throwable)` subscription handler called.
+
+Note that exceptions do not flow upstream (from consumer to producer). 
+If an error happens on the consumer side, the consumer error will trigger a cancel signal propagated to the producer.
+This signal will effectively cancel the stream without the producer knowing the reason.
+
+Hence it's recommended to set a timeout on the query handler's side in case of a finite stream.
+Essentially to protect against malfunctioning consumers or producers.
+
+```java
+@QueryHandler
+public Flux<CardSummary> handle(FetchCardSummariesQuery query) {
+...
+    return reactiveCardRepository.findAll().timeout(Duration.ofSeconds(5));
+}
+```
+The example above shows how the `timeout` operator is used to cancel a request if no responses have been observed during a five-second timespan.
+
+> **Reactor dependency**
+>
+> The `reactor-core` dependency is mandatory for usage of streaming queries. However, it is a compile time dependency and it is not required for other Axon features.
+
 
 [Axon Coding Tutorial \#5: - Connecting the UI](https://youtu.be/lxonQnu1txQ)
 
