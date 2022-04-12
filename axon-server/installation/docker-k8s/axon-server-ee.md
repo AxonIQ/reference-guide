@@ -17,7 +17,7 @@ Version 4.5.3 is the first version for which we have released these images, and 
 
 * "`/axonserver/config`"
 
-  This where you can add configuration files, such as an additional `axonserver.properties` and the license file, although you can also opt to use e.g. Kubernetes or Docker-compose secrets. Note that Axon Server EE assumes it can write to the directory configured with "`axoniq.axonserver.enterprise.licenseDirectory`", so you don't have to put the license on all nodes.
+  This is where you can add configuration files, such as an additional `axonserver.properties` and the license file. However, you can also opt to use, e.g., Kubernetes or Docker-compose secrets. Note that Axon Server EE assumes it can write to the directory configured with "`axoniq.axonserver.enterprise.licenseDirectory`", so you don't have to put the license on all nodes.
 * "`/axonserver/data`"
 
   This is where the ControlDB, the PID file, and a copy of the application logs are written to.
