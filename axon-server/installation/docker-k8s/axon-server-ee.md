@@ -284,6 +284,14 @@ Starting Axon Server EE using the docker-compose command is depicted below.
 $ docker-compose up
 ```
 
+**Note 1**
+
+The examples below show only one of the ways you could deploy Axon Server to Kubernetes. As discussed in [this Blog article](https://developer.axoniq.io/w/revisiting-axon-server-in-containers), there are many aspects that you need to carefully plan ahaead for. A more complete set of examples can be found in the "[Running Axon Server](https://github.com/AxonIQ/running-axon-server)" GitHub repository. We especially recommend using [the "Singleton StatefulSet" approach](https://github.com/AxonIQ/running-axon-server/tree/master/3-k8s/4-k8s-ee-ssts-tls).
+
+**Note 2**
+
+Although the complexity of deploying any application to Kubernetes can be overwhelming, we strongly recommend you to study this subject carefully. The examples we provide are not necessarily the best approach for your particular situation, so be careful about copying them without any further modifications, if only because they generate self-signed certificates that have only a one-year validity.
+
 ## Kubernetes
 
 The deployment of Axon Server EE on Kubernetes essentially follows the same principle as we have seen for Axon Server SE i.e. using Stateful Sets. However to cater to the distributed deployment topology of Axon Server EE, there may be some changes that would need to be done.
@@ -331,7 +339,7 @@ spec:
         fsGroup: 1001
       containers:
       - name: axonserver
-        image: my-repository/axonserver-enterprise:4.5.3
+        image: axoniq/axonserver-enterprise:latest-dev-nonroot
         imagePullPolicy: IfNotPresent
         ports:
         - name: grpc
