@@ -124,7 +124,7 @@ The installation process assumes that Docker Compose will be used to run a 3-nod
 
 Each container instance will use separate volumes for “data”, “events”, and “log”. We will use "secrets" to inject the license file, tokens as well as the cluster/context definitions using the [autocluster](../local-installation/axon-server-ee.md#auto-clustering) mechanism. An environment variable is added to tell Axon Server about the location of the license file.
 
-The complete docker-compose file is depicted below. Note you have 
+The complete docker-compose file is depicted below.
 
 ```text
 version: '3.3'
