@@ -75,7 +75,7 @@ The Eclipse Temurin based images are available in several variants, shown by the
 
 ##Running Axon Server
 
-To run the provided image the command below can be executed. This starts Axon Server SE in a docker container with exposes the HTTP (by default 8024) and GRPC (by default 8124) ports to the host.
+To run the provided image the command below can be executed. This starts Axon Server SE in a docker container that exposes the HTTP (by default 8024) and GRPC (by default 8124) ports to the host.
 
 ```bash
 $ docker run -d --name axonserver -p 8024:8024 -p 8124:8124 axoniq/axonserver
