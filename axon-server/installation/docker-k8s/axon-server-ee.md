@@ -290,7 +290,7 @@ The examples below show only one of the ways you could deploy Axon Server to Kub
 
 **Note 2**
 
-Although the complexity of deploying any application to Kubernetes can be overwhelming, we strongly recommend you to study this subject carefully. The examples we provide are not necessarily the best approach for your particular situation, so be careful about copying them without any further modifications, if only because they generate self-signed certificates that have only a one-year validity.
+Although the complexity of deploying any application to Kubernetes can be overwhelming, we strongly recommend you to study this subject carefully. The examples we provide are not necessarily the best approach for your particular situation, so be careful about copying them without any further modifications, if only because they generate self-signed certificates that have a one-year validity.
 
 ## Kubernetes
 
