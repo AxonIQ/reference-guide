@@ -284,17 +284,15 @@ Starting Axon Server EE using the docker-compose command is depicted below.
 $ docker-compose up
 ```
 
-**Note 1**
-
-The examples below show only one of the ways you could deploy Axon Server to Kubernetes. As discussed in [this Blog article](https://developer.axoniq.io/w/revisiting-axon-server-in-containers), there are many aspects that you need to carefully plan ahaead for. A more complete set of examples can be found in the "[Running Axon Server](https://github.com/AxonIQ/running-axon-server)" GitHub repository. We especially recommend using [the "Singleton StatefulSet" approach](https://github.com/AxonIQ/running-axon-server/tree/master/3-k8s/4-k8s-ee-ssts-tls).
-
-**Note 2**
-
-Although the complexity of deploying any application to Kubernetes can be overwhelming, we strongly recommend you to study this subject carefully. The examples we provide are not necessarily the best approach for your particular situation, so be careful about copying them without any further modifications, if only because they generate self-signed certificates that have a one-year validity.
-
 ## Kubernetes
 
-The deployment of Axon Server EE on Kubernetes essentially follows the same principle as we have seen for Axon Server SE i.e. using Stateful Sets. However to cater to the distributed deployment topology of Axon Server EE, there may be some changes that would need to be done.
+**For example purposes only**
+
+The examples below show only one of the ways you could deploy Axon Server to Kubernetes. As discussed in [this Blog article](https://developer.axoniq.io/w/revisiting-axon-server-in-containers), there are many aspects that you need to carefully plan ahaead for. A more complete set of examples can be found in the "[Running Axon Server](https://github.com/AxonIQ/running-axon-server)" GitHub repository. We especially recommend using [the "Singleton StatefulSet" approach](https://github.com/AxonIQ/running-axon-server/tree/master/3-k8s/4-k8s-ee-ssts-tls). Although the complexity of deploying any application to Kubernetes can be overwhelming, we strongly recommend you to study this subject carefully. The examples we provide are not necessarily the best approach for your particular situation, so be careful about copying them without any further modifications, if only because they generate self-signed certificates that have a one-year validity.
+
+###Creating the Secrets and ConfigMap
+
+The deployment of Axon Server EE on Kubernetes essentially follows the same principle as we have seen for Axon Server SE i.e. using Stateful Sets. However, to cater to the distributed deployment topology of Axon Server EE, there may be some changes that would need to be done.
 
 An important thing to consider is the use of a "nonroot" image. This is due to the fact that volumes are mounted as owned by the mount location’s owner in Docker, while Kubernetes uses a special security context, defaulting to "`root`". Since a "nonroot" image runs Axon Server under its own user, it has no rights on the mounted volume other than “read”. The context can be specified, but only through the user or group’s ID, and not using their name as we did in the image, because that name does not exist in the k8s management context. So we have to adjust the first stage to specify a specific numeric value _\(here we have given 1001\)_ , and then use that value in the security context of the Stateful set which we shall see below.
 
@@ -313,6 +311,8 @@ $
 ```
 
 In the descriptor we now have to declare the secret, add a volume for it, and mount the secret on the volume. Then a list of volumes has to be added to link the actual license and properties.
+
+### Deploying Axon Server
 
 The complete spec for the Axon Server EE Stateful set is given below. This includes the security context, the volume mounts, the readiness and liveness probes and finally the volumes.
 

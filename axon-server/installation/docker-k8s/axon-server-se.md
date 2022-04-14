@@ -39,7 +39,9 @@ The "`/data`" and "`/eventdata`" directories are exported as Docker volumes and 
 
 All other images, recognizable through tag names that consist of multiple, dash-separated elements, have been built using the "`eclipse-temurin`" multi-platform images. These are significantly larger than the Distroless ones, but a safe and widely used alternative. For Axon Server they provide the important benefit of supporting not only the 64-bit Intel architecture, but also 32-bit and 64-bit ARM, which means they can run on a wider range of hardware, including Raspberry Pis and Apple M1 based systems. For development and debugging scenarios the biggest advantage is that they also contain a shell (Bash), which means that you can "connect into" a running container.
 
-**NOTE:** From a security perspective the presence of the shell can be considered a risk. If this is a problem for you, you should build your own image using the examples provided in the "[Running Axon Server](https://github.com/AxonIQ/running-axon-server)" GitHub repository.
+**On using an image with a shell**
+
+From a security perspective the presence of the shell can be considered a risk. If this is a problem for you, you should build your own image using the examples provided in the "[Running Axon Server](https://github.com/AxonIQ/running-axon-server)" GitHub repository.
 
 #### Features
 
