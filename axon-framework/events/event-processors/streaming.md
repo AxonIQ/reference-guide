@@ -1248,8 +1248,8 @@ The reset API revolves around the `resetTokens()` method and provides a couple o
 > The `StreamableMessageSource`'s [`createTokenAt(Instant)` and `createTokenSince(Duration)`](#initial-tracking-token) can be used for this.
 > 
 > If creating tokens based on time is not sufficient, but creating tokens based on the exact position is something that is more convenient, you could 
-> create a `GlobalSequenceTrackingToken` providing the position and give it to `resetTokens(TrackingToken startPosition)` or 
-> `resetTokens(TrackingToken startPosition, R resetContext)` methods.
+> create a `TrackingToken` providing the position and give it to `resetTokens(TrackingToken startPosition)` or 
+> `resetTokens(TrackingToken startPosition, R resetContext)` methods. The concrete implementation of `TrackingToken` to provide depends on the `Token Store` being used.
 > 
 > Be mindful that when initiating a partial replay, the event handlers may handle an event in the middle of model construction.
 > Hence, event handlers need to be "aware" that some events might not have been handled at all.
