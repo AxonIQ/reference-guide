@@ -75,7 +75,7 @@ The Eclipse Temurin based images are available in several variants, shown by the
 
   These images run Axon Server as user "`axonserver`", with user-id (UID) `1001` and group-id (GID) `1001`.
 
-##Running Axon Server
+## Running Axon Server
 
 To run the provided image the command below can be executed. This starts Axon Server SE in a docker container that exposes the HTTP (by default 8024) and GRPC (by default 8124) ports to the host.
 
