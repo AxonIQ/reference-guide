@@ -4,6 +4,15 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.17
+
+* Deprecated "/v1/backup/filenames" endpoint, use new endpoint /v1/backup/eventstore instead. The new endpoint returns all files
+to back up, given a last closed segment number, it also returns the currently last closed segment.
+* Endpoint "/v1/backup/log/filenames" now also returns the current replication log segment
+* Fix: install snapshot for _admin replication group fails when there are plugins installed
+* Health status for replication groups now also checks if a follower is not too far behind the leader
+* Removed automatic recovery option in case a node was missing the last committed replication log entry and has newer log entries
+
 ### Release 4.5.16
 
 * Updated Spring Boot version to 2.5.12 to fix CVE-2022-22965

@@ -36,6 +36,13 @@ For Axon SE, the _\[server\]_ is the single Axon Server SE node while in the cas
 
 In addition, you may choose to back up the current segment file that is being written to. These are files with names larger than the last entry returned to the filenames from the backup endpoint. It is important to overwrite this file with subsequent backups, because no guarantees can be given about the completeness of this file. This means the filename of this file should not be used to construct the "lastSegmentBackedUp" in subsequent requests to the backup endpoint.‌
 
+> **Note**
+>
+> From Axon Server SE version 4.5.12 / Axon Server EE version 4.5.17 onwards there is a new endpoint available: `/v1/backup/eventstore`.
+> This endpoint returns a JSON object with the files to back up, including the currently active event store segment. It also returns the number of last 
+> closed event store segment. This number can be used in subsequent backups to retrieve files updated since the last backup. 
+>
+
 ## _Log Entry Segments \(only for Axon Server EE\)_
 
 Unlike the event stream segments, the log entry segments backup should not be done incrementally. All the files are replaced by the next backup. The log entry segments backup is supported by the GET endpoint `http:[server]/v1/backup/log/filenames`. It takes the context name and returns a list of file names that completely replace the previous backup for that context.‌ The _\[server\]_ could be any node that is a PRIMARY member node for the context that needs to be backed up.
