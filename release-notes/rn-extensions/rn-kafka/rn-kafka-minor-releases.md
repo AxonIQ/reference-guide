@@ -5,6 +5,18 @@ This page provides an overview of patch releases for the Axon Kafka Extension.
 
 ## Release 4.5
 
+### Release 4.5.4
+
+* Whenever the `StreamableKafkaMessageSource` started, it created a new consumer group.
+  This implementation will eventually construct many groups within Kafka that are never used, as contributor `aupodogov` noted in [this](https://github.com/AxonFramework/extension-kafka/issues/273) issue.
+  We solved this issue by manually validating all the partitions instead of constructing a new consumer group each time.
+  For those interested, the pull request for this can be found [here](https://github.com/AxonFramework/extension-kafka/pull/284).
+* Contributor `zambrovski` noticed that when `FetchEventTask` dies, it did not put the Event Processor in error mode even though it should.
+  To solve this, we ensured the error was rethrown far enough for the Event Processor to react to it accordingly.
+  If you're curious about the solution, you can find the changes in pull request [#287](https://github.com/AxonFramework/extension-kafka/pull/287).
+
+You can find the complete list of changes in release 4.5.4 [here](https://github.com/AxonFramework/extension-kafka/releases).
+
 ### Release 4.5.3
 
 The 4.5.3 release 're-enables' [Spring Cloud Developer Tools](https://docs.spring.io/spring-boot/docs/1.5.16.RELEASE/reference/html/using-boot-devtools.html) for the Kafka Extension.
