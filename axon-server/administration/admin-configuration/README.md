@@ -32,6 +32,13 @@ There are three options that AxonServer provides to maintain its configuration. 
         <p>Access Control Configuration -&gt; Users / Applications</p>
         <p>Cluster Configuration - Contexts / Clusters</p>
       </td>
+    </tr>    
+    <tr>
+      <td style="text-align:left"><a href="grpc-api.md">GRPC API</a>
+      </td>
+      <td style="text-align:left">
+        <p>Event Processor administration API</p>
+      </td>
     </tr>
     <tr>
       <td style="text-align:left"><a href="cluster-template.md">Cluster template</a>
@@ -40,6 +47,6 @@ There are three options that AxonServer provides to maintain its configuration. 
         <p>Managing cluster configuration as code</p>
       </td>
     </tr>    
-    
+
   </tbody>
 </table>
