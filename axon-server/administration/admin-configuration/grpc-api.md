@@ -13,7 +13,7 @@ name: [EventProcessorAdminService](https://github.com/AxonIQ/axon-server-api/blo
 | Merge event processor segments   | Merge the smallest known two segments of the distributed event processor into one. **                    | rpc MergeEventProcessor(EventProcessorIdentifier) returns (AdminActionResult)        |
 | List load balance strategies     | Provide a list of all load balancing strategies.                                                         | GetBalancingStrategies(google.protobuf.Empty) returns (stream LoadBalancingStrategy) |
 | Load balance event processor     | Balance the load across several instances of an event processor, accordingly to the selected strategy.   | rpc LoadBalanceProcessor(LoadBalanceRequest) returns (stream google.protobuf.Empty)  |
-| Set auto load balance strategy   | Define the load balancing strategy to use for automatic load balancing                                   | SetAutoLoadBalanceStrategy(LoadBalanceRequest) returns (stream google.protobuf.Empty)|
+| Set auto load balance strategy   | Define the load balancing strategy to use for automatic load balancing.                                  | SetAutoLoadBalanceStrategy(LoadBalanceRequest) returns (stream google.protobuf.Empty)|
 
 \* Clients need to be already running and connected to AS before the operation is executed.
 ** It may not work if the two smallest segments are not claimed by applications connected to AS.
