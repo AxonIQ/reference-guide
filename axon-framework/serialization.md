@@ -35,7 +35,7 @@ To that end, the `Configuration` API allows you to define default, `message` and
 
 3. The default `Serializer` is in charge of (de)serializing the remainder, being the messages (except the payload and metadata), tokens, snapshots, deadlines and sagas.
    These objects are generally not shared between different applications, and most of these classes aren't expected to have some of the getters and setters that are, for example, typically required by Jackson based serializers.
-   For example a QueryMessage consists of a ResponseType, which will be (de)serialized using the `default`serializer, the query request and response payload will be (de)serialized using the`message`serializer.
+   For example a `QueryMessage` consists of a payload and `ResponseType`, which will respectively be (de)serialized using the `message` and the `default` serializer, the query request and response payload will be (de)serialized using the`message`serializer.
    A flexible, general-purpose serializer like [XStream](http://x-stream.github.io/) is quite ideal for this purpose.
 
 By default, all three `Serializer` flavors are set to use the `XStreamSerializer`, which internally uses [XStream](http://x-stream.github.io/) to serialize objects to an XML format. 
