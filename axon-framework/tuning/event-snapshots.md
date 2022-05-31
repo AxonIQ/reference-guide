@@ -50,7 +50,7 @@ The `AggregateSnapshotter` provides one more property:
 > Spring uses a `SpringAggregateSnapshotter`, which will automatically looks up the right `AggregateFactory` instances from the application context when a snapshot needs to be created.
 >
 > The `@Revision` annotation has a dedicated, automatically configured `SnapshotFilter` implementation. This implementation is used to filter out non-matching snapshots from the `Repository`'s loading process. 
-> So when the `@Revision` annotation is used on an aggregate the snapshots will be filtered out automatically. When the`@Revision`on an aggregate is missing a`RevisionSnapshotFilter`is configured for revision null.
+> So when the `@Revision` annotation is used on an aggregate the snapshots will be filtered out automatically. When the`@Revision` on an aggregate is missing a `RevisionSnapshotFilter` is configured for revision `null`.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
