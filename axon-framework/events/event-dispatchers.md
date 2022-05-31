@@ -52,7 +52,7 @@ The `AggregateLifecycle#apply` method returns an implementation of the `ApplyMor
 
 * `.andThenApply(Supplier<?>)`
 
-to apply a next event in the correct order
+Applies a next event resulting from the given `Supplier` in order.
 * `.andThen(Runnable)`
 
 to execute some logic after the event has been applied
