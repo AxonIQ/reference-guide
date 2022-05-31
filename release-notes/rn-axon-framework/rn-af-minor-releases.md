@@ -4,6 +4,25 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.5
 
+### Release 4.5.10
+
+* Axon's test fixtures perform a "deep equals" operation, using reflection as they go. JDK17,
+   rightfully so, does not allow that for all classes. 
+  To solve scenarios where users utilize objects from, for example, `java.lang`,
+   we have introduced a distinct `DeepEqualsMatcher` in pull request [#2210](https://github.com/AxonFramework/AxonFramework/pull/2210). 
+  This matcher implementation considers the situation that an `InaccessibleObjectException` might be thrown from Axon's test fixtures,
+   correctly dealing with the scenario by assuming the assertion failed.
+* Contributor [`fabio-couto`](https://github.com/fabio-couto) noticed a predicament within the `PooledStreamingEventProcessor` (PSEP for short) when they were facing connectivity issues with their RDBMS. 
+  In the face of these issues, the PSEP coordinator is incapable of fetching events, resulting in canceled work packages. 
+  As part of canceling, the PSEP actively tries to release token claims, which is yet another database operation. 
+  This loop of several connectivity issues causes the PSEP to enter a state it could not recover from. 
+  Pull request [#2225](https://github.com/AxonFramework/AxonFramework/pull/2225), provided by `fabio-couto`, solves this predicament.
+* A fix was introduced to the `EventTypeUpcaster` to solve issues further down the upcasting chain. 
+  Contributor [`dakr0013`](https://github.com/dakr0013) noted that upcaster invoked _after_ an `EventTypeUpcaster` failed because the expected intermediate event type was adjusted to `Object`.
+  `dakr0013` provided a pull request, which we made some adjustments in PR [#2177](https://github.com/AxonFramework/AxonFramework/pull/2177) to accommodate additional scenarios.
+
+You can check out the [release notes](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.5.10) when you're looking for an exhaustive list of all the changes.
+
 ### Release 4.5.9
 
 This release brings three adjustments worth mentioning to the framework, namely:
