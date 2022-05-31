@@ -48,7 +48,7 @@ The `AggregateLifecycle#apply(Object)` will go through a number of steps:
 >
 > The `AggregateLifecycle` also provides an `apply(Object, MetaData)` function. This can be used to attach command-handler specific MetaData.
 
-The `AggregateLifecycle#apply`methods return an implementation of the`ApplyMore`interface. This interface provides the following methods:
+The `AggregateLifecycle#apply` method returns an implementation of the `ApplyMore` interface. This interface provides the following methods:
 
 * `.andThenApply(Supplier<?>)`
 
