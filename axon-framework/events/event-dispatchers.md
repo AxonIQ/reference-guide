@@ -48,21 +48,6 @@ The `AggregateLifecycle#apply(Object)` will go through a number of steps:
 >
 > The `AggregateLifecycle` also provides an `apply(Object, MetaData)` function. This can be used to attach command-handler specific MetaData.
 
-The `AggregateLifecycle#apply`methods return an implementation of the`ApplyMore`interface. This interface provides the following methods:
-
-* `.andThenApply(Supplier<?>)`
-
-to apply a next event in the correct order
-* `.andThen(Runnable)`
-
-to execute some logic after the event has been applied
-* `.andThenApplyIf(Supplier<Boolean>, Supplier<?>)`
-
-to apply a next event in the correct order, depending on a certain condition
-* `.andThenIf(Supplier<Boolean>, Runnable runnable)`
-
-to execute some logic after the event has been applied, depending on a certain condition
-
 ## Dispatching events from a Non-Aggregate
 
 In the vast majority of cases, the [Aggregates](../axon-framework-commands/modeling/aggregate.md) will publish events by applying them. However, occasionally, it is necessary to publish an event \(possibly from within another component\), directly to the Event Gateway:
