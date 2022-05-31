@@ -10,7 +10,7 @@ Monitoring a message centric application will require you to be able to see wher
 
 ### Correlation Data <a id="correlation-data"></a>
 
-One import aspect in regard to this is tracing a given message. To that end the framework provides the `CorrelationDataProvider`, as described briefly [here](messaging-concepts/message-intercepting.md). This interface and its implementations provide you the means to populate the meta-data of your messages with specific fields, like a 'trace-id', 'correlation-id' or any other field you might be interested in.‌
+One important aspect in regard to this is tracing a given message. To that end the framework provides the `CorrelationDataProvider`, as described briefly [here](messaging-concepts/message-intercepting.md). This interface and its implementations provide you the means to populate the meta-data of your messages with specific fields, like a 'trace-id', 'correlation-id', or any other field you might be interested in.‌
 
 For configuring the `MessageOriginProvider` you can do the following:
 
