@@ -65,3 +65,8 @@ Axon Spring Boot auto-configuration is not intrusive. It will define only Spring
 
 Specific Axon \(Spring\) component configurations will be explained in detail in the following sections of this guide.
 
+### Spring event on startup finished
+
+When using Spring to automatically wire everything, sometimes there is a need to know when all the (Command, Event and Query) handlers have been registered to their respective buses.
+To support this an `AxonStartedEvent` Spring event is published  when the Configuration module has fully started.
+
