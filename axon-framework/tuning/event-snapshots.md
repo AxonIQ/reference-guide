@@ -50,7 +50,7 @@ The `AggregateSnapshotter` provides one more property:
 > Spring uses a `SpringAggregateSnapshotter`, which will automatically looks up the right `AggregateFactory` instances from the application context when a snapshot needs to be created.
 >
 > The `@Revision` annotation has a dedicated, automatically configured `SnapshotFilter` implementation. This implementation is used to filter out non-matching snapshots from the `Repository`'s loading process. 
-> So when the `@Revision` annotation is used on an aggregate the snapshots will be filtered out automatically. 
+> So when the `@Revision` annotation is used on an aggregate the snapshots will be filtered out automatically. When the`@Revision`on an aggregate is missing a`RevisionSnapshotFilter`is configured for revision null.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -109,6 +109,7 @@ You could take the stance of dropping all the snapshots which are stored (for a 
 It is also possible to filter out snapshot events when reading your Aggregate from the event store.
 To that end, a `SnapshotFilter` can be defined per Aggregate type or for the entire `EventStore`.
 
+
 The `SnapshotFilter` is a functional interface, providing two main operations: `allow(DomainEventData<?)` and `combine(SnapshotFilter)`.
 The former provides the `DomainEventData` which reflects the snapshot events. 
 The latter allows combining several `SnapshotFilter`s together.
@@ -145,6 +146,8 @@ public class GiftCard {...}
 ```
 {% endtab %}
 {% endtabs %}
+
+
 
 ### Initializing an Aggregate based on a Snapshot Event
 
