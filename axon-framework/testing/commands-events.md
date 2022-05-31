@@ -234,14 +234,15 @@ The following methods are available for validating Command Results:
   Validates that the command handling result is an exceptional result and the exception message matches the given Matcher.
 * `fixture.expectExceptionDetails(Object)`:
 
-  Validates that the command handling result is an exceptional result and the exception equals the given exception.  
+  Validates that the command handling result is an exceptional result and the exception details equal the given exception details.  
 
 * `fixture.expectExceptionDetails(Class)`:
 
-  Validates that the command handling result is an exceptional result with the given type of exception.
+  Validates that the command handling result is an exceptional result with the given type of exception details.
+  
 * `fixture.expectExceptionDetails(Matcher)`:
 
-  Validates that the command handling result is an exceptional result and the exception matches the given Exception.
+  Validates that the command handling result is an exceptional result and the exception details match the given `Matcher`.
 
 
 #### Validating Published Events
