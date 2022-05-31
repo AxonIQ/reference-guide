@@ -10,7 +10,7 @@ Monitoring a message centric application will require you to be able to see wher
 
 ### Correlation Data <a id="correlation-data"></a>
 
-One import aspect in regards to this is tracing a given message. To that end the framework provides the `CorrelationDataProvider`, as described briefly [here](messaging-concepts/message-intercepting.md). This interface and its implementations provide you the means to populate the meta-data of your messages with specific fields, like a 'trace-id', 'correlation-id' or any other field you might be interested in.‌
+One important aspect in regard to this is tracing a given message. To that end the framework provides the `CorrelationDataProvider`, as described briefly [here](messaging-concepts/message-intercepting.md). This interface and its implementations provide you the means to populate the meta-data of your messages with specific fields, like a 'trace-id', 'correlation-id', or any other field you might be interested in.‌
 
 For configuring the `MessageOriginProvider` you can do the following:
 
@@ -327,4 +327,15 @@ public class MetricsConfig {
     }
 }
 ```
+### Spring Boot Actuator Health Indicator for Axon Server
 
+The Spring Boot Actuator HealthIndicator shares whether the contexts to which an Axon Framework application is connected with are active.
+It does so by requesting the available connections from the `AxonServerConnectionManager`.
+
+When all connections are active, the UP status is shared.
+When all connections are inactive, the DOWN status is projected.
+When one of the connections is inactive, the custom WARN status is shown.
+This approach is in line with what Axon Server's local health indicator shows.
+
+Next to the status, details are provided about the separate connection's activity.
+These can be found under `{context-name}`.connection.active.
