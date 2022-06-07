@@ -32,11 +32,11 @@ Set the following properties to set flow control on the synchronization between 
 ## Streaming query
 
 Flow control and stream cancellation features are only available with Axon Server 4.6.0 and up. 
-When streaming queries are used with Axon Server versions before 4.6.0, it will work although without the following essential features.
-Under the hood, backpressure does `Hop to Hop` signal propagation (see below) and inherits gRPC's [HTTP2-based backpressure model](https://developers.google.com/web/fundamentals/performance/http2/#flow_control).
+Under the hood, backpressure does `Hop to Hop` signal propagation (see below) and inherits gRPC's 
+[HTTP2-based backpressure model](https://developers.google.com/web/fundamentals/performance/http2/#flow_control).
 
-As a result, backpressure will not behave intuitively and will not propagate exact request signals from consumer to producer.
-HTTP/2 and Netty flow control have internal buffers based on message size. 
+As a result, backpressure will not behave intuitively and will not propagate exact request signals from consumer to 
+producer. HTTP/2 and Netty flow control have internal buffers based on message size. 
 In turn, Axon Framework and Axon Server prefetch messages into internal buffers based on message count.
 The result is that the producer will send a number of messages until it fills all the buffers.
 Only then will backpressure kick in.
@@ -44,11 +44,20 @@ Only then will backpressure kick in.
 > **Hop to hop**
 >
 > The backpressure signal is propagated per-hop.
-> This approach makes it not an end-to-end connection that allows intermediate Axon Server instances to handle backpressure between two connections and pre-fetch additional messages to increase overall performance.
+> This approach makes it not an end-to-end connection that allows intermediate Axon Server instances to handle 
+> backpressure between two connections and pre-fetch additional messages to increase overall performance.
 
 It's important to note that similar to backpressure, the cancellation signal is also per hop.
 This means it's propagated over the network to Axon Server and then to the producer.
 This solution will thus introduce some latency in the stream cancellation.
-Even though there is potential latency involved in cancellation, any messages produced **after** the consumer signaled cancellation will be ignored.
+Even though there is potential latency involved in cancellation, any messages produced **after** the consumer signaled 
+cancellation will be ignored.
 
-
+### Compatibility with Axon Framework
+- In order to stream query results, the producer of those results, the consumer, and all Axon Server nodes in between 
+must be at 4.6.0 or higher version. In addition to that, both, consumer and producer **must** have Project Reactor on 
+the classpath.
+- If the consumer is not at 4.6.0 or higher version, and/or does not have a Project Reactor on the classpath, it is not 
+possible to invoke streaming of query results at all.
+- In all other cases, it is possible to invoke streaming of query results, but it will fallback to the point-to-point 
+query behavior.
