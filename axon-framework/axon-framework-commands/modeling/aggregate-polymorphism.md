@@ -56,17 +56,19 @@ class AxonConfiguration {
                                   .withSubtypes(subtypes);
     }
 
-    class GiftCard {
-        // omitted implementation for brevity
-    }
+    // ...
+}
 
-    class OpenLoopGiftCard extends GiftCard {
-        // omitted implementation for brevity
-    }
+class GiftCard {
+    // omitted implementation for brevity
+}
 
-    class RechargeableGiftCard extends GiftCard {
-        // omitted implementation for brevity
-    }
+class OpenLoopGiftCard extends GiftCard {
+    // omitted implementation for brevity
+}
+
+class RechargeableGiftCard extends GiftCard {
+    // omitted implementation for brevity
 }
 ```
 
