@@ -4,6 +4,25 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.5
 
+### Release 4.5.11
+
+#### Enhancements
+
+- Release announcement on discuss [#2256](https://github.com/AxonFramework/AxonFramework/pull/2256)
+
+#### Bug Fixes
+
+- [#2242] Correctly support null-identifier and no-event scenarios from Command Handling constructors, `Always`, and `Create-If-Missing` creation policies [#2248](https://github.com/AxonFramework/AxonFramework/pull/2248)
+- Check attribute filter deep equals [#2246](https://github.com/AxonFramework/AxonFramework/pull/2246)
+- Fix Duplicate command handler resolver is triggered in polymorphic ag… [#2245](https://github.com/AxonFramework/AxonFramework/pull/2245)
+- Duplicate command handler resolver is triggered in polymorphic aggregates [#2243](https://github.com/AxonFramework/AxonFramework/issues/2243)
+- AggregateTestFixture throws AggregateNotFoundException when a command handler with a creation policy applies no events [#2242](https://github.com/AxonFramework/AxonFramework/issues/2242)
+
+#### Dependency Upgrade
+
+- Bump spring-framework-bom from 5.3.20 to 5.3.21 [#2255](https://github.com/AxonFramework/AxonFramework/pull/2255)
+- Bump metrics-core from 4.1.31 to 4.1.32 [#2247](https://github.com/AxonFramework/AxonFramework/pull/2247)
+
 ### Release 4.5.10
 
 * Axon's test fixtures perform a "deep equals" operation, using reflection as they go. JDK17,
