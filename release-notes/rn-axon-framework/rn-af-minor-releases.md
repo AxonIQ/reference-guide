@@ -4,6 +4,13 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.5
 
+### Release 4.5.12
+
+#### Bug Fixes
+
+- Ensure commands and queries are processed in FIFO order [#2263](https://github.com/AxonFramework/AxonFramework/pull/2263)
+- Commands with same priority are not handled in the correct order [#2257](https://github.com/AxonFramework/AxonFramework/issues/2257)
+
 ### Release 4.5.11
 
 #### Enhancements
