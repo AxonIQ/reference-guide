@@ -4,6 +4,13 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.18
+
+* Performance improvements in replication process
+* Index files for replication segments are no longer created
+* Reduced memory consumption during transactions
+* Improved handling of out-of-memory exceptions
+
 ### Release 4.5.17
 
 * Deprecated "/v1/backup/filenames" endpoint, use new endpoint /v1/backup/eventstore instead. The new endpoint returns all files
