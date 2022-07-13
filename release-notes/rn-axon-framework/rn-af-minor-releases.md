@@ -4,6 +4,30 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.5
 
+### Release 4.5.13
+
+#### Features
+
+- Make the shutdown timeout configurable [#1981](https://github.com/AxonFramework/AxonFramework/issues/1981)
+
+#### Enhancements
+
+- Pooled Streaming Event Processor configuration enhancement [#2276](https://github.com/AxonFramework/AxonFramework/pull/2276)
+- Introduce mechanism to interrupt `TrackingEventProcessor` worker threads [#2041](https://github.com/AxonFramework/AxonFramework/pull/2041)
+- Allow lifecycle phase timeout configuration [#2037](https://github.com/AxonFramework/AxonFramework/pull/2037)
+
+#### Bug Fixes
+
+- Retry to initialize the token store correctly on exception for PSEP. [#2277](https://github.com/AxonFramework/AxonFramework/pull/2277)
+- Process events with identical `TrackingToken` together in the `PooledStreamingEventProcessor` [#2275](https://github.com/AxonFramework/AxonFramework/pull/2275)
+- PooledStreamingEventProcessor does not Retry if initialization fails [#2274](https://github.com/AxonFramework/AxonFramework/issues/2274)
+
+#### Dependency Upgrade
+
+- Bump projectreactor.version from 3.4.20 to 3.4.21 [#2284](https://github.com/AxonFramework/AxonFramework/pull/2284)
+- Bump axonserver-connector-java from 4.5.4 to 4.5.5 [#2278](https://github.com/AxonFramework/AxonFramework/pull/2278)
+- Bump axonserver-connector-java from 4.5.5 to 4.5.6 [#2282](https://github.com/AxonFramework/AxonFramework/pull/2282)
+
 ### Release 4.5.12
 
 #### Bug Fixes
