@@ -4,6 +4,14 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.5
 
+### Release 4.5.14
+
+#### Bug Fixes
+
+- TrackingEventProcessors shutdown is not working correctly in 4.5.13 [#2287](https://github.com/AxonFramework/AxonFramework/issues/2287)
+- Snapshots are not read with snapshot filter and same serializer for events and snapshots [#2286](https://github.com/AxonFramework/AxonFramework/pull/2286)
+- Snapshots are not considered during loading of an Aggregate using Axon-Server-Connector [#2285](https://github.com/AxonFramework/AxonFramework/issues/2285)
+
 ### Release 4.5.13
 
 #### Features
