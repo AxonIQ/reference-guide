@@ -1,9 +1,5 @@
 # Kafka
 
-{% hint style="info" %}
-The Kafka Extension currently only has a Release Candidate. Due to this, minor releases of the extension or Axon Framework may include breaking changes to the APIs.
-{% endhint %}
-
 Apache Kafka is a very popular system for publishing and consuming events. Its architecture is fundamentally different from most messaging systems, and combines speed with reliability.
 
 Axon provides an extension dedicated to _publishing_ and _receiving_ event messages from Kafka. The Kafka Extension should be regarded as an alternative approach to distributing events, besides \(the default\) Axon Server.
