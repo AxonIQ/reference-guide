@@ -1,5 +1,59 @@
 # Major Releases
 
+## Release 4.6.0
+
+Standard Edition and Enterprise Edition
+
+New features:
+- Streaming queries (requires Axon Framework version 4.6.0). When returning a collection of results from a query, the results can be streamed instead of collecting
+  them in the query handler first.
+
+Enhancements:
+- Number of events per transaction is no longer limited to 32K.
+- Support for using the CLI when the caller is behind a proxy.
+- livenessstate and readinessstate probes are now included in the /actuator/health endpoint output by default
+- Properties now support more readable values using units
+- Changing event processor states through Axon Server now waits for a result from the client
+- Plugins can now use AxonServerInformationProvider to get information on the Axon Server version
+- UI updated
+- show complex metadata values in query results
+
+Dependency updates:
+- updated gRPC and Netty versions
+- updated Spring Boot version
+- moved to OpenAPI for Swagger support
+
+Bug fixes:
+- moved reading indexes from the gRPC thread to prevent blocking these threads
+
+Notes:
+- For the Swagger endpoint use  /swagger-ui.html or /swagger-ui/index.html.
+- The generic endpoint for actuator is /actuator (/actuator/ no longer works)
+
+Enterprise Edition only
+
+New features:
+- Clients can now perform administrative operations in Axon Server through the axonserver-connector-java (requires version 4.6.0 of the connector).
+- Support for updating properties for an existing context
+
+Enhancements:
+- Large message support. Before increasing the max-message-size on Axon Server had the effect that the replication log segments were also increased in size. This
+  dependency is no longer there.
+- Clients can now also connect to nodes in a replication group that are not primary or messaging-only nodes.
+  To force clients to connect to primary or message-only nodes, set the property force-connection-to-primary-or-messaging-node to true
+
+Bug fixes:
+- not able to use an empty internal domain value if the domain was specified for the client connections (requires property
+  axoniq.axonserver.experimental.allow-empty-domain set to true and axoniq.axonserver.internal-domain defined with an empty string)
+- fix a timing issue in LeadershipStatusNotifier that can cause the leader to forget about its own leader status
+
+Notes:
+- For the swagger endpoint use  /swagger-ui.html or /swagger-ui/index.html.
+- The generic endpoint for actuator is /actuator (/actuator/ no longer works)
+- If you are using the LDAP or OATH extension you need to use the 4.6.0 version
+  of these extensions as because of the Spring Boot version update
+
+
 ## Release 4.5
 
 Standard Edition and Enterprise Edition
