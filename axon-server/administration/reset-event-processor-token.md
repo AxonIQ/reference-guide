@@ -21,7 +21,7 @@ This might require manually waiting for an EventProcessor to be fully stopped be
 A possible approach for this is shown in the last section of this page.
 
 ## Using Axon Framework
-Axon Framework exposes all required functionality for a reset in the `StreamingEventProcessor` class.
+Axon Framework exposes all required functionality for a reset in the `StreamingEventProcessor` class. In the following, we provide a sample for its usage. For more details, read the documentation on the framework classes [here](../../axon-framework/events/event-processors/streaming.md#triggering-a-reset).
 Instances of `StreamingEventProcessor` can be obtained by querying the `eventProcessingConfiguration` method of your global configuration.
 ```java
 configuration.eventProcessingConfiguration()
@@ -46,7 +46,7 @@ configuration.eventProcessingConfiguration()
 
 Note that this only concerns stopping the local instances. 
 If there are instances running on other nodes, you either need to use AxonServer or build a solution for this yourself.
-For more details, refer to the section in the Axon Framework [reference guide](https://docs.axoniq.io/reference-guide/axon-framework/events/event-processors/streaming#replaying-events).
+For more details, refer to the section in the Axon Framework [reference guide](../../axon-framework/events/event-processors/streaming.md#triggering-a-reset).
 
 ## Using the REST API
 Axon Server exposes a REST API to pause and start EventProcessors.
