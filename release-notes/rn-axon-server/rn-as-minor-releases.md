@@ -4,6 +4,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.19
+
+* Security update: updated control database settings
+
 ### Release 4.5.18
 
 * Performance improvements in replication process
