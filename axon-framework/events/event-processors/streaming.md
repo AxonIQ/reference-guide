@@ -693,6 +693,15 @@ public class AxonConfig {
 {% endtab %}
 {% endtabs %}
 
+#### Retrieving the Token Store Identifier
+Implementations of `TokenStore` might share state in the underlying storage.
+To ensure correct operation, a token store has a unique identifier that uniquely identifies the storage location of the tokens in that store. 
+This identifier can be queried with the `retrieveStorageIdentifier` method of your event processor.
+```java
+StreamingEventProcessor eventProcessor = // …
+String tokenStoreId =  eventProcessor.getTokenStoreIdentifier();
+```
+
 ## Parallel Processing
 
 Streaming processors can use [multiple threads](#thread-configuration) to process an event stream.
