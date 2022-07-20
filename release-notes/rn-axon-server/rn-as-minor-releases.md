@@ -2,6 +2,12 @@
 
 This page provides a dedicated overview of patch releases for the Axon Server (Enterprise Edition) releases
 
+## Release 4.6
+
+### Release 4.6.1
+
+* Security update: updated control database settings
+
 ## Release 4.5
 
 ### Release 4.5.19
