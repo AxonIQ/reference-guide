@@ -6,6 +6,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ### Release 4.5.13
 
+* Security update: updated control database settings
+
+### Release 4.5.13
+
 * Reduced memory consumption during transactions
 * Improved handling of out-of-memory exceptions
 * Resolved a race condition in storing events that lead to delays in completing transactions
