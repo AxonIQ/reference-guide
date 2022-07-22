@@ -4,7 +4,7 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.5
 
-### Release 4.5.13
+### Release 4.5.14
 
 * Security update: updated control database settings
 
