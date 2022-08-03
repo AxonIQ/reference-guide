@@ -4,6 +4,30 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.5
 
+### Release 4.5.15
+
+#### Enhancements
+
+- [#2290] `TrackingEventProcessor` does not wait for his worker threads to shut down [#2292](https://github.com/AxonFramework/AxonFramework/pull/2292)
+- TrackingEventProcessor does not wait for his worker threads to shut down [#2290](https://github.com/AxonFramework/AxonFramework/issues/2290)
+
+#### Bug Fixes
+
+- Improve the concurrent behaviour of the tracking event processor. [#2311](https://github.com/AxonFramework/AxonFramework/pull/2311)
+- Fix a problem where when a shutdown takes places while the worklaunch… [#2305](https://github.com/AxonFramework/AxonFramework/pull/2305)
+- Remove update handler registration on `UpdateHandlerRegistration#complete` [#2300](https://github.com/AxonFramework/AxonFramework/pull/2300)
+- Canceled subscription query remains active if updates Flux is not subscribed, causing error on emit [#2299](https://github.com/AxonFramework/AxonFramework/issues/2299)
+- Fix duplicate command handler detection. [#2298](https://github.com/AxonFramework/AxonFramework/pull/2298)
+- TrackingEventProcessor cannot be reset immediately after shutdown in very rare cases [#2293](https://github.com/AxonFramework/AxonFramework/issues/2293)
+- [#2289] Incorrect warning message in case of shutdown timeout [#2291](https://github.com/AxonFramework/AxonFramework/pull/2291)
+- Incorrect warning message in case of shutdown timeout [#2289](https://github.com/AxonFramework/AxonFramework/issues/2289)
+- Duplicate command handler resolver is triggered in polymorphic aggregates [#2243](https://github.com/AxonFramework/AxonFramework/issues/2243)
+
+#### Dependency Upgrade
+
+- Upgrade Axon Server Connector Java to 4.5.7 [#2313](https://github.com/AxonFramework/AxonFramework/pull/2313)
+- Bump mysql-connector-java from 8.0.29 to 8.0.30 [#2303](https://github.com/AxonFramework/AxonFramework/pull/2303)
+
 ### Release 4.5.14
 
 #### Bug Fixes
