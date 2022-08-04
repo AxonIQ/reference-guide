@@ -124,6 +124,12 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">false</td>
     </tr>
     <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">web-socket-allowed-origins</td>
+      <td style="text-align:left">List of WebSocket CORS Allowed Origins.</td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
       <td style="text-align:left"><em><b>File Locations</b></em>
       </td>
       <td style="text-align:left"></td>
@@ -177,6 +183,12 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">./security directory</td>
     </tr>
     <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">enterprise.license-directory</td>
+      <td style="text-align:left">Directory where the license file can be found.</td>
+      <td style="text-align:left">.</td>
+    </tr>
+    <tr>
       <td style="text-align:left"><em><b>File Names</b></em>
       </td>
       <td style="text-align:left"></td>
@@ -200,6 +212,18 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">event.index-suffix</td>
       <td style="text-align:left">File suffix for index files</td>
       <td style="text-align:left">.index</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event.new-index-suffix</td>
+      <td style="text-align:left">File suffix for new index files</td>
+      <td style="text-align:left">.nindex</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event.global-index-suffix</td>
+      <td style="text-align:left">File suffix for global index files</td>
+      <td style="text-align:left">.xref</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
@@ -393,6 +417,69 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">(Since 4.4.14) Sets how to handle validation errors while reading aggregates from the event store. Values are LOG and FAIL.</td>
       <td
       style="text-align:left">LOG</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event.use-mmap-index</td>
+      <td style="text-align:left">By default, AxonServer will determine whether to use memory mapped indexes for event files in the event store based on operating system and java version, in rare cases it may be useful to override the default</td>
+      <td
+      style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event.force-clean-mmap-index</td>
+      <td style="text-align:left">Option to forcefully close unused memory mapped files instead of leaving the garbage collector do this, by default, AxonServer will determine this based on operating system and java version, in rare cases it may be useful to override the default</td>
+      <td
+      style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event.aggregate.prefetch</td>
+      <td style="text-align:left">Ensures that backpressure signals from clients are split into batches. The initial request amount is {prefetch}*5, and subsequent (or replenishing) request amount is {prefetch}</td>
+      <td
+      style="text-align:left">5</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event.aggregate.retry.attempts</td>
+      <td style="text-align:left">Number of retries for reading event aggregate stream.</td>
+      <td
+      style="text-align:left">3</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event.aggregate.retry.delay</td>
+      <td style="text-align:left">Delay (ms) between retries for reading event aggregate stream.</td>
+      <td
+      style="text-align:left">100</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event.leader.retry.attempts</td>
+      <td style="text-align:left">Number of retries for finding an event store.</td>
+      <td
+      style="text-align:left">3</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event.leader.retry.delay</td>
+      <td style="text-align:left">Delay (ms) between retries for finding an event store.</td>
+      <td
+      style="text-align:left">100</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">event-processor-permits-check</td>
+      <td style="text-align:left">Delay (ms) between checking if tracking event processors are waiting for new permits for a long time.</td>
+      <td
+      style="text-align:left">2000</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">check-sequence-nr-for-snapshots</td>
+      <td style="text-align:left">Whether to check for invalid sequence numbers on appending a snapshot.</td>
+      <td
+      style="text-align:left">true</td>
     </tr>
     <tr>
       <td style="text-align:left"><em><b>Logging</b></em>
@@ -661,6 +748,18 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">500</td>
     </tr>
     <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">force-connection-to-primary-or-messaging-node</td>
+      <td style="text-align:left">Whether to force applications to connect to Primary nodes or Messaging Only nodes. When false, all nodes for a context are eligible to accept client connections.</td>
+      <td style="text-align:left">false</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">instruction.result.timeout</td>
+      <td style="text-align:left">Timeout in seconds for instruction results received via client server communication</td>
+      <td style="text-align:left">10</td>
+    </tr>
+    <tr>
       <td style="text-align:left"><em><b>Messaging (Between nodes of an Axon Server Cluster)</b></em>
       </td>
       <td style="text-align:left"></td>
@@ -873,6 +972,34 @@ A list of all the configuration properties by area is denoted below. Unless expl
       style="text-align:left">-1</td>
     </tr>
     <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">replication.use-mmap-index</td>
+      <td style="text-align:left">By default, AxonServer will determine whether to use memory mapped indexes for replication logs based on operating system and java version, in rare cases it may be useful to override the default</td>
+      <td
+      style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">replication.force-clean-mmap-index</td>
+      <td style="text-align:left">Option to forcefully close unused memory mapped files instead of leaving the garbage collector do this, by default, AxonServer will determine this based on operating system and java version, in rare cases it may be useful to override the default</td>
+      <td
+      style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">context-validation.rate</td>
+      <td style="text-align:left">Rate of checks to verify that for each context, the corresponding replication group is ready for handling client requests.</td>
+      <td
+      style="text-align:left">5000</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">context-validation.initial-delay</td>
+      <td style="text-align:left">Initial delay of checks to verify that for each context, the corresponding replication group is ready for handling client requests.</td>
+      <td
+      style="text-align:left">5000</td>
+    </tr>
+    <tr>
       <td style="text-align:left"><em><b>Keep Alive</b></em>
       </td>
       <td style="text-align:left"></td>
@@ -927,6 +1054,18 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">If this is set Axon Server will respond to heartbeats from clients and
         send heartbeat</td>
       <td style="text-align:left">false</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">client-heartbeat-frequency</td>
+      <td style="text-align:left">Frequency (ms) for sending heartbeats</td>
+      <td style="text-align:left">500</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">client-heartbeat-initial-delay</td>
+      <td style="text-align:left">Initial delay (ms) for sending heartbeats</td>
+      <td style="text-align:left">5000</td>
     </tr>
     <tr>
       <td style="text-align:left"><em><b>Maintenance Tasks</b></em>
@@ -988,10 +1127,30 @@ A list of all the configuration properties by area is denoted below. Unless expl
     </tr>
     <tr>
       <td style="text-align:left"></td>
+      <td style="text-align:left">cluster.balancing-rate</td>
+      <td style="text-align:left">Rate at which rebalancing is attempted.</td>
+      <td style="text-align:left">15000</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
       <td style="text-align:left">cache-close-rate</td>
       <td style="text-align:left">Interval (in ms.) at which to check for timed out queries and commands.</td>
       <td
       style="text-align:left">5000</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">processor-info-timeout</td>
+      <td style="text-align:left">Time in ms after which collected event processor info expires.</td>
+      <td
+      style="text-align:left">30000</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">enterprise.context-configuration-sync-rate</td>
+      <td style="text-align:left">Rate of updating the status of pending configuration changes in raft group members</td>
+      <td
+      style="text-align:left">3600000</td>
     </tr>
     <tr>
       <td style="text-align:left"><em><b>Performance</b></em>
@@ -1037,6 +1196,20 @@ A list of all the configuration properties by area is denoted below. Unless expl
       <td style="text-align:left">Size of the buffer when reading from non-memory mapped files. (SE only)</td>
       <td
       style="text-align:left">32KB</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">snapshot.use-mmap-index</td>
+      <td style="text-align:left">By default, AxonServer will determine whether to use memory mapped indexes for snapshot files in the event store based on operating system and java version, in rare cases it may be useful to override the default</td>
+      <td
+      style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">snapshot.force-clean-mmap-index</td>
+      <td style="text-align:left">Option to forcefully close unused memory mapped files instead of leaving the garbage collector do this, by default, AxonServer will determine this based on operating system and java version, in rare cases it may be useful to override the default</td>
+      <td
+      style="text-align:left"></td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
@@ -1159,6 +1332,44 @@ By default, it will favor instances that give a faster response. Set to "round-r
 minimum number of queries to be set to each instance of an application, before the router will distribute based on the metrics.</td>
       <td
       style="text-align:left">20</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">command-queue-capacity-per-client</td>
+      <td style="text-align:left">Number of command requests for a specific command handling client that Axon Server will cache waiting for permits.</td>
+      <td
+      style="text-align:left">10000</td>
+    </tr>
+      <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">query-queue-capacity-per-client</td>
+      <td style="text-align:left">Number of query requests for a specific query handling client that Axon Server will cache waiting for permits.</td>
+      <td
+      style="text-align:left">10000</td>
+    </tr>
+    </tr>
+      <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">data-fetcher-threads</td>
+      <td style="text-align:left">Number of threads that are allocated for doing longer running operations on the event store</td>
+      <td
+      style="text-align:left">24</td>
+    </tr>
+    </tr>
+      <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">data-writer-threads</td>
+      <td style="text-align:left">Number of threads that are allocated for writing events to storage.</td>
+      <td
+      style="text-align:left">8</td>
+    </tr>
+    </tr>
+      <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">query-threads</td>
+      <td style="text-align:left">Number of threads that are allocated for processing of external queries. Not to be confused with cluster.query-threads.</td>
+      <td
+      style="text-align:left">1</td>
     </tr>
     <tr>
       <td style="text-align:left"><em><b>Recovery</b></em>
