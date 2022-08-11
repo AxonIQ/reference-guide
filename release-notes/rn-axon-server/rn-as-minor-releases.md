@@ -10,6 +10,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.20
+
+* Fix: reading aggregate events hangs on JVM Error
+
 ### Release 4.5.19
 
 * Security update: updated control database settings
