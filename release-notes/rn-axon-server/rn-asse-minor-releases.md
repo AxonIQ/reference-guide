@@ -4,6 +4,13 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.6
 
+### Release 4.6.2
+
+* Fix: reading aggregate events hangs on JVM Error
+* Fix: canceling an event store query through the gRPC interface does not close the stream
+* Fix: event processor operations unavailable in the dashboard for applications using Axon Framework version before 4.5
+* Fix: when sending two commands or queries with the same message identifier at the same time, one does not get completed
+
 ### Release 4.6.1
 
 * Security update: updated control database settings
