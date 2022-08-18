@@ -1336,9 +1336,11 @@ class StreamingProcessorController {
 ### Replay API
 
 Initiating a replay through the `StreamingEventProcessor` opens up an API to tap into the process of replaying.
-It is, for example, possible to define a `@ResetHandler`.
+It is, for example, possible to define a `@ResetHandler`, which provides a hook to prepare an Event Handling Component before the replay begins.
 A processor will invoke `ResetHandler` annotated methods as a result of `StreamingEventProcessor#resetTokens`.
-It provides a hook to prepare an Event Handling Component before the replay begins.
+
+During a reset through the `StreamingEventProcessor#resetTokens` API, you can supply a `resetContext` parameter. This context is supplied to `@ResetHandler` annotated methods and saved in the `ReplayToken`. 
+This context can, for the duration of the replay, be accessed using the `ReplayToken.replayContext` methods or can be injected into event handlers using the `@ReplayContext` annotation. 
 
 The following sample Event Handling Component shows the available replay API:
 
@@ -1371,6 +1373,12 @@ public class CardSummaryProjection {
         // clean slate. The given resetContext is [optional], allowing the 
         // user to specify in what context a reset was executed.
     }
+    
+    @EventHandler
+    public void on(CardCancelledEvent event, @ReplayContext CardReplayContext context /* 5. */) {
+        // During replays, this method will get the CardReplayContext injected that was providing during the reset call.
+        // If there is no replay, no context was supplied or the context type does not match, the parameter is null. 
+    }
     //...
 }
 ```
@@ -1392,6 +1400,12 @@ The `CardSummaryProjection` shows a couple of interesting things to take note of
    It allows adding a "reset context" to provide more information on why the reset is taking place.
    To include a `resetContext` the `resetTokens(R resetContext)` method (or other methods containing the `resetContext` parameter) should be invoked.
    The type of the `resetContext` is up to the user.
+
+5. If it is necessary to use information that was available at time of calling `resetTokens(R resetContext)` in your event handlers during a replay, 
+   you can use the `@ReplayContext` annotation to get access to this information. This information is stored in the `ReplayToken` and will be available until the end of the replay.
+   The type of the `resetContext` is up to the user and is the same context as is used for the `@ResetHandler` (see 4.). 
+   The type of the `resetContext` has to match the parameter's, or it will be null.
+
 
 ## Multiple Event Sources
 
