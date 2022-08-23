@@ -16,20 +16,28 @@ Axon 'Main Modules' are the modules that have been thoroughly tested and are rob
 >
 > The [Axon Spring Boot Starter](modules.md#axon-spring-boot-starter) module is the quickest start in to an Axon project as it will retrieve all the required modules/dependencies transitively. Alternatively, you can manually select individual modules for a customized configuration.
 
-| Module | Artifact Id | Group Id | Maven Central |
-| :--- | :--- | :--- | :---: |
-| [Axon Messaging](modules.md#axon-messaging) | axon-messaging | org.axonframework | [available](https://search.maven.org/search?q=a:axon-messaging) |
-| [Axon Modeling](modules.md#axon-modeling) | axon-modelling | org.axonframework | [available](https://search.maven.org/search?q=a:axon-modelling) |
-| [Axon Event Sourcing](modules.md#axon-event-sourcing) | axon-eventsourcing | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing) |
-| [Axon Configuration](modules.md#axon-configuration) | axon-configuration | org.axonframework | [available](https://search.maven.org/search?q=a:axon-configuration) |
-| [Axon Test](modules.md#axon-test) | axon-test | org.axonframework | [available](https://search.maven.org/search?q=a:axon-test) |
-| [Axon Server Connector](modules.md#axon-server-connector) | axon-server-connector | org.axonframework | [available](https://search.maven.org/search?q=a:axon-server-connector) |
-| [Axon Spring](modules.md#axon-spring) | axon-spring | org.axonframework | [available](https://search.maven.org/search?q=a:axon-spring) |
-| [Axon Spring Boot Starter](modules.md#axon-spring-boot-starter) | axon-spring-boot-starter | org.axonframework | [available](https://search.maven.org/search?q=a:axon-spring-boot-starter) |
-| [Axon Disruptor](modules.md#axon-disruptor) | axon-disruptor | org.axonframework | [available](https://search.maven.org/search?q=a:axon-disruptor) |
-| [Axon Metrics](modules.md#axon-metrics) | axon-metrics | org.axonframework | [available](https://search.maven.org/search?q=a:axon-metrics) |
-| [Axon Micrometer](modules.md#axon-micrometer) | axon-micrometer | org.axonframework | [available](https://search.maven.org/search?q=a:axon-micrometer) |
-| [Axon Legacy](modules.md#axon-legacy) | axon-legacy | org.axonframework | [available](https://search.maven.org/search?q=a:axon-legacy) |
+> **Jakarta modules**
+> 
+> Some of the modules contain javax extensions. For those modules we offer jakarta modules, where those extensions are replaced with jakarta ones.
+
+| Module                                                          | Artifact Id                | Group Id          |                                Maven Central                                |
+|:----------------------------------------------------------------|:---------------------------|:------------------|:---------------------------------------------------------------------------:|
+| [Axon Messaging](modules.md#axon-messaging)                     | axon-messaging             | org.axonframework |       [available](https://search.maven.org/search?q=a:axon-messaging)       |
+| [Axon Messaging (Jakarta)](modules.md#axon-messaging)           | axon-messaging-jakarta     | org.axonframework |   [available](https://search.maven.org/search?q=a:axon-messaging-jakarta)   |
+| [Axon Modeling](modules.md#axon-modeling)                       | axon-modelling             | org.axonframework |       [available](https://search.maven.org/search?q=a:axon-modelling)       |
+| [Axon Modeling (Jakarta)](modules.md#axon-modeling)             | axon-modelling-jakarta     | org.axonframework |   [available](https://search.maven.org/search?q=a:axon-modelling-jakarta)   |
+| [Axon Event Sourcing](modules.md#axon-event-sourcing)           | axon-eventsourcing         | org.axonframework |     [available](https://search.maven.org/search?q=a:axon-eventsourcing)     |
+| [Axon Event Sourcing (Jakarta)](modules.md#axon-event-sourcing) | axon-eventsourcing-jakarta | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing-jakarta) |
+| [Axon Configuration](modules.md#axon-configuration)             | axon-configuration         | org.axonframework |     [available](https://search.maven.org/search?q=a:axon-configuration)     |
+| [Axon Configuration (Jakarta)](modules.md#axon-configuration)   | axon-configuration-jakarta | org.axonframework | [available](https://search.maven.org/search?q=a:axon-configuration-jakarta) |
+| [Axon Test](modules.md#axon-test)                               | axon-test                  | org.axonframework |         [available](https://search.maven.org/search?q=a:axon-test)          |
+| [Axon Server Connector](modules.md#axon-server-connector)       | axon-server-connector      | org.axonframework |   [available](https://search.maven.org/search?q=a:axon-server-connector)    |
+| [Axon Spring](modules.md#axon-spring)                           | axon-spring                | org.axonframework |        [available](https://search.maven.org/search?q=a:axon-spring)         |
+| [Axon Spring Boot Starter](modules.md#axon-spring-boot-starter) | axon-spring-boot-starter   | org.axonframework |  [available](https://search.maven.org/search?q=a:axon-spring-boot-starter)  |
+| [Axon Disruptor](modules.md#axon-disruptor)                     | axon-disruptor             | org.axonframework |       [available](https://search.maven.org/search?q=a:axon-disruptor)       |
+| [Axon Metrics](modules.md#axon-metrics)                         | axon-metrics               | org.axonframework |        [available](https://search.maven.org/search?q=a:axon-metrics)        |
+| [Axon Micrometer](modules.md#axon-micrometer)                   | axon-micrometer            | org.axonframework |      [available](https://search.maven.org/search?q=a:axon-micrometer)       |
+| [Axon Legacy](modules.md#axon-legacy)                           | axon-legacy                | org.axonframework |        [available](https://search.maven.org/search?q=a:axon-legacy)         |
 
 ### Axon Messaging
 
