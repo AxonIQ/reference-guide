@@ -16,9 +16,11 @@ Axon 'Main Modules' are the modules that have been thoroughly tested and are rob
 >
 > The [Axon Spring Boot Starter](modules.md#axon-spring-boot-starter) module is the quickest start in to an Axon project as it will retrieve all the required modules/dependencies transitively. Alternatively, you can manually select individual modules for a customized configuration.
 
-> **Jakarta modules**
-> 
-> Some of the modules contain javax extensions. For those modules we offer jakarta modules, where those extensions are replaced with jakarta ones.
+> **Addressing the `javax` to `jakarta` package name change**
+>
+> During the migration of Java EE to the Eclipse Foundation, ["Eclipse and Oracle have agreed that the `javax` package namespace cannot be evolved by the Jakarta EE community"](https://eclipse-foundation.blog/2019/05/03/jakarta-ee-java-trademarks/). With the release of the Jakarta EE 9 Platform, the `javax` package names were officially and finally renamed as `jakarta`. The change impacts a few APIs that Axon Framework uses, like `inject-api`, `persistence-api`, `validation-api`. Furthermore, it impacts third-party technologies often used with Axon, such as Spring and Hibernate.
+>
+>To give developers a choice, Axon Framework's core modules affected by the change now come in two variations. The ones with `-jakarta` suffix use the new `jakarta` packages. Those without the suffix depend on the old `javax` packages.
 
 | Module                                                          | Artifact Id                | Group Id          |                                Maven Central                                |
 |:----------------------------------------------------------------|:---------------------------|:------------------|:---------------------------------------------------------------------------:|
@@ -166,7 +168,7 @@ This module provides Spring auto-configuration on top of the `axon-tracing` modu
 
 ## Axon Bill of Materials
 
-In addition to the main framework modules and the extensions, Axon also has a [Bill of Materials](https://en.wikipedia.org/wiki/Software_bill_of_materials), or BOM. 
+In addition to the main framework modules and the extensions, Axon also has a [Bill of Materials](https://en.wikipedia.org/wiki/Software_bill_of_materials), or BOM.
 The BOM is provided to ensure the use of compatible framework and extension dependencies inside an Axon application.
 As such, it is the recommended approach towards defining the overall Axon version used inside of an application.
 
@@ -202,7 +204,7 @@ For using the BOM, you would add the `axon-bom` dependency to your dependency ma
 
 {% tab title="Gradle" %}
 
-For usage with **Gradle Version 4.x** and below, apply the dependency-management-plugin like so:    
+For usage with **Gradle Version 4.x** and below, apply the dependency-management-plugin like so:
 ```groovy
 buildscript {
   repositories {
