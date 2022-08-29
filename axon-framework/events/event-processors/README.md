@@ -255,6 +255,79 @@ public interface ErrorHandler {
 
 Based on the provided `ErrorContext` object, you can decide to ignore the error, schedule retries, perform dead-letter-queue delivery, or rethrow the exception.
 
+### Dead-letter Queue
+
+When event processor transactions end up in an exception, following events are not handled by that event processor even thought they could be successfully handled. The event processor is stuck until the issue is fixed. 
+To skip and save the events that are failing, you can configure a dead-letter queue for an event processor.
+When using the `JpaSequencedDeadLetterQueue` the dead-lettered events are stored in the `dead_letter_entry` database table.
+
+A`JpaSequencedDeadLetterQueue` configuration example:
+```java
+@Configuration
+public class DeadLetterQueueExampleConfig {
+
+  public static final String PROCESSING_GROUP = "deadLetterProcessor";
+
+  @Bean
+  public ConfigurerModule configure() {
+    return configurer ->
+            configurer.eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
+                    PROCESSING_GROUP,
+                    configuration -> JpaSequencedDeadLetterQueue.builder()
+                                                                .processingGroup(
+                                                                        PROCESSING_GROUP)
+                                                                .transactionManager(configuration.getComponent(
+                                                                        TransactionManager.class))
+                                                                .entityManagerProvider(
+                                                                        configuration.getComponent(
+                                                                                EntityManagerProvider.class))
+                                                                .serializer(
+                                                                        configuration.serializer())
+                                                                .build()));
+  }
+}
+```
+After fixing the issue the events can be handled again by using the `process` function, in this case all events of type ErrorEvent:
+
+```java
+public class DeadletterProcessor{
+  
+    public void repairErrorEvents() {
+    eventProcessingConfiguration.sequencedDeadLetterProcessor(PROCESSING_GROUP)
+                                .ifPresent(p -> p.process(deadLetter -> deadLetter.message().getPayload() instanceof ErrorEvent));
+  }
+}
+```
+
+You can implement a custom dead-letter policy to exclude some events from the dead-letter  queue, these events will be skipped:
+
+```java
+@Configuration
+public class CustomDeadLetterPolicy{
+  @Autowired
+  public void configure(EventProcessingConfigurer configurer) {
+    configurer.registerDeadLetterPolicy(PROCESSING_GROUP, configuration ->
+            (letter, cause) -> {
+              if (cause instanceof NullPointerException) {
+                // It's pointless..
+                return Decisions.doNotEnqueue();
+              }
+              final int retries = (int) letter.diagnostics().getOrDefault("retries", -1);
+              if (letter.message().getPayload() instanceof ErrorEvent) {
+                // Important, always retry
+                return Decisions.enqueue(cause);
+              }
+              if(retries < 10) {
+                // Let's continue and increase retries!
+                return Decisions.enqueue(cause, deadLetter -> deadLetter.diagnostics().and("retries", retries + 1));
+              }
+              // Exhausted retries
+              return Decisions.doNotEnqueue();
+            });
+  }
+}
+
+```
 ## General processor configuration
 
 Alongside [handler assignment](#assigning-handlers-to-processors) and [error handling](#error-handling), Event Processors allow configuration for other components too.
@@ -342,3 +415,4 @@ Secondly, you can adjust the desired `RollbackConfiguration` per Event Processor
 It is the `RollbackConfiguration` that decide when a [Unit of Work](../../messaging-concepts/unit-of-work.md) should rollback the transaction.
 The default `RollbackConfiguration` is to rollback on any type of `Throwable`; the [Unit of Work](../../messaging-concepts/unit-of-work.md) page describes the other options you can choose.
 To adjust the default behaviour, the `registerRollbackConfiguration(String, Function<Configuration, RollbackConfiguration>)` function should be invoked on the `EventProcessingConfigurer`.
+
