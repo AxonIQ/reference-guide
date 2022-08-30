@@ -329,7 +329,7 @@ public class CustomDeadLetterPolicy{
 
 ```
 
-One important note, when implementing event handlers it is important to make them idempotent and with the dead-letter queue this becomes a hard requirement. The principle of exactly once delivery is not guaranteed and at-least-once is the reality to cope with.  
+One important note, when implementing event handlers, make them idempotent and with the dead-letter queue this becomes a hard requirement. The principle of exactly once delivery is not guaranteed and at-least-once is the reality to cope with.  
 
 ## General processor configuration
 
