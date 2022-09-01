@@ -111,7 +111,9 @@ During the configuration phase \(i.e. before the first "given" is provided\), yo
 
 * `registerAnnotatedCommandHandler`:
 
-  Registers a Annotated Command Handler object.
+  Registers a Annotated Command Handler object. 
+  Use this method to register components containing `@CommandHandler` annotated methods that invoke the `Repository` to execute operation on an aggregate.
+  You may end up in such a scenario when you prefer that command handlers and/or command messages are not contained inside the domain model (i.e. the aggregate).
 
 * `registerCommandHandler`:
 
