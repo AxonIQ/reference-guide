@@ -317,13 +317,42 @@ When event processor transactions end up in an exception, following events are n
 though they could be successfully handled. The event processor is stuck until the issue is fixed.
 To skip and save the events that are failing, you can configure a dead-letter queue for an event processor. A
 dead-letter queue can not be shared between event processors so there should one queue per processor.
-The `InMemorySequencedDeadLetterQueue` can be used for testing purposes but the dead=letters are gone after a restart.
+The `InMemorySequencedDeadLetterQueue` can be used for testing purposes but the dead-letters are gone after a restart.
 To persist dead-letters the `JpaSequencedDeadLetterQueue` should be used.
 When using the `JpaSequencedDeadLetterQueue` the dead-lettered events are stored in the `dead_letter_entry` database
 table.
 
 A`JpaSequencedDeadLetterQueue` configuration example:
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class DeadLetterQueueExampleConfig {
 
+    public static final String PROCESSING_GROUP = "deadLetterProcessor";
+    
+    public ConfigurerModule configure() {
+        return configurer ->
+                configurer.eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
+                        PROCESSING_GROUP,
+                        configuration -> JpaSequencedDeadLetterQueue.builder()
+                                                                    .processingGroup(
+                                                                            PROCESSING_GROUP)
+                                                                    .transactionManager(configuration.getComponent(
+                                                                            TransactionManager.class))
+                                                                    .entityManagerProvider(
+                                                                            configuration.getComponent(
+                                                                                    EntityManagerProvider.class))
+                                                                    .serializer(
+                                                                            configuration.serializer())
+                                                                    .maxSequences(256)
+                                                                    .maxSequenceSize(256)
+                                                                    .build()));
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Spring Boot AutoConfiguration" %}
 ```java
 @Configuration
 public class DeadLetterQueueExampleConfig {
@@ -351,7 +380,9 @@ public class DeadLetterQueueExampleConfig {
     }
 }
 ```
+{% endtab %}
 
+{% endtabs %}
 You can set the maximum amount of sequences that are saved (defaults to 128) and the maximum amount of dead-letters in a
 sequence (also defaults to 128). If these thresholds are exceeded an exception will be thrown and the event processor
 will stop processing.
@@ -439,8 +470,6 @@ public class DeadletterProcessor {
 {% endtab %}
 {% endtabs %}
 
-Also add process any()
-
 You can implement a custom dead-letter policy to exclude some events from the dead-letter queue, these events will be
 skipped. This policy is not only called for initial failures but also when dead-lettered events are processed
 unsuccessfully again.
@@ -475,8 +504,7 @@ public class CustomDeadLetterPolicy {
 
 ```
 
-One important note, when implementing event handlers, make them idempotent. With the dead-letter queue this is a hard
-requirement.
+One important note, when implementing event handlers, make them idempotent. With the dead-letter queue this is a hard requirement.
 Event processors using the dead-letter queue will not roll back the transaction on an error. That means that if you do
 multiple actions in the same handler and a subsequent action fails, any earlier action is not rolled back by the
 transaction. That is why idempotency is important.
