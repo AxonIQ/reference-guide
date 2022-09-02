@@ -21,6 +21,17 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.5
 
+### Release 4.5.21
+
+* Fix for bloom filter index: reading aggregate events searches for older events when the last event sequence number
+  is the same as the snapshot sequence number
+* New property for bloom filter index, axoniq.axonserver.event.segments-for-sequence-number-check, defines the number of segments
+  that Axon Server will check for events on an aggregate when an event with sequence number 0
+  is stored. The default value for this property is 10.
+  For performance reasons, if you increase this property to a value higher than 100 it is recommended
+  to also increase the axoniq.axonserver.event.max-bloom-filters-in-memory property.
+
+
 ### Release 4.5.20
 
 * Fix: reading aggregate events hangs on JVM Error
