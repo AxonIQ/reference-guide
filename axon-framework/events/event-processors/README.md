@@ -315,8 +315,11 @@ dead-letter-queue delivery, or rethrow the exception.
 
 When event processor transactions end up in an exception, following events are not handled by that event processor even
 though they could be successfully handled. The event processor is stuck until the issue is fixed.
-To skip and save the events that are failing, you can configure a dead-letter queue for an event processor. A
-dead-letter queue can not be shared between event processors so there should one queue per processor.
+To skip and save the events that are failing, you can configure a dead-letter queue for an event processor. 
+
+Note that a dead-letter queue *can not* be shared between event processors.
+Hence, every processor you want to enable this for should receive a unique dead-letter queue instance.
+
 The `InMemorySequencedDeadLetterQueue` can be used for testing purposes but the dead-letters are gone after a restart.
 To persist dead-letters the `JpaSequencedDeadLetterQueue` should be used.
 When using the `JpaSequencedDeadLetterQueue` the dead-lettered events are stored in the `dead_letter_entry` database
