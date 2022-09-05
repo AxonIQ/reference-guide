@@ -488,9 +488,9 @@ A dead-letter contains the following attributes:
 | enqueuedAt      | Instant    | The moment in time when the message was entered in a dead-letter queue                                                               |
 | lastTouched     | Instant    | The moment in time when this letter was last touched. Will equal the enqueuedAt value if this letter is enqueued for the first time. |
 | diagnostics     | MetaData   | The diagnostic MetaData concerning this letter                                                                                       |
-| markTouched     | Deadletter | Construct a copy of this DeadLetter, replacing the lastTouched with the current time                                                 |
-| withCause       | Deadletter | Construct a copy of this DeadLetter, replacing the cause with the given requeueCause                                                 |
-| withDiagnostics | Deadletter | Construct a copy of this DeadLetter, replacing the diagnostics with the given diagnostics                                            |
+| markTouched     | DeadLetter | Construct a copy of this DeadLetter, replacing the lastTouched with the current time                                                 |
+| withCause       | DeadLetter | Construct a copy of this DeadLetter, replacing the cause with the given requeueCause                                                 |
+| withDiagnostics | DeadLetter | Construct a copy of this DeadLetter, replacing the diagnostics with the given diagnostics                                            |
 
 #### Dead-Letter Enqueue Policy
 
