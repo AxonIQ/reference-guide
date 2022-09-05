@@ -376,8 +376,8 @@ public class DeadLetterQueueExampleConfig {
 {% endtab %}
 
 {% endtabs %}
-You can set the maximum amount of sequences that are saved (defaults to 128) and the maximum amount of dead-letters in a
-sequence (also defaults to 128). If these thresholds are exceeded an exception will be thrown and the event processor
+You can set the maximum amount of sequences that are saved (defaults to 1024) and the maximum amount of dead-letters in a
+sequence (also defaults to 1024). If these thresholds are exceeded a `DeadLetterQueueOverflowException` will be thrown and the event processor
 will stop processing.
 The sequence id is determined by the sequencing policy. By default, the sequence identifier is the aggregate id.
 
