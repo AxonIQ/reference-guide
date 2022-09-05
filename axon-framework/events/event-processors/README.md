@@ -462,7 +462,7 @@ public class DeadletterProcessor {
 
 {% endtab %}
 {% endtabs %}
-
+#### Dead-Letter Enqueue Policy
 You can implement a custom dead-letter policy to exclude some events from the dead-letter queue, these events will be
 skipped. This policy is not only called for initial failures but also when dead-lettered events are processed
 unsuccessfully again.
