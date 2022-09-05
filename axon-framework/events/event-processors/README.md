@@ -380,7 +380,7 @@ You can set the maximum amount of sequences that are saved (defaults to 1024) an
 sequence (also defaults to 1024). If these thresholds are exceeded a `DeadLetterQueueOverflowException` will be thrown and the event processor
 will stop processing.
 The sequence id is determined by the sequencing policy. By default, the sequence identifier is the aggregate id.
-
+#### Processing Dead-Letter Sequences
 After fixing the issue the events can be handled again by using the `process` function, in this case it will process the
 first matching event of type ErrorEvent:
 
