@@ -315,7 +315,7 @@ dead-letter-queue delivery, or rethrow the exception.
 
 When event processor transactions end up in an exception, following events are not handled by that event processor even
 though they could be successfully handled. The event processor is stuck until the issue is fixed.
-To skip and save the events that are failing, you can configure a dead-letter queue for an event processor. 
+To skip and save the events that are failing, you can configure a dead-letter queue for an event processor.
 
 Note that a dead-letter queue *can not* be shared between event processors.
 Hence, every processor you want to enable this for should receive a unique dead-letter queue instance.
@@ -324,23 +324,28 @@ The `InMemorySequencedDeadLetterQueue` can be used for testing purposes but the 
 To persist dead-letters the `JpaSequencedDeadLetterQueue` should be used.
 When using the `JpaSequencedDeadLetterQueue` the dead-lettered events are stored in the `dead_letter_entry` database
 table.
+
 #### Configuring a sequenced Dead-Letter Queue
+
 A`JpaSequencedDeadLetterQueue` configuration example:
 {% tabs %}
 {% tab title="Axon Configuration API" %}
+
 ```java
 public class DeadLetterQueueExampleConfig {
 
     public static final String PROCESSING_GROUP = "deadLetterProcessor";
-    
+
     public ConfigurerModule configure() {
         return configurer ->
                 configurer.eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
                         PROCESSING_GROUP,
                         configuration -> JpaSequencedDeadLetterQueue.builder()
                                                                     .processingGroup(PROCESSING_GROUP)
-                                                                    .transactionManager(configuration.getComponent(TransactionManager.class))
-                                                                    .entityManagerProvider(configuration.getComponent(EntityManagerProvider.class))
+                                                                    .transactionManager(configuration.getComponent(
+                                                                            TransactionManager.class))
+                                                                    .entityManagerProvider(configuration.getComponent(
+                                                                            EntityManagerProvider.class))
                                                                     .serializer(configuration.serializer())
                                                                     .maxSequences(256)
                                                                     .maxSequenceSize(256)
@@ -348,9 +353,11 @@ public class DeadLetterQueueExampleConfig {
     }
 }
 ```
+
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
+
 ```java
 @Configuration
 public class DeadLetterQueueExampleConfig {
@@ -364,8 +371,10 @@ public class DeadLetterQueueExampleConfig {
                         PROCESSING_GROUP,
                         configuration -> JpaSequencedDeadLetterQueue.builder()
                                                                     .processingGroup(PROCESSING_GROUP)
-                                                                    .transactionManager(configuration.getComponent(TransactionManager.class))
-                                                                    .entityManagerProvider(configuration.getComponent(EntityManagerProvider.class))
+                                                                    .transactionManager(configuration.getComponent(
+                                                                            TransactionManager.class))
+                                                                    .entityManagerProvider(configuration.getComponent(
+                                                                            EntityManagerProvider.class))
                                                                     .serializer(configuration.serializer())
                                                                     .maxSequences(256)
                                                                     .maxSequenceSize(256)
@@ -373,14 +382,19 @@ public class DeadLetterQueueExampleConfig {
     }
 }
 ```
+
 {% endtab %}
 
 {% endtabs %}
-You can set the maximum amount of sequences that are saved (defaults to 1024) and the maximum amount of dead-letters in a
-sequence (also defaults to 1024). If these thresholds are exceeded a `DeadLetterQueueOverflowException` will be thrown and the event processor
+You can set the maximum amount of sequences that are saved (defaults to 1024) and the maximum amount of dead-letters in
+a
+sequence (also defaults to 1024). If these thresholds are exceeded a `DeadLetterQueueOverflowException` will be thrown
+and the event processor
 will stop processing.
 The sequence id is determined by the sequencing policy. By default, the sequence identifier is the aggregate id.
+
 #### Processing Dead-Letter Sequences
+
 After fixing the issue the events can be handled again by using the `process` function, in this case it will process the
 first matching event of type ErrorEvent:
 
@@ -462,7 +476,24 @@ public class DeadletterProcessor {
 
 {% endtab %}
 {% endtabs %}
+
+#### Deadletter attributes
+
+A dead-letter contains the following attributes:
+
+| attribute       | type       | description                                                                                                                          |
+|-----------------|------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| message         | M          | The complete failed message                                                                                                          |
+| cause           | String     | The cause for the message to be dead-lettered                                                                                        |
+| enqueuedAt      | Instant    | The moment in time when the message was entered in a dead-letter queue                                                               |
+| lastTouched     | Instant    | The moment in time when this letter was last touched. Will equal the enqueuedAt value if this letter is enqueued for the first time. |
+| diagnostics     | MetaData   | The diagnostic MetaData concerning this letter                                                                                       |
+| markTouched     | Deadletter | Construct a copy of this DeadLetter, replacing the lastTouched with the current time                                                 |
+| withCause       | Deadletter | Construct a copy of this DeadLetter, replacing the cause with the given requeueCause                                                 |
+| withDiagnostics | Deadletter | Construct a copy of this DeadLetter, replacing the diagnostics with the given diagnostics                                            |
+
 #### Dead-Letter Enqueue Policy
+
 You can implement a custom dead-letter policy to exclude some events from the dead-letter queue, these events will be
 skipped. This policy is not only called for initial failures but also when dead-lettered events are processed
 unsuccessfully again.
@@ -497,7 +528,8 @@ public class CustomDeadLetterPolicy {
 
 ```
 
-One important note, when implementing event handlers, make them idempotent. With the dead-letter queue this is a hard requirement.
+One important note, when implementing event handlers, make them idempotent. With the dead-letter queue this is a hard
+requirement.
 Event processors using the dead-letter queue will not roll back the transaction on an error. That means that if you do
 multiple actions in the same handler and a subsequent action fails, any earlier action is not rolled back by the
 transaction. That is why idempotency is important.
