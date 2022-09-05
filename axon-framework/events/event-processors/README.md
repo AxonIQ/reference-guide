@@ -363,15 +363,10 @@ public class DeadLetterQueueExampleConfig {
                 configurer.eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
                         PROCESSING_GROUP,
                         configuration -> JpaSequencedDeadLetterQueue.builder()
-                                                                    .processingGroup(
-                                                                            PROCESSING_GROUP)
-                                                                    .transactionManager(configuration.getComponent(
-                                                                            TransactionManager.class))
-                                                                    .entityManagerProvider(
-                                                                            configuration.getComponent(
-                                                                                    EntityManagerProvider.class))
-                                                                    .serializer(
-                                                                            configuration.serializer())
+                                                                    .processingGroup(PROCESSING_GROUP)
+                                                                    .transactionManager(configuration.getComponent(TransactionManager.class))
+                                                                    .entityManagerProvider(configuration.getComponent(EntityManagerProvider.class))
+                                                                    .serializer(configuration.serializer())
                                                                     .maxSequences(256)
                                                                     .maxSequenceSize(256)
                                                                     .build()));
