@@ -324,7 +324,7 @@ The `InMemorySequencedDeadLetterQueue` can be used for testing purposes but the 
 To persist dead-letters the `JpaSequencedDeadLetterQueue` should be used.
 When using the `JpaSequencedDeadLetterQueue` the dead-lettered events are stored in the `dead_letter_entry` database
 table.
-
+#### Configuring a sequenced Dead-Letter Queue
 A`JpaSequencedDeadLetterQueue` configuration example:
 {% tabs %}
 {% tab title="Axon Configuration API" %}
