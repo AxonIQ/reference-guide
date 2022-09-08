@@ -11,7 +11,14 @@ A **trace** is a collection of one of more **spans** that together form a comple
 Creating a span that is not part of a trace will automatically create one with that span being the root span of the
 trace.
 
-We can see a trace of an Axon command triggered by a REST-endpoint in the following image:
+Tools such as _ElasticSearch APM_ can render tracing information, as is seen on the following image:
+
+![Trace as shown in ElasticSearch APM when dispatching and handling a command.](/.gitbook/assets/tracing.png)
+
+What we observe here is that a command is dispatched, distributed by Axon Server and handled. As result of the command
+an `AccountRegisteredEvent` is published and a deadline is scheduled as well.
+In this image, the `AutomaticAccountCommandDispatcher.dispatch` span is the root trace, with each span being part of a
+call hierarchy within that trace.
 
 ## Span factories
 
