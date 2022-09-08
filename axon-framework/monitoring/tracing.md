@@ -320,10 +320,8 @@ Note that when not using Spring boot, tracing each message handler invocation is
 
 ## OpenTracing <a id="opentracing"></a>
 
-OpenTracing is deprecated. Axon Framework still provides support for this through the OpenTracing extension.
-For this, you can use [the OpenTracing extension to Axon Framework](../../extensions/tracing.md).
-The functionality of the extensions is rather limited compared to OpenTelemetry since it does not use the `SpanFactory`
-abstraction, but uses interceptors.
+OpenTracing is deprecated. If necessary, you can use [the OpenTracing extension to Axon Framework](../../extensions/tracing.md).
+The functionality of the extension is rather limited compared to the OpenTelemetry integration, so using that if possible is preferred.
 
 ## Logging <a id="logging"></a>
 
