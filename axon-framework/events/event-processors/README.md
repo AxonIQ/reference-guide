@@ -289,71 +289,61 @@ We currently provide the following dead-letter queue implementations:
 
 #### Configuring a sequenced Dead-Letter Queue
 
-A`JpaSequencedDeadLetterQueue` configuration example:
+A `JpaSequencedDeadLetterQueue` configuration example:
+
 {% tabs %}
 {% tab title="Axon Configuration API" %}
-
 ```java
 public class DeadLetterQueueExampleConfig {
-
-    public static final String PROCESSING_GROUP = "deadLetterProcessor";
-
-    public ConfigurerModule configure() {
-        return configurer ->
-                configurer.eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
-                        PROCESSING_GROUP,
-                        configuration -> JpaSequencedDeadLetterQueue.builder()
-                                                                    .processingGroup(PROCESSING_GROUP)
-                                                                    .transactionManager(configuration.getComponent(
-                                                                            TransactionManager.class))
-                                                                    .entityManagerProvider(configuration.getComponent(
-                                                                            EntityManagerProvider.class))
-                                                                    .serializer(configuration.serializer())
-                                                                    .maxSequences(256)
-                                                                    .maxSequenceSize(256)
-                                                                    .build()));
+    
+    public ConfigurerModule configureDeadLetterQueueFor(String processingGroup) {
+        return configurer -> configurer.eventProcessing(
+            eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
+                processingGroup,
+                configuration -> JpaSequencedDeadLetterQueue.builder()
+                                                            .processingGroup(processingGroup)
+                                                            .maxSequences(256)
+                                                            .maxSequenceSize(256)
+                                                            .entityManagerProvider(configuration.getComponent(EntityManagerProvider.class))
+                                                            .transactionManager(configuration.getComponent(TransactionManager.class))
+                                                            .serializer(configuration.serializer())
+                                                            .build()
+            )
+        );
     }
 }
 ```
-
 {% endtab %}
-
 {% tab title="Spring Boot AutoConfiguration" %}
-
 ```java
 @Configuration
 public class DeadLetterQueueExampleConfig {
-
-  public static final String PROCESSING_GROUP = "deadLetterProcessor";
-
-    @Autowired
-    public ConfigurerModule configure() {
-        return configurer ->
-                configurer.eventProcessing(eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
-                        PROCESSING_GROUP,
-                        configuration -> JpaSequencedDeadLetterQueue.builder()
-                                                                    .processingGroup(PROCESSING_GROUP)
-                                                                    .transactionManager(configuration.getComponent(
-                                                                            TransactionManager.class))
-                                                                    .entityManagerProvider(configuration.getComponent(
-                                                                            EntityManagerProvider.class))
-                                                                    .serializer(configuration.serializer())
-                                                                    .maxSequences(256)
-                                                                    .maxSequenceSize(256)
-                                                                    .build()));
+    
+    @Autowired 
+    public ConfigurerModule configureDeadLetterQueueFor(String processingGroup) {
+        return configurer -> configurer.eventProcessing(
+            eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
+                processingGroup,
+                configuration -> JpaSequencedDeadLetterQueue.builder()
+                                                            .processingGroup(processingGroup)
+                                                            .maxSequences(256)
+                                                            .maxSequenceSize(256)
+                                                            .entityManagerProvider(configuration.getComponent(EntityManagerProvider.class))
+                                                            .transactionManager(configuration.getComponent(TransactionManager.class))
+                                                            .serializer(configuration.serializer())
+                                                            .build()
+            )
+        );
     }
 }
 ```
-
 {% endtab %}
-
 {% endtabs %}
-You can set the maximum amount of sequences that are saved (defaults to 1024) and the maximum amount of dead-letters in
-a
-sequence (also defaults to 1024). If these thresholds are exceeded a `DeadLetterQueueOverflowException` will be thrown
-and the event processor
-will stop processing.
-The sequence id is determined by the sequencing policy. By default, the sequence identifier is the aggregate id.
+
+You can set the maximum number of saved sequences (defaults to 1024) and the maximum number of dead letters in a sequence (also defaults to 1024).
+If either of these thresholds is exceeded, the queue will throw a `DeadLetterQueueOverflowException`.
+This exception means the processing group will stop processing new events altogether.
+Thus, the processing group moves back to the behavior described at the start of the [Error Handling](#error-handling) section.
 
 #### Processing Dead-Letter Sequences
 
