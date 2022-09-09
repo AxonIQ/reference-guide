@@ -469,7 +469,7 @@ As a consequence, these events will be skipped.
 Note that Axon Framework invokes the policy on initial event handling *and* on [dead-letter processing](#processing-dead-letter-sequences).
 
 Reevaluating the policy after processing failed may be essential to ensure a dead letter isn't stuck in the queue forever.
-To deal with this scenario, you can attach additional diagnostic information to the dead letter through the policy.
+To deal with this scenario, you can attach additional diagnostic information to the dead letter through the policy, for example to add a number of retries to it and base your decision on that.
 See the sample `EnqueuePolicy` below for this:
 
 ```java
