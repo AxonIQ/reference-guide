@@ -462,7 +462,7 @@ Similarly, when [letter processing](#processing-dead-letter-sequences) fails, yo
 
 To that end, you can configure a so-called `EnqueuePolicy`.
 The enqueue policy ingests a `DeadLetter` and a cause (`Throwable`) and returns an `EnqueueDecision`.
-The `EnqueueDecision`, in turn, describes if the framework should enqueue the dead letter.
+The `EnqueueDecision`, in turn, describes if the framework should enqueue the dead letter or ignore it.
 
 You can customize the dead-letter policy to exclude some events when handling fails.
 As a consequence, these events will be skipped.
