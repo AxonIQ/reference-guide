@@ -282,7 +282,7 @@ Hence, each processing group you want to enable this behavior for should receive
 
 We currently provide the following dead-letter queue implementations:
 * `InMemorySequencedDeadLetterQueue` - In-memory variant of the dead-letter queue. 
-  Useful for testing purposes, but as it does not persist dead letters, it is unsuited for most production environments.
+  Useful for testing purposes, but as it does not persist dead letters, it is unsuited for production environments.
 * `JpaSequencedDeadLetterQueue` - JPA variant of the dead-letter queue. 
   It constructs a `dead_letter_entry` table where it persists failed-events in.
   The JPA dead-letter queue is a suitable option for production environments by persisting the dead letters.
