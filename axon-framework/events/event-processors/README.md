@@ -268,7 +268,7 @@ Although this behavior is sufficient on many occasions, sometimes it is benefici
 To that end, you can configure a dead-letter queue for a [processing group](#event-processors).
 
 An essential concept of Axon Frameworks event processors is the maintenance of event ordering, even when you configure [parallel processing](streaming.md#parallel-processing).
-A perfect example when this is a requirement is the need to handle aggregate events in publishing order.
+A perfect example when this is a requirement is the need to handle events of the same aggregate in the order it was published.
 Simply dead lettering one failed event would cause subsequent events in the sequence to be applied to inconsistent state.
 
 It is thus of utmost importance that a dead-letter queue for events enqueues an event and any following events in the sequence.
