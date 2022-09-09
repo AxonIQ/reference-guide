@@ -347,78 +347,87 @@ Thus, the processing group moves back to the behavior described at the start of 
 
 #### Processing Dead-Letter Sequences
 
-After fixing the issue the events can be handled again by using the `process` function, in this case it will process the
-first matching event of type ErrorEvent:
+Once you resolve the problem that led to dead lettering events, we can start processing the dead letters.
+We recommend using the `SequencedDeadLetterProcessor` for this, as it processes an entire dead-letter _sequence_ instead of single dead-letter entries.
+It will thus ensure the event order is maintained during the retry.
+
+The `SequencedDeadLetterProcessor` provides two operations to process dead letters:
+
+1. `boolean processAny()` - Process the oldest dead-letter sequence.
+   Returns `true` if it processes a sequence successfully.
+2. `boolean process(Predicate<DeadLetter<? extends EventMessage<?>>)` - Process the oldest dead-letter sequence matching the predicate.
+   Note that the predicate only filters based on a sequence's *first* entry.
+   Returns `true` if it processes a sequence successfully.
+
+If the processing of a dead letter fails, the event will be offered to the dead-letter queue again.
+How the dead-lettering process reacts to this depends on the [enqueue policy](#dead-letter-enqueue-policy).
+
+You can retrieve the `SequencedDeadLetterProcessor` from the `EventProcessingConfiguration`.
+Below are a couple of examples of how to process dead-letter sequences:
 
 {% tabs %}
-{% tab title="Process first dead-letter in the queue of type ErrorEvent " %}
-
-```java
-public class DeadletterProcessor{
-  
-    public void repairErrorEvents() {
-    eventProcessingConfiguration.sequencedDeadLetterProcessor(PROCESSING_GROUP)
-                                .ifPresent(p -> p.process(deadLetter -> deadLetter.message().getPayload() instanceof ErrorEvent));
-  }
-}
-```
-
-{% endtab %}
-
-{% tab title="Process any dead-letter in the queue" %}
-
+{% tab title="Process the oldest dead-letter sequence matching `ErrorEvent`" %}
 ```java
 public class DeadletterProcessor {
-
-    private final EventProcessingConfiguration eventProcessingConfiguration;
-
-    public DeadletterProcessor(EventProcessingConfiguration eventProcessingConfiguration) {
-        this.eventProcessingConfiguration = eventProcessingConfiguration;
-    }
-
-    public void repairAnyEvent() {
-        eventProcessingConfiguration.sequencedDeadLetterProcessor(PROCESSING_GROUP)
-                                    .ifPresent(SequencedDeadLetterProcessor::processAny);
+    
+    private EventProcessingConfiguration config;
+    
+    public void retryErrorEventSequence(String processingGroup) {
+        config.sequencedDeadLetterProcessor(processingGroup)
+              .ifPresent(letterProcessor -> letterProcessor.process(
+                      deadLetter -> deadLetter.message().getPayload() instanceof ErrorEvent
+              ));
     }
 }
 ```
-
 {% endtab %}
-
-{% tab title="Process all dead-letters in the queue" %}
-
+{% tab title="Process the oldest dead-letter sequence in the queue" %}
 ```java
 public class DeadletterProcessor {
-
-    private final EventProcessingConfiguration eventProcessingConfiguration;
-
-    public DeadletterProcessor(EventProcessingConfiguration eventProcessingConfiguration) {
-        this.eventProcessingConfiguration = eventProcessingConfiguration;
-    }
-
-    public void repairAllEvents() {
-        Optional<Iterable<Iterable<DeadLetter<? extends EventMessage<?>>>>> deadLetters = eventProcessingConfiguration.deadLetterQueue(
-                PROCESSING_GROUP).map(SequencedDeadLetterQueue::deadLetters);
-
-        deadLetters.ifPresent(sequences -> {
-            // Iterate over all sequences
-            for (Iterable<DeadLetter<? extends EventMessage<?>>> sequence : sequences) {
-                // Iterate over all dead-letters belonging to the same sequence
-                for (DeadLetter<? extends EventMessage<?>> deadLetterInSequence : sequence) {
-                    eventProcessingConfiguration.sequencedDeadLetterProcessor(PROCESSING_GROUP).ifPresent(
-                            eventMessageSequencedDeadLetterProcessor -> {
-                                eventMessageSequencedDeadLetterProcessor.process(
-                                        deadLetter -> deadLetter.message().getIdentifier()
-                                                                .equals(deadLetterInSequence.message()
-                                                                                            .getIdentifier()));
-                            });
-                }
-            }
-        });
+    
+    private EventProcessingConfiguration config;
+    
+    public void retryAnySequence(String processingGroup) {
+        config.sequencedDeadLetterProcessor(processingGroup)
+              .ifPresent(SequencedDeadLetterProcessor::processAny);
     }
 }
 ```
-
+{% endtab %}
+{% tab title="Process all dead-letter sequences in the queue" %}
+```java
+public class DeadletterProcessor {
+    
+    private EventProcessingConfiguration config;
+    
+    public void retryAllSequences(String processingGroup) {
+        Optional<SequencedDeadLetterProcessor<EventMessage<?>>> optionalLetterProcessor = 
+                config.sequencedDeadLetterProcessor(processingGroup);
+        if (!optionalLetterProcessor.isPresent()) {
+            return;
+        }
+        SequencedDeadLetterProcessor<EventMessage<?>> letterProcessor = optionalLetterProcessor.get();
+        
+        // Retrieve all the dead lettered event sequences:
+       Iterable<Iterable<DeadLetter<? extends EventMessage<?>>>> deadLetterSequences = 
+               config.deadLetterQueue(processingGroup)
+                     .map(SequencedDeadLetterQueue::deadLetters)
+                     .orElseThrow(() -> new IllegalArgumentException("No such Processing Group"));
+       
+       // Iterate over all sequences:
+       for (Iterable<DeadLetter<? extends EventMessage<?>>> sequence : deadLetterSequences) {
+           Iterator<DeadLetter<? extends EventMessage<?>>> sequenceIterator = sequence.iterator();
+           String firstLetterId = sequenceIterator.next()
+                                                  .message()
+                                                  .getIdentifier();
+           
+           // SequencedDeadLetterProcessor#process automatically retries an entire sequence.
+           // Hence, we only need to filter on the first entry of the sequence:
+          letterProcessor.process(deadLetter -> deadLetter.message().getIdentifier().equals(firstLetterId));
+       }
+    }
+}
+```
 {% endtab %}
 {% endtabs %}
 
