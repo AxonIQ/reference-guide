@@ -60,7 +60,7 @@ public class KafkaEventPublicationConfiguration {
 }
 ```
 
-The second infrastructure component to introduce is the `KafkaPublisher`, which has a hard requirement on the `ProducerFactory`. Additionally, this would be the place to define the Kafka topic upon which Axon event messages will be published. Note that the `KafkaPublisher` needs to be `shutDown` properly, to ensure all `Producer` instances are properly closed.
+The second infrastructure component to introduce is the `KafkaPublisher`, which has a hard requirement on the `ProducerFactory`. Additionally, this would be the place to define the Kafka topics upon which Axon event messages will be published. You can set a function from event to `Optional<String>`. You can use this to only publish certain events, or put different events to different topics. Its not uncommon for Kafka topics to only contain one type of message. Note that the `KafkaPublisher` needs to be `shutDown` properly, to ensure all `Producer` instances are properly closed.
 
 ```java
 public class KafkaEventPublicationConfiguration {
@@ -71,7 +71,7 @@ public class KafkaEventPublicationConfiguration {
                                                          KafkaMessageConverter<String, byte[]> kafkaMessageConverter,
                                                          int publisherAckTimeout) {
         return KafkaPublisher.<String, byte[]>builder()
-                .topic(topic)                               // Defaults to "Axon.Events"
+                .topicResolver(m -> Optional.of(topic))     // Defaults to "Axon.Events" for all events
                 .producerFactory(producerFactory)           // Hard requirement
                 .messageConverter(kafkaMessageConverter)    // Defaults to a "DefaultKafkaMessageConverter"
                 .publisherAckTimeout(publisherAckTimeout)   // Defaults to "1000" milliseconds; only used for "WAIT_FOR_ACK" mode
@@ -250,7 +250,7 @@ public class KafkaEventConsumptionConfiguration {
 }
 ```
 
-Note that as with any tracking event processor, the progress on the event stream is stored in a `TrackingToken`. Using the `StreamableKafkaMessageSource` means a `KafkaTrackingToken` containing topic-partition to offset pairs is stored in the `TokenStore`.
+Note that as with any tracking event processor, the progress on the event stream is stored in a `TrackingToken`. Using the `StreamableKafkaMessageSource` means a `KafkaTrackingToken` containing topic-partition to offset pairs is stored in the `TokenStore`. If no other `TokenStore` is provided, and autoconfiguration is used a `KafkaTokenStore` will be used, instead of an `InMemoryTokenStore`. The `KafkaTokenStore` by default uses the `__axon_token_store_updates` topic. This should be a compacted topic, which should be created and configured automatically.
 
 ## Customizing event message format
 
@@ -278,9 +278,9 @@ public class KafkaMessageConversationConfiguration {
                                                                        BiFunction<String, Object, RecordHeader> headerValueMapper,
                                                                        EventUpcasterChain upcasterChain) {
         return DefaultKafkaMessageConverter.builder()
-                                           .serializer(serializer)                                      // Hard requirement
-                                           .sequencingPolicy(sequencingPolicy)            // Defaults to a "SequentialPerAggregatePolicy"
-                                           .upcasterChain(upcasterChain)                     // Defaults to empty upcaster chain
+                                           .serializer(serializer)                  // Hard requirement
+                                           .sequencingPolicy(sequencingPolicy)      // Defaults to a "SequentialPerAggregatePolicy"
+                                           .upcasterChain(upcasterChain)            // Defaults to empty upcaster chain
                                            .headerValueMapper(headerValueMapper)    // Defaults to "HeaderUtils#byteMapper()"
                                            .build();
     }
@@ -288,7 +288,7 @@ public class KafkaMessageConversationConfiguration {
 }
 ```
 
-Make sure to use an identical `KafkaMessageConverter` on both the producing and consuming end, as otherwise exception upon deserialization should be expected.
+Make sure to use an identical `KafkaMessageConverter` on both the producing and consuming end, as otherwise exception upon deserialization should be expected. A `CloudEventKafkaMessageConverter` is also available using the [Cloud Events](https://cloudevents.io/) spec.
 
 ## Configuration in Spring Boot
 
@@ -298,7 +298,11 @@ This extension can be added as a Spring Boot starter dependency to your project 
 
 * A `DefaultKafkaMessageConverter` using the configured `eventSerializer` \(which defaults to `XStreamSerializer`\).
 
-  Uses a `String` for the keys and a `byte[]` for the record's values
+  Uses a `String` for the keys and a `byte[]` for the record's values.
+
+  When the property `axon.kafka.message-converter-mode` is set to `cloud_event` a `CloudEventKafkaMessageConverter` will be used instead. This will use `String` for the keys and `CloudEvent`.
+
+  For each the matching Kafka (de)serializers will also be set as default.
 
 **Producer Components:**
 
