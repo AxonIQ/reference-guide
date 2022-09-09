@@ -268,7 +268,7 @@ Although this behavior is sufficient on many occasions, sometimes it is benefici
 To that end, you can configure a dead-letter queue for a [processing group](#event-processors).
 
 An essential concept of Axon Frameworks event processors is the maintenance of event ordering, even when you configure [parallel processing](streaming.md#parallel-processing).
-A perfect example when this is a requirement is the need to handle events of the same aggregate in the order it was published.
+A perfect example when this is a requirement is the need to handle events of the same aggregate in their publishing order.
 Simply dead lettering one failed event would cause subsequent events in the sequence to be applied to inconsistent state.
 
 It is thus of utmost importance that a dead-letter queue for events enqueues an event and any following events in the sequence.
@@ -359,7 +359,7 @@ Thus, the processing group moves back to the behavior described at the start of 
 #### Processing Dead-Letter Sequences
 
 Once you resolve the problem that led to dead lettering events, we can start processing the dead letters.
-We recommend using the `SequencedDeadLetterProcessor` interface for this, which can be retrieved from the `EventProcessingConfiguration` for each processing group with a dead letter queue, as it processes an entire dead-letter _sequence_ instead of single dead-letter entries.
+We recommend using the `SequencedDeadLetterProcessor` interface for this, as it processes an entire dead-letter _sequence_ instead of single dead-letter entries.
 It will thus ensure the event order is maintained during the retry.
 
 The `SequencedDeadLetterProcessor` provides two operations to process dead letters:
@@ -373,7 +373,7 @@ The `SequencedDeadLetterProcessor` provides two operations to process dead lette
 If the processing of a dead letter fails, the event will be offered to the dead-letter queue again.
 How the dead-lettering process reacts to this depends on the [enqueue policy](#dead-letter-enqueue-policy).
 
-You can retrieve the `SequencedDeadLetterProcessor` from the `EventProcessingConfiguration`.
+You can retrieve a `SequencedDeadLetterProcessor` from the `EventProcessingConfiguration` based on a processing group name *if* you have configured a dead-letter queue for this processing group.
 Below are a couple of examples of how to process dead-letter sequences:
 
 {% tabs %}
@@ -446,30 +446,31 @@ public class DeadletterProcessor {
 
 A dead letter contains the following attributes:
 
-| attribute       | type                | description                                                                                                                            |
-|-----------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `message`         | `EventMessage`    | The message containing the failed event.                                                                                                             |
-| `cause`           | `Optional<Cause>` | The cause for the message to be dead lettered. Empty if the letter is enqueued because it is part of a sequence.                       |
-| `enqueuedAt`      | `Instant`         | The moment in time when the event was enqueued in a dead-letter queue.                                                                 |
-| `lastTouched`     | `Instant`         | The moment in time when this letter was last touched. Will equal the `enqueuedAt` value if this letter is enqueued for the first time. |
-| `diagnostics`     | `MetaData`        | The diagnostic `MetaData` concerning this letter. Filled through the [enqueue policy](#dead-letter-enqueue-policy).                    |
+| attribute        | type                | description                                                                                                                            |
+|------------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| `message`        | `EventMessage`      | The `EventMessage` for which handling failed. The message contains your event, among other `Message` properties.                       |
+| `cause`          | `Optional<Cause>`   | The cause for the message to be dead lettered. Empty if the letter is enqueued because it is part of a sequence.                       |
+| `enqueuedAt`     | `Instant`           | The moment in time when the event was enqueued in a dead-letter queue.                                                                 |
+| `lastTouched`    | `Instant`           | The moment in time when this letter was last touched. Will equal the `enqueuedAt` value if this letter is enqueued for the first time. |
+| `diagnostics`    | `MetaData`          | The diagnostic `MetaData` concerning this letter. Filled through the [enqueue policy](#dead-letter-enqueue-policy).                    |
 
 #### Dead-Letter Enqueue Policy
 
 By default, when you configure a dead-letter queue and event handling fails, the event is dead-lettered.
-However, you might not want all event failures to result in being dead-lettered.
+However, you might not want all event failures to result in dead-lettered entries.
 Similarly, when [letter processing](#processing-dead-letter-sequences) fails, you might want to reconsider whether you want to enqueue the letter again.
 
 To that end, you can configure a so-called `EnqueuePolicy`.
 The enqueue policy ingests a `DeadLetter` and a cause (`Throwable`) and returns an `EnqueueDecision`.
-The `EnqueueDecision`, in turn, describes if the framework should enqueue the dead letter or ignore it.
+The `EnqueueDecision`, in turn, describes if the framework should or should not enqueue the dead letter.
 
 You can customize the dead-letter policy to exclude some events when handling fails.
 As a consequence, these events will be skipped.
 Note that Axon Framework invokes the policy on initial event handling *and* on [dead-letter processing](#processing-dead-letter-sequences).
 
 Reevaluating the policy after processing failed may be essential to ensure a dead letter isn't stuck in the queue forever.
-To deal with this scenario, you can attach additional diagnostic information to the dead letter through the policy, for example to add a number of retries to it and base your decision on that.
+To deal with this scenario, you can attach additional diagnostic information to the dead letter through the policy. 
+For example to add a number of retries to the dead letter to base your decision on.
 See the sample `EnqueuePolicy` below for this:
 
 ```java
