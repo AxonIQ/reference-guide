@@ -457,7 +457,7 @@ A dead letter contains the following attributes:
 #### Dead-Letter Enqueue Policy
 
 By default, when you configure a dead-letter queue and event handling fails, the event is dead-lettered.
-However, not all event failures should result in new entries in the dead-letter queue.
+However, you might not want all event failures to result in being dead-lettered.
 Similarly, when [letter processing](#processing-dead-letter-sequences) fails, you might want to reconsider whether you want to enqueue the letter again.
 
 To that end, you can configure a so-called `EnqueuePolicy`.
