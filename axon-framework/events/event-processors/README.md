@@ -257,17 +257,35 @@ Based on the provided `ErrorContext` object, you can decide to ignore the error,
 
 ### Dead-letter Queue
 
-When event processor transactions end up in an exception, following events are not handled by that event processor even
-though they could be successfully handled. The event processor is stuck until the issue is fixed.
-To skip and save the events that are failing, you can configure a dead-letter queue for an event processor.
+Although configuring a [Listener Invocation Error Handler](#processing-group---listener-invocation-error-handler)
+and [Error Handler](#event-processor---error-handler)
+helps with dealing with event handling exceptions, you still end up in an event handling stop.
+When you log and proceed, you will likely need to resolve the predicament and [replay](streaming.md#replaying-events)
+past events.
+If you instead propagate the exceptions, the event processor will stall entirely.
 
-Note that a dead-letter queue *can not* be shared between event processors.
-Hence, every processor you want to enable this for should receive a unique dead-letter queue instance.
+Although this behavior is sufficient on many occasions, sometimes it is beneficial if we can unblock event handling by parking the problematic event.
+To that end, you can configure a dead-letter queue for a [processing group](#event-processors).
 
-The `InMemorySequencedDeadLetterQueue` can be used for testing purposes but the dead-letters are gone after a restart.
-To persist dead-letters the `JpaSequencedDeadLetterQueue` should be used.
-When using the `JpaSequencedDeadLetterQueue` the dead-lettered events are stored in the `dead_letter_entry` database
-table.
+An essential concept of Axon Frameworks event processors is the maintenance of event ordering, also when you configure [parallel processing](streaming.md#parallel-processing).
+A perfect example when this is a requirement is the need to handle aggregate events in publishing order.
+Simply dead lettering one failed event would cause subsequent events in the sequence to react to stale state.
+
+It is thus of utmost importance that a dead-letter queue for events enqueues an event and any following events in the sequence.
+To that end, the supported dead-letter queue is a so-called `SequencedDeadLetterQueue`.
+
+Integral to its design is to allow for queueing failed events and events that belong to a faulty sequence.
+It does so by maintaining a sequence identifier for each event, determined by the [sequencing policy](/axon-framework/events/event-processors/streaming.md#sequential-processing).
+
+Note that you *cannot* share a dead-letter queue between different processing groups.
+Hence, each processing group you want to enable this behavior for should receive a unique dead-letter queue instance.
+
+We currently provide the following dead-letter queue implementations:
+* `InMemorySequencedDeadLetterQueue` - In-memory variant of the dead-letter queue. 
+  Useful for testing purposes, but as it does not persist dead letters, it is unsuited for most production environments.
+* `JpaSequencedDeadLetterQueue` - JPA variant of the dead-letter queue. 
+  It constructs a `dead_letter_entry` table where it persists failed-events in.
+  The JPA dead-letter queue is a suitable option for production environments by persisting the dead letters.
 
 #### Configuring a sequenced Dead-Letter Queue
 
