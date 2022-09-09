@@ -262,7 +262,7 @@ and [Error Handler](#event-processor---error-handler)
 helps you to deal with exceptions when processing events, you still end up in an event handling stop.
 When you only log the error and allow processing to proceed, you will most likely end up with missing data until you fix the predicament and [replay](streaming.md#replaying-events)
 past events.
-If you instead propagate the exceptions, the event processor will stall entirely.
+If you instead propagate the exception so the event processor keeps retrying, the event processor will stall entirely when the cause is consistent.
 
 Although this behavior is sufficient on many occasions, sometimes it is beneficial if we can unblock event handling by parking the problematic event.
 To that end, you can configure a dead-letter queue for a [processing group](#event-processors).
