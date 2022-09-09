@@ -359,7 +359,7 @@ Thus, the processing group moves back to the behavior described at the start of 
 #### Processing Dead-Letter Sequences
 
 Once you resolve the problem that led to dead lettering events, we can start processing the dead letters.
-We recommend using the `SequencedDeadLetterProcessor` for this, as it processes an entire dead-letter _sequence_ instead of single dead-letter entries.
+We recommend using the `SequencedDeadLetterProcessor` interface for this, which can be retrieved from the `EventProcessingConfiguration` for each processing group with a dead letter queue, as it processes an entire dead-letter _sequence_ instead of single dead-letter entries.
 It will thus ensure the event order is maintained during the retry.
 
 The `SequencedDeadLetterProcessor` provides two operations to process dead letters:
