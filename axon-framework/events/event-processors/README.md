@@ -260,7 +260,7 @@ Based on the provided `ErrorContext` object, you can decide to ignore the error,
 Although configuring a [Listener Invocation Error Handler](#processing-group---listener-invocation-error-handler)
 and [Error Handler](#event-processor---error-handler)
 helps you to deal with exceptions when processing events, you still end up in an event handling stop.
-When you log and proceed, you will likely need to resolve the predicament and [replay](streaming.md#replaying-events)
+When you only log the error and allow processing to proceed, you will most likely end up with missing data until you fix the predicament and [replay](streaming.md#replaying-events)
 past events.
 If you instead propagate the exceptions, the event processor will stall entirely.
 
