@@ -287,6 +287,17 @@ We currently provide the following dead-letter queue implementations:
   It constructs a `dead_letter_entry` table where it persists failed-events in.
   The JPA dead-letter queue is a suitable option for production environments by persisting the dead letters.
 
+#### Dead-Letter Queues and Idempotency
+
+Before configuring a `SequencedDeadLetterQueue` it is vital to validate whether your event handling functions are idempotent.
+As a processing group consists of several Event Handling Components (as explained in the intro of this chapter), some handlers may succeed in event handling while others will not.
+As a configured dead-letter queue does not stall event handling, a failure in one Event Handling Component does not cause a rollback for other event handlers.
+Furthermore, as the dead-letter support is on the processing group level, [dead-letter processing](#processing-dead-letter-sequences) will invoke *all* event handlers for that event within the processing group.
+
+Thus, if your event handlers are not idempotent, processing letters may result in undesired side effects.
+Hence, we strongly recommend making your event handlers idempotent when using the dead-letter queue.
+The principle of exactly-once delivery is no longer guaranteed; at-least-once delivery is the reality to cope with.
+
 #### Configuring a sequenced Dead-Letter Queue
 
 A `JpaSequencedDeadLetterQueue` configuration example:
