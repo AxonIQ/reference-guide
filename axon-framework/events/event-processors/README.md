@@ -448,7 +448,7 @@ A dead letter contains the following attributes:
 
 | attribute       | type                | description                                                                                                                            |
 |-----------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `message`         | `EventMessage`    | The complete failed event.                                                                                                             |
+| `message`         | `EventMessage`    | The message containing the failed event.                                                                                                             |
 | `cause`           | `Optional<Cause>` | The cause for the message to be dead lettered. Empty if the letter is enqueued because it is part of a sequence.                       |
 | `enqueuedAt`      | `Instant`         | The moment in time when the event was enqueued in a dead-letter queue.                                                                 |
 | `lastTouched`     | `Instant`         | The moment in time when this letter was last touched. Will equal the `enqueuedAt` value if this letter is enqueued for the first time. |
