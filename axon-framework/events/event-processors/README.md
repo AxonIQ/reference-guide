@@ -267,7 +267,7 @@ If you instead propagate the exception so the event processor keeps retrying, th
 Although this behavior is sufficient on many occasions, sometimes it is beneficial if we can unblock event handling by parking the problematic event.
 To that end, you can configure a dead-letter queue for a [processing group](#event-processors).
 
-An essential concept of Axon Frameworks event processors is the maintenance of event ordering, also when you configure [parallel processing](streaming.md#parallel-processing).
+An essential concept of Axon Frameworks event processors is the maintenance of event ordering, even when you configure [parallel processing](streaming.md#parallel-processing).
 A perfect example when this is a requirement is the need to handle aggregate events in publishing order.
 Simply dead lettering one failed event would cause subsequent events in the sequence to react to stale state.
 
