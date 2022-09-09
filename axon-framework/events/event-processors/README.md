@@ -255,7 +255,7 @@ public interface ErrorHandler {
 
 Based on the provided `ErrorContext` object, you can decide to ignore the error, schedule retries, perform dead-letter-queue delivery, or rethrow the exception.
 
-### Dead-letter Queue
+### Dead-Letter Queue
 
 Although configuring a [Listener Invocation Error Handler](#processing-group---listener-invocation-error-handler)
 and [Error Handler](#event-processor---error-handler)
@@ -431,20 +431,17 @@ public class DeadletterProcessor {
 {% endtab %}
 {% endtabs %}
 
-#### Deadletter attributes
+#### Dead-Letter attributes
 
-A dead-letter contains the following attributes:
+A dead letter contains the following attributes:
 
-| attribute       | type       | description                                                                                                                          |
-|-----------------|------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| message         | M          | The complete failed message                                                                                                          |
-| cause           | String     | The cause for the message to be dead-lettered                                                                                        |
-| enqueuedAt      | Instant    | The moment in time when the message was entered in a dead-letter queue                                                               |
-| lastTouched     | Instant    | The moment in time when this letter was last touched. Will equal the enqueuedAt value if this letter is enqueued for the first time. |
-| diagnostics     | MetaData   | The diagnostic MetaData concerning this letter                                                                                       |
-| markTouched     | DeadLetter | Construct a copy of this DeadLetter, replacing the lastTouched with the current time                                                 |
-| withCause       | DeadLetter | Construct a copy of this DeadLetter, replacing the cause with the given requeueCause                                                 |
-| withDiagnostics | DeadLetter | Construct a copy of this DeadLetter, replacing the diagnostics with the given diagnostics                                            |
+| attribute       | type                | description                                                                                                                            |
+|-----------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| `message`         | `EventMessage`    | The complete failed event.                                                                                                             |
+| `cause`           | `Optional<Cause>` | The cause for the message to be dead lettered. Empty if the letter is enqueued because it is part of a sequence.                       |
+| `enqueuedAt`      | `Instant`         | The moment in time when the event was enqueued in a dead-letter queue.                                                                 |
+| `lastTouched`     | `Instant`         | The moment in time when this letter was last touched. Will equal the `enqueuedAt` value if this letter is enqueued for the first time. |
+| `diagnostics`     | `MetaData`        | The diagnostic `MetaData` concerning this letter. Filled through the [enqueue policy](#dead-letter-enqueue-policy).                    |
 
 #### Dead-Letter Enqueue Policy
 
