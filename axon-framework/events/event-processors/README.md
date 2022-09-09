@@ -445,39 +445,76 @@ A dead letter contains the following attributes:
 
 #### Dead-Letter Enqueue Policy
 
-You can implement a custom dead-letter policy to exclude some events from the dead-letter queue, these events will be
-skipped. This policy is not only called for initial failures but also when dead-lettered events are processed
-unsuccessfully again.
+By default, when you configure a dead-letter queue and event handling fails, the event is dead-lettered.
+However, not all event failures should result in new entries in the dead-letter queue.
+Similarly, when [letter processing](#processing-dead-letter-sequences) fails, you might want to reconsider whether you want to enqueue the letter again.
+
+To that end, you can configure a so-called `EnqueuePolicy`.
+The enqueue policy ingests a `DeadLetter` and a cause (`Throwable`) and returns an `EnqueueDecision`.
+The `EnqueueDecision`, in turn, describes if the framework should enqueue the dead letter.
+
+You can customize the dead-letter policy to exclude some events when handling fails.
+As a consequence, these events will be skipped.
+Note that Axon Framework invokes the policy on initial event handling *and* on [dead-letter processing](#processing-dead-letter-sequences).
+
+Reevaluating the policy after processing failed may be essential to ensure a dead letter isn't stuck in the queue forever.
+To deal with this scenario, you can attach additional diagnostic information to the dead letter through the policy.
+See the sample `EnqueuePolicy` below for this:
 
 ```java
-@Configuration
-public class CustomDeadLetterPolicy{
-  @Autowired
-  public void configure(EventProcessingConfigurer configurer) {
-    configurer.registerDeadLetterPolicy(PROCESSING_GROUP, configuration ->
-            (letter, cause) -> {
-              if (cause instanceof NullPointerException) {
-                // It's pointless..
-                return Decisions.doNotEnqueue();
-              }
-              final int retries = (int) letter.diagnostics().getOrDefault("retries", -1);
-              if (letter.message().getPayload() instanceof ErrorEvent) {
-                // Important, always retry
-                return Decisions.enqueue(cause);
-              }
-              if(retries < 10) {
-                // Let's continue and increase retries!
-                return Decisions.enqueue(cause, deadLetter -> deadLetter.diagnostics().and("retries", retries + 1));
-              }
-              // Exhausted retries
-              return Decisions.doNotEnqueue();
-            });
-  }
-}
+public class CustomEnqueuePolicy implements EnqueuePolicy<EventMessage<?>> {
 
+    @Override
+    public EnqueueDecision<EventMessage<?>> decide(DeadLetter<? extends EventMessage<?>> letter, Throwable cause) {
+        if (cause instanceof NullPointerException) {
+            // It's pointless:
+            return Decisions.doNotEnqueue();
+        }
+
+        final int retries = (int) letter.diagnostics().getOrDefault("retries", -1);
+        if (letter.message().getPayload() instanceof ErrorEvent) {
+            // Important and new entry:
+            return Decisions.enqueue(cause);
+        }
+        if (retries < 10) {
+            // Let's continue and increase retries:
+            return Decisions.requeue(cause, l -> l.diagnostics().and("retries", retries + 1));
+        }
+
+        // Exhausted all retries:
+        return Decisions.evict();
+    }
+}
 ```
 
-One important note, when implementing event handlers, make them idempotent. With the dead-letter queue this becomes a hard requirement. The principle of exactly once delivery is not guaranteed and at-least-once is the reality to cope with.  
+The `Decisions` utility class provides the most reasonable decisions, but you are free to construct your own `EnqueueDecision` when necessary.
+See the following example for configuring our custom policy: 
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class EnqueuePolicyConfigurer {
+    
+    public void configureEnqueuePolicy(EventProcessingConfigurer configurer, String processingGroup) {
+        configurer.registerDeadLetterPolicy(processingGroup, config -> new MyEnqueuePolicy());
+    }
+}
+```
+{% endtab %}
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class EnqueuePolicyConfigurer {
+
+    @Bean
+    public ConfigurerModule configureEnqueuePolicy(String processingGroup) {
+        return configurer -> configurer.eventProcessing()
+                                       .registerDeadLetterPolicy(processingGroup, config -> new MyEnqueuePolicy());
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
 
 ## General processor configuration
 
