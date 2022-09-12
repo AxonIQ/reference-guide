@@ -296,7 +296,7 @@ This extension can be added as a Spring Boot starter dependency to your project 
 
 **Generic Components:**
 
-* A `DefaultKafkaMessageConverter` using the configured `eventSerializer` \(which defaults to `XStreamSerializer`\).
+* A `DefaultKafkaMessageConverter` using the configured `eventSerializer` \(which defaults to `XStreamSerializer`\), which is used by default to convert between Axon Event messages and Kafka records.
 
   Uses a `String` for the keys and a `byte[]` for the record's values.
 
