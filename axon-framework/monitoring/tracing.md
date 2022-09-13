@@ -34,7 +34,7 @@ The following standards are currently supported:
 |------------------|-----------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | OpenTelemetry    | Yes       | [OpenTelemetry](https://opentelemetry.io/docs/concepts/what-is-opentelemetry/) is the successor of OpenTracing, with auto-instrumentation being its most prominent feature.   |
 | OpenTracing      | Limited   | [OpenTracing](https://opentracing.io/) is supported [by an extension with limited functionality](../../extensions/tracing.md). Usage of OpenTelemetry is recommended instead. |
-| SLF4j            | Yes       | If you have no monitoring system in place but want to trace through logging, the framework provides a `LoggingSpanFactory`.                                                     |
+| SLF4j            | Yes       | If you have no monitoring system in place but want to trace through logging, the framework provides a `LoggingSpanFactory`.                                                   |
 
 You configure a `SpanFactory` in the following ways:
 
@@ -135,13 +135,14 @@ the span types defined in the following table:
 | Root trace    | Create a new trace entirely, having no parent.                                                   |
 | Dispatch span | A span which is dispatching a message.                                                           |
 | Handler span  | A span which is handling a message. Will set the span that dispatched the message as the parent. |
-| Internal span | A span which specified something internal. It's not an entry or exit point.                     |
+| Internal span | A span which specified something internal. It's not an entry or exit point.                      |
 
 A trace generally consists of multiple spans with different types, depending on the functionality.
 When a message is dispatched and handled by another process or thread, the handling trace is related to the dispatching
 trace.
-This handling trace becomes part of the root trace unless it's an asynchronous invocation. In that case it will be linked to it instead, 
-so the tooling can refer to the related traces but the traces don't become so large they are unreadable.
+This handling trace becomes part of the root trace unless it's an asynchronous invocation. In that case, it will be
+linked to it instead,
+so tooling can refer to the related traces but the traces don't become so large they are unreadable.
 
 The following functionality in Axon Framework is traced in addition to the tracing capabilities already provided by the
 standard of your choice:
@@ -291,15 +292,15 @@ implementation.
 You might want to configure certain settings that are available.
 The following table contains all configurable settings, their defaults, and what they change:
 
-| setting                                               | Default | Description                                                                                             |
-|-------------------------------------------------------|---------|---------------------------------------------------------------------------------------------------------|
+| setting                                               | Default | Description                                                                                            |
+|-------------------------------------------------------|---------|--------------------------------------------------------------------------------------------------------|
 | `axon.tracing.showEventSourcingHandlers`              | `false` | Whether to show event sourcing handlers as a trace. This can be very noisy and is disabled by default. |
-| `axon.tracing.attributeProviders.aggregateIdentifier` | `true`  | Whether to add the aggregate identifier as a label when handling a message                              |
-| `axon.tracing.attributeProviders.messageId`           | `true`  | Whether to add the message identifier as a label when handling a message                                |
-| `axon.tracing.attributeProviders.messageName`         | `true`  | Whether to add the message name as a label when handling a message                                      |
-| `axon.tracing.attributeProviders.messageType`         | `true`  | Whether to add the message type as a label when handling a message                                      |
-| `axon.tracing.attributeProviders.payloadType`         | `true`  | Whether to add the payload type as a label when handling a message                                      |
-| `axon.tracing.attributeProviders.metadata`            | `true`  | Whether to add the metadata properties as labels when handling a message                                |
+| `axon.tracing.attributeProviders.aggregateIdentifier` | `true`  | Whether to add the aggregate identifier as a label when handling a message                             |
+| `axon.tracing.attributeProviders.messageId`           | `true`  | Whether to add the message identifier as a label when handling a message                               |
+| `axon.tracing.attributeProviders.messageName`         | `true`  | Whether to add the message name as a label when handling a message                                     |
+| `axon.tracing.attributeProviders.messageType`         | `true`  | Whether to add the message type as a label when handling a message                                     |
+| `axon.tracing.attributeProviders.payloadType`         | `true`  | Whether to add the payload type as a label when handling a message                                     |
+| `axon.tracing.attributeProviders.metadata`            | `true`  | Whether to add the metadata properties as labels when handling a message                               |
 
 #### Manual configuration
 
@@ -320,8 +321,10 @@ Note that when not using Spring boot, tracing each message handler invocation is
 
 ## OpenTracing <a id="opentracing"></a>
 
-OpenTracing is deprecated. If necessary, you can use [the OpenTracing extension to Axon Framework](../../extensions/tracing.md).
-The functionality of the extension is rather limited compared to the OpenTelemetry integration, so using that if possible is preferred.
+OpenTracing is deprecated. If necessary, you can
+use [the OpenTracing extension to Axon Framework](../../extensions/tracing.md).
+The functionality of the extension is rather limited compared to the OpenTelemetry integration, so using that if
+possible is preferred.
 
 ## Logging <a id="logging"></a>
 
@@ -358,3 +361,175 @@ public class AxonConfigurer {
 
 {% endtab %}
 {% endtabs %}
+
+## Traced components
+
+Axon Framework provides a large range of components that are traced by the configured `SpanFactory`.
+Each component and their added spans are available for reference in this section, with additional information about how
+they should be interpreted.
+
+It's important to note that the availability of these spans is highly dependent on the application configuration. 
+For instance, some components are only used when using Axon Server, or you might have created your own `CommandBus` 
+implementation which does not call the `SpanFactory` API. 
+
+### Commands
+
+The `CommandBus` is instrumented to create spans for both dispatching and handling commands. 
+
+When using the `AxonServerCommandBus`, there will be two handling and dispatch traces 
+since it uses a second `CommandBus` to invoke the command locally after receiving it from Axon Server. In addition,
+you can see the GRPC-call to Axon Server and the time it took to handle the call.
+
+The traces will, in sequence, look like this:
+
+| Trace name                                      | Description                                                                                                                                                                    |
+|-------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `AxonServerCommandBus.dispatch(${commandName})` | (Only with Axon Server) The bus is dispatching the command to Axon Server.                                                                                                     |
+| `AxonServerCommandBus.handle(${commandName})`   | (Only with Axon Server) The bus has received a command and is handling it.                                                                                                     |
+| `${CommandBusClass}.dispatch(${commandName})`   | The bus is dispatching the command locally (If using Axon Server: this is invoked by the `AxonServerCommandBus`.                                                               |
+| `${CommandBusClass}.handle(${commandName})`     | The bus is invoking the handler locally.                                                                                                                                       |
+| `${RepositoryClass}.load ${identifier}`         | The aggregate is being loaded by the repository. During this time Axon Framework will obtain a lock, fetch snapshots and events from the event store to hydrate the aggregate. |
+| `LockingRepository.obtainLock`                  | The repository is obtaining a lock for the aggregate. This taking some time indicates that the command was queued due to another command being handled for the same aggregate. |
+
+During handling of commands, other functionality might be invoked such as scheduling deadlines or publishing events. 
+Please refer to the specific sections of this functionality for more information.
+
+### Events
+
+Publishing events during command execution happens in two steps:
+First, adding the events to a queue in the `UnitOfWork` to be committed when the transaction succeeds,
+and second, committing them and writing them to the event store.
+
+| Trace name                                | Description                                                                      |
+|-------------------------------------------|----------------------------------------------------------------------------------|
+| `${EventBusClass}.publish(${EventClass})` | For each event, a short span is created to indicate that an event was published. |
+| `${EventBusClass}.commit`                 | Indicates events being committed to the event store.                             |
+
+The events have their own specific publishing span to link other spans to it that are related.
+Any streaming event processor or saga handling the event in the future will be linked
+to publishing spans, allowing easy click-through.
+
+### Event processors
+
+Event processor invocations are traced as well. They will add the following traces:
+
+| Trace name                                                  | Description                                                                 |
+|-------------------------------------------------------------|-----------------------------------------------------------------------------|
+| `${ProcessorType}[${processorName}](${EventClass})`         | Root trace of handling the event, includes all interceptor invocations.     |
+| `${ProcessorType}[${processorName}].process(${EventClass})` | Inner span of handling the event, after all interceptors have been invoked. |
+
+In case of a `SubscribingEventProcessor`, the invocation happens during command execution.
+No new root trace will be created, but the inner process span of the processor is added to indicate the invocation.
+
+### Deadlines
+
+Any action related to deadlines is traced in order to gain insight into what happened during specific calls. 
+Mutations on deadlines generally happen from another root trace, such as a command or saga.
+The handling span of a deadline will be linked to the scheduling span for easy navigation.
+
+| Trace name                                                               | Description                                                                |
+|--------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| `${DeadlineManagerClass}.schedule(${deadlineName})`                      | A deadline was scheduled.                                                  |
+| `${DeadlineManagerClass}.cancelSchedule(${deadlineName}, ${scheduleId})` | A deadline was cancelled based on name and scheduleId.                     |
+| `${DeadlineManagerClass}.cancelAll(${deadlineName})`                     | All deadlines with a specific name were cancelled.                         |
+| `${DeadlineManagerClass}.cancelAllWithinScope(${deadlineName})`          | All deadlines within a specific scope with a specific name were cancelled. |
+| `DeadlineJob.execute(${deadlineName},${DeadlinePayloadClass})`           | Root trace of a deadline firing, containing the name and payload class.    |
+
+### Snapshotting
+
+Snapshotting is done in a separate root trace, due to the fact that it's an asynchronous action and has no user impact.
+However, it can still be useful to measure the performance of snapshotting and see when it is triggered.
+The root trace of the `Snapshotter` invocation will be linked to the command handling span 
+after which the snapshot was scheduled to be created.
+
+| Trace name                                                                  | Description                                                                                                           |
+|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| `${SnapshotterClass}.createSnapshot($aggregateClass)`                       | A snapshot creation task is being submitted. Depending on performance, the executor might take a while to pick it up. |
+| `${SnapshotterClass}.createSnapshot($aggregateClass, $aggregateIdentifier)` | The `Snapshotter` is now creating the snapshot.                                                                       |
+
+Note that the root trace does not contain the aggregate identifier,
+so any snapshot invocation of the same aggregate type is grouped together by the APM tool.
+
+### Sagas
+Sagas are a special type of event processor that can invoke multiple saga's for a single event. 
+Because of this the `AbstractSagaManager` has been instructed with additional tracing information.
+These spans are descendants of an event processor span that invokes the manager.
+
+| Trace name                                                                  | Description                                          |
+|-----------------------------------------------------------------------------|------------------------------------------------------|
+| `SagaManager[${SagaTypeName}].invokeSaga ${sagaIdentifier}`                 | A matching saga has been found and is being invoked. |
+| `SagaManager[${SagaTypeName}].startNewSaga`                                 | The manager is constructing a new saga.              |
+
+
+### Queries
+Queries support tracing in all of their forms. In order to be clear about how they work, 
+this section is split based upon the query's type. 
+For all types, the created spans will differ based on whether Axon Server is used or not. 
+The spans that are only available with Axon Server are marked as such.
+
+#### Direct queries
+Direct queries fetch a single result (either a single item or a single list) and receive no updates. 
+Their traces will look like the following table:
+
+| Trace name                                                | Description                                                                           |
+|-----------------------------------------------------------|---------------------------------------------------------------------------------------|
+| `AxonServerQueryBus.query(${queryName})`                  | (Only with Axon Server) The requesting service is dispatching the query.              |
+| `QueryProcessingTask(${queryName})`                       | (Only with Axon Server) The handling service is handling the query request in a task. |
+| `SimpleQueryBus.query(${queryName})`                      | The handling service is handling the query.                                           |
+| `AxonServerQueryBus.ResponseProcessingTask(${queryName})` | (Only with Axon Server) The requesting service is processing the response.            |
+
+#### Streaming queries
+Streaming queries, introduced in Axon Framework 4.6.0, look very similar to the traces of a Direct query. 
+They do not contain a `ResponseProcessingTask` span since their results are directly published to the invoker of the query.
+Their traces will look like the following table:
+
+| Trace name                                        | Description                                                                           |
+|---------------------------------------------------|---------------------------------------------------------------------------------------|
+| `AxonServerQueryBus.streamingQuery(${queryName})` | (Only with Axon Server) The requesting service is dispatching the query.              |
+| `QueryProcessingTask(${queryName})`               | (Only with Axon Server) The handling service is handling the query request in a task. |
+| `SimpleQueryBus.query(${queryName})`              | The handling service is handling the query.                                           |
+
+#### Scatter-Gather queries
+Scatter-Gather queries are like a direct query but can fetch results from multiple services at the same time. 
+Part of the trace can thus be duplicated multiple times, since multiple services are invoked.
+Their traces will look like the following table:
+
+| Trace name                                             | Description                                                                                          |
+|--------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+| `AxonServerQueryBus.scatterGather(${queryName})`       | (Only with Axon Server) The requesting service is dispatching the query.                             |
+| `QueryProcessingTask(${queryName})`                    | (Only with Axon Server) The handling service is handling the query request in a task.                |
+| `SimpleQueryBus.scatterGather(${index})(${queryName})` | Each handling service is handling the query. Each handler within the same service has its own index. |
+
+#### Subscription queries
+Subscription queries are traces in a different way than others. Subscription queries have an initial result, which is traces like a direct query.
+However, new results can later be published at any time after while the caller is still subscribed to it. 
+
+In order to prevent malformed traces, since most APM tools have a maximum span time before flushing them, publication of
+new results is not part of the original trace. 
+However, invocations of the `SimpleQueryUpdateEmitter` will be linked to
+the span of the queries that are listening to it, so the original call can easily be found.
+
+The `UpdateEmitter` traces will look like the following table:
+
+| Trace name                                                     | Description                                                                                          |
+|----------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+| `SimpleQueryUpdateEmitter.emit(${PayloadClass})`               | A new update is emitted.                                                                             |
+| `SimpleQueryUpdateEmitter.emit ${queryName} (${PayloadClass})` | A new update is emitted for a specific consumer.                                                     |
+
+In addition to this, the spans of the [direct queries section](#direct-queries) apply as well. 
+
+
+### Message handler invocations
+
+The `TracingHandlerEnhancerDefinition` automatically creates a span for each message handler invocation within your
+application. This is true for commands, events, queries and event custom message handlers. Spans will be created with the following format:
+`ContainingClassName.methodName(ArgumentClass1, Argumentclass2, etc)`. Examples of this are:
+
+- RoomAvailabilityHandler.on(RoomAddedEvent)
+- Account(RegisterAccountCommand,DeadlineManager)
+
+The `TracingHandlerEnhancerDefinition` functionality is autoconfigured for Spring Boot, 
+with event sourcing handlers turned off by default. 
+This is because loading an aggregate might invoke many
+of these handlers, hitting the maximum number of spans for your APM tool. 
+Please refer to the [Spring Boot configuration](#spring-boot-autoconfiguration) section if you want to enable this.
