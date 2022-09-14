@@ -92,7 +92,8 @@ This module contains components that enable migration of older Axon projects to 
 
 ### Axon Tracing OpenTelemetry
 
-This module contains OpenTelemetry and the components needed for Axon Framework to be traced appropriately.
+This module contains the components needed to [enable tracing](monitoring/tracing.md) with OpenTelemetry. 
+
 
 ## Extension modules
 

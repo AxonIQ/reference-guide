@@ -1,10 +1,12 @@
 # Event Processor monitoring
 
-Event processors should be kept an eye on when determining the health and status of your application. 
+[Event processors](../events/event-processors/README.md) should be kept an eye on 
+when determining the health and status of your application. 
+You can achieve this by checking the Event Tracker Status, or monitoring the event processors through metrics.
 
 ## Event Tracker Status <a id="event-tracker-status"></a>
 
-Since [Tracking Tokens](events/event-processors/streaming.md#token-store) "track" the progress of a given Streaming Event Processor, they provide a sensible monitoring hook in any Axon application.
+Since [Tracking Tokens](../events/event-processors/streaming.md#token-store) "track" the progress of a given Streaming Event Processor, they provide a sensible monitoring hook in any Axon application.
 Such a hook proves its usefulness when we want to rebuild our view model and we want to check when the processor has caught up with all the events.
 
 To that end the `StreamingEventProcessor` exposes the `processingStatus()` method.
@@ -14,8 +16,8 @@ The Event Tracker Status exposes a couple of metrics:
 
 * The `Segment` it reflects the status of.
 * A boolean through `isCaughtUp()` specifying whether it is caught up with the Event Stream.
-* A boolean through `isReplaying()` specifying whether the given Segment is [replaying](events/event-processors/streaming.md#replaying-events).
-* A boolean through `isMerging()` specifying whether the given Segment is [merging](events/event-processors/streaming.md#splitting-and-merging-segments).
+* A boolean through `isReplaying()` specifying whether the given Segment is [replaying](../events/event-processors/streaming.md#replaying-events).
+* A boolean through `isMerging()` specifying whether the given Segment is [merging](../events/event-processors/streaming.md#splitting-and-merging-segments).
 * The `TrackingToken` of the given Segment.
 * A boolean through `isErrorState()` specifying whether the Segment is in an error state.
 * An optional `Throwable` if the Event Tracker reached an error state.
@@ -27,7 +29,24 @@ The Event Tracker Status exposes a couple of metrics:
   This field will be `null` in case the `isMerging()` returns `false`.
   It is possible to derive an estimated duration of merging by comparing the current position with this field.
 
+Only segments that are currently being actively processed or reached an error state during previous processing will be contained in the `processingStatus()`. 
+For a complete overview, you should retrieve the status from each instance of your application.
+
 ## Metrics <a id="event-processor-metric"></a>
 
-The messages that are processed by an event processor can be monitored with many metrics through one of the [metric modules](metrics.md). 
-Each metric type is created for each event processor, creating insights in performance, latency and throughput. 
+Besides querying the event processors for their status directly, 
+the [metric modules](metrics.md) provides a way to monitor event processors as well. 
+The modules contain a `MessageMonitor` that exposes metrics about the processed messages of each processor, 
+including capacity, latency, processing time and counters.
+
+The exposed metrics can be scraped by the tool of your choice (for example, [Prometheus](https://prometheus.io/)) 
+and alerting can be put in place for several useful metrics. 
+Examples of useful monitoring:
+
+* The **latency** becomes too high, indicating a long time between the moment an event was published 
+  and handled by the processor.
+* The **capacity** reaches high value (for example, 0.8 when using 1 thread, indicating it is busy 80% of the time).
+  This indicates a performance problem, or that the segment should be split to parallelize processing.
+* The **counter** metrics can be used to calculate an average number of events processed per minute. 
+  If this drops or increases
+  outside the normal operating parameters of your application, this warrants investigation.
