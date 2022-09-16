@@ -1,8 +1,8 @@
 # Message correlation
 
-In messaging systems it is common to group messages together, or correlate them. 
+In messaging systems it is common to group messages together or correlate them. 
 In Axon Framework a `Command` message might result in one or several `Event` messages and a `Query` message might result in one or several `QueryResponse` messages. 
-Usually, correlation is implemented using a specific message property, a so called correlation identifier.
+Usually, correlation is implemented using a specific message property, a so-called correlation identifier.
 
 ## Correlation Data Provider
 

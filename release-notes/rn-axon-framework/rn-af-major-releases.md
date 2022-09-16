@@ -104,7 +104,7 @@ For a full list of all the feature request and enhancements done for release 4.4
 
 * The `TrackingEventProcessor#processingStatus` method as of 4.3 exposes more status information.
   The current token position, token-at-reset, is-merging and merge-completed position have been added to the set.
-  Read the [Event Tracker Status](../../axon-framework/monitoring-and-metrics.md#event-tracker-status-a-idevent-tracker-statusa) section for more specifics on this.
+  Read the [Event Tracker Status](../../axon-framework/monitoring/processors.md#event-tracker-status-a-idevent-tracker-statusa) section for more specifics on this.
 
 ### _Bug Fixes_
 

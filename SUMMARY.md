@@ -94,7 +94,7 @@
   * [Event Snapshots](axon-framework/tuning/event-snapshots.md)
   * [Event Processing](axon-framework/tuning/event-processing.md)
   * [Command Processing](axon-framework/tuning/command-processing.md)
-* [Monitoring and Metrics](axon-framework/monitoring-and-metrics.md)
+* [Monitoring and Metrics](axon-framework/monitoring/README.md)
 * [Spring Boot Integration](axon-framework/spring-boot-integration.md)
 * [Modules](axon-framework/modules.md)
 
