@@ -95,6 +95,11 @@
   * [Event Processing](axon-framework/tuning/event-processing.md)
   * [Command Processing](axon-framework/tuning/command-processing.md)
 * [Monitoring and Metrics](axon-framework/monitoring/README.md)
+  * [Distributed Tracing](axon-framework/monitoring/tracing.md)
+  * [Metrics](axon-framework/monitoring/metrics.md)
+  * [Health Indicators](axon-framework/monitoring/health.md)
+  * [Event Tracker Status](axon-framework/monitoring/processors.md)
+  * [Message Tracking](axon-framework/monitoring/message-tracking.md)
 * [Spring Boot Integration](axon-framework/spring-boot-integration.md)
 * [Modules](axon-framework/modules.md)
 
