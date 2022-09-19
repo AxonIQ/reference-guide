@@ -2,6 +2,38 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Tracing Extension.
 
+## Release 4.6
+
+If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-tracing/releases/tag/axon-tracing-4.6.0) page.
+
+### Features
+
+- Adds support for Streaming Query [#280](https://github.com/AxonFramework/extension-tracing/pull/280)
+- TracingQueryGateway does not implement streamingQuery [#279](https://github.com/AxonFramework/extension-tracing/issues/279)
+
+### Enhancements
+
+- Change how Sonar is invoked for GHAs [#228](https://github.com/AxonFramework/extension-tracing/pull/228)
+- Splitted builds into pr and not pr, also added ghactions to dependabot [#155](https://github.com/AxonFramework/extension-tracing/pull/155)
+- Validate OpenTelemetry API [#90](https://github.com/AxonFramework/extension-tracing/issues/90)
+
+### Bug Fixes
+
+- Fix sonar build in PRs [#273](https://github.com/AxonFramework/extension-tracing/pull/273)
+- Correct application run command to match jar name [#205](https://github.com/AxonFramework/extension-tracing/pull/205)
+- Added project reactor as provided scope [#144](https://github.com/AxonFramework/extension-tracing/pull/144)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@smcvb](https://github.com/smcvb)
+- [@Morlack](https://github.com/Morlack)
+- [@pasquatch913](https://github.com/pasquatch913)
+- [@lfgcampos](https://github.com/lfgcampos)
+- [@schananas](https://github.com/schananas)
+
+
 ## Release 4.5
 
 * Contributor `aupodogov` provided an optimization in the `OpenTraceHandlerInterceptor`, by replace an `orElse` for `orElseGet`, in pull request [#103](https://github.com/AxonFramework/extension-tracing/pull/103).

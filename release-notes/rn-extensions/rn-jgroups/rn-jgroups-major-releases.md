@@ -2,6 +2,23 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon JGroups Extension.
 
+## Release 4.6
+
+If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-jgroups/releases/tag/axon-jgroups-4.6.0) page.
+
+### Enhancements
+
+- Change how Sonar is invoked for GHA's [#97](https://github.com/AxonFramework/extension-jgroups/pull/97)
+- Splitted builds into pr and not pr, added ghactions to dependabot and other minors [#75](https://github.com/AxonFramework/extension-jgroups/pull/75)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@smcvb](https://github.com/smcvb)
+- [@lfgcampos](https://github.com/lfgcampos)
+- [@YvonneCeelie](https://github.com/YvonneCeelie)
+
 ## Release 4.5
 
 * We added automatic release note construction through Git Workflow in issue [#32](https://github.com/AxonFramework/extension-jgroups/pull/32).

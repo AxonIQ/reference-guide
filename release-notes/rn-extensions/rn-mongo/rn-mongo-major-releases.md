@@ -2,6 +2,22 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Mongo Extension.
 
+## Release 4.6
+
+If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-mongo/releases/tag/axon-mongo-4.6.0) page.
+
+### Enhancements
+
+- Resolving some sonar issues and adding some concurrent tests. [#222](https://github.com/AxonFramework/extension-mongo/pull/222)
+- Change how Sonar is invoked for GHA's [#159](https://github.com/AxonFramework/extension-mongo/pull/159)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+
 ## Release 4.5
 
 * We introduced a dedicated sample project to the Mongo Extension.

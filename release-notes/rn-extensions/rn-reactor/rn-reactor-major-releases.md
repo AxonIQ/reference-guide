@@ -2,6 +2,27 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Reactor Extension.
 
+## Release 4.6
+
+If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-reactor/releases/tag/axon-reactor-4.6.0) page.
+
+### Features
+
+- Streaming query support [#78](https://github.com/AxonFramework/extension-reactor/pull/78)
+- Support reactive query handlers and Flux/Mono query results [#70](https://github.com/AxonFramework/extension-reactor/issues/70)
+- Streaming query - (Flux as Query handler return type) [#3](https://github.com/AxonFramework/extension-reactor/issues/3)
+
+### Enhancements
+
+- Splitted builds into pr and not pr, added ghactions to dependabot and other minors [#56](https://github.com/AxonFramework/extension-reactor/pull/56)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@lfgcampos](https://github.com/lfgcampos)
+- [@schananas](https://github.com/schananas)
+
 ## Release 4.5
 
 * We introduce dependabot to this project in issue [#10](https://github.com/AxonFramework/extension-reactor/pull/10).
