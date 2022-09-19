@@ -1,6 +1,6 @@
 # Major Releases
 
-This page notes all enhancements and features that we have introduced to our major releases of the Axon Spring-Native Extension.
+This page notes all enhancements and features that we have introduced to our experimental releases of the Axon Spring-Native Extension.
 
 ## Release 0.1
 
