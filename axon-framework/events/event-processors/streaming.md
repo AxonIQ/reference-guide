@@ -1208,7 +1208,7 @@ When invoking the split/merge operation on a `StreamingEventProcessor`, that pro
 Thus, either the streaming processor already has a claim on the segment(s) or can claim the segment(s).
 Without the claims, the processor will simply fail the split or merge operation.
 
-It is advised to check which segments a streaming processor has a claim on. For that, [status of the processor](../../monitoring-and-metrics.md#event-tracker-status-a-idevent-tracker-statusa) is used.
+It is advised to check which segments a streaming processor has a claim on. For that, [status of the processor](../../monitoring/processors.md#event-tracker-status-a-idevent-tracker-statusa) is used.
 The status information shows which segments a processor instance owns.
 This guides which processor to invoke the split or merge on.
 

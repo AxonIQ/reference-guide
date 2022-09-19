@@ -3,7 +3,7 @@
 [Event handlers](../event-handlers.md) define the business logic to be performed when an event is received.
 _Event Processors_ are the components that take care of the technical aspects of that processing.
 They start a [unit of work](../../messaging-concepts/unit-of-work.md) and possibly a transaction.
-However, they also ensure that [correlation data](../../monitoring-and-metrics.md#correlation-data-a-idcorrelation-dataa) can be correctly attached to all messages created during event processing, among other non-functional requirements.
+However, they also ensure that [correlation data](../../messaging-concepts/message-correlation.md) can be correctly attached to all messages created during event processing, among other non-functional requirements.
 
 The image below depicts a representation of the organization of Event Processors and Event Handlers:
 
@@ -573,7 +573,7 @@ The `EventProcessingConfigurer` provides two methods to configure `MessageHandle
 ### Message Monitors
 
 Any Event Processor instance provides the means to contain a Message Monitor.
-Message Monitors (discussed in more detail [here](../../monitoring-and-metrics.md#metrics-a-idmetricsa)) allow for monitoring the flow of messages throughout an Axon application.
+Message Monitors (discussed in more detail [here](../../monitoring/metrics.md)) allow for monitoring the flow of messages throughout an Axon application.
 For Event Processors, the message monitor deals explicitly with the events flowing through the Event Processor towards the event handling functions.
 
 The `EventProcessingConfigurer` provides two approaches towards configuring a `MessageMonitor`:

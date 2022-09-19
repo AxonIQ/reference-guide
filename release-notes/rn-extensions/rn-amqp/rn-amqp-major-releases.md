@@ -2,6 +2,27 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon AMQP Extension.
 
+## Release 4.6
+
+If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-amqp/releases/tag/axon-amqp-4.6.0) page.
+
+### Enhancements
+
+- Change how Sonar is invoked for GHAs [#162](https://github.com/AxonFramework/extension-amqp/pull/162)
+- Added an AMQP sample to show how to use the extension [#126](https://github.com/AxonFramework/extension-amqp/pull/126)
+- Splitted builds into pr and not pr, added ghactions to dependabot and other minors [#88](https://github.com/AxonFramework/extension-amqp/pull/88)
+
+### Bug Fixes
+
+- Precision on Date Time Utils [#94](https://github.com/AxonFramework/extension-amqp/issues/94)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@smcvb](https://github.com/smcvb)
+- [@lfgcampos](https://github.com/lfgcampos)
+
 ## Release 4.5
 
 * Issue [#5](https://github.com/AxonFramework/extension-amqp/pull/5) introduces dependabot.
