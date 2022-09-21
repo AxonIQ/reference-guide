@@ -4,6 +4,11 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.6
 
+### Release 4.6.4
+
+* Fix: change column name in event processor overview to "Active Segments"
+* Fix: null pointer exception popup in dashboard
+
 ### Release 4.6.3
 
 * Fix: reading aggregate events searches for older events when the last event sequence number
