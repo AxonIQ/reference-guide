@@ -307,12 +307,12 @@ A `JpaSequencedDeadLetterQueue` configuration example:
 ```java
 public class DeadLetterQueueExampleConfig {
     
-    public ConfigurerModule configureDeadLetterQueueFor(String processingGroup) {
+    public ConfigurerModule configureDeadLetterQueueFor(EventProcessingConfigurer configurer) {
         return configurer -> configurer.eventProcessing(
             eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
-                processingGroup,
+                "MyProcessingGroup",
                 configuration -> JpaSequencedDeadLetterQueue.builder()
-                                                            .processingGroup(processingGroup)
+                                                            .processingGroup("MyProcessingGroup")
                                                             .maxSequences(256)
                                                             .maxSequenceSize(256)
                                                             .entityManagerProvider(configuration.getComponent(EntityManagerProvider.class))
@@ -331,12 +331,12 @@ public class DeadLetterQueueExampleConfig {
 public class DeadLetterQueueExampleConfig {
     
     @Autowired 
-    public ConfigurerModule configureDeadLetterQueueFor(String processingGroup) {
+    public ConfigurerModule configureDeadLetterQueueFor(EventProcessingConfigurer configurer) {
         return configurer -> configurer.eventProcessing(
             eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
-                processingGroup,
+                "MyProcessingGroup",
                 configuration -> JpaSequencedDeadLetterQueue.builder()
-                                                            .processingGroup(processingGroup)
+                                                            .processingGroup("MyProcessingGroup")
                                                             .maxSequences(256)
                                                             .maxSequenceSize(256)
                                                             .entityManagerProvider(configuration.getComponent(EntityManagerProvider.class))
@@ -507,8 +507,8 @@ See the following example for configuring our custom policy:
 ```java
 public class EnqueuePolicyConfigurer {
     
-    public void configureEnqueuePolicy(EventProcessingConfigurer configurer, String processingGroup) {
-        configurer.registerDeadLetterPolicy(processingGroup, config -> new MyEnqueuePolicy());
+    public void configureEnqueuePolicy(EventProcessingConfigurer configurer) {
+        configurer.registerDeadLetterPolicy("MyProcessingGroup", config -> new MyEnqueuePolicy());
     }
 }
 ```
@@ -519,9 +519,9 @@ public class EnqueuePolicyConfigurer {
 public class EnqueuePolicyConfigurer {
 
     @Bean
-    public ConfigurerModule configureEnqueuePolicy(String processingGroup) {
+    public ConfigurerModule configureEnqueuePolicy(EventProcessingConfigurer configurer) {
         return configurer -> configurer.eventProcessing()
-                                       .registerDeadLetterPolicy(processingGroup, config -> new MyEnqueuePolicy());
+                                       .registerDeadLetterPolicy("MyProcessingGroup", config -> new MyEnqueuePolicy());
     }
 }
 ```
