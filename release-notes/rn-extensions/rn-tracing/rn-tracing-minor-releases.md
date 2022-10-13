@@ -3,6 +3,32 @@
 Any patch release made for an Axon project aims to resolve bugs.
 This page provides an overview of patch releases for the Axon Tracing Extension.
 
+## Release 4.6
+
+### Release 4.6.1
+
+#### Bug Fixes
+
+- Move Flux tracing to utils class [#330](https://github.com/AxonFramework/extension-tracing/pull/330)
+
+#### Dependency Upgrade
+
+- Bump reactor.version from 3.4.23 to 3.4.24 [#328](https://github.com/AxonFramework/extension-tracing/pull/328)
+- Bump axon.version from 4.6.0 to 4.6.1 [#327](https://github.com/AxonFramework/extension-tracing/pull/327)
+- Bump kotlin.version from 1.7.10 to 1.7.20 [#326](https://github.com/AxonFramework/extension-tracing/pull/326)
+- Bump slf4j.version from 2.0.2 to 2.0.3 [#325](https://github.com/AxonFramework/extension-tracing/pull/325)
+- Bump actions/setup-java from 3.5.0 to 3.5.1 [#324](https://github.com/AxonFramework/extension-tracing/pull/324)
+- Bump spring.boot.version from 2.7.3 to 2.7.4 [#323](https://github.com/AxonFramework/extension-tracing/pull/323)
+- Bump slf4j.version from 2.0.1 to 2.0.2 [#322](https://github.com/AxonFramework/extension-tracing/pull/322)
+- Bump junit-jupiter from 5.9.0 to 5.9.1 [#321](https://github.com/AxonFramework/extension-tracing/pull/321)
+- Bump slf4j.version from 2.0.0 to 2.0.1 [#317](https://github.com/AxonFramework/extension-tracing/pull/317)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@Morlack](https://github.com/Morlack)
+
 ## Release 4.5
 
 ### Release 4.5.2
