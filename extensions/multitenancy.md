@@ -5,14 +5,14 @@ Multi-tenancy is important in cloud computing, as this extension provides the ab
 
 ### Requirements
 
-The following requirements need to be met for the extension to work out-of-the-box:
-- Use **Spring Framework** together with **Axon Framework 4.6+**.
-- Use **Axon Server EE 4.6+** or Axon Cloud as event store (*).
-- This is not hard requirement, but if you wish to enable multi-tenancy for your projections, note that only JPA is supported out-of-the box.
+- Currently, It's possible to configure extension using **Axon Framework 4.6+** together with **Spring Framework**.
+- Minimal configuration and out-of-the box solution is available only for **Axon Server EE 4.6+** or Axon Cloud (*).
+- Any other custom user solutions should implement [own factory beans for components and tenant provider](https://github.com/AxonFramework/extension-multitenancy/blob/main/multitenancy-spring-boot-autoconfigure/src/main/java/org/axonframework/extensions/multitenancy/autoconfig/MultiTenancyAxonServerAutoConfiguration.java)
+- If you wish to enable multi-tenancy for your projections and token store, note that only JPA is supported out-of-the box.
 
-> ** Axon Cloud and the Multi-Tenancy extension **
+> **Axon Cloud and the Multi-Tenancy extension**
 >
-> Axon Cloud works only with static tenant configuration.
+> Currently, Axon Cloud works only with static tenant configuration.
 
 ### Configuration
 
