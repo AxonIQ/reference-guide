@@ -33,9 +33,14 @@ If you plan to create tenants during runtime, you can define a predicate that wi
 public TenantConnectPredicate tenantFilterPredicate() {
     return context -> context.tenantId().startsWith("tenant-");
 }
+```
 
 ### Route Messages to specific tenants
 
+Backbone of multitenancy is ability to route message to specific tenant.
+This extension offers you meta-data based routing which is ready to be used with minimal configuration.
+Also, one may wish to define stronger contract and include tenant information in message payload, which is also possible by defining custom tenant resolver.
+        
 #### Using meta-data
 
 By default, to route any `Message` to a specific tenant, you need to tag the initial message that enters your system with metadata.
@@ -50,7 +55,7 @@ Any message produced as a consequence of the initial message will have this meta
 
 #### Custom tenant resolver
 
-If you wish to define a custom tenant resolver, please set following property:
+If you wish to define a custom tenant resolver, set following property:
 
 `axon.multi-tenancy.use-metadata-helper=false`
 
@@ -62,10 +67,13 @@ The following example can use the message payload to route a message to specific
 public TargetTenantResolver<Message<?>> customTargetTenantResolver() {
     return (message, tenants) ->
             TenantDescriptor.tenantWithId(
-                    ((TenantTaggedMessage) message.getPayload()).getTenantName()
+                    ((TenantAwareMessage) message.getPayload()).getTenantName()
             );
 }
 ```
+
+In example above, all messages should implement custom `TenantAwareMessage` interface that exposes tenant name.
+Then we can use this interface to extract tenant name from the payload and define our tenant resolver.
 
 ### Multi-tenant projections
 
