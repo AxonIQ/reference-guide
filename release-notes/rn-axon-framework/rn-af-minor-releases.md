@@ -2,6 +2,67 @@
 
 Any patch release made for an Axon project is tailored towards resolving bugs. This page aims to provide a dedicated overview of patch releases per project.
 
+## Release 4.6
+
+### Release 4.6.1
+
+#### Enhancements
+
+- Added ConditionalOnMissingBean to AutoConfiguration [#2414](https://github.com/AxonFramework/AxonFramework/pull/2414)
+- Add `ConditionalOnMissingBean` to `AxonServerActuatorAutoConfigurationis` [#2411](https://github.com/AxonFramework/AxonFramework/issues/2411)
+
+#### Bug Fixes
+
+- Only return unique sequence identifiers in deadLetters call of JPA DLQ [#2428](https://github.com/AxonFramework/AxonFramework/pull/2428)
+- autowiring command model Repository results in NoSuchBeanDefinitionException in 4.6.0 [#2426](https://github.com/AxonFramework/AxonFramework/issues/2426)
+- Deadlines bug [#2424](https://github.com/AxonFramework/AxonFramework/pull/2424)
+- [#1211] Add `Cache#computeIfPresent` and use in `CachingSagaStore` for Association Values [#2423](https://github.com/AxonFramework/AxonFramework/pull/2423)
+- Renamed size column name in JdbcTokenStore [#2413](https://github.com/AxonFramework/AxonFramework/pull/2413)
+- [#2393] Move retrieval of Command Handler to the end of the InterceptorChain [#2412](https://github.com/AxonFramework/AxonFramework/pull/2412)
+- JdbcTokenStore uses query that contains reserved word in oracle [#2409](https://github.com/AxonFramework/AxonFramework/issues/2409)
+- [#2389] Make constructors accessible in `NoArgumentConstructorCreationPolicyAggregateFactory`  [#2407](https://github.com/AxonFramework/AxonFramework/pull/2407)
+- Rename index column to sequenceIndex [#2401](https://github.com/AxonFramework/AxonFramework/pull/2401)
+- [#2396] Deadletter logging changes [#2398](https://github.com/AxonFramework/AxonFramework/pull/2398)
+- Dead Letter Queue implementations can leak personal data to log [#2396](https://github.com/AxonFramework/AxonFramework/issues/2396)
+- CommandHandlerInterceptor annotated method in aggregate root doesn't work when command handling entity not created [#2393](https://github.com/AxonFramework/AxonFramework/issues/2393)
+- [#2382] Disable batch optimization for token-based event reading [#2390](https://github.com/AxonFramework/AxonFramework/pull/2390)
+- Aggregates no longer allow private/protected no-arg constructors [#2389](https://github.com/AxonFramework/AxonFramework/issues/2389)
+- Events are not processed when optimize-event-consumption  is disabled [#2382](https://github.com/AxonFramework/AxonFramework/issues/2382)
+- [#2367] Fix Repository beans not being registered to the Spring application context [#2370](https://github.com/AxonFramework/AxonFramework/pull/2370)
+- [#2364] Fix framework failing to start due to a `ClassNotFoundException` [#2369](https://github.com/AxonFramework/AxonFramework/pull/2369)
+- Fix GA for Slack release announcement [#2368](https://github.com/AxonFramework/AxonFramework/pull/2368)
+- Aggregate `org.axonframework.modelling.command.Repository` bean not available in Spring context [#2367](https://github.com/AxonFramework/AxonFramework/issues/2367)
+- Event storage engines cannot be used without XStream [#2364](https://github.com/AxonFramework/AxonFramework/issues/2364)
+- Concurrency conflicts in CachingSagaStore [#1211](https://github.com/AxonFramework/AxonFramework/issues/1211)
+
+#### Dependency Upgrade
+
+- Bump testcontainers.version from 1.17.4 to 1.17.5 [#2425](https://github.com/AxonFramework/AxonFramework/pull/2425)
+- Bump axonserver-connector-java from 4.6.1 to 4.6.2 [#2419](https://github.com/AxonFramework/AxonFramework/pull/2419)
+- Upgrade to `axonserver-connector-java` 4.6.2 [#2416](https://github.com/AxonFramework/AxonFramework/pull/2416)
+- Bump testcontainers.version from 1.17.3 to 1.17.4 [#2415](https://github.com/AxonFramework/AxonFramework/pull/2415)
+- Bump slf4j.version from 2.0.2 to 2.0.3 [#2408](https://github.com/AxonFramework/AxonFramework/pull/2408)
+- Bump hibernate-core.version from 5.6.11.Final to 5.6.12.Final [#2405](https://github.com/AxonFramework/AxonFramework/pull/2405)
+- Bump joda-time from 2.11.0 to 2.11.2 [#2395](https://github.com/AxonFramework/AxonFramework/pull/2395)
+- Bump spring.boot.version from 2.7.3 to 2.7.4 [#2392](https://github.com/AxonFramework/AxonFramework/pull/2392)
+- Bump joda-time from 2.11.0 to 2.11.1 [#2391](https://github.com/AxonFramework/AxonFramework/pull/2391)
+- Bump slf4j.version from 2.0.1 to 2.0.2 [#2388](https://github.com/AxonFramework/AxonFramework/pull/2388)
+- Bump javassist from 3.29.0-GA to 3.29.2-GA [#2387](https://github.com/AxonFramework/AxonFramework/pull/2387)
+- Bump jackson-bom from 2.13.3 to 2.13.4 [#2386](https://github.com/AxonFramework/AxonFramework/pull/2386)
+- Bump byte-buddy.version from 1.12.16 to 1.12.17 [#2385](https://github.com/AxonFramework/AxonFramework/pull/2385)
+- Bump junit.jupiter.version from 5.9.0 to 5.9.1 [#2384](https://github.com/AxonFramework/AxonFramework/pull/2384)
+- Bump maven-bundle-plugin from 5.1.4 to 5.1.8 [#2381](https://github.com/AxonFramework/AxonFramework/pull/2381)
+- Bump maven-javadoc-plugin from 3.4.0 to 3.4.1 [#2380](https://github.com/AxonFramework/AxonFramework/pull/2380)
+- Bump micrometer-core from 1.9.3 to 1.9.4 [#2379](https://github.com/AxonFramework/AxonFramework/pull/2379)
+- Bump metrics-core from 4.2.9 to 4.2.12 [#2378](https://github.com/AxonFramework/AxonFramework/pull/2378)
+- Bump hibernate-core.version from 5.6.10.Final to 5.6.11.Final [#2377](https://github.com/AxonFramework/AxonFramework/pull/2377)
+- Bump byte-buddy.version from 1.12.13 to 1.12.16 [#2376](https://github.com/AxonFramework/AxonFramework/pull/2376)
+- Bump maven-assembly-plugin from 3.4.0 to 3.4.2 [#2375](https://github.com/AxonFramework/AxonFramework/pull/2375)
+- Bump maven-install-plugin from 3.0.0 to 3.0.1 [#2374](https://github.com/AxonFramework/AxonFramework/pull/2374)
+- Bump slf4j.version from 2.0.0 to 2.0.1 [#2373](https://github.com/AxonFramework/AxonFramework/pull/2373)
+- Bump spring.boot.version from 2.7.2 to 2.7.3 [#2372](https://github.com/AxonFramework/AxonFramework/pull/2372)
+- Bump spring-framework-bom from 5.3.22 to 5.3.23 [#2366](https://github.com/AxonFramework/AxonFramework/pull/2366)
+
 ## Release 4.5
 
 ### Release 4.5.15
