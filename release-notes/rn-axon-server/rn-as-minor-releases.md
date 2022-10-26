@@ -4,6 +4,15 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.6
 
+### Release 4.6.5
+
+* OAuth extension (4.6.1) now also supports OIDC authentication
+* Fix: deserialization of forwarded authentication fails and prints stacktrace in log file
+* Fix: updated version of LDAP extension (4.6.1) to include fixes from version 4.5.2
+* Fix: update flow control library version to 1.1
+* Fix: change health status for commands to only show warning when there are queued messages and no permits
+* Updated audit logging for authentication failures
+
 ### Release 4.6.4
 
 * Fix: contexts not shown in CLI when the request is using an application token or system token
