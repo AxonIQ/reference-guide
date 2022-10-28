@@ -201,7 +201,7 @@ public class AxonConfig {
 
 ### Configuring a Pooled Streaming Processor
 
-Firstly, to specify that every new processors should default to a `PooledStreamingEventProcessor`, you can invoke the `usingPooledStreamingProcessors` method:
+Firstly, to specify that every new processors should default to a `PooledStreamingEventProcessor`, you can invoke the `usingPooledStreamingEventProcessors` method:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -209,7 +209,7 @@ Firstly, to specify that every new processors should default to a `PooledStreami
 public class AxonConfig { 
     // ...
     public void configureProcessorDefault(EventProcessingConfigurer processingConfigurer) { 
-        processingConfigurer.usingPooledStreamingProcessors();  
+        processingConfigurer.usingPooledStreamingEventProcessors();  
     }
 }
 ```
@@ -222,7 +222,7 @@ public class AxonConfig {
     // ...
     @Autowired
     public void configureProcessorDefault(EventProcessingConfigurer processingConfigurer) {
-        processingConfigurer.usingPooledStreamingProcessors();
+        processingConfigurer.usingPooledStreamingEventProcessors();
     }
 }
 ```
