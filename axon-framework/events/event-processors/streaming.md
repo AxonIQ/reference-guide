@@ -1037,7 +1037,7 @@ public class AxonConfig {
 
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
                 (config, builder) -> builder.coordinatorExecutor(coordinatorExecutorBuilder)
-                                            .workerExecutorService(workerExecutorBuilder)
+                                            .workerExecutor(workerExecutorBuilder)
                                             .initialSegmentCount(32);
 
         processingConfigurer.registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
@@ -1062,7 +1062,7 @@ public class AxonConfig {
 
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
                 (config, builder) -> builder.coordinatorExecutor(coordinatorExecutorBuilder)
-                                            .workerExecutorService(workerExecutorBuilder)
+                                            .workerExecutor(workerExecutorBuilder)
                                             .initialSegmentCount(32);
         
         processingConfigurer.registerPooledStreamingEventProcessorConfiguration("my-processor", psepConfig);
