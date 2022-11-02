@@ -630,7 +630,7 @@ The consequence of token stealing is that an event may be handled twice (or more
 When a thread steals a token, the original thread was _already_ processing events from the token's position.
 To protect against doubling event handling, Axon Framework will combine committing the event handling task with updating the token.
 As the token claim is required to update the token, the original thread will fail the update.
-Following this, a rollback occurs on the [Unit of Work](), resolving most issues arising from token stealing.
+Following this, a rollback occurs on the [Unit of Work](/axon-framework/messaging-concepts/unit-of-work.md), resolving most issues arising from token stealing.
 
 The ability to rollback event handling tasks sheds light on the consequences of token stealing.
 Most event processors project events into a projection stored within a database.
