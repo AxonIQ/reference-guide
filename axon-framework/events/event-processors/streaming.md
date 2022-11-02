@@ -646,7 +646,7 @@ In making the invoked operation idempotent, you ensure that whenever the thread 
 Without idempotency, the consequences of token stealing can be manyfold:
 - Your projection (stored in a different database than your tokens!) may incorrectly project the state.
 - An event handler putting messages on a queue will put a message on the queue again.
-- A Saga Event Handler dispatching a command will dispatch that command again.
+- A Saga Event Handler invoking a third-party service will invoke that service again.
 - An event handler sending an email will send that email again.
 
 In short, any operation introducing a side effect that isn't handled in an idempotent fashion will occur again when a token is stolen.
