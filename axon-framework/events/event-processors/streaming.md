@@ -619,7 +619,7 @@ Hence, a staling processor thread will, one way or another, eventually lose the 
 
 Examples of when a thread may get its token stolen are:
 - Overall slow event handling
-- To large event batch size
+- Too large event batch size
 - Blocking operations inside event handlers
 - Blocking exceptions inside event handlers
 
