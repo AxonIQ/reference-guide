@@ -590,7 +590,7 @@ public class AxonConfig {
 #### Token Stealing
 
 As described at the [start](#tracking-tokens), streaming processor threads can "steal" tokens from one another.
-You may regard a token as stolen when a thread loses a [token claim](#token-claims).
+A token is "stolen" when a thread loses a [token claim](#token-claims).
 Situations like this internally result in an `UnableToClaimTokenException`, caught by both streaming event processor implementations and translated into warn- or info-level log statements.
 
 Where the framework uses token claims to ensure that a single thread is processing a sequence of events, it supports token stealing to ascertain event processing is not blocked forever.
