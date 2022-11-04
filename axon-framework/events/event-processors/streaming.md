@@ -593,7 +593,7 @@ As described at the [start](#tracking-tokens), streaming processor threads can "
 A token is "stolen" when a thread loses a [token claim](#token-claims).
 Situations like this internally result in an `UnableToClaimTokenException,` caught by both streaming event processor implementations and translated into warn- or info-level log statements.
 
-Where the framework uses token claims to ensure that a single thread is processing a sequence of events, it supports token stealing to ascertain event processing is not blocked forever.
+Where the framework uses token claims to ensure that a single thread is processing a sequence of events, it supports token stealing to guarantee event processing is not blocked forever.
 In short, the framework uses token stealing to unblock your streaming processor threads when processing takes too long.
 Examples may include literal slow processing, blocking exceptional scenarios, and deadlocks.
 
