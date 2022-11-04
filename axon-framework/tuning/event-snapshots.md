@@ -153,7 +153,7 @@ When this is not required, you can base yourself on the default `SnapshotFilter`
 To configure this `SnapshotFilter`, all you have to do is use the `@Revision` annotation on your Aggregate class.
 In doing so, the `RevisionSnapshotFilter` is set, filtering non-matching snapshots from the `Repository`'s loading process, based on the value maintained within the `@Revision` annotation.
 
-Through this, with every new production deployment of your application that adjusts the Aggregate state, you only have to adjust the revision value in the annotation.
+Through this, with every new production deployment of your application that adjusts the Aggregate state, you would only have to adjust the revision value in the annotation.
 Check out the following example for how to set this up:
 
 ```java
