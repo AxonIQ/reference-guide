@@ -606,7 +606,7 @@ In practical terms, a token is stolen whenever the _claim timeout_ is exceeded.
 
 This timeout is met whenever the token's timestamp (e.g., the `timestamp` column of your `token_entry` table) exceeds the `claimTimeout` of the `TokenStore`.
 By default, the `claimTimeout` value equals 10 seconds.
-To adjust it, you must configure a `TokenStore` instance through its builder, as exemplified in the [Token Store](#token-store) section.
+To adjust it, you must configure a `TokenStore` instance through its builder, as shown in the [Token Store](#token-store) section.
 
 The token's timestamp is equally crucial in deciding when the timeout is met.
 The streaming processor thread holding the claim is in charge of updating the token timestamp.
