@@ -640,7 +640,7 @@ This scenario is why we recommend storing tokens and projections in the same dat
 
 If a rollback is out of the question for an event handling task, we strongly recommend making the task idempotent.
 You may have this scenario when, for example, the projection and tokens do not reside in the same database.
-Or when the event handler dispatches an operation (e.g., through the `CommandGateway`).
+ or when the event handler dispatches an operation (e.g., through the `CommandGateway`).
 In making the invoked operation idempotent, you ensure that whenever the thread stealing a token handles an event twice (or more), the outcome will be identical.
 
 Without idempotency, the consequences of token stealing can be manyfold:
