@@ -4,6 +4,23 @@ This page notes all enhancements and features that we have introduced to our maj
 
 ## Release 4.6
 
+### Release 4.6.2
+
+#### Bug Fixes
+
+- Resolve tenant outside UoW [#39](https://github.com/AxonFramework/extension-multitenancy/pull/39)
+
+#### Dependency Upgrade
+
+- Bump mockito.version from 4.8.0 to 4.8.1 [#38](https://github.com/AxonFramework/extension-multitenancy/pull/38)
+- Bump spring.boot.version from 2.7.4 to 2.7.5 [#37](https://github.com/AxonFramework/extension-multitenancy/pull/37)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@schananas](https://github.com/schananas)
+
 ### Release 4.6.1
 
 #### Bug Fixes
