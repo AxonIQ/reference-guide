@@ -314,21 +314,20 @@ A `JpaSequencedDeadLetterQueue` configuration example:
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-public class DeadLetterQueueExampleConfig {
-    
-    public ConfigurerModule configureDeadLetterQueueFor(EventProcessingConfigurer configurer) {
-        return configurer -> configurer.eventProcessing(
-            eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
-                "MyProcessingGroup",
-                configuration -> JpaSequencedDeadLetterQueue.builder()
-                                                            .processingGroup("MyProcessingGroup")
-                                                            .maxSequences(256)
-                                                            .maxSequenceSize(256)
-                                                            .entityManagerProvider(configuration.getComponent(EntityManagerProvider.class))
-                                                            .transactionManager(configuration.getComponent(TransactionManager.class))
-                                                            .serializer(configuration.serializer())
-                                                            .build()
-            )
+public class AxonConfig {
+    // ...
+    public void configureDeadLetterQueue(EventProcessingConfigurer processingConfigurer) {
+        // Replace "my-processing-group" for the processing group you want to configure the DLQ on. 
+        processingConfigurer.registerDeadLetterQueue(
+                "my-processing-group",
+                config -> JpaSequencedDeadLetterQueue.builder()
+                                                     .processingGroup("my-processing-group")
+                                                     .maxSequences(256)
+                                                     .maxSequenceSize(256)
+                                                     .entityManagerProvider(config.getComponent(EntityManagerProvider.class))
+                                                     .transactionManager(config.getComponent(TransactionManager.class))
+                                                     .serializer(config.serializer())
+                                                     .build()
         );
     }
 }
@@ -337,22 +336,21 @@ public class DeadLetterQueueExampleConfig {
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
 @Configuration
-public class DeadLetterQueueExampleConfig {
-    
-    @Autowired 
-    public ConfigurerModule configureDeadLetterQueueFor(EventProcessingConfigurer configurer) {
-        return configurer -> configurer.eventProcessing(
-            eventProcessingConfigurer -> eventProcessingConfigurer.registerDeadLetterQueue(
-                "MyProcessingGroup",
-                configuration -> JpaSequencedDeadLetterQueue.builder()
-                                                            .processingGroup("MyProcessingGroup")
-                                                            .maxSequences(256)
-                                                            .maxSequenceSize(256)
-                                                            .entityManagerProvider(configuration.getComponent(EntityManagerProvider.class))
-                                                            .transactionManager(configuration.getComponent(TransactionManager.class))
-                                                            .serializer(configuration.serializer())
-                                                            .build()
-            )
+public class AxonConfig {
+    // ...
+    @Bean
+    public ConfigurerModule deadLetterQueueConfigurerModule() {
+        // Replace "my-processing-group" for the processing group you want to configure the DLQ on.
+        return configurer -> configurer.eventProcessing().registerDeadLetterQueue(
+                "my-processing-group",
+                config -> JpaSequencedDeadLetterQueue.builder()
+                                                     .processingGroup("my-processing-group")
+                                                     .maxSequences(256)
+                                                     .maxSequenceSize(256)
+                                                     .entityManagerProvider(config.getComponent(EntityManagerProvider.class))
+                                                     .transactionManager(config.getComponent(TransactionManager.class))
+                                                     .serializer(config.serializer())
+                                                     .build()
         );
     }
 }
@@ -514,10 +512,11 @@ See the following example for configuring our custom policy:
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-public class EnqueuePolicyConfigurer {
-    
+public class AxonConfig {
+    // ...
     public void configureEnqueuePolicy(EventProcessingConfigurer configurer) {
-        configurer.registerDeadLetterPolicy("MyProcessingGroup", config -> new MyEnqueuePolicy());
+        // Replace "my-processing-group" for the processing group you want to configure the policy on.
+        configurer.registerDeadLetterPolicy("my-processing-group", config -> new MyEnqueuePolicy());
     }
 }
 ```
@@ -525,12 +524,13 @@ public class EnqueuePolicyConfigurer {
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
 @Configuration
-public class EnqueuePolicyConfigurer {
+public class AxonConfig {
 
     @Bean
-    public ConfigurerModule configureEnqueuePolicy(EventProcessingConfigurer configurer) {
+    public ConfigurerModule enqueuePolicyConfigurerModule() {
+        // Replace "my-processing-group" for the processing group you want to configure the policy on.
         return configurer -> configurer.eventProcessing()
-                                       .registerDeadLetterPolicy("MyProcessingGroup", config -> new MyEnqueuePolicy());
+                                       .registerDeadLetterPolicy("my-processing-group", config -> new MyEnqueuePolicy());
     }
 }
 ```
