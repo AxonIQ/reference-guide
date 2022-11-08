@@ -109,7 +109,6 @@ You could take the stance of dropping all the snapshots which are stored (for a 
 It is also possible to filter out snapshot events when reading your Aggregate from the event store.
 To that end, a `SnapshotFilter` can be defined per Aggregate type or for the entire `EventStore`.
 
-
 The `SnapshotFilter` is a functional interface, providing two main operations: `allow(DomainEventData<?)` and `combine(SnapshotFilter)`.
 The former provides the `DomainEventData` which reflects the snapshot events. 
 The latter allows combining several `SnapshotFilter`s together.
@@ -147,7 +146,24 @@ public class GiftCard {...}
 {% endtab %}
 {% endtabs %}
 
+The above snippet would be feasible to follow _if_ fine-grained control is required when filtering snapshots from the store.
+For example, when your snapshots are not based on the Aggregate class (which is the default).
+When this is not required, you can base yourself on the default `SnapshotFilter` - the `RevisionSnapshotFilter`.
 
+To configure this `SnapshotFilter`, all you have to do is use the `@Revision` annotation on your Aggregate class.
+In doing so, the `RevisionSnapshotFilter` is set, filtering non-matching snapshots from the `Repository`'s loading process, based on the value maintained within the `@Revision` annotation.
+
+Through this, with every new production deployment of your application that adjusts the Aggregate state, you would only have to adjust the revision value in the annotation.
+Check out the following example for how to set this up:
+
+```java
+// "1" is an example revision value.
+// You're free to choose whatever value that fits your application's versioning scheme.
+@Revision("1")
+public class GiftCard {
+    // Omitted aggregate internals for simplicity.
+}
+```
 
 ### Initializing an Aggregate based on a Snapshot Event
 

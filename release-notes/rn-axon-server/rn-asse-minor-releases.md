@@ -4,6 +4,13 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.6
 
+### Release 4.6.5
+
+* Fix: update flow control library
+* Fix: change health status for commands to only show warning when there are queued messages and no permits
+* Updated audit logging for authentication failures
+
+
 ### Release 4.6.4
 
 * Fix: change column name in event processor overview to "Active Segments"
