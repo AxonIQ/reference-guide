@@ -4,6 +4,53 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.6
 
+### Release 4.6.2
+
+#### Features
+
+- [#2444] Exact class type matcher [#2446](https://github.com/AxonFramework/AxonFramework/pull/2446)
+- Add matcher for exact class type [#2444](https://github.com/AxonFramework/AxonFramework/issues/2444)
+
+#### Enhancements
+
+- Update the `README.md` to guide users better [#2470](https://github.com/AxonFramework/AxonFramework/pull/2470)
+- [#2456] Replace use of unregister for deregister [#2466](https://github.com/AxonFramework/AxonFramework/pull/2466)
+- Prefer 'deregister' to 'unregister' [#2456](https://github.com/AxonFramework/AxonFramework/issues/2456)
+
+#### Bug Fixes
+
+- [#2473] Ensure lifecycle handlers for components declared as Spring beans are invoked [#2474](https://github.com/AxonFramework/AxonFramework/pull/2474)
+- Axon Server event scheduler is never started [#2473](https://github.com/AxonFramework/AxonFramework/issues/2473)
+- Fixes recovering quartz jobs in case of sudden shutdown [#2472](https://github.com/AxonFramework/AxonFramework/pull/2472)
+- [#2464] Set subtypes on `SpringPrototypeAggregateFactory` [#2469](https://github.com/AxonFramework/AxonFramework/pull/2469)
+- [#2449] Adhere to Spring's `@Order` annotation for Message Handling Component registration [#2468](https://github.com/AxonFramework/AxonFramework/pull/2468)
+- Replace `IdentifierMissingException` in `AnnotationCommandTargetResolver` for `IllegalArgumentException` [#2465](https://github.com/AxonFramework/AxonFramework/pull/2465)
+- Commands routed to the parent of polymorphic aggregates cause IncompatibleAggregateException [#2464](https://github.com/AxonFramework/AxonFramework/issues/2464)
+- Fixes the saga list injection bug, issue 2462. [#2463](https://github.com/AxonFramework/AxonFramework/pull/2463)
+- Injecting Lists in Saga no longer works [#2462](https://github.com/AxonFramework/AxonFramework/issues/2462)
+- [#2445] Revert default `EventUpcasterChain` construction in `DefaultConfigurer` [#2459](https://github.com/AxonFramework/AxonFramework/pull/2459)
+- CachingSagaStore corrupts Cache entries when using computeIfPresent [#2458](https://github.com/AxonFramework/AxonFramework/issues/2458)
+- [#2454] Reintroduce changes from PR #1905 [#2455](https://github.com/AxonFramework/AxonFramework/pull/2455)
+- Pull request 1905 is missing from master [#2454](https://github.com/AxonFramework/AxonFramework/issues/2454)
+- QuartzDeadlineManager does not recover from failures [#2451](https://github.com/AxonFramework/AxonFramework/issues/2451)
+- Spring `@Order` seems to be ignored for different event handler components belonging to the same event processor [#2449](https://github.com/AxonFramework/AxonFramework/issues/2449)
+- Fix `Cache#computeIfPresent` return value in `CachingSagaStore` [#2448](https://github.com/AxonFramework/AxonFramework/pull/2448)
+- Axon Spring Boot application fails to start when multiple EventUpcasterChain spring beans are defined [#2445](https://github.com/AxonFramework/AxonFramework/issues/2445)
+- Added Spring Resource Injector to Application Context [#2441](https://github.com/AxonFramework/AxonFramework/pull/2441)
+- Add test scope to `mysql-connector-java` dependency [#2436](https://github.com/AxonFramework/AxonFramework/pull/2436)
+- [#2431] Use `XStreamSerializer#defaultSerializer` to mitigate XStream exclusion issues [#2434](https://github.com/AxonFramework/AxonFramework/pull/2434)
+- Fix regression for GenericJpaRepository autoconfig [#2433](https://github.com/AxonFramework/AxonFramework/pull/2433)
+- JpaSagaStore cannot be used without XStream [#2431](https://github.com/AxonFramework/AxonFramework/issues/2431)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@Blackdread](https://github.com/Blackdread)
+- [@abuijze](https://github.com/abuijze)
+
 ### Release 4.6.1
 
 #### Enhancements
