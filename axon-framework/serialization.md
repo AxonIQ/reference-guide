@@ -193,13 +193,21 @@ public class SerializerConfiguration {
 {% endtab %}
 {% endtabs %}
 
-### Default Typing
+### Generic Types
 
 Sometimes the objects serialized by Axon will contain lists or collections of data.
+In other words, objects containing generics.
 For XStream, this poses no problem, as it will automatically add the type information to the serialized format.
 Jackson does not do this out of the box, however.
 
-You can configure the `ObjectMapper` to add default typing information, but the `JacksonSerializer's` builder also provides a method to enable this for you.
+The recommended approach by Jackson is to use the `@JsonTypeInfo` to define type information.
+Doing so will attach the object type to your, for example, serialized list/collection.
+This approach ensures that the other end can reconstruct the concrete type for you.
+
+Additionally, you can configure the `ObjectMapper` to add default typing information directly.
+However, note that this may not be a secure approach, as is described on Jackson's [Polymorphic Deserialization](https://github.com/FasterXML/jackson-docs/wiki/JacksonPolymorphicDeserialization) page.
+
+If you prefer to enable default typing regardless, the `JacksonSerializer's` builder provides a method to allow this for you.
 With `JacksonSerializer.Builder#defaultTyping`, you will automatically enable the addition of types to the serialized format for lists and collections.
 Consider the following sample on how to enable default typing for the `JacksonSerializer`:
 
