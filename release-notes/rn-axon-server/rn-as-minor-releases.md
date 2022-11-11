@@ -4,6 +4,14 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.6
 
+### Release 4.6.6
+
+* Fix: memory leak due to a closed event processor keeping memory
+* Fix: confusing log message about the license file
+* Fix: deletion of an application token does not have any effect for contexts that are not on the _admin nodes
+* In the UI, the pagination settings for the tables are now kept in the current session
+* Updated gRPC and Netty versions to avoid startup error on alpine Linux
+
 ### Release 4.6.5
 
 * OAuth extension (4.6.1) now also supports OIDC authentication
