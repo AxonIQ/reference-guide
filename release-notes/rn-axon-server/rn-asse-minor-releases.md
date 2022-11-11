@@ -4,6 +4,14 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.6
 
+### Release 4.6.6
+
+* Fix: memory leak due to a closed event processor keeping memory
+* In the UI, the pagination settings for the tables are now kept in the current session
+* Updated gRPC and Netty versions to avoid startup error on alpine linux
+* Axon Server now checks for a configured token when it is started with access control enabled
+* New logging statement to indicate that development mode is enabled
+
 ### Release 4.6.5
 
 * Fix: update flow control library
