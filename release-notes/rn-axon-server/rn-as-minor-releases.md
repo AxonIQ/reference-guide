@@ -4,6 +4,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.6
 
+### Release 4.6.7
+
+* Fix: startup issue when access control is enabled and some properties are not set
+
 ### Release 4.6.6
 
 * Fix: memory leak due to a closed event processor keeping memory
