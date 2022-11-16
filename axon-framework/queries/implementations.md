@@ -70,29 +70,38 @@ The `SimpleQueryBus` does straightforward processing of queries in the thread th
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-    .configureQueryBus(
-        c -> SimpleQueryBus.builder()
-            .transactionManager(c.getComponent(TransactionManager.class))
-            .messageMonitor(c.messageMonitor(SimpleQueryBus.class, "queryBus"))
-            .build()
-    );
+public class AxonConfig {
+    // omitting other configuration methods...
+    public void configureQueryBus(Configurer configurer) {
+        configurer.configureQueryBus(
+                config -> SimpleQueryBus.builder()
+                                        .transactionManager(config.getComponent(TransactionManager.class))
+                                        .messageMonitor(config.messageMonitor(SimpleQueryBus.class, "queryBus"))
+                                        .build()
+        );
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
-```text
-@Bean
-public SimpleQueryBus queryBus(AxonConfiguration axonConfiguration, TransactionManager transactionManager) {
-    return SimpleQueryBus.builder()
-                         .messageMonitor(axonConfiguration.messageMonitor(QueryBus.class, "queryBus"))
-                         .transactionManager(transactionManager)
-                         .errorHandler(axonConfiguration.getComponent(
-                                 QueryInvocationErrorHandler.class,
-                                 () -> LoggingQueryInvocationErrorHandler.builder().build()
-                         ))
-                         .queryUpdateEmitter(axonConfiguration.getComponent(QueryUpdateEmitter.class))
-                         .build();
+```java
+@Configuration
+public class AxonConfig {
+    // omitting other configuration methods...
+    @Bean
+    public QueryBus queryBus(GlobalMetricRegistry metricRegistry,
+                             SpanFactory spanFactory,
+                             TransactionManager transactionManager,
+                             QueryUpdateEmitter updateEmitter) {
+        return SimpleQueryBus.builder()
+                             .messageMonitor(metricRegistry.registerQueryBus("queryBus"))
+                             .transactionManager(transactionManager)
+                             .spanFactory(spanFactory)
+                             .queryUpdateEmitter(updateEmitter)
+                             // ..
+                             .build();
+    }
 }
 ```
 {% endtab %}
