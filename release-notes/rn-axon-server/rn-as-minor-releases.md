@@ -4,6 +4,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.6
 
+### Release 4.6.8
+
+* Fix: using bloom filter index, invalid sequence number error when submitting events when the latest segment only contains non-domain events
+
 ### Release 4.6.7
 
 * Fix: startup issue when access control is enabled and some properties are not set

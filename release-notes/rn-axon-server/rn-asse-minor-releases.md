@@ -4,6 +4,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.6
 
+### Release 4.6.7
+
+* Fix: invalid sequence number error when submitting events when the latest segment only contains non-domain events
+
 ### Release 4.6.6
 
 * Fix: memory leak due to a closed event processor keeping memory
