@@ -175,12 +175,12 @@ Instead, consider the following snippets when it comes to registering upcasters:
 ```java
 @Configuration
 public class AxonConfig {
-   // ...
-   public void configureUpcasters(Configurer configurer) {
-      // The method invocation order imposes the upcaster ordering
-      configurer.registerEventUpcaster(config -> new ComplaintEvent0_to_1Upcaster())
-                .registerEventUpcaster(config -> new ComplaintEvent1_to_2Upcaster());
-   }
+    // omitting other configuration methods...
+    public void configureUpcasters(Configurer configurer) {
+        // The method invocation order imposes the upcaster ordering
+        configurer.registerEventUpcaster(config -> new ComplaintEvent0_to_1Upcaster())
+                  .registerEventUpcaster(config -> new ComplaintEvent1_to_2Upcaster());
+    }
 }
 ```
 {% endtab %}
@@ -211,18 +211,18 @@ The annotation can be placed both on the class itself, or on bean creation metho
 ```java
 @Configuration
 public class AxonConfig {
-   // ...
-   @Bean
-   @Order(0)
-   public SingleEventUpcaster complaintEventUpcasterOne() {
-      return new ComplaintEvent0_to_1Upcaster();
-   }
-
-   @Bean
-   @Order(1)
-   public SingleEventUpcaster complaintEventUpcasterTwo() {
-      return new ComplaintEvent0_to_1Upcaster();
-   }
+    // omitting other configuration methods...
+    @Bean
+    @Order(0)
+    public SingleEventUpcaster complaintEventUpcasterOne() {
+        return new ComplaintEvent0_to_1Upcaster();
+    }
+ 
+    @Bean
+    @Order(1)
+    public SingleEventUpcaster complaintEventUpcasterTwo() {
+        return new ComplaintEvent0_to_1Upcaster();
+    }
 }
 ```
 
@@ -234,14 +234,14 @@ Adding an `EventUpcasterChain` bean to the Application Context will tell Axon to
 ```java
 @Configuration
 public class AxonConfig {
-   // ...
-   @Bean
-   public EventUpcasterChain eventUpcasterChain() {
-      return new EventUpcasterChain(
-              new ComplaintEvent0_to_1Upcaster(),
-              new ComplaintEvent0_to_1Upcaster()
-      );
-   }
+    // omitting other configuration methods...
+    @Bean
+    public EventUpcasterChain eventUpcasterChain() {
+        return new EventUpcasterChain(
+                new ComplaintEvent0_to_1Upcaster(),
+                new ComplaintEvent0_to_1Upcaster()
+        );
+    }
 }
 ```
 {% endtab %}

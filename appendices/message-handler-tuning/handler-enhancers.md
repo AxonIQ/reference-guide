@@ -75,7 +75,7 @@ If you are using Spring Boot defining `HandlerDefintion`s and `HandlerEnhancerDe
 {% tab title="Axon Configuration API" %}
 ```java
 @Configuration
-public class AxonConfiguration { 
+public class AxonConfig { 
     // omitting other configuration methods...
     public void registerHandlerDefinition(Configurer configurer) {
         configurer.registerHandlerDefinition((c, clazz) -> MultiHandlerDefinition.ordered(
@@ -94,7 +94,7 @@ public class AxonConfiguration {
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
 @Configuration
-public class AxonConfiguration {
+public class AxonConfig {
  // omitting other (bean) configuration methods...
  @Bean
  public HandlerDefinition customHandlerEnhancer() {

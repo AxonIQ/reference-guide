@@ -239,7 +239,7 @@ To configure a cache for your Aggregates, consider the following snippet:
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureAggregateWithCache(Configurer configurer) {
         AggregateConfigurer<GiftCard> giftCardConfigurer =
                 AggregateConfigurer.defaultConfiguration(GiftCard.class)
@@ -265,7 +265,7 @@ This approach does require the bean name to be present in the Application Contex
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public Cache giftCardCache() { 
         return new WeakReferenceCache();

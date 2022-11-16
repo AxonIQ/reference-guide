@@ -45,8 +45,8 @@ However, if there is a `LimitedRechargeableGiftCard extends RechargeableGiftCard
  the framework will not pick it up **automatically** since it is not a direct child of the parent aggregate.
 
 ```java
-class AxonConfiguration {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     public AggregateConfigurer<GiftCard> giftCardConfigurer() {
         Set<Class<? extends GiftCard>> subtypes = new HashSet<>();
         subtypes.add(OpenLoopGiftCard.class);

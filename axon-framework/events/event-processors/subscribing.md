@@ -39,7 +39,7 @@ Firstly, to specify that a new Event Processors should default to a `Subscribing
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureProcessorDefault(EventProcessingConfigurer processingConfigurer) {
         processingConfigurer.usingSubscribingEventProcessors();
     }
@@ -51,7 +51,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule processorDefaultConfigurerModule() {
         return configurer -> configurer.eventProcessing(EventProcessingConfigurer::usingSubscribingEventProcessors);
@@ -67,7 +67,7 @@ For a specific Event Processor to be a Subscribing instance, `registerSubscribin
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureSubscribingProcessors(EventProcessingConfigurer processingConfigurer) {
         // To configure a processor to be subscribing ...
         processingConfigurer.registerSubscribingEventProcessor("my-processor")
@@ -82,7 +82,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule subscribingProcessorsConfigurerModule() {
         return configurer -> configurer.eventProcessing(

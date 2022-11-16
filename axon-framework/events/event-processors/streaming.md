@@ -63,7 +63,7 @@ Firstly, to specify that new event processors should default to a `TrackingEvent
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig { 
-    // ...
+    // omitting other configuration methods...
     public void configureProcessorDefault(EventProcessingConfigurer processingConfigurer) { 
         processingConfigurer.usingTrackingEventProcessors();  
     }
@@ -75,7 +75,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule processorDefaultConfigurerModule() {
         return configurer -> configurer.eventProcessing(EventProcessingConfigurer::usingTrackingEventProcessors);
@@ -91,7 +91,7 @@ For a specific Event Processor to be a Tracking instance, `registerTrackingEvent
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureTrackingProcessors(EventProcessingConfigurer processingConfigurer) {
         // This configuration object allows for fine-grained control over the Tracking Processor
         TrackingEventProcessorConfiguration tepConfig =
@@ -117,7 +117,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule trackingProcessorConfigurerModule() {
         // This configuration object allows for fine-grained control over the Tracking Processor
@@ -169,7 +169,7 @@ When invoking the `registerTrackingEventProcessor` method, you can provide a tra
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void registerTrackingProcessorConfig(EventProcessingConfigurer processingConfigurer) {
         TrackingEventProcessorConfiguration tepConfig =
                 TrackingEventProcessorConfiguration.forSingleThreadedProcessing();
@@ -187,7 +187,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule trackingProcessorConfigurerModule() {
         TrackingEventProcessorConfiguration tepConfig =
@@ -215,7 +215,7 @@ Firstly, to specify that every new processors should default to a `PooledStreami
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig { 
-    // ...
+    // omitting other configuration methods...
     public void configureProcessorDefault(EventProcessingConfigurer processingConfigurer) { 
         processingConfigurer.usingPooledStreamingEventProcessors();  
     }
@@ -227,7 +227,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule processorDefaultConfigurerModule() {
         return configurer -> configurer.eventProcessing(EventProcessingConfigurer::usingPooledStreamingEventProcessors);
@@ -243,7 +243,7 @@ For a specific Event Processor to be a Pooled Streaming instance, `registerPoole
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configurePooledStreamingProcessors(EventProcessingConfigurer processingConfigurer) {
           // This configuration object allows for fine-grained control over the Pooled Streaming Processor
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
@@ -268,7 +268,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule pooledStreamingProcessorConfigurerModule() {
         // This configuration object allows for fine-grained control over the Pooled Streaming Processor
@@ -320,7 +320,7 @@ When invoking the `registerPooledStreamingEventProcessor` method, you can provid
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void registerPooledStreamingProcessorConfig(EventProcessingConfigurer processingConfigurer) {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
                 (config, builder) -> builder/* ... */;
@@ -338,7 +338,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule pooledStreamingProcessorConfigurerModule() {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
@@ -454,7 +454,7 @@ Consider the following snippets if you want to configure a different initial tok
 {% tab title="Tracking Processor - Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureInitialTrackingToken(EventProcessingConfigurer processingConfigurer) {
         TrackingEventProcessorConfiguration tepConfig = 
                 TrackingEventProcessorConfiguration.forSingleThreadedProcessing()
@@ -470,7 +470,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule initialTrackingTokenConfigurerModule() {
         TrackingEventProcessorConfiguration tepConfig =
@@ -490,7 +490,7 @@ public class AxonConfig {
 {% tab title="Pooled Streaming Processor - Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureInitialTrackingToken(EventProcessingConfigurer processingConfigurer) {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
                 (config, builder) -> builder.initialToken(messageSource -> messageSource.createTokenSince(
@@ -507,7 +507,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule initialTrackingTokenConfigurerModule() {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
@@ -548,7 +548,7 @@ Consider the following snippets if you want to configure any of these values:
 {% tab title="Tracking Processor - Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureTokenClaimValues(EventProcessingConfigurer processingConfigurer) {
         TrackingEventProcessorConfiguration tepConfig = 
                 TrackingEventProcessorConfiguration.forSingleThreadedProcessing()
@@ -565,7 +565,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule tokenClaimValuesConfigurerModule() {
         TrackingEventProcessorConfiguration tepConfig =
@@ -586,7 +586,7 @@ public class AxonConfig {
 {% tab title="Pooled Streaming Processor - Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureTokenClaimValues(EventProcessingConfigurer processingConfigurer) {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = 
                 (config, builder) -> builder.tokenClaimInterval(2000)
@@ -602,7 +602,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule tokenClaimValuesConfigurerModule() {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
@@ -724,7 +724,7 @@ To configure a `TokenStore` for all processors:
 
 ```java
 public class AxonConfig { 
-    // ...
+    // omitting other configuration methods...
     public void registerTokenStore(EventProcessingConfigurer processingConfigurer) {
         TokenStore tokenStore = JpaTokenStore.builder()
                                              // …
@@ -739,7 +739,7 @@ Alternatively, to configure a `TokenStore` for a specific processor, use:
 
 ```java
 public class AxonConfig { 
-    // ...
+    // omitting other configuration methods...
     public void registerTokenStore(EventProcessingConfigurer processingConfigurer, String processorName) {
         TokenStore tokenStore = JdbcTokenStore.builder()
                                               // …
@@ -764,7 +764,7 @@ To override the TokenStore, either define a bean in a Spring `@Configuration` cl
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public TokenStore myTokenStore() {
         return JpaTokenStore.builder()
@@ -779,7 +779,7 @@ Alternatively, inject the `EventProcessingConfigurer`, which allows more fine-gr
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule tokenStoreConfigurerModule() {
         TokenStore tokenStore = JdbcTokenStore.builder()
@@ -831,7 +831,7 @@ The default number of segments for a `TrackingEventProcessor` is one.
 
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureSegmentCount(EventProcessingConfigurer processingConfigurer) {
         TrackingEventProcessorConfiguration tepConfig = 
                 TrackingEventProcessorConfiguration.forParallelProcessing(2)
@@ -849,7 +849,7 @@ The default number of segments for a `TrackingEventProcessor` is one.
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule segmentCountConfigurerModule() {
         TrackingEventProcessorConfiguration tepConfig =
@@ -871,7 +871,7 @@ The default number of segments for a `PooledStreamingEventProcessor` is sixteen.
 
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureSegmentCount(EventProcessingConfigurer processingConfigurer) {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
                 (config, builder) -> builder.initialSegmentCount(32);
@@ -888,7 +888,7 @@ The default number of segments for a `PooledStreamingEventProcessor` is sixteen.
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule segmentCountConfigurerModule() {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig =
@@ -978,7 +978,7 @@ Consider the following snippets when configuring a (custom) `SequencingPolicy`:
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureSequencingPolicy(EventProcessingConfigurer processingConfigurer) {
           PropertySequencingPolicy<SomeEvent, String> mySequencingPolicy = 
                   PropertySequencingPolicy.builder(SomeEvent.class, String.class)
@@ -997,7 +997,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule sequencingPolicyConfigurerModule(SequencingPolicy<EventMessage<?>> mySequencingPolicy) {
         return configurer -> configurer.eventProcessing(
@@ -1028,7 +1028,7 @@ This approach does require the bean name to be present in the Application Contex
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public SequencingPolicy<EventMessage<?>> mySequencingPolicy() {
         return new FullConcurrencyPolicy();
@@ -1078,7 +1078,7 @@ How to do this is shown in the following sample:
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureThreadCount(EventProcessingConfigurer processingConfigurer) {
         TrackingEventProcessorConfiguration tepConfig =
                 TrackingEventProcessorConfiguration.forParallelProcessing(4)
@@ -1094,7 +1094,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule threadCountConfigurerModule() {
         TrackingEventProcessorConfiguration tepConfig =
@@ -1142,7 +1142,7 @@ How to do this is shown in the following sample:
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureThreadCount(EventProcessingConfigurer processingConfigurer) {
         // the "name" is the name of the processor, which can be used to define the thread factory name
         Function<String, ScheduledExecutorService> coordinatorExecutorBuilder =
@@ -1166,7 +1166,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule threadCountConfigurerModule() {
         // the "name" is the name of the processor, which can be used to define the thread factory name
@@ -1550,7 +1550,7 @@ Consider the following sample when constructing a `MultiStreamableMessageSource`
 
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public MultiStreamableMessageSource buildMultiStreamableMessageSource(
             StreamableMessageSource<TrackedEventMessage<?>> eventSourceA,
             StreamableMessageSource<TrackedEventMessage<?>> eventSourceB,
@@ -1572,7 +1572,7 @@ Assuming a `buildMultiStreamableMessageSource(...)` method is present, we can us
 {% tab title="Tracking Processor - Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureTrackingProcessor(EventProcessingConfigurer processingConfigurer) {
         processingConfigurer.registerTrackingEventProcessor(
                 "my-processor", config -> buildMultiStreamableMessageSource(/*...*/)
@@ -1586,7 +1586,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule trackingProcessorConfigurerModule() {
         return configurer -> configurer.eventProcessing(
@@ -1602,7 +1602,7 @@ public class AxonConfig {
 {% tab title="Pooled Streaming Processor - Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configurePooledStreamingProcessor(EventProcessingConfigurer processingConfigurer) {
         processingConfigurer.registerPooledStreamingEventProcessor(
                 "my-processor", config -> buildMultiStreamableMessageSource(/*...*/)
@@ -1616,7 +1616,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule pooledStreamingProcessorConfigurerModule() {
         return configurer -> configurer.eventProcessing(
@@ -1642,7 +1642,7 @@ This approach does require the bean name to be present in the Application Contex
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public MultiStreamableMessageSource multiStreamableMessageSource(
             StreamableMessageSource<TrackedEventMessage<?>> eventSourceA,

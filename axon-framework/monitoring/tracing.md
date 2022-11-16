@@ -34,8 +34,8 @@ You configure a `SpanFactory` in the following ways:
 {% tab title="Axon Configurer" %}
 
 ```java
-public class AxonConfigurer {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     public void configure(Configurer configurer) {
         configurer.configureSpanFactory(configuration -> new MyCustomSpanFactory());
     }
@@ -45,8 +45,8 @@ public class AxonConfigurer {
 
 ```java
 @Configuration
-public class AxonConfiguration {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     @Bean
     public SpanFactory spanFactory() {
         // Any bean implementing the SpanFactory will be picked up automatically and override the defaults
@@ -92,8 +92,8 @@ fashion:
 {% tab title="Axon Configurer" %}
 
 ```java
-public class AxonConfigurer {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     public void configure(Configurer configurer) {
         configurer.configureSpanFactory(configuration -> new MultiSpanFactory(
                 Arrays.asList(
@@ -110,8 +110,8 @@ public class AxonConfigurer {
 
 ```java
 @Configuration
-public class AxonConfiguration {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     @Bean
     public SpanFactory spanFactory() {
         return new MultiSpanFactory(
@@ -222,8 +222,8 @@ You can register this custom `SpanAttributesProvider` in one of the following wa
 {% tab title="Axon Configurer" %}
 
 ```java
-public class AxonConfigurer {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     public void configure(Configuration configuration) {
         configuration.spanFactory().registerSpanAttributeProvider(new CustomSpanAttributesProvider());
     }
@@ -235,8 +235,8 @@ public class AxonConfigurer {
 
 ```java
 @Configuration
-public class AxonConfiguration {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     @Bean
     public SpanAttributesProvider customSpanAttributesProvider() {
         // Auto-configuration picks beans of type SpanAttributesProvider up automatically.
@@ -250,8 +250,8 @@ public class AxonConfiguration {
 
 ```java
 @Configuration
-public class AxonConfiguration {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     @Autowired
     public void configureSpanFactory(SpanFactory spanFactory) {
         spanFactory.registerSpanAttributeProvider(new CustomSpanAttributesProvider());
@@ -332,8 +332,8 @@ The OpenTelemetry support can also be configured using the `Configurer` of Axon 
 the `OpenTelemetrySpanFactory`.
 
 ```java
-public class AxonConfigurer {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     public void configure(Configurer configurer) {
         configurer.defaultConfiguration()
                   .configureSpanFactory(c -> OpenTelemetrySpanFactory.builder().build());
@@ -363,8 +363,8 @@ You can configure the `LoggingSpanFactory` in the following ways:
 {% tab title="Axon Configurer" %}
 
 ```java
-public class AxonConfigurer {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     public void configure(Configurer configurer) {
         configurer.configureSpanFactory(c -> LoggingSpanFactory.INSTANCE);
     }
@@ -376,8 +376,8 @@ public class AxonConfigurer {
 
 ```java
 @Configuration
-public class AxonConfiguration {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     @Bean
     public SpanFactory spanFactory() {
         return LoggingSpanFactory.INSTANCE;

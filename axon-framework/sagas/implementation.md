@@ -126,8 +126,8 @@ A default configuration for a Saga called `MySaga` would look as follows:
 As a specific type of event handler, registering a Saga is done through the `EventProcessingConfigurer`:
 
 ```java
-class AxonConfig {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     void configureMySaga(EventProcessingConfigurer eventProcessingConfigurer) {
         eventProcessingConfigurer.registerSaga(MySaga.class);
     }
@@ -159,8 +159,8 @@ To configure a `SagaStore` for `MySaga` consider the following snippet:
 To define a custom `SagaStore`, the `SagaConfigurer` should be used through the `EventProcessingConfigurer#registerSaga(Class<T>, Consumer<SagaConfigurer<T>>)` method:
 
 ```java
-class AxonConfig {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     void configureMySaga(EventProcessingConfigurer eventProcessingConfigurer,
                          EntityManagerProvider entityManagerProvider) {
         eventProcessingConfigurer.registerSaga(
@@ -190,8 +190,8 @@ public class MySaga {
 }
 
 @Configuration
-class AxonConfig {
-
+public class AxonConfig {
+    // omitting other configuration methods...
     @Bean
     public SagaStore mySagaStore(DataSource dataSource) {
         return JdbcSagaStore.builder()
