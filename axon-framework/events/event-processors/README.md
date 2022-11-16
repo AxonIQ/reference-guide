@@ -175,12 +175,18 @@ public class AxonConfig {
 @Configuration
 public class AxonConfig {
     // ...
-    @Autowired
-    public void configureProcessingGroupErrorHandling(EventProcessingConfigurer processingConfigurer) {
-        // To configure a default ...
-        processingConfigurer.registerDefaultListenerInvocationErrorHandler(conf -> /* create listener error handler */)
-                            // ... or for a specific processing group: 
-                            .registerListenerInvocationErrorHandler("my-processing-group", conf -> /* create listener error handler */);
+    @Bean
+    public ConfigurerModule processingGroupErrorHandlingConfigurerModule() {
+        return configurer -> configurer.eventProcessing(
+                processingConfigurer -> processingConfigurer.registerDefaultListenerInvocationErrorHandler(
+                                                                    conf -> /* create listener error handler */
+                                                            )
+                                                            // ... or for a specific processing group: 
+                                                            .registerListenerInvocationErrorHandler(
+                                                                    "my-processing-group",
+                                                                    conf -> /* create listener error handler */
+                                                            )
+        );
     }
 }
 ```
@@ -231,13 +237,16 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
-    @Autowired
-    public void configureProcessingGroupErrorHandling(EventProcessingConfigurer processingConfigurer) {
-        // To configure a default ...
-        processingConfigurer.registerDefaultErrorHandler(conf -> /* create error handler */)
-                            // ... or for a specific processor: 
-                            .registerErrorHandler("my-processor", conf -> /* create error handler */);
+    @Bean
+    public ConfigurerModule processorErrorHandlingConfigurerModule() {
+        return configurer -> configurer.eventProcessing(
+                processingConfigurer -> processingConfigurer.registerDefaultErrorHandler(conf -> /* create error handler */)
+                                                            // ... or for a specific processor: 
+                                                            .registerErrorHandler(
+                                                                    "my-processor",
+                                                                    conf -> /* create error handler */
+                                                            )
+        );
     }
 }
 ```

@@ -52,9 +52,9 @@ public class AxonConfig {
 @Configuration
 public class AxonConfig {
     // ...
-    @Autowired
-    public void configureProcessorDefault(EventProcessingConfigurer processingConfigurer) {
-        processingConfigurer.usingSubscribingEventProcessors();
+    @Bean
+    public ConfigurerModule processorDefaultConfigurerModule() {
+        return configurer -> configurer.eventProcessing(EventProcessingConfigurer::usingSubscribingEventProcessors);
     }
 }
 ```
@@ -83,12 +83,17 @@ public class AxonConfig {
 @Configuration
 public class AxonConfig {
     // ...
-    @Autowired
-    public void configureSubscribingProcessors(EventProcessingConfigurer processingConfigurer) {
-        // To configure a processor to be subscribing ...
-        processingConfigurer.registerSubscribingEventProcessor("my-processor")
-                            // ... to define a specific SubscribableMessageSource ... 
-                            .registerSubscribingEventProcessor("my-processor", conf -> /* create/return SubscribableMessageSource */);
+    @Bean
+    public ConfigurerModule subscribingProcessorsConfigurerModule() {
+        return configurer -> configurer.eventProcessing(
+                // To configure a processor to be subscribing ...
+                processingConfigurer -> processingConfigurer.registerSubscribingEventProcessor("my-processor")
+                                                            // ... to define a specific SubscribableMessageSource ... 
+                                                            .registerSubscribingEventProcessor(
+                                                                    "my-processor",
+                                                                    conf -> /* create/return SubscribableMessageSource */
+                                                            )
+        );
     }
 }
 ```
