@@ -16,11 +16,15 @@ Note that there is always a balance between query optimization and update speed.
 
   Put a \(unique\) index on the `"sagaIdentifier"` in the saga \(default name: `"sagas"`\) collection. Put an index on the `"sagaType"`, `"associations.key"` and `"associations.value"` properties in the saga \(default name: `"sagas"`\) collection.
 
+* Dead letter queue
+
+  Put a \(unique\) index on the combination of `"processingGroup"`, `"sequenceIdentifier"` and `"index"` in the dead letter \(default name: `"deadletters"`\) collection. Put an index on the `"processingGroup"`, and `"sequenceIdentifier"` properties in the dead letter \(default name: `"deadletters"`\) collection. Put an index on the `"processingGroup"` property in the dead letter \(default name: `"deadletters"`\) collection.
+
 {% hint style="info" %}
-In pre Axon Framework 3 release we found MongoDb to be a very good fit as an Event Store. However with the introduction of Tracking Event Processors and how they track their events, we have encountered some inefficiencies in regards to the Mongo Event Store implementation. We recommend using a built-for-purpose event store like [Axon Server](../axon-server-introduction.md), or alternatively an RDBMS based \(the JPA or JDBC implementations for example\), and would only suggest to use Mongo for this use case if you have found its performance to be beneficial for your application.
+In pre Axon Framework 3 release we found MongoDb to be a very good fit as an Event Store. However, with the introduction of Tracking Event Processors and how they track their events, we have encountered some inefficiencies regarding the Mongo Event Store implementation. We recommend using a built-for-purpose event store like [Axon Server](../axon-server-introduction.md), or alternatively an RDBMS based \(the JPA or JDBC implementations for example\), and would only suggest to use Mongo for this use case if you have found its performance to be beneficial for your application.
 {% endhint %}
 
-## Configuration in Spring Boot
+## Configuration of the Event Store with Spring
 
 ```java
 @Configuration
@@ -41,14 +45,55 @@ public class AxonConfig {
   
     // The MongoEventStorageEngine stores each event in a separate MongoDB document.
     @Bean
-    public EventStorageEngine storageEngine(MongoClient client) {
+    public EventStorageEngine storageEngine(MongoDatabaseFactory factory,
+                                            TransactionManager transactionManager) {
         return MongoEventStorageEngine.builder()
-                                      .mongoTemplate(DefaultMongoTemplate.builder()
-                                                                         .mongoDatabase(client)
-                                                                         .build())
+                                      .mongoTemplate(SpringMongoTemplate.builder()
+                                                                        .factory(factory)
+                                                                        .build())
+                                      .transactionManager(transactionManager)
                                       // ...
                                       .build();
     }
+}
+```
+
+## Configuration in Spring Boot
+
+This extension can be added as a Spring Boot starter dependency to your project using group id `org.axonframework.extensions.mongo` and artifact id `axon-mongo-spring-boot-starter`. When using the autoconfiguration, by  default the following components will be created for you automatically:
+* A `MongoTransactionManager` to enable transactions with Mongo.
+* A `SpringMongoTransactionManager`, this is the wrapped Spring mongo transaction manager, and will also be injected where applicable in other components created by the auto-config.
+* A `SpringMongoTemplate`, this will use a `MongoDatabaseFactory` that should be available. To use transaction with Mongo the collections need to be accessed in a certain way, and this component makes sure of that.
+* A `MongoTokenStore`, this will be used by the event processors to can keep track which events have been processed, and which segments are claimed.
+* A `MongoSagaStore`, this will be used to store and retrieve saga's.
+
+It's also possible to autoconfigure the `StorageStrategy` and `EventStorageEngine` by setting the `mongo.event-store.enabled` to true. The creation of the token store and the saga store can be turned off by setting `mongo.token-store.enabled` or `mongo.saga-store.enabled` to false. It's also possible to use a different database for the axon collections than the default the `MongoDatabaseFactory` uses by setting the `axon.mongo.database-name` property.
+
+## Configuration of the Mongo Dead-Letter Queue with Spring
+
+See [Dead-Letter Queue](../axon-framework/events/event-processors/README.md#dead-letter-queue) for the general information about the Dead-Letter Queue.
+
+```java
+@Configuration
+public class AxonConfig {
+  // omitting other configuration methods...
+  @Bean
+  public ConfigurerModule deadLetterQueueConfigurerModule(
+          MongoTemplate mongoTemplate    
+  ) {
+    // Replace "my-processing-group" for the processing group you want to configure the DLQ on.
+    return configurer -> configurer.eventProcessing().registerDeadLetterQueue(
+            "my-processing-group",
+            config -> MongoSequencedDeadLetterQueue.builder()
+                                                 .processingGroup("my-processing-group")
+                                                 .maxSequences(256)
+                                                 .maxSequenceSize(256)
+                                                 .mongoTemplate(mongoTemplate)
+                                                 .transactionManager(config.getComponent(TransactionManager.class))
+                                                 .serializer(config.serializer())
+                                                 .build()
+    );
+  }
 }
 ```
 
