@@ -69,6 +69,25 @@ This extension can be added as a Spring Boot starter dependency to your project 
 
 It's also possible to autoconfigure the `StorageStrategy` and `EventStorageEngine` by setting the `mongo.event-store.enabled` to true. The creation of the token store and the saga store can be turned off by setting `mongo.token-store.enabled` or `mongo.saga-store.enabled` to false. It's also possible to use a different database for the axon collections than the default the `MongoDatabaseFactory` uses by setting the `axon.mongo.database-name` property.
 
+The relevant configuration could look like this:
+
+```yaml
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test
+  mongo:
+    database-name: axon
+    token-store:
+      enabled: true
+    saga-store:
+      enabled: false
+    event-store:
+      enabled: false
+```
+
+While `test` is the default database name, for the axon collections the `axon` database will be used instead. The saga store will not be initialised.
+
 ## Configuration of the Mongo Dead-Letter Queue with Spring
 
 See [Dead-Letter Queue](../axon-framework/events/event-processors/README.md#dead-letter-queue) for the general information about the Dead-Letter Queue.
