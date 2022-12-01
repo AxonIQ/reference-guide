@@ -88,7 +88,7 @@ The above exert shows an state stored Aggregate from a 'Gift Card Service'. The 
 
 3. This Aggregate has several '[Aggregate Members](multi-entity-aggregates.md)'.
 
-   Since the Aggregate is stored as is, correct mapping of the entities should be taking into account.
+   Since the Aggregate is stored as is, the correct mapping of the entities should be taken into account.
 
 4. A `@CommandHandler` annotated constructor, or differently put the 'command handling constructor'.
 
