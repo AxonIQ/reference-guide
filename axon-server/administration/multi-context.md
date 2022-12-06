@@ -50,6 +50,12 @@ This resolver will be used to determine the target context based on the message.
 
 You can stream events from multiple contexts in the same processor. This is described in the [Streaming Events Processors' Multiple event sources section](../../axon-framework/events/event-processors/streaming.md#multiple-event-sources).
 
+### Multi-tenancy
+
+When an application handles multiple tenants, it might make sense to create separate store per tenant. 
+Handling multiple tenants needs additional infrastructure, such as duplication of the event processor for each tenant, as well as datasource configuration.
+For this we have created the Multi-Tenancy extension to Axon Framework], that takes care of this infrastructure for you.
+
 
 > **Pre-4.4 Context Deletion**
 >
