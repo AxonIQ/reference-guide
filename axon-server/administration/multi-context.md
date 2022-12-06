@@ -35,6 +35,28 @@ When you create a context, there are a number of default properties that you can
 
 As of version 4.4, Axon Server has a new format for the index of events and snapshots, called JUMP\_SKIP\_INDEX. This is the default format for all contexts that are created from this version onwards. This index format uses a global index to locate the last event for a specific aggregate, and maintains per segment per aggregate the location of the previous event. It improves the efficiency in looking up aggregates that are distributed over segments that are further apart. For instance if you have 2000 event segments and an aggregate has events in segment 1500, 1000 and 500, using this index, Axon Server will find the latest event using the global index, and then from the index for segment 1500 that the previous event is in segment 1000. This prevents checking \(the indexes of\) all the files in between. When using this index, Axon Server will no longer create bloom filter files. For existing contexts the index format will remain BLOOM\_FILTER\_INDEX.
 
+## Usage in Axon Framework
+
+After a context has been setup in Axon Server EE, Axon Framework applications can connect to it by setting the `axon.axonserver.context` property when using Spring Boot, or setting the `defaultContext` on the builder of `AxonServerConnectionManager` that is passed to the event store.
+Note that depending on message source configuration, other contexts may be used besides the default.
+
+### Sending to other contexts
+
+All messages in that application will be sent and received only from the default context, unless specificied otherwise.
+In order to send commands and queries to a different context, you can provide a `TargetContextResolver` to the `Configurer`. 
+This resolver will be used to determine the target context based on the message.
+
+### Reading events from multiple contexts
+
+You can stream events from multiple contexts in the same processor. This is described in the [Streaming Events Processors' Multiple event sources section](../../axon-framework/events/event-processors/streaming.md#multiple-event-sources).
+
+### Multi-tenancy
+
+When an application handles multiple tenants, it might make sense to create separate store per tenant. 
+Handling multiple tenants needs additional infrastructure, such as duplication of the event processor for each tenant, as well as datasource configuration.
+For this we have created the Multi-Tenancy extension to Axon Framework], that takes care of this infrastructure for you.
+
+
 > **Pre-4.4 Context Deletion**
 >
 > Note that when you delete an existing context with the preserve data option and then recreate it, without specifying the index format, Axon Server will use the JUMP\_SKIP\_INDEX format. This means that it will create a new index for the existing data, if the old format was BLOOM\_FILTER\_INDEX. Depending on the size of the event store this can take a long time.
