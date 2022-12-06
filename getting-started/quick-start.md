@@ -50,13 +50,21 @@ The following 5-part video tutorial offers a quick start guided path to understa
 
 ### Axon Server
 
-This blog is a good starting point to get familiarized with Axon Server - [https://axoniq.io/blog-overview/running-axon-server\#0](https://axoniq.io/blog-overview/running-axon-server#0)
+We recommend following the [Axon Server training](https://www.axoniq.io/training/axon-server-training) which is an easy way to get familiar with all aspects of it.
+The training is free and is given periodically.
 
-### Fast Lane Training
+If you are looking for a fast way to get Axon Server up and running and get familiar with it through a hands-on approach, 
+[this blog by Bert Laverman](https://axoniq.io/blog-overview/running-axon-server) is a great way to start.
 
-AxonIQ provides a free to view [fast lane online training](https://lp.axoniq.io/fast-lane-axon-framework-online-training) which will bring you up to speed on topics such as DDD, CQRS, Event Sourcing and other concepts related to the Axon stack.
+### Intro to Event-Driven Microservices
 
-### Full Training
+AxonIQ provides an [Intro to Event-Driven Microservices using DDD, CQRS & Event Sourcing](https://www.axoniq.io/training/intro-to-event-driven-microservices). 
+It's given periodically and is free to attend. During the introduction, you will be brought up to speed on topics such as DDD, CQRS, Event Sourcing and other concepts related to the Axon stack.
 
-AxonIQ provides a [fully online Axon training program](https://axoniq.io/support-overview/axon-training) which provides a more hands-on approach complete with instructor-led content and labs. This program is intended to deepen your knowledge concerning the concepts of event-driven microservices, DDD, CQRS and how Axon supports this journey.
+### Implementing Event-Driven Systems
+
+AxonIQ provides a training which will get you fully familiar with everything around Axon Framework and Axon Server:
+[Implementing Event-Driven Systems using DDD, CQRS and Event Sourcing](https://www.axoniq.io/training/axon-training).
+It provides a more hands-on approach complete with instructor-led content and labs. 
+This program is intended to deepen your knowledge concerning the concepts of Event-Driven systems, DDD, CQRS and how Axon supports this journey.
 
