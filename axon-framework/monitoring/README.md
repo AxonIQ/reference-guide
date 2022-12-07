@@ -1,4 +1,4 @@
-# Monitoring and metrics
+# Monitoring
 
 The ability to monitor and measure what is going on is very important. 
 This section contains all information regarding metrics, tracing and monitoring of your Axon Framework application.
