@@ -40,11 +40,38 @@ As of version 4.4, Axon Server has a new format for the index of events and snap
 After a context has been setup in Axon Server EE, Axon Framework applications can connect to it by setting the `axon.axonserver.context` property when using Spring Boot, or setting the `defaultContext` on the builder of `AxonServerConnectionManager` that is passed to the event store.
 Note that depending on message source configuration, other contexts may be used besides the default.
 
-### Sending to other contexts
+### Sending messages to other contexts
 
-All messages in that application will be sent and received only from the default context, unless specificied otherwise.
-In order to send commands and queries to a different context, you can provide a `TargetContextResolver` to the `Configurer`. 
-This resolver will be used to determine the target context based on the message.
+All messages in that application will be sent and received only from the default context, unless specified otherwise.
+In order to send commands and queries to a different context, you can provide a `TargetContextResolver` to the `Configurer` as follows:
+
+
+{% tabs %}
+{% tab title="Axon Configurer" %}
+```java
+public class Configuration {
+    public void configuring() {
+        Configurer configurer = DefaultConfigurer
+                .defaultConfiguration()
+                 .registerComponent(TargetContextResolver.class, configuration -> {
+                     return message -> message.getPayloadType().getName().startsWith("com.context.booking") ? "booking" : "payment";
+                 });
+    }
+}
+```
+{% endtab %}
+{% tab title="Spring Boot" %}
+```java
+@Configuration
+public class Configuration {
+    @Bean
+    public TargetContextResolver<?> targetContextResolver() {
+        return message -> message.getPayloadType().getName().startsWith("com.context.booking") ? "booking" : "payment";
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
 
 ### Reading events from multiple contexts
 
@@ -54,7 +81,7 @@ You can stream events from multiple contexts in the same processor. This is desc
 
 When an application handles multiple tenants, it might make sense to create separate store per tenant. 
 Handling multiple tenants needs additional infrastructure, such as duplication of the event processor for each tenant, as well as datasource configuration.
-For this we have created the Multi-Tenancy extension to Axon Framework], that takes care of this infrastructure for you.
+For this we have created the Multi-Tenancy extension to Axon Framework, that takes care of this infrastructure for you.
 
 
 > **Pre-4.4 Context Deletion**

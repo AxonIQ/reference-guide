@@ -4,6 +4,36 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.6
 
+### Release 4.6.3
+
+#### Enhancements
+
+- Proposed changes to caching saga fix [#2532](https://github.com/AxonFramework/AxonFramework/pull/2532)
+- Allow usage of specific serializers for the JpaDLQ [#2486](https://github.com/AxonFramework/AxonFramework/pull/2486)
+
+#### Bug Fixes
+
+- Ensure default `TrackingEventProcessorConfiguration` is taken into account for Sagas [#2533](https://github.com/AxonFramework/AxonFramework/pull/2533)
+- Saga Caching Enhancements [#2531](https://github.com/AxonFramework/AxonFramework/pull/2531)
+- Cancel of direct query [#2528](https://github.com/AxonFramework/AxonFramework/pull/2528)
+- [#2514] Fix naming of registered `Repository` and `AggregateFactory` beans [#2525](https://github.com/AxonFramework/AxonFramework/pull/2525)
+- Fix caching mechanism for Sagas [#2517](https://github.com/AxonFramework/AxonFramework/pull/2517)
+- Wrong Spring repository bean name when using aggregate polymorphism [#2514](https://github.com/AxonFramework/AxonFramework/issues/2514)
+- SpringAxonAutoConfigurer warns about multiple beans defined for polymorphic aggregates. [#2512](https://github.com/AxonFramework/AxonFramework/issues/2512)
+- Roll back slf4j to major version 1 [#2497](https://github.com/AxonFramework/AxonFramework/pull/2497)
+- DeadLetterQueue uses wrong Serializer to (de)serialize Tokens [#2485](https://github.com/AxonFramework/AxonFramework/issues/2485)
+- Adhere to expected Exception Handler invocation order [#2483](https://github.com/AxonFramework/AxonFramework/pull/2483)
+- [#2481] Check `MessageHandlerRegistrar` registration to be non-null [#2482](https://github.com/AxonFramework/AxonFramework/pull/2482)
+- NullPointerException on Shutdown without Start [#2481](https://github.com/AxonFramework/AxonFramework/issues/2481)
+- 
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@smcvb](https://github.com/smcvb)
+- [@Morlack](https://github.com/Morlack)
+- [@saratry](https://github.com/saratry)
+
 ### Release 4.6.2
 
 #### Features
