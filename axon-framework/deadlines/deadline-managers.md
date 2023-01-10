@@ -1,6 +1,6 @@
 # Deadline Managers
 
-Deadlines can be scheduled from sagas and aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`when the deadline is met. The `DeadlineManager` can be injected as a resource. It has two flavors: `SimpleDeadlineManager` and `QuartzDeadlineManager`
+Deadlines can be scheduled from sagas and aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`when the deadline is met. The `DeadlineManager` can be injected as a resource. It has three flavors: `SimpleDeadlineManager`, `JonRunrDeadlineManager` and `QuartzDeadlineManager`
 
 ## Scheduling a Deadline
 
@@ -20,7 +20,7 @@ class DeadlineSchedulingComponent {
 }
 ```
 
-As a result we receive a `deadlineId` which can be used to cancel the deadline. In most cases, storing this `deadlineId` as a field within your Aggregate/Saga is the most convenient. Cancelling a deadline could come in handy when a certain event means that the previously scheduled deadline has become obsolete \(e.g. there is a deadline for paying the invoice, but the client payed the amount which means that the deadline is obsolete and can be canceled\).
+As a result we receive a `deadlineId` which can be used to cancel the deadline. In most cases, storing this `deadlineId` as a field within your Aggregate/Saga is the most convenient. Cancelling a deadline could come in handy when a certain event means that the previously scheduled deadline has become obsolete \(e.g. there is a deadline for paying the invoice, but the client paid the amount which means that the deadline is obsolete and can be canceled\).
 
 ```java
 class DeadlineCancelingComponent {
@@ -52,6 +52,11 @@ Note that there are more options to cancel a deadline next to the previously men
 
   This allows canceling a deadline by name from differing scopes then the one it's executed in.
 
+> **Caveats for the JobRunr implementation.**
+> 
+> Since JobRunr has no way to search for search deadlines, besides by id, all of the `cancelAll` methods are not implemented for the `JobRunrDeadlineManager`.
+> This might change in the future, but only in combination with using the [Pro version](https://github.com/AxonFramework/AxonFramework/issues/2507).
+
 If you need contextual data about the deadline when the deadline is being handled, you can attach a deadline payload when scheduling a deadline:
 
 ```java
@@ -72,7 +77,7 @@ We have now seen how to schedule a deadline. When the scheduled time is met, the
 
 > **The Scope of a Deadline**
 >
-> When scheduling a deadline, the context from where it was scheduled is taken into account. This means a scheduled deadline will only be triggered in its originating context. Thus any `@DeadlineHandler` annotated function you wish to be called on a met deadline, must be in the same Aggregate/Saga from which is was scheduled.
+> When scheduling a deadline, the context from where it was scheduled is taken into account. This means a scheduled deadline will only be triggered in its originating context. Thus, any `@DeadlineHandler` annotated function you wish to be called on a met deadline, must be in the same Aggregate/Saga from which it was scheduled.
 >
 > Axon calls this context a `Scope`. If necessary, implementing and providing your own `Scope` will allow you to schedule deadlines in your custom, 'scoped' components.
 > 
@@ -116,3 +121,26 @@ public void handle(PublishTime cmd) {
 ```
 
 Note that the current timestamp is automatically added to the EventMessage. If handlers only need to rely on the timestamp the event was published, they can access that timestamp directly, as described in [Handling Events](../events/event-handlers.md).
+
+> **Spring Configuration**
+>
+> Spring Boot users will need to define a `DeadlineManager` bean using one of the available implementations. 
+>
+> Spring Boot users which want to use the JobRunr deadline managers can add [`jobrunr-spring-boot-starter`](https://mvnrepository.com/artifact/org.jobrunr/jobrunr-spring-boot-starter) as dependency.
+> The needed bean configuration should look like:
+> ```java
+> @Bean
+> public DeadlineManager deadlineManager(
+>         @Qualifier("eventSerializer") final Serializer serializer,
+>         final JobScheduler jobScheduler,
+>         final ScopeAwareProvider scopeAwareProvider,
+>         final TransactionManager transactionManager,
+> ) {
+>     return JobRunrDeadlineManager.builder()
+>             .jobScheduler(jobScheduler)
+>             .scopeAwareProvider(scopeAwareProvider)
+>             .serializer(serializer)
+>             .transactionManager(transactionManager)
+>             .build();
+> }
+> ```
