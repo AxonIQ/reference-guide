@@ -20,18 +20,14 @@ Axon 'Main Modules' are the modules that have been thoroughly tested and are rob
 >
 > During the migration of Java EE to the Eclipse Foundation, ["Eclipse and Oracle have agreed that the `javax` package namespace cannot be evolved by the Jakarta EE community"](https://eclipse-foundation.blog/2019/05/03/jakarta-ee-java-trademarks/). With the release of the Jakarta EE 9 Platform, the `javax` package names were officially and finally renamed as `jakarta`. The change impacts a few APIs that Axon Framework uses, like `inject-api`, `persistence-api`, `validation-api`. Furthermore, it impacts third-party technologies often used with Axon, such as Spring and Hibernate.
 >
->To give developers a choice, Axon Framework's core modules affected by the change now come in two variations. The ones with `-jakarta` suffix use the new `jakarta` packages. Those without the suffix depend on the old `javax` packages.
+> All code that uses the affected annotations has been updated to use the `jakarta` namespace. The variants using a `javax` namespace have been deprecated. They can be found in `legacy_jpa` packages across the Messaging, Modeling, Event Sourcing and Spring Boot Starter modules. Since we moved to using the `jakarta` namespace by default, the `-jakarta` modules introduced with 4.6.0 are no longer available. If you are using Spring auto configuration, it should still use the `javax` namespace, as long as you are using Spring Boot 2. This is done by checking the `EntityProvider` class provided by Spring Boot.
 
 | Module                                                          | Artifact Id                | Group Id          |                                Maven Central                                |
 |:----------------------------------------------------------------|:---------------------------|:------------------|:---------------------------------------------------------------------------:|
 | [Axon Messaging](modules.md#axon-messaging)                     | axon-messaging             | org.axonframework |       [available](https://search.maven.org/search?q=a:axon-messaging)       |
-| [Axon Messaging (Jakarta)](modules.md#axon-messaging)           | axon-messaging-jakarta     | org.axonframework |   [available](https://search.maven.org/search?q=a:axon-messaging-jakarta)   |
 | [Axon Modeling](modules.md#axon-modeling)                       | axon-modelling             | org.axonframework |       [available](https://search.maven.org/search?q=a:axon-modelling)       |
-| [Axon Modeling (Jakarta)](modules.md#axon-modeling)             | axon-modelling-jakarta     | org.axonframework |   [available](https://search.maven.org/search?q=a:axon-modelling-jakarta)   |
 | [Axon Event Sourcing](modules.md#axon-event-sourcing)           | axon-eventsourcing         | org.axonframework |     [available](https://search.maven.org/search?q=a:axon-eventsourcing)     |
-| [Axon Event Sourcing (Jakarta)](modules.md#axon-event-sourcing) | axon-eventsourcing-jakarta | org.axonframework | [available](https://search.maven.org/search?q=a:axon-eventsourcing-jakarta) |
 | [Axon Configuration](modules.md#axon-configuration)             | axon-configuration         | org.axonframework |     [available](https://search.maven.org/search?q=a:axon-configuration)     |
-| [Axon Configuration (Jakarta)](modules.md#axon-configuration)   | axon-configuration-jakarta | org.axonframework | [available](https://search.maven.org/search?q=a:axon-configuration-jakarta) |
 | [Axon Test](modules.md#axon-test)                               | axon-test                  | org.axonframework |         [available](https://search.maven.org/search?q=a:axon-test)          |
 | [Axon Server Connector](modules.md#axon-server-connector)       | axon-server-connector      | org.axonframework |   [available](https://search.maven.org/search?q=a:axon-server-connector)    |
 | [Axon Spring](modules.md#axon-spring)                           | axon-spring                | org.axonframework |        [available](https://search.maven.org/search?q=a:axon-spring)         |
@@ -110,6 +106,7 @@ Besides main modules, there are several extension modules which complement Axon 
 | [Axon Kafka Spring Boot Starter](modules.md#axon-kafka-spring-boot-starter)               | axon-kafka-spring-boot-starter       | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka-spring-boot-starter)       |    [available](https://github.com/AxonFramework/extension-kafka)    |
 | [Axon Kotlin](modules.md#axon-kotlin)                                                     | axon-kotlin                          | org.axonframework.extensions.kotlin      | [available](https://search.maven.org/search?q=a:axon-kotlin)                          |   [available](https://github.com/AxonFramework/extension-kotlin)    |
 | [Axon Mongo](modules.md#axon-mongo)                                                       | axon-mongo                           | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo)                           |    [available](https://github.com/AxonFramework/extension-mongo)    |
+| [Axon Mongo Spring Boot Starter](modules.md#axon-mongo)                                   | axon-mongo-spring-boot-starter       | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo-spring-boor-starter)       |    [available](https://github.com/AxonFramework/extension-mongo)    |
 | [Axon Reactor](modules.md#axon-reactor)                                                   | axon-reactor                         | org.axonframework.extensions.reactor     | [available](https://search.maven.org/search?q=a:axon-reactor)                         |   [available](https://github.com/AxonFramework/extension-reactor)   |
 | [Axon Spring Cloud](modules.md#axon-spring-cloud)                                         | axon-springcloud                     | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud)                     | [available](https://github.com/AxonFramework/extension-springcloud) |
 | [Axon Spring Cloud Spring Boot Starter](modules.md#axon-spring-cloud-spring-boot-starter) | axon-springcloud-spring-boot-starter | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud-spring-boot-starter) | [available](https://github.com/AxonFramework/extension-springcloud) |
@@ -155,6 +152,10 @@ This module provides integration with [Project Reactor](https://projectreactor.i
 ### Axon Mongo
 
 This module provides event and saga store implementations that store event streams and sagas in a MongoDB database. [MongoDB](https://www.mongodb.com/) is a document based NoSQL database.
+
+### Axon Mongo Spring Boot Starter
+
+This module provides Spring auto-configuration on top of the `axon-mongo` module.
 
 ### Axon Spring Cloud
 

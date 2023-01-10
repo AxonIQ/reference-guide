@@ -67,7 +67,7 @@ There are multiple `EventStorageEngine` implementations available:
 
 #### `JpaEventStorageEngine`
 
-The `JpaEventStorageEngine` stores events in a JPA-compatible data source. The JPA event store stores events in entries. These entries contain the serialized form of an event, as well as some fields where metadata is stored for fast lookup of these entries. To use the `JpaEventStorageEngine`, you must have the JPA \(`javax.persistence`\) annotations on your classpath.
+The `JpaEventStorageEngine` stores events in a JPA-compatible data source. The JPA event store stores events in entries. These entries contain the serialized form of an event, as well as some fields where metadata is stored for fast lookup of these entries. To use the `JpaEventStorageEngine`, you must have the JPA \(`jakarta.persistence`\) annotations on your classpath. The old, javax JPA \(`javax.persistence`\) annotations are also still supported. This will use an instance of the `JpaEventStorageEngine` using the `javax` namespace.
 
 By default, the event store needs you to configure your persistence context \(e.g. as defined in the `META-INF/persistence.xml` file\) to contain the classes `DomainEventEntry` and `SnapshotEventEntry` \(both of these classes are located in the `org.axonframework.eventsourcing.eventstore.jpa` package\).
 
@@ -98,7 +98,7 @@ Below is an example configuration of a persistence context configuration:
 
 By default, the `JpaEventStorageEngine` requires an `EntityManagerProvider` implementation that returns the `EntityManager` instance for the `EventStorageEngine` to use. This also allows application managed persistence contexts to be used. It is the `EntityManagerProvider`'s responsibility to provide a correct instance of the `EntityManager`.
 
-There are a few implementations of the `EntityManagerProvider` available, each for different needs. The `SimpleEntityManagerProvider` simply returns the `EntityManager` instance which is given to it at construction time. This makes the implementation a simple option for container managed contexts. Alternatively, there is the `ContainerManagedEntityManagerProvider`, which returns the default persistence context, and is used by default by the JPA event store.
+There are a few implementations of the `EntityManagerProvider` available, each for different needs. The `SimpleEntityManagerProvider` simply returns the `EntityManager` instance which is given to it at construction time. This makes the implementation a simple option for container managed contexts. Alternatively, there is the `ContainerManagedEntityManagerProvider`, which returns the default persistence context, and is used by default by the JPA event store. Please note these classes are duplicated to accommodate for the `javax` to `jakarta` namespace change.
 
 If you have a persistence unit called `"myPersistenceUnit"` which you wish to use in the `JpaEventStorageEngine`, the `EntityManagerProvider` implementation could look like this:
 
@@ -180,7 +180,7 @@ public class AxonConfig {
 
 > **Excluding the Axon Server Connector**
 >
-> If you exclude the `axon-server-connector` dependency from `axon-spring-boot-starter` the `EmbeddedEventStore` will be auto-configured for you, if a concrete implementation of `EventStorageEngine` is available. If JPA or JDBC is detected on the classpath, a `JpaEventStorageEngine` or `JdbcEventStorageEngine` will respectively be auto-configured as the `EventStorageEngine`. In absence of either, the auto configuration falls back to the `SimpleEventBus`.
+> If you exclude the `axon-server-connector` dependency from `axon-spring-boot-starter` the `EmbeddedEventStore` will be auto-configured for you, if a concrete implementation of `EventStorageEngine` is available. If JPA or JDBC is detected on the classpath, a `JpaEventStorageEngine` or `JdbcEventStorageEngine` will respectively be auto-configured as the `EventStorageEngine`. In absence of either, the auto configuration falls back to the `SimpleEventBus`. For the `JpaEventStorageEngine` either the `jakarta` or `javax` version will be auto-configured, depending on the available `EntityManagerFactory`. 
 {% endtab %}
 {% endtabs %}
 
@@ -296,7 +296,7 @@ By default, the `MongoEventStorageEngine` stores each event in a separate docume
 
 The advantage of storing an entire commit in a single document is that commit is stored atomically. Furthermore, it requires only a single roundtrip for any number of events. The disadvantage is that it becomes harder to query events directly in the database. For example, when refactoring the domain model it is harder to "transfer" events from one aggregate to another if they are included in a "commit document".
 
-The `MongoEventStorageEngine` does not require a lot of configuration. All it needs is a reference to the collections to store the events in, and you're set to go. For production environments, you may want to double check the indexes on your collections.
+The `MongoEventStorageEngine` does not require a lot of configuration. All it needs is a reference to the collections to store the events in, and you're set to go. For production environments, you may want to double check the indexes on your collections. If you want transactions to be handled correctly, it's important to set a `TransactionManager`. Please not there are several other optional configuration properties, like the serializers to use and an optional upcaster chain.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
@@ -348,7 +348,7 @@ public class AxonConfig {
 
 > **Excluding the Axon Server Connector**
 >
-> If you exclude the `axon-server-connector` dependency from `axon-spring-boot-starter` the `EmbeddedEventStore` will be auto-configured for you, if a concrete implementation of `EventStorageEngine` is available. When it is desired to use Mongo as the Event Storage approach, this means providing a `MongoEventStorageEngine` bean.
+> If you exclude the `axon-server-connector` dependency from `axon-spring-boot-starter` the `EmbeddedEventStore` will be auto-configured for you, if a concrete implementation of `EventStorageEngine` is available. When it is desired to use Mongo as the Event Storage approach, this means providing a `MongoEventStorageEngine` bean. Alternatively you can use the `axon-mongo-spring-boot-starter` together with setting the property `axon.mongo.event-store.enabled` to true, to have the `EventStorageEngine` auto-configured.
 {% endtab %}
 {% endtabs %}
 
