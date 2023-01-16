@@ -86,13 +86,13 @@ Below is an example configuration of a persistence context configuration:
 
    You may, however, choose to add the third line to any other persistence unit configuration.
 
-2. This line registers the `DomainEventEntry` \(the class used by the `JpaEventStore`\) with the persistence context.
+2. This line registers the `DomainEventEntry` \(the class used by the `JpaEventStorageEngine`\) with the persistence context.
 
 > **Unique Key Constraint Consideration**
 >
 > Axon uses locking to prevent two threads from accessing the same aggregate. However, if you have multiple JVMs using the same database, this won't help you. In that case, you'd have to rely on the database to detect conflicts. Concurrent access to the event store will result in a Key Constraint Violation, as the table only allows a single event for a given aggregate and sequence number. Therefore, inserting a second event for an existing aggregate with an existing sequence number will result in an error.
 >
-> The `JpaEventStorageEngine` can detect this error and translate it to a `ConcurrencyException`. However, each database system reports this violation differently. If you register your `DataSource` with the `JpaEventStore`, it will try to detect the type of database and figure out which error codes represent a Key Constraint Violation. Alternatively, you may provide a `PersistenceExceptionTranslator` instance, which can tell if a given exception represents a key constraint violation.
+> The `JpaEventStorageEngine` can detect this error and translate it to a `ConcurrencyException`. However, each database system reports this violation differently. If you register your `DataSource` with the `JpaEventStorageEngine`, it will try to detect the type of database and figure out which error codes represent a Key Constraint Violation. Alternatively, you may provide a `PersistenceExceptionResolver` instance, which can tell if a given exception represents a key constraint violation.
 >
 > If no `DataSource` or `PersistenceExceptionTranslator` is provided, exceptions from the database driver are thrown as-is.
 
@@ -100,7 +100,7 @@ By default, the `JpaEventStorageEngine` requires an `EntityManagerProvider` impl
 
 There are a few implementations of the `EntityManagerProvider` available, each for different needs. The `SimpleEntityManagerProvider` simply returns the `EntityManager` instance which is given to it at construction time. This makes the implementation a simple option for container managed contexts. Alternatively, there is the `ContainerManagedEntityManagerProvider`, which returns the default persistence context, and is used by default by the JPA event store.
 
-If you have a persistence unit called `"myPersistenceUnit"` which you wish to use in the `JpaEventStore`, the `EntityManagerProvider` implementation could look like this:
+If you have a persistence unit called `"myPersistenceUnit"` which you wish to use in the `JpaEventStorageEngine`, the `EntityManagerProvider` implementation could look like this:
 
 ```java
 public class MyEntityManagerProvider implements EntityManagerProvider {
