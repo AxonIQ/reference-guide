@@ -43,10 +43,10 @@ management.endpoint.health.show-details=when-authorized
 
 Specific AxonServer metrics are available under `/actuator/metrics` endpoint:‌
 
-* `/actuator/metrics/axon.events.count` current number of events stored in a node
-* `/actuator/metrics/axon.commands.count` current number of commands stored in a node
-* `/actuator/metrics/axon.queries.count` current number of queries stored in a node
-* `/actuator/metrics/axon.snapshots.count` current number of snapshots stored in a node
+* `/actuator/metrics/axon.event.count` current number of events stored in a node
+* `/actuator/metrics/axon.command.count` current number of commands stored in a node
+* `/actuator/metrics/axon.query.count` current number of queries stored in a node
+* `/actuator/metrics/axon.snapshot.count` current number of snapshots stored in a node
 * `/actuator/metrics/axon.commands.active` current number of active commands in a node
 
 
