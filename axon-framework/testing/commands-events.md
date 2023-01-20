@@ -197,17 +197,48 @@ Below is a list of all the operations of the given phase:
 
 ### Test Execution Phase
 
-The execution phase allows you two entry points towards the [validation phase](commands-events.md#validation-phase). Firstly, you can provide a Command to be executed against the command handling component. Similar as with the given Events, if the provided Command is of type `CommandMessage` it will be dispatched as is. The behavior of the invoked handler \(either on the aggregate or as an external handler\) is monitored and compared to the expectations registered in the validation phase.
-
-Secondly, it is possible to elapse a certain time span with the `whenThenTimeElapses(Duration)` and `whenThenTimeAdvancesTo(Instant)` handles. These support testing the publication of `DeadlineMessages`, as is further defined in [this](../deadlines/) chapter.
-
-Note that only activities that occur during the test _execution_ phase are monitored. Any Events or side-effects generated during the "given" phase are not considered in the validation phase.
+The execution phase, or "when phase," allows you several entry points towards the [validation phase](commands-events.md#validation-phase).
+Note that the test fixture only monitors activities that occur during the test _execution_ phase.
+The fixture does not consider any events or side effects generated during the [given phase](#given-phase) in the validation phase.
 
 > **Illegal State Change Detection**
 >
-> During the execution of the test, Axon attempts to detect any illegal state changes in the aggregate under test. It does so by comparing the state of the aggregate after the command execution to the state of the aggregate if it sourced from all "given" and stored events. If that state is not identical, this means that a state change has occurred outside of an aggregate's event handler method. Static and transient fields are ignored in the comparison, as they typically contain references to resources.
+> During the execution of the test, Axon attempts to detect any illegal state changes in the aggregate under test.
+> It does so by comparing the aggregate's state after command execution to the aggregate's state when event sourced from all given and stored events.
+> If that state is not identical, a state change occurred outside an aggregate's event handler method.
+> Static and transient fields are ignored in the comparison, as they typically contain references to resources.
 >
 > You can switch detection in the configuration of the fixture with the `setReportIllegalStateChange()` method.
+
+We can separate the execution phase options into roughly three variants:
+
+1. Execute a command,
+2. time progresses, and
+3. invoking a method on the aggregate.
+
+Below is a list of all the operations you can use in the execution phase:
+
+* `when(Object)`:
+  Using the `when` method, you can provide a command for the fixture to execute against the command handling component under test.
+  Similar to the given events, if the provided command is of type `CommandMessage`, the fixture dispatches it as is.
+  The fixture monitors the behavior of the invoked handler \(either on the aggregate or as an external handler\) and compares it to the expectations you register in the [validation phase](#validation-phase).
+* `when(Object, Map<String, ?>)`:
+  This `when` method provides a simpler notation to provide both the command and the metadata.
+  When the given command implements `Message`, the fixture will combine the command's metadata with the additional metadata provided separately.
+* `whenTimeElapses(Duration)`:
+  Use `whenTimeElapses` to simulate time moving on based on the given `Duration`.
+  You should use this method to [validate](#validating-deadlines) the behavior around [deadlines](../deadlines/deadline-managers.md).
+* `whenTimeAdvancesTo(Instant)`:
+  Use `whenTimeAdvancesTo` to simulate time moving towards the given `Instant`.
+  You should use this method to [validate](#validating-deadlines) the behavior around [deadlines](../deadlines/deadline-managers.md).
+* `whenConstructing(Callable<T>)`:
+  This test execution phase operation allows you to invoke the constructor of the aggregate under test.
+  Use this method whenever you (1) do not have `@CommandHandler` annotations inside the command model and (2) have not [registered an external command handler](#test-setup) with the fixture.
+  Note that `whenConstructing` should only ever follow up the `givenNoPriorActity` operation of the [given phase](#given-phase).
+* `whenInvoking(String, Consumer<T>)`:
+  This test execution phase operation allows you to invoke methods of the aggregate under test.
+  The fixture expects you to provide an aggregate identifier matching the given phase's aggregate identifier. Otherwise, the fixture throws an `AssertionError`.
+  Use this method whenever you (1) do not have `@CommandHandler` annotations inside the command model and (2) have not [registered an external command handler](#test-setup) with the fixture.
 
 ### Validation Phase
 
