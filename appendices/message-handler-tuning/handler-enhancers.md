@@ -1,19 +1,19 @@
 # Handler Enhancers
 
-Handler Enhancers allow you to wrap handlers and add custom logic to the execution, or eligibility of handlers for a certain message. 
-This differs from `HandlerInterceptor`s in that you have access to the aggregate member at the time of resolving,
- and it allows for more fine-grained control. 
-You can use handler enhancers to intercept and perform checks on groups of `@CommandHandler`s or `@EventHandler`s.
+Handler Enhancers allow you to wrap handlers and add custom logic to the execution or eligibility of handlers for a specific message.
+Handler enhancers differ from [message handler interceptors](../../axon-framework/messaging-concepts/message-intercepting.md#message-intercepting)
+by the access they provide to the message handling component (e.g., the aggregate member) at the resolution time.
+Hence, handler enhancers allow for more fine-grained control.
+You can use handler enhancers to intercept and perform checks on groups of `@MessageHandler` annotated methods, like a command, event, or query handler.
 
-To create a handler enhancer you start by implementing `HandlerEnhancerDefinition` and overriding the `wrapHandler()` method. 
-All this method does is give you access to the `MessageHandlingMember<T>` which is an object representing any handler that is specified in the system.
+To create a handler enhancer, you implement the `HandlerEnhancerDefinition` interface and override the `wrapHandler()` method.
+All this method does is give you access to the `MessageHandlingMember<T>`, which is an object representing any handler specified in the system.
 
-You can then sort these handlers based on their annotations by using the `annotationAttributes(Annotation annotation)` method. 
-This will filter out only those handlers that use that `Annotation`.
+You can then sort these handlers based on the type of `Message` they handle by using the `MessageHandlingMember.canHandleMessageType(Class<? extends Message>)` method.
+Doing so, you can specifically enhance message handlers dealing with, for example, the `CommandMessage`.
 
-For your handler enhancer to run you'll need to either create a `META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition` file containing the fully qualified class name of the handler enhancer you have created, or register it explicitly in the Configurer.
-
-Example of a Handler Enhancer that filters messages based on an expected Meta-Data key and value.
+For your handler enhancer to run, you'll need to create a `META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition` file containing the fully qualified class name of the handler enhancer you have created or register the enhancer explicitly in the `Configurer`.
+Here's an example of a `HandlerEnhancerDefinition` that filters messages based on an expected `MetaData` key and value.
 
 ```java
 // 1
@@ -36,13 +36,17 @@ public class ExampleHandlerDefinition implements HandlerEnhancerDefinition {
         private ExampleMessageHandlingMember(MessageHandlingMember<T> delegate) {
             super(delegate);
             metaDataKey = (String) delegate.attribute("metaDataKey")
-                                           .orElseThrow(() -> new IllegalArgumentException("Missing expected attribute"));
+                                           .orElseThrow(() -> new IllegalArgumentException(
+                                                   "Missing expected attribute"
+                                           ));
             expectedValue = (String) delegate.attribute("expectedValue")
-                                             .orElseThrow(() -> new IllegalArgumentException("Missing expected attribute"));
+                                             .orElseThrow(() -> new IllegalArgumentException(
+                                                     "Missing expected value"
+                                             ));
         }
 
         @Override
-        public boolean canHandle(Message<?> message) {
+        public boolean canHandle(@Nonnull Message<?> message) {
             // 4
             return super.canHandle(message) && expectedValue.equals(message.getMetaData().get(metaDataKey));
         }
@@ -62,30 +66,21 @@ public @interface MyAnnotation {
 ```
 
 1. Implement the `HandlerEnhancerDefinition` interface
-2. Override the `wrapHandler` method to perform your own logic.
+2. Override the `wrapHandler` method to perform your logic.
 3. Sort out the types of handlers you want to wrap based on a specific attribute, for example, the `metaDataKey` attribute from the `MyAnnotation`.
-4. Handle the method inside of a `MessageHandlingMember`, in this case, indicating the handler is only suitable if the meta-data key matches a value.
+4. Handle the method inside of a `MessageHandlingMember`. In this case, indicating the handler is only suitable if the meta-data key matches a value.
 5. For annotation-specific attributes to exist in the `MessageHandlingMember's` attribute collection, meta-annotation the custom annotation with `HasHandlerAttributes`.
-6. If you are not interested in wrapping the handler, just return the original that was passed into the `wrapHandler` method.
+6. If you are not interested in wrapping the handler, return the original passed into the `wrapHandler` method.
 
-It is possible to configure an `HandlerDefinition` with Axon `Configuration`. 
-If you are using Spring Boot defining `HandlerDefintion`s and `HandlerEnhancerDefinition`s as beans is sufficient \(Axon autoconfiguration will pick them up and configure within Axon `Configuration`\).
+To configure your `HandlerEnhancerDefintion`, you can (1) register it directly with the `Configurer` or (2) make it a part of the Application Context when you are in a Spring environment.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-@Configuration
-public class AxonConfig { 
+public class AxonConfig {
     // omitting other configuration methods...
-    public void registerHandlerDefinition(Configurer configurer) {
-        configurer.registerHandlerDefinition((c, clazz) -> MultiHandlerDefinition.ordered(
-                MultiHandlerEnhancerDefinition.ordered(
-                        ClasspathHandlerEnhancerDefinition.forClass(clazz), 
-                        new CustomHandlerEnhancerDefinition()
-                ), 
-                new CustomHandlerDefinition(), 
-                ClasspathHandlerDefinition.forClass(clazz)
-        ));
+    public void registerExampleHandlerDefinition(Configurer configurer) {
+        configurer.registerHandlerEnhancerDefinition(config -> new ExampleHandlerDefinition());
     }
 }
 ```
@@ -95,18 +90,12 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
- // omitting other (bean) configuration methods...
- @Bean
- public HandlerDefinition customHandlerEnhancer() {
-  return new CustomHandlerDefinition();
- }
-
- @Bean
- public HandlerEnhancerDefinition customHandlerEnhancerDefinition() {
-  return new CustomHandlerEnhancerDefinition();
- }
+    // omitting other configuration methods...
+    @Bean
+    public ExampleHandlerDefinition exampleHandlerDefinition() {
+        return new ExampleHandlerDefinition();
+    }
 }
 ```
 {% endtab %}
 {% endtabs %}
-
