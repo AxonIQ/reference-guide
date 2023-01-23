@@ -67,12 +67,14 @@ To manage transactions on these threads, you can configure a `TransactionManager
 >         final JobScheduler jobScheduler,
 >         final EventBus eventBus,
 >         final TransactionManager transactionManager,
+>         final Spanfactory spanfactory
 > ) {
 >     return JobRunrEventScheduler.builder()
 >             .jobScheduler(jobScheduler)
 >             .serializer(serializer)
 >             .eventBus(eventBus)
 >             .transactionManager(transactionManager)
+>             .spanFactory(spanfactory)
 >             .build();
 > }
 > ```

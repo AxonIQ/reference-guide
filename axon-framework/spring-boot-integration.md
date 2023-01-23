@@ -15,7 +15,9 @@ sagas.
 ### JPA & Persistence Contexts
 
 With Spring Data-JPA, a JPA Persistence Context is automatically configured. Axon's Spring Boot Autoconfiguration module
-will make sure Axon's JPA Entities are automatically registered with this default context.
+will make sure Axon's JPA Entities are automatically registered with this default context. Since 4.6.0. we use the
+`jakarta.persistance` namespace by default, for backwards compatibility classes using the `javax.persistance` are 
+available in the new `legacyjpa` namespace.
 
 However, when you explicitly include certain packages, for example using an `@EntityScan` annotation, this
 autoconfiguration will not happen anymore. If you then wish to use JPA based components from Axon, you will need to make
@@ -32,7 +34,7 @@ To register Axon's JPA Entities, include the relevant packages, as described bel
 ## Demystifying Axon Spring Boot Starter
 
 With a lot of things happening in the background, it sometimes becomes difficult to understand how an annotation or just
-including a dependency enables so many features. The way `@AutoConfiguration` classes need to be configured has changed from Spring Boot 2 to Spring Boot 3.
+including a dependency enables so many features.
 
 {% tabs %}
 {% tab title="Spring Boot 2 Auto Configuration" %}

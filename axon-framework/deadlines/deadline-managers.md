@@ -135,12 +135,14 @@ Note that the current timestamp is automatically added to the EventMessage. If h
 >         final JobScheduler jobScheduler,
 >         final ScopeAwareProvider scopeAwareProvider,
 >         final TransactionManager transactionManager,
+>         final Spanfactory spanfactory
 > ) {
 >     return JobRunrDeadlineManager.builder()
 >             .jobScheduler(jobScheduler)
 >             .scopeAwareProvider(scopeAwareProvider)
 >             .serializer(serializer)
 >             .transactionManager(transactionManager)
+>             .spanFactory(spanfactory)
 >             .build();
 > }
 > ```
