@@ -85,6 +85,9 @@ By default, `@EventHandler` annotated methods allow the following parameter type
   It is important to note that `DomainEventMessage` **can only** originate from an Aggregate.
   Hence, events that have been published directly on the `EventBus`/`EventGateway` are _not_ implementations of the `DomainEventMessage`. As such, they will not resolve a source id.
 
+* Parameters of type `DeadLetter<EventMessage<?>>` will have the current [dead letter](../events/event-processors/README.md#dead-letter-queue) related to the processed event injected.
+  Note that the inserted field is *nullable* since there is no guarantee the event of the handler is a dead letter, yes or no.
+
 * If the application runs in a Spring environment, any Spring Bean can be resolved.
   To that end, we should annotate the desired Spring bean with `@Autowired`.
   We can extend the annotation with `@Qualifier` if a specific version of the bean should be wired.

@@ -459,6 +459,32 @@ public class DeadletterProcessor {
 {% endtab %}
 {% endtabs %}
 
+For some event handlers, it is beneficial to know if the event it is processing is dead-lettered.
+To that end, you can include a parameter of type `DeadLetter<EventMessage<T>>` to your event handling methods.
+The generic refers to the type of event handled by the event handler.
+The injected `DeadLetter` parameter exposes several [attributes](#dead-letter-attributes), like the `cause()` and `diagnostics()`, for example.
+
+Do note that the `DeadLetter` parameter is *nullable*.
+When the injected `DeadLetter` is `null`, you deal with a non-dead-lettered event.
+If it is *not* `null`, the event handling occurs as a follow-up of invoking the `process(Predicate<DeadLetter<? extends EventMessage<?>>)` or `processAny()` methods on the `SequencedDeadLetterProcessor`.
+
+For added clarity, here's an event handler sample containing a `DeadLetter` parameter:
+
+```java
+@ProcessingGroup("my-processing-group")
+class MyProcessingGroup {
+    // omitted (e.g.) services and other event handlers for simplicity...
+    @EventHandler
+    public void on(SomeEvent event, DeadLetter<EventMessage<SomeEvent>> deadLetter) {
+        if (deadLetter != null) {
+            // dead-letter processing...
+        } else {
+            // regular event handling...
+        }
+    }
+}
+```
+
 #### Dead-Letter attributes
 
 A dead letter contains the following attributes:
