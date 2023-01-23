@@ -64,7 +64,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   org.axonframework.springboot.autoconfig.OpenTelemetryAutoConfiguration
 ```
 
-This file maps different configuration classes which Axon Spring boot application will try to apply. So, as per this snippet, Spring Boot will try to apply all the configuration classes for `AxonServerAutoConfiguration`, `AxonAutoConfiguration`, ...
+This file maps different configuration classes which an Axon Spring Boot application will try to apply. So, as per this snippet, Spring Boot will try to apply all the configuration classes for `AxonServerAutoConfiguration`, `AxonAutoConfiguration`, ...
 {% endtab %}
 {% tab title="Spring Boot 3 Auto Configuration" %}
 `axon-spring-boot-starter` follows general Spring boot convention in structuring the starter. It depends
@@ -94,7 +94,7 @@ org.axonframework.springboot.autoconfig.TransactionAutoConfiguration
 org.axonframework.springboot.autoconfig.XStreamAutoConfiguration
 ```
 
-This file maps different configuration classes which Axon Spring boot application will try to apply. So, as per this snippet, Spring Boot will try to apply all the configuration classes for `AxonServerAutoConfiguration`, `AxonAutoConfiguration`, ...
+This file maps different configuration classes which an Axon Spring Boot application will try to apply. So, as per this snippet, Spring Boot will try to apply all the configuration classes for `AxonServerAutoConfiguration`, `AxonAutoConfiguration`, ...
 {% endtab %}
 {% endtabs %}
 

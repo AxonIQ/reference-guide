@@ -31,7 +31,7 @@ Using JobRunr as underlying scheduling mechanism, it provides more powerful feat
 This means event publication is guaranteed. It might be a little late, but it will be published.
 It needs to be configured with a JobRunr `JobScheduler`, an `EventBus` and a `Serializer`.
 
-The `QuartzEventScheduler` is an alternative enterprise-worthy implementation, but the project has not much recent activity. 
+The `QuartzEventScheduler` is an alternative enterprise-worthy implementation, but the project has not seen much recent activity. 
 Using Quartz as underlying scheduling mechanism, it provides features, such as persistence, clustering and misfire management.
 It needs to be configured with a Quartz `Scheduler` and an `EventBus`. 
 Optionally, you may set the name of the group that Quartz jobs are scheduled in, which defaults to `"AxonFramework-Events"`.

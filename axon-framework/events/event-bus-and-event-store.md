@@ -67,7 +67,7 @@ There are multiple `EventStorageEngine` implementations available:
 
 #### `JpaEventStorageEngine`
 
-The `JpaEventStorageEngine` stores events in a JPA-compatible data source. The JPA event store stores events in entries. These entries contain the serialized form of an event, as well as some fields where metadata is stored for fast lookup of these entries. To use the `JpaEventStorageEngine`, you must have the JPA \(`jakarta.persistence`\) annotations on your classpath. The old, javax JPA \(`javax.persistence`\) annotations are also still supported. This will use an instance of the `JpaEventStorageEngine` using the `javax` namespace.
+The `JpaEventStorageEngine` stores events in a JPA-compatible data source. The JPA event store stores events in entries. These entries contain the serialized form of an event, as well as some fields where metadata is stored for fast lookup of these entries. To use the `JpaEventStorageEngine`, you must have the JPA \(`jakarta.persistence`\) annotations on your classpath. The old, javax JPA \(`javax.persistence`\) annotations are also still supported. This will use an instance of the `JpaEventStorageEngine` using the `legacyjpa` namespace.
 
 By default, the event store needs you to configure your persistence context \(e.g. as defined in the `META-INF/persistence.xml` file\) to contain the classes `DomainEventEntry` and `SnapshotEventEntry` \(both of these classes are located in the `org.axonframework.eventsourcing.eventstore.jpa` package\).
 
