@@ -402,6 +402,15 @@ Hence, the Streaming Processors achieves collaboration among instances/threads t
 In the absence of a claim, a processor will actively try to retrieve one.
 If a token claim is not extended for a configurable amount of time, other processor threads can ["steal"](#token-stealing) the claim.
 Token stealing can, for example, happen if event processing is slow or encountered some exceptions.
+
+> **Retrieving the current token inside an event handler**
+>
+> When processing an event it may be beneficial to retrieve the token belonging to that event.
+> First and foremost, this can be achieved by adding a parameter of type `TrackingToken` to the event handler.
+> This support is mentioned in the [Supported Parameters for Event Handlers](../../messaging-concepts/supported-parameters-annotated-handlers.md#supported-parameters-for-event-handlers) section.
+> 
+> Additionally, you can retrieve the token from the resources collection of the [Unit of Work](../../messaging-concepts/unit-of-work.md).
+> Both the Tracking and Pooled Streaming Event Processor add the current `TrackingToken` under the key `"Processor[{processor-name}]/Token"`.
  
 ### Initial Tracking Token
 
