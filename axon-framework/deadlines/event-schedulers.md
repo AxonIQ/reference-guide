@@ -58,8 +58,8 @@ To manage transactions on these threads, you can configure a `TransactionManager
 > Spring Boot users which rely on Axon Server do not have to define anything.
 > The auto configuration will automatically create a `AxonServerEventScheduler` for them.
 > 
-> Spring Boot users which want to use the JobRunr event scheduler can add [`jobrunr-spring-boot-starter`](https://mvnrepository.com/artifact/org.jobrunr/jobrunr-spring-boot-starter) as dependency.
-> In addition adding a `EventScheduler` bean configuration needs to be added. This should look like:
+> Spring Boot users who want to use the JobRunr event scheduler can add [`jobrunr-spring-boot-starter`](https://mvnrepository.com/artifact/org.jobrunr/jobrunr-spring-boot-starter) as a dependency.
+> In addition, an `EventScheduler` bean configuration needs to be added. This should look like:
 > ```java
 > @Bean
 > public EventScheduler eventScheduler(
