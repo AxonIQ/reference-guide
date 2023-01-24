@@ -2,6 +2,12 @@
 
 All the enhancements and features which have been introduced to our major releases of the Axon Framework are noted here.
 
+## Release 4.7
+
+This release is the first one to be compatible with [Spring Boot 3](https://github.com/AxonFramework/AxonFramework/actions/runs/3881295371). Which also entails the removal of the Jakarta specific modules, since Jakarta in now the default. In addition, it offers an additional implementation of the [Dead-Letter Queue](https://github.com/AxonFramework/extension-mongo/pull/277) within the Mongo extension. It also contains an implementation of both the [Event Scheduler](https://github.com/AxonFramework/AxonFramework/pull/2509) and [Deadline Manager](https://github.com/AxonFramework/AxonFramework/pull/2499) for [JobRunr](https://www.jobrunr.io/).
+For an exhaustive list of the features, enhancements, and bug fixes with introduced, see below.
+For a list that also contains the dependency upgrades we refer to [this](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.7.0) page.
+
 ## Release 4.6
 
 Axon Framework 4.6.0 has undergone a great deal of changes.
