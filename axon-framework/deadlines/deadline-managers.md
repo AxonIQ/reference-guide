@@ -123,26 +123,26 @@ public void handle(PublishTime cmd) {
 Note that the current timestamp is automatically added to the EventMessage. If handlers only need to rely on the timestamp the event was published, they can access that timestamp directly, as described in [Handling Events](../events/event-handlers.md).
 
 ## Configuration
->
-> Spring Boot users will need to define a `DeadlineManager` bean using one of the available implementations. 
->
-> Spring Boot users which want to use the JobRunr deadline managers can add [`jobrunr-spring-boot-starter`](https://mvnrepository.com/artifact/org.jobrunr/jobrunr-spring-boot-starter) as dependency.
-> The needed bean configuration should look like:
-> ```java
-> @Bean
-> public DeadlineManager deadlineManager(
->         @Qualifier("eventSerializer") final Serializer serializer,
->         final JobScheduler jobScheduler,
->         final ScopeAwareProvider scopeAwareProvider,
->         final TransactionManager transactionManager,
->         final Spanfactory spanfactory
-> ) {
->     return JobRunrDeadlineManager.builder()
->             .jobScheduler(jobScheduler)
->             .scopeAwareProvider(scopeAwareProvider)
->             .serializer(serializer)
->             .transactionManager(transactionManager)
->             .spanFactory(spanfactory)
->             .build();
-> }
-> ```
+
+Spring Boot users will need to define a `DeadlineManager` bean using one of the available implementations. 
+
+Spring Boot users who want to use the JobRunr deadline managers can add [`jobrunr-spring-boot-starter`](https://mvnrepository.com/artifact/org.jobrunr/jobrunr-spring-boot-starter) as a dependency.
+The needed bean configuration should look like this:
+
+```java
+@Bean
+public DeadlineManager deadlineManager(
+        @Qualifier("eventSerializer") final Serializer serializer,
+        final JobScheduler jobScheduler,
+        final ScopeAwareProvider scopeAwareProvider,
+        final TransactionManager transactionManager,
+        final Spanfactory spanfactory
+) {
+    return JobRunrDeadlineManager.builder()
+            .jobScheduler(jobScheduler)
+            .scopeAwareProvider(scopeAwareProvider)
+            .serializer(serializer)
+            .transactionManager(transactionManager)
+            .spanFactory(spanfactory)
+            .build();
+}
