@@ -300,7 +300,7 @@ By default, the `MongoEventStorageEngine` stores each event in a separate docume
 
 The advantage of storing an entire commit in a single document is that commit is stored atomically. Furthermore, it requires only a single roundtrip for any number of events. The disadvantage is that it becomes harder to query events directly in the database. For example, when refactoring the domain model it is harder to "transfer" events from one aggregate to another if they are included in a "commit document".
 
-The `MongoEventStorageEngine` does not require a lot of configuration. All it needs is a reference to the collections to store the events in, and you're set to go. For production environments, you may want to double check the indexes on your collections. If you want transactions to be handled correctly, it's important to set a `TransactionManager`. Please not there are several other optional configuration properties, like the serializers to use and an optional upcaster chain.
+The `MongoEventStorageEngine` does not require a lot of configuration. All it needs is a reference to the collections to store the events in, and you're set to go. For production environments, you may want to double check the indexes on your collections. If you want transactions to be handled correctly, it's important to set a `TransactionManager`. Please note that there are several other optional configuration properties, like the serializers and an (optional) upcaster chain.
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
