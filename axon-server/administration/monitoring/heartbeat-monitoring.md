@@ -17,18 +17,19 @@ axoniq.axonserver.heartbeat.enabled=true
 
 Please note that when combining Axon Server with Axon Framework, the framework application should also have Heartbeat Monitoring enabled.
 Note that this is enabled *by default* in Axon Framework.
-If you want to emphasize this further, regard the following configuration:
+
+If you want to disable heartbeat monitoring this further, regard the following configuration:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
     // ...
-    public void enableHeartbeats(Configurer configurer) {
+    public void disableHeartbeats(Configurer configurer) {
         configurer.registerComponent(AxonServerConfiguration.class, config -> {
             AxonServerConfiguration.HeartbeatConfiguration heartbeatConfig =
                     new AxonServerConfiguration.HeartbeatConfiguration();
-            heartbeatConfig.setEnabled(true);
+            heartbeatConfig.setEnabled(false);
 
             AxonServerConfiguration serverConfig = new AxonServerConfiguration();
             serverConfig.setHeartbeat(heartbeatConfig);
@@ -41,7 +42,7 @@ public class AxonConfig {
 
 {% tab title="Spring Boot Auto Configuration" %}
 ```text
-axon.axonserver.heartbeat.enabled=true
+axon.axonserver.heartbeat.enabled=false
 ```
 {% endtab %}
 {% endtabs %}

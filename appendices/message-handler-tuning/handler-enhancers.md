@@ -9,7 +9,7 @@ You can use handler enhancers to intercept and perform checks on groups of `@Mes
 To create a handler enhancer, you implement the `HandlerEnhancerDefinition` interface and override the `wrapHandler()` method.
 All this method does is give you access to the `MessageHandlingMember<T>`, which is an object representing any handler specified in the system.
 
-You can then sort these handlers based on the type of `Message` they handle by using the `MessageHandlingMember.canHandleMessageType(Class<? extends Message>)` method.
+You can then filter these handlers based on the type of `Message` they handle by using the `MessageHandlingMember.canHandleMessageType(Class<? extends Message>)` method.
 Doing so, you can specifically enhance message handlers dealing with, for example, the `CommandMessage`.
 
 For your handler enhancer to run, you'll need to create a `META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition` file containing the fully qualified class name of the handler enhancer you have created or register the enhancer explicitly in the `Configurer`.
@@ -67,7 +67,7 @@ public @interface MyAnnotation {
 
 1. Implement the `HandlerEnhancerDefinition` interface
 2. Override the `wrapHandler` method to perform your logic.
-3. Sort out the types of handlers you want to wrap based on a specific attribute, for example, the `metaDataKey` attribute from the `MyAnnotation`.
+3. Filter the types of handlers you want to wrap based on a specific attribute, for example, the `metaDataKey` attribute from the `MyAnnotation`.
 4. Handle the method inside of a `MessageHandlingMember`. In this case, indicating the handler is only suitable if the meta-data key matches a value.
 5. For annotation-specific attributes to exist in the `MessageHandlingMember's` attribute collection, meta-annotation the custom annotation with `HasHandlerAttributes`.
 6. If you are not interested in wrapping the handler, return the original passed into the `wrapHandler` method.

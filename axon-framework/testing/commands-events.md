@@ -83,10 +83,6 @@ public class GiftCardTest {
 >}
 >```
 
-
- 
-
-
 The "given-when-then" test fixture defines three stages: configuration, execution and validation. Each of these stages is represented by a different interface: `FixtureConfiguration`, `TestExecutor` and `ResultValidator`, respectively.
 
 > **Fluent Interface**
@@ -111,7 +107,7 @@ During the configuration phase \(i.e. before the first "given" is provided\), yo
 
 * `registerAnnotatedCommandHandler`:
 
-  Registers a Annotated Command Handler object. 
+  Registers a [Annotated Command Handler object](../axon-framework-commands/command-handlers.md#external-command-handlers) that interacts with the aggregate. 
   Use this method to register components containing `@CommandHandler` annotated methods that invoke the `Repository` to execute operation on an aggregate.
   You may end up in such a scenario when you prefer that command handlers and/or command messages are not contained inside the domain model (i.e. the aggregate).
 
@@ -170,7 +166,7 @@ During the configuration phase \(i.e. before the first "given" is provided\), yo
 ### Given Phase
 
 Once you have configured the fixture, you can start the given phase.
-Axon's test fixtures provide several given methods aligning with the modeling option of the aggregate.
+Axon's test fixtures provide several given methods aligning with the modeling options of an aggregate.
 Below is a list of all the operations of the given phase:
 
 * `givenNoPriorActivity`:
@@ -219,7 +215,7 @@ We can separate the execution phase options into roughly three variants:
 Below is a list of all the operations you can use in the execution phase:
 
 * `when(Object)`:
-  Using the `when` method, you can provide a command for the fixture to execute against the command handling component under test.
+  Using the `when` method, you can provide a command for the fixture to execute against the aggregate under test.
   Similar to the given events, if the provided command is of type `CommandMessage`, the fixture dispatches it as is.
   The fixture monitors the behavior of the invoked handler \(either on the aggregate or as an external handler\) and compares it to the expectations you register in the [validation phase](#validation-phase).
 * `when(Object, Map<String, ?>)`:
@@ -242,7 +238,8 @@ Below is a list of all the operations you can use in the execution phase:
 
 ### Validation Phase
 
-The last phase is the validation phase, which allows you to check on the activities of the command handling component. This is generally done purely in terms of return values and events.
+The last phase is the validation phase, which allows you to check on the activities of the aggregate. 
+This is generally done purely in terms of return values and events.
 
 #### Validating Command Result
 
