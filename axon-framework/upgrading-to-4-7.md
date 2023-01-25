@@ -62,7 +62,8 @@ This is required since the `AbstractSagaEntry` has been deprecated in favor of t
 
 ### Step 1
 
-Remove any `javax` mentions in your codebase or replace them with respective `jakarta` ones.
+Remove most mentions of `javax` in your codebase and replace them with respective `jakarta` ones.
+Note that no every reference of `javax` is deprecated as part of the Javax-to-Jakarta switch, such as some `javax.annotation` and `javax.cache` mentions
 
 ### Step 2
 
