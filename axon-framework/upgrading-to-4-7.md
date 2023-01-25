@@ -9,12 +9,12 @@ The breaking changes are related to the migration from `javax` to `jakarta` pack
 frameworks often used together with Axon.
 Depending on what you were using with 4.6.x version, there are three possible migration paths:
 
-1. From `javax` to `javax` - This is what you may want if you don’t want Spring 6 and Spring Boot 3 support and expect
-   things to stay the same.
-2. From `javax` to `jakarta` - This is what you will want if you also upgrade to Spring 6, Spring Boot 3, or another
-   framework that depends on `jakarta` packages.
-3. From `jakarta` to `jakarta` - This is what you will want if you have already moved to the
-   optional `[module-name]-jakarta` modules in Axon Framework 4.6.x.
+1. [From `javax` to `javax`](#steps-to-upgrade-from-javax-to-javax): 
+   This is what you may want if you don’t want Spring 6 and Spring Boot 3 support and expect things to stay the same.
+2. [From `javax` to `jakarta`](#steps-to-upgrade-from-javax-to-jakarta): 
+   This is what you will want if you also upgrade to Spring 6, Spring Boot 3, or another framework that depends on `jakarta` packages.
+3. [From `jakarta` to `jakarta`](#steps-to-upgrade-from-jakarta-to-jakarta): 
+   This is what you will want if you have already moved to the optional `[module-name]-jakarta` modules in Axon Framework 4.6.x.
 
 > **From `jakarta` to `javax`**
 >
@@ -83,7 +83,6 @@ back this new default of Hibernate:
 {% tab title="`persistence.xml` configuration" %}
 
 ```xml
-
 <persistence>
     <persistence-unit name="my-persistence-unit">
         <!-- omitting other configuration for simplicity... -->
