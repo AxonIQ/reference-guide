@@ -29,9 +29,6 @@ Adjust packages in `import` statements and FQCNs according to the new locations 
 
 | Axon 4.6.x                                                                        | Axon 4.7.x                                                                              |
 |-----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| org.axonframework.eventsourcing.eventstore.EmbeddedEventStore                     | org.axonframework.eventsourcing.eventstore.legacyjpa.EmbeddedEventStore                 |
-| org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine              | org.axonframework.eventsourcing.eventstore.legacyjpa.JpaEventStorageEngine              |
-| org.axonframework.eventsourcing.eventstore.jpa.SQLErrorCodesResolver              | org.axonframework.eventsourcing.eventstore.legacyjpa.SQLErrorCodesResolver              |
 | org.axonframework.common.jpa.EntityManagerProvider                                | org.axonframework.common.legacyjpa.EntityManagerProvider                                |
 | org.axonframework.common.jpa.PagingJpaQueryIterable                               | org.axonframework.common.legacyjpa.PagingJpaQueryIterable                               |
 | org.axonframework.common.jpa.SimpleEntityManagerProvider                          | org.axonframework.common.legacyjpa.SimpleEntityManagerProvider                          |
@@ -40,13 +37,16 @@ Adjust packages in `import` statements and FQCNs according to the new locations 
 | org.axonframework.eventhandling.deadletter.jpa.JpaDeadLetter                      | org.axonframework.eventhandling.deadletter.legacyjpa.JpaDeadLetter                      |
 | org.axonframework.eventhandling.deadletter.jpa.JpaSequencedDeadLetterQueue        | org.axonframework.eventhandling.deadletter.legacyjpa.JpaSequencedDeadLetterQueue        |
 | org.axonframework.eventhandling.tokenstore.jpa.JpaTokenStore                      | org.axonframework.eventhandling.tokenstore.legacyjpa.JpaTokenStore                      |
+| org.axonframework.eventsourcing.eventstore.EmbeddedEventStore                     | org.axonframework.eventsourcing.eventstore.legacyjpa.EmbeddedEventStore                 |
+| org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine              | org.axonframework.eventsourcing.eventstore.legacyjpa.JpaEventStorageEngine              |
+| org.axonframework.eventsourcing.eventstore.jpa.SQLErrorCodesResolver              | org.axonframework.eventsourcing.eventstore.legacyjpa.SQLErrorCodesResolver              |
+| org.axonframework.messaging.interceptors.BeanValidationInterceptor                | org.axonframework.messaging.interceptors.legacyvalidation.BeanValidationInterceptor     |
+| org.axonframework.messaging.interceptors.JSR303ViolationException                 | org.axonframework.messaging.interceptors.legacyvalidation.JSR303ViolationException      |
 | org.axonframework.modelling.command.GenericJpaRepository                          | org.axonframework.modelling.command.legacyjpa.GenericJpaRepository                      |
 | org.axonframework.modelling.saga.repository.jpa.JpaSagaStore                      | org.axonframework.modelling.saga.repository.legacyjpa.JpaSagaStore                      |
 | org.axonframework.springboot.autoconfig.JpaAutoConfiguration                      | org.axonframework.springboot.autoconfig.legacyjpa.JpaJavaxAutoConfiguration             |
 | org.axonframework.springboot.autoconfig.JpaEventStoreAutoConfiguration            | org.axonframework.springboot.autoconfig.legacyjpa.JpaJavaxEventStoreAutoConfiguration   |
 | org.axonframework.springboot.util.jpa.ContainerManagedEntityManagerProvider       | org.axonframework.springboot.util.legacyjpa.ContainerManagedEntityManagerProvider       |
-| org.axonframework.messaging.interceptors.BeanValidationInterceptor                | org.axonframework.messaging.interceptors.legacyvalidation.BeanValidationInterceptor     |
-| org.axonframework.messaging.interceptors.JSR303ViolationException                 | org.axonframework.messaging.interceptors.legacyvalidation.JSR303ViolationException      |
 
 ### Step 2
 
