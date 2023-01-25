@@ -2,10 +2,19 @@
 
 This section of the reference guide intends to cover in detail the capabilities that the Axon Framework provides to help build applications based on [CQRS/DDD](../architecture-overview/#ddd-and-cqrs) and [Event Sourcing](../architecture-overview/event-sourcing.md)
 
+> Breaking Changes in Axon Framework 4.7!
+>
+> Against our normal approach towards minor releases, we sadly had to introduce breaking changes between Axon Framework 4.6 and 4.7.
+> Our apologies for this.
+>
+> To help you with your upgrade we have constructed a dedicated page [here](upgrading-to-4-7.md) that helps you on your path to upgrade to 4.7.
+> If you find any irregularities concerning your upgrade, be sure to reach out to us!
+
 A summary of the various sub-sections is given below.
 
 | Sub-Section                                           | Purpose                                                                  |
 |:------------------------------------------------------|:-------------------------------------------------------------------------|
+| [Upgrading to 4.7](upgrading-to-4-7.md)               | Step plan explaining how to upgrade to Axon Framework 4.7                |
 | [Messaging Concepts](messaging-concepts/)             | Conceptual overview of "Messages" within the Axon Framework              |
 | [Commands](axon-framework-commands/)                  | Command Message Development using the Axon Framework                     |
 | [Events](events/)                                     | Event Message Development using the Axon Framework                       |
