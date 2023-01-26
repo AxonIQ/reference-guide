@@ -4,9 +4,76 @@ All the enhancements and features which have been introduced to our major releas
 
 ## Release 4.7
 
-This release is the first one to be compatible with [Spring Boot 3](https://github.com/AxonFramework/AxonFramework/actions/runs/3881295371). Which also entails the removal of the Jakarta specific modules, since Jakarta in now the default. In addition, it offers an additional implementation of the [Dead-Letter Queue](https://github.com/AxonFramework/extension-mongo/pull/277) within the Mongo extension. It also contains an implementation of both the [Event Scheduler](https://github.com/AxonFramework/AxonFramework/pull/2509) and [Deadline Manager](https://github.com/AxonFramework/AxonFramework/pull/2499) for [JobRunr](https://www.jobrunr.io/).
-For an exhaustive list of the features, enhancements, and bug fixes with introduced, see below.
-For a list that also contains the dependency upgrades we refer to [this](https://github.com/AxonFramework/AxonFramework/releases/tag/axon-4.7.0) page.
+This release introduces compatibility with [Spring Boot 3](https://github.com/AxonFramework/AxonFramework/actions/runs/3881295371).
+The support for Spring Boot 3 also entails the removal of the Jakarta-specific modules since Jakarta is now the default.
+Furthermore, it required us to duplicate the Javax Persistence and Javax Validation classes into dedicated legacy packages.
+In doing so, we provided support for both Javax and Jakarta, as well as Spring Boot 2 and Spring Boot 3.
+
+However, this required us to introduce breaking changes in 4.7 compared to 4.6.
+To help you upgrade towards Axon Framework 4.7, we provide a dedicated [Upgrading to Axon Framework 4.7](../../axon-framework/upgrading-to-4-7.md) page describing the scenarios you may be in and the steps to take for upgrading.
+
+Next to the Javax-to-Jakarta adjustments and the Spring Boot 3 support, we've added an [Event Scheduler](https://github.com/AxonFramework/AxonFramework/pull/2509) and [Deadline Manager](https://github.com/AxonFramework/AxonFramework/pull/2499) based on [JobRunr](https://www.jobrunr.io/).
+
+For an exhaustive list of the features, enhancements, and bug fixes introduced, see below:
+
+### _Features_
+
+- [#1509] Add `whenConstructing` and `whenInvoking` to the `AggregateTestFixture` [#2551](https://github.com/AxonFramework/AxonFramework/pull/2551)
+- [#2476] Support `EventMessage` handler interceptor registration on the `SagaTestFixture` [#2548](https://github.com/AxonFramework/AxonFramework/pull/2548)
+- [#2351] The `DeadLetter` Parameter Resolver [#2547](https://github.com/AxonFramework/AxonFramework/pull/2547)
+- Add `Configurer#registerHandlerEnhancerDefinition` [#2545](https://github.com/AxonFramework/AxonFramework/pull/2545)
+- [#1123] Support `Repository` bean wiring through generics [#2527](https://github.com/AxonFramework/AxonFramework/pull/2527)
+- Implement the JobRunr implementation of the event scheduler. [#2509](https://github.com/AxonFramework/AxonFramework/pull/2509)
+- JobRunr `DeadlineManager` [#2499](https://github.com/AxonFramework/AxonFramework/pull/2499)
+- Added parameter resolver for aggregate type retrieval from domain event messages [#2498](https://github.com/AxonFramework/AxonFramework/pull/2498)
+- Implement Event Handler Interceptors registration on `SagaTestFixtures` [#2476](https://github.com/AxonFramework/AxonFramework/issues/2476)
+- Message Handler (parameter) support for Dead Letters  [#2351](https://github.com/AxonFramework/AxonFramework/issues/2351)
+- Alternative deadline manager: JobRunr (Quartz alternative) [#2192](https://github.com/AxonFramework/AxonFramework/pull/2192)
+- Allow the AggregateTestFixture to expect methods to be called instead of commands passed. [#1509](https://github.com/AxonFramework/AxonFramework/issues/1509)
+- Allow replay on a Saga [#1458](https://github.com/AxonFramework/AxonFramework/issues/1458)
+- Provide alternatives for QuartzEventScheduler and QuartzDeadlineManager [#1106](https://github.com/AxonFramework/AxonFramework/issues/1106)
+- Configurable Locking Scheme in SagaStore [#947](https://github.com/AxonFramework/AxonFramework/issues/947)
+
+### _Enhancements_
+
+- Fixed SpringAggregateLookup initialization issue for Spring AOT [#2578](https://github.com/AxonFramework/AxonFramework/pull/2578)
+- [#2561] Move Sonar to JDK17 [#2574](https://github.com/AxonFramework/AxonFramework/pull/2574)
+- Automatically approve `dependabot[bot]` PRs [#2566](https://github.com/AxonFramework/AxonFramework/pull/2566)
+- Add Segment and Token to UnitOfWork of PooledStreamingEventProcessor [#2562](https://github.com/AxonFramework/AxonFramework/pull/2562)
+- Move Sonar to JDK17 build [#2561](https://github.com/AxonFramework/AxonFramework/issues/2561)
+- [#2129] Fine tune `Repository` registration in the `AggregateTestFixture` [#2552](https://github.com/AxonFramework/AxonFramework/pull/2552)
+- [#1630] Allow disabling of sequence number generation in the `GenericJpaRepository` [#2550](https://github.com/AxonFramework/AxonFramework/pull/2550)
+- Several fixes to successfully run a JDK17 build [#2544](https://github.com/AxonFramework/AxonFramework/pull/2544)
+- Adjust dependabot behavior [#2536](https://github.com/AxonFramework/AxonFramework/pull/2536)
+- Enable heartbeats to Axon Server by default [#2530](https://github.com/AxonFramework/AxonFramework/pull/2530)
+- [#2383] Add `ConditionalOnMissingBean` to `SpringAxonConfiguration` and `SpringConfigurer` [#2526](https://github.com/AxonFramework/AxonFramework/pull/2526)
+- Small test and code improvement for JobRunr deadline manager [#2510](https://github.com/AxonFramework/AxonFramework/pull/2510)
+- Introduce the NestingSpanFactory [#2487](https://github.com/AxonFramework/AxonFramework/pull/2487)
+- Improve mismatch messages for Hamcrest Matchers #2400 [#2418](https://github.com/AxonFramework/AxonFramework/pull/2418)
+- Allow OpenTelemetrySpanFactory to only create child spans [#2404](https://github.com/AxonFramework/AxonFramework/issues/2404)
+- Add ConditionalOnBean to InfraConfiguration Beans [#2383](https://github.com/AxonFramework/AxonFramework/issues/2383)
+- AggregateTestFixture creates EventSourcingRepository and does not invalidate it [#2129](https://github.com/AxonFramework/AxonFramework/issues/2129)
+- JDK16 - axon-messaging own unit test fail on  [#1826](https://github.com/AxonFramework/AxonFramework/issues/1826)
+- GenericJpaRepository to enable/disable the sequence number generation [#1630](https://github.com/AxonFramework/AxonFramework/issues/1630)
+
+### _Bug Fixes_
+
+- Fix typos in Javadoc [#2475](https://github.com/AxonFramework/AxonFramework/pull/2475)
+- Aggregate Repository Spring wiring causes NullPointerException [#1123](https://github.com/AxonFramework/AxonFramework/issues/1123)
+- Asserting checked exception while creating an Aggregate [#782](https://github.com/AxonFramework/AxonFramework/issues/782)
+
+### _Contributors_
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@Morlack](https://github.com/Morlack)
+- [@maverick1601](https://github.com/maverick1601)
+- [@TomDeBacker](https://github.com/TomDeBacker)
+- [@lachja](https://github.com/lachja)
+- [@abuijze](https://github.com/abuijze)
+- [@fernanfs](https://github.com/fernanfs)
 
 ## Release 4.6
 
