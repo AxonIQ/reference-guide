@@ -4,20 +4,30 @@ Welcome to the Axon Manual!
 
 Axon provides the Axon Framework and the Axon Server to help build applications centered on three core concepts - CQRS \(Command Query Responsibility Segregation\) / Event Sourcing and DDD \(Domain Driven Design\).
 
-While many types of applications can be built using Axon, it has proven to be very popular for microservices architectures. Axon provides an innovative and powerful way of sensibily evolving to event-driven microservices within a microservices architecture.
+While many types of applications can be built using Axon, it has proven to be very popular for microservices architectures. 
+Axon provides an innovative and powerful way of sensibly evolving to event-driven microservices within a microservices architecture.
 
-Please visit [the AxonIQ website](https://axoniq.io/) to learn more about AxonIQ and the Axon community. There, you will find information about Axon training, support options, upcoming and past events.
+Please visit [the AxonIQ website](https://axoniq.io/) to learn more about AxonIQ and the Axon community. 
+There, you will find information about Axon training, support options, upcoming and past events.
+
+> Breaking Changes in Axon Framework 4.7!
+> 
+> Against our normal approach towards minor releases, we sadly had to introduce breaking changes between Axon Framework 4.6 and 4.7.
+> Our apologies for this.
+> 
+> To help you with your upgrade we have constructed a dedicated page [here](axon-framework/upgrading-to-4-7.md) that helps you on your path to upgrade to 4.7.
+> If you find any irregularities concerning your upgrade, be sure to reach out to us!
 
 ## How to use this guide
 
 The Reference Guide is split into 4 sections
 
-| Section Name | Purpose |
-| :--- | :--- |
-| [Quick Start](getting-started/quick-start.md) | Details the Quick Start toolkit that Axon provides to easily familiarize with the basic concepts of Axon Framework and Axon Server |
-| [Axon Framework](axon-framework/introduction.md) | Details the building of Axon Framework based applications. |
-| [Axon Server](axon-server/introduction.md) | Details the Installation/Setup and Maintenance of Axon Server \(SE/EE\). |
-| [Axon Framework Extensions](release-notes/rn-extensions) | Details the extensions that Axon Framework provides to integrate with existing enterprise infrastructure\(s\). |
+| Section Name                                             | Purpose                                                                                                                            |
+|:---------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------|
+| [Quick Start](getting-started/quick-start.md)            | Details the Quick Start toolkit that Axon provides to easily familiarize with the basic concepts of Axon Framework and Axon Server |
+| [Axon Framework](axon-framework/introduction.md)         | Details the building of Axon Framework based applications.                                                                         |
+| [Axon Server](axon-server/introduction.md)               | Details the Installation/Setup and Maintenance of Axon Server \(SE/EE\).                                                           |
+| [Axon Framework Extensions](release-notes/rn-extensions) | Details the extensions that Axon Framework provides to integrate with existing enterprise infrastructure\(s\).                     |
 
 ## License\(s\)
 

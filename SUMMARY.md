@@ -53,6 +53,7 @@
 ## Axon Framework
 
 * [Introduction](axon-framework/introduction.md)
+* [Upgrading to 4.7](axon-framework/upgrading-to-4-7.md)
 * [Messaging Concepts](axon-framework/messaging-concepts/README.md)
   * [Anatomy of a Message](axon-framework/messaging-concepts/anatomy-message.md)
   * [Message Correlation](axon-framework/messaging-concepts/message-correlation.md)
