@@ -86,13 +86,13 @@ Below is an example configuration of a persistence context configuration:
 
    You may, however, choose to add the third line to any other persistence unit configuration.
 
-2. This line registers the `DomainEventEntry` \(the class used by the `JpaEventStore`\) with the persistence context.
+2. This line registers the `DomainEventEntry` \(the class used by the `JpaEventStorageEngine`\) with the persistence context.
 
 > **Unique Key Constraint Consideration**
 >
 > Axon uses locking to prevent two threads from accessing the same aggregate. However, if you have multiple JVMs using the same database, this won't help you. In that case, you'd have to rely on the database to detect conflicts. Concurrent access to the event store will result in a Key Constraint Violation, as the table only allows a single event for a given aggregate and sequence number. Therefore, inserting a second event for an existing aggregate with an existing sequence number will result in an error.
 >
-> The `JpaEventStorageEngine` can detect this error and translate it to a `ConcurrencyException`. However, each database system reports this violation differently. If you register your `DataSource` with the `JpaEventStore`, it will try to detect the type of database and figure out which error codes represent a Key Constraint Violation. Alternatively, you may provide a `PersistenceExceptionTranslator` instance, which can tell if a given exception represents a key constraint violation.
+> The `JpaEventStorageEngine` can detect this error and translate it to a `ConcurrencyException`. However, each database system reports this violation differently. If you register your `DataSource` with the `JpaEventStorageEngine`, it will try to detect the type of database and figure out which error codes represent a Key Constraint Violation. Alternatively, you may provide a `PersistenceExceptionResolver` instance, which can tell if a given exception represents a key constraint violation.
 >
 > If no `DataSource` or `PersistenceExceptionTranslator` is provided, exceptions from the database driver are thrown as-is.
 
@@ -100,7 +100,7 @@ By default, the `JpaEventStorageEngine` requires an `EntityManagerProvider` impl
 
 There are a few implementations of the `EntityManagerProvider` available, each for different needs. The `SimpleEntityManagerProvider` simply returns the `EntityManager` instance which is given to it at construction time. This makes the implementation a simple option for container managed contexts. Alternatively, there is the `ContainerManagedEntityManagerProvider`, which returns the default persistence context, and is used by default by the JPA event store.
 
-If you have a persistence unit called `"myPersistenceUnit"` which you wish to use in the `JpaEventStore`, the `EntityManagerProvider` implementation could look like this:
+If you have a persistence unit called `"myPersistenceUnit"` which you wish to use in the `JpaEventStorageEngine`, the `EntityManagerProvider` implementation could look like this:
 
 ```java
 public class MyEntityManagerProvider implements EntityManagerProvider {
@@ -131,39 +131,50 @@ If that is the case, you can extend the `JpaEventStorageEngine`. It contains a n
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-// Returns a Configurer instance which has JPA components configured,
-//  such as a JPA based Event Store `JpaEventStorageEngine`, a `JpaTokenStore` and `JpaSagaStore`.
-Configurer configurer = DefaultConfigurer.jpaConfiguration(entityManagerProvider, transactionManager);
+public class AxonConfig {
+    // omitting other configuration methods...
+    public Configurer jpaEventStorageConfigurer(EntityManagerProvider entityManagerProvider,
+                                                TransactionManager transactionManager) {
+        return DefaultConfigurer.jpaConfiguration(entityManagerProvider, transactionManager);
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
-// The Event store `EmbeddedEventStore` delegates actual storage and retrieval of events to an `EventStorageEngine`.
-@Bean
-public EmbeddedEventStore eventStore(EventStorageEngine storageEngine, AxonConfiguration configuration) {
-    return EmbeddedEventStore.builder()
-            .storageEngine(storageEngine)
-            .messageMonitor(configuration.messageMonitor(EventStore.class, "eventStore"))
-            .build();
-}
-
-// The JpaEventStorageEngine stores events in a JPA-compatible data source
-@Bean
-public EventStorageEngine storageEngine(Serializer defaultSerializer,
-                                        PersistenceExceptionResolver persistenceExceptionResolver,
-                                        @Qualifier("eventSerializer") Serializer eventSerializer,
-                                        AxonConfiguration configuration,
-                                        EntityManagerProvider entityManagerProvider,
-                                        TransactionManager transactionManager) {
-    return JpaEventStorageEngine.builder()
-            .snapshotSerializer(defaultSerializer)
-            .upcasterChain(configuration.upcasterChain())
-            .persistenceExceptionResolver(persistenceExceptionResolver)
-            .eventSerializer(eventSerializer)
-            .entityManagerProvider(entityManagerProvider)
-            .transactionManager(transactionManager)
-            .build();
+@Configuration
+public class AxonConfig {
+    // omitting other configuration methods...
+   
+    // The EmbeddedEventStore delegates actual storage and retrieval of events to an EventStorageEngine.
+    @Bean
+    public EventStore eventStore(EventStorageEngine storageEngine,
+                                 GlobalMetricRegistry metricRegistry) {
+        return EmbeddedEventStore.builder()
+                                 .storageEngine(storageEngine)
+                                 .messageMonitor(metricRegistry.registerEventBus("eventStore"))
+                                 .spanFactory(spanFactory)
+                                 // ...
+                                 .build();
+    }
+ 
+    // The JpaEventStorageEngine stores events in a JPA-compatible data source.
+    @Bean
+    public EventStorageEngine eventStorageEngine(Serializer serializer,
+                                                 PersistenceExceptionResolver persistenceExceptionResolver,
+                                                 @Qualifier("eventSerializer") Serializer eventSerializer,
+                                                 EntityManagerProvider entityManagerProvider,
+                                                 TransactionManager transactionManager) {
+         return JpaEventStorageEngine.builder()
+                                     .snapshotSerializer(serializer)
+                                     .persistenceExceptionResolver(persistenceExceptionResolver)
+                                     .eventSerializer(eventSerializer)
+                                     .entityManagerProvider(entityManagerProvider)
+                                     .transactionManager(transactionManager)
+                                     // ...
+                                     .build();
+    }
 }
 ```
 
@@ -192,20 +203,24 @@ This approach ensures that the framework uses a single transaction to store all 
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
-    public void configureJdbcEventStorage(Configurer configurer, 
+    // omitting other configuration methods...
+    public void configureJdbcEventStorage(Configurer configurer,
+                                          ConnectionProvider connectionProvider,
                                           EventTableFactory eventTableFactory) {
         configurer.configureEmbeddedEventStore(
-                config -> {
-                    JdbcEventStorageEngine jdbcStorageEngine = 
-                            JdbcEventStorageEngine.builder()
-                                                  .connectionProvider(connectionProvider)
-                                                  .transactionManager(NoTransactionManager.INSTANCE)
-                                                  .build();
-                    
-                    // If the schema has not been constructed yet, the createSchema method can be used: 
-                    jdbcStorageEngine.createSchema(eventTableFactory);
-                }
+                 config -> {
+                     JdbcEventStorageEngine storageEngine =
+                              JdbcEventStorageEngine.builder()
+                                                    .snapshotSerializer(config.serializer())
+                                                    .connectionProvider(connectionProvider)
+                                                    .transactionManager(config.getComponent(TransactionManager.class))
+                                                    .eventSerializer(config.eventSerializer())
+                                                    // ...
+                                                    .build();
+                     // If the schema has not been constructed yet, the createSchema method can be used: 
+                     storageEngine.createSchema(eventTableFactory);
+                     return storageEngine;
+                 }
         );
     }
 }
@@ -220,11 +235,37 @@ Axon can help you here with the `createSchema` operation:
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
-    @Autowire
-    public void createJdbcEventStorageSchema(JdbcEventStorageEngine jdbcStorageEngine, 
-                                             EventTableFactory eventTableFactory) { 
-        jdbcStorageEngine.createSchema(eventTableFactory);
+    // omitting other configuration methods...
+   
+    // The EmbeddedEventStore delegates actual storage and retrieval of events to an EventStorageEngine.
+    @Bean
+    public EventStore eventStore(EventStorageEngine storageEngine,
+                                 GlobalMetricRegistry metricRegistry) {
+        return EmbeddedEventStore.builder()
+                                 .storageEngine(storageEngine)
+                                 .messageMonitor(metricRegistry.registerEventBus("eventStore"))
+                                 .spanFactory(spanFactory)
+                                 // ...
+                                 .build();
+    }
+
+    // The JdbcEventStorageEngine stores events in a JDBC-compatible data source.
+    @Bean
+    public EventStorageEngine storageEngine(Serializer serializer,
+                                            ConnectionProvider connectionProvider,
+                                            @Qualifier("eventSerializer") Serializer eventSerializer,
+                                            TransactionManager transactionManager,
+                                            EventTableFactory tableFactory) {
+        JdbcEventStorageEngine storageEngine = JdbcEventStorageEngine.builder()
+                                                                     .snapshotSerializer(serializer)
+                                                                     .connectionProvider(connectionProvider)
+                                                                     .eventSerializer(eventSerializer)
+                                                                     .transactionManager(transactionManager)
+                                                                     // ...
+                                                                     .build();
+        // If the schema has not been constructed yet, the createSchema method can be used:
+        storageEngine.createSchema(tableFactory);
+        return storageEngine;
     }
 }
 ```
@@ -260,30 +301,48 @@ The `MongoEventStorageEngine` does not require a lot of configuration. All it ne
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-// Returns a Configurer instance with default components configured. 
-// We explicitly set `MongoEventStorageEngine` as desired engine for Embedded Event Store.
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-    .configureEmbeddedEventStore(
-        c -> MongoEventStorageEngine.builder().mongoTemplate(mongoTemplate).build()
-    );
+public class AxonConfig {
+    // omitting other configuration methods...
+    public void configureMongoEventStorage(Configurer configurer, MongoTemplate mongoTemplate) {
+        configurer.configureEmbeddedEventStore(
+                 config -> MongoEventStorageEngine.builder()
+                                                  .mongoTemplate(mongoTemplate)
+                                                  // ...
+                                                  .build()
+        );
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
-// The Event store `EmbeddedEventStore` delegates actual storage and retrieval of events to an `EventStorageEngine`.
-@Bean
-public EmbeddedEventStore eventStore(EventStorageEngine storageEngine, AxonConfiguration configuration) {
-    return EmbeddedEventStore.builder()
-            .storageEngine(storageEngine)
-            .messageMonitor(configuration.messageMonitor(EventStore.class, "eventStore"))
-            .build();
-}
+@Configuration
+public class AxonConfig {
+    // omitting other configuration methods...
+   
+    // The EmbeddedEventStore delegates actual storage and retrieval of events to an EventStorageEngine.
+    @Bean
+    public EventStore eventStore(EventStorageEngine storageEngine,
+                                 GlobalMetricRegistry metricRegistry) {
+       return EmbeddedEventStore.builder()
+                                .storageEngine(storageEngine)
+                                .messageMonitor(metricRegistry.registerEventBus("eventStore"))
+                                .spanFactory(spanFactory)
+                                // ...
+                                .build();
+    }
 
-// The `MongoEventStorageEngine` stores each event in a separate MongoDB document
-@Bean
-public EventStorageEngine storageEngine(MongoClient client) {
-    return MongoEventStorageEngine.builder().mongoTemplate(DefaultMongoTemplate.builder().mongoDatabase(client).build()).build();
+    // The MongoEventStorageEngine stores each event in a separate MongoDB document.
+    @Bean
+    public EventStorageEngine storageEngine(MongoClient client) {
+        return MongoEventStorageEngine.builder()
+                                      .mongoTemplate(DefaultMongoTemplate.builder()
+                                                                         .mongoDatabase(client)
+                                                                         .build())
+                                      // ...
+                                      .build();
+    }
 }
 ```
 
@@ -304,28 +363,38 @@ The `InMemoryEventStorageEngine` keeps stored events in memory. While it probabl
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-// Returns a Configurer instance with default components configured. 
-// We explicitly set `InMemoryEventStorageEngine` as desired engine for Embedded Event Store.
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-      .configureEmbeddedEventStore(c -> new InMemoryEventStorageEngine());
+public class AxonConfig {
+    // omitting other configuration methods...
+    public void configureInMemoryEventStorage(Configurer configurer) {
+        configurer.configureEmbeddedEventStore(config -> new InMemoryEventStorageEngine());
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
-// The Event store `EmbeddedEventStore` delegates actual storage and retrieval of events to an `EventStorageEngine`.
-@Bean
-public EmbeddedEventStore eventStore(EventStorageEngine storageEngine, AxonConfiguration configuration) {
-    return EmbeddedEventStore.builder()
-            .storageEngine(storageEngine)
-            .messageMonitor(configuration.messageMonitor(EventStore.class, "eventStore"))
-            .build();
-}
+@Configuration
+public class AxonConfig {
+    // omitting other configuration methods...
+   
+    // The EmbeddedEventStore delegates actual storage and retrieval of events to an EventStorageEngine.
+    @Bean
+    public EventStore eventStore(EventStorageEngine storageEngine,
+                                 GlobalMetricRegistry metricRegistry) {
+        return EmbeddedEventStore.builder()
+                                 .storageEngine(storageEngine)
+                                 .messageMonitor(metricRegistry.registerEventBus("eventStore"))
+                                 .spanFactory(spanFactory)
+                                 // ...
+                                 .build();
+    }
 
-// The `InMemoryEventStorageEngine` stores each event in memory
-@Bean
-public EventStorageEngine storageEngine() {
-    return new InMemoryEventStorageEngine();
+    // The InMemoryEventStorageEngine stores each event in memory.
+    @Bean
+    public EventStorageEngine storageEngine() {
+        return new InMemoryEventStorageEngine();
+    }
 }
 ```
 

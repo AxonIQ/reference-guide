@@ -159,7 +159,7 @@ Furthermore, we can configure the error handling behavior per processing group:
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureProcessingGroupErrorHandling(EventProcessingConfigurer processingConfigurer) {
         // To configure a default ...
         processingConfigurer.registerDefaultListenerInvocationErrorHandler(conf -> /* create listener error handler */)
@@ -174,7 +174,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule processingGroupErrorHandlingConfigurerModule() {
         return configurer -> configurer.eventProcessing(
@@ -237,6 +237,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule processorErrorHandlingConfigurerModule() {
         return configurer -> configurer.eventProcessing(
@@ -324,7 +325,7 @@ A `JpaSequencedDeadLetterQueue` configuration example:
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureDeadLetterQueue(EventProcessingConfigurer processingConfigurer) {
         // Replace "my-processing-group" for the processing group you want to configure the DLQ on. 
         processingConfigurer.registerDeadLetterQueue(
@@ -346,7 +347,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule deadLetterQueueConfigurerModule() {
         // Replace "my-processing-group" for the processing group you want to configure the DLQ on.
@@ -522,7 +523,7 @@ See the following example for configuring our custom policy:
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     public void configureEnqueuePolicy(EventProcessingConfigurer configurer) {
         // Replace "my-processing-group" for the processing group you want to configure the policy on.
         configurer.registerDeadLetterPolicy("my-processing-group", config -> new MyEnqueuePolicy());
@@ -534,7 +535,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-
+    // omitting other configuration methods...
     @Bean
     public ConfigurerModule enqueuePolicyConfigurerModule() {
         // Replace "my-processing-group" for the processing group you want to configure the policy on.

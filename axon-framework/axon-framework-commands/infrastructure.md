@@ -166,30 +166,54 @@ Since all command processing is done in the same thread, this implementation is 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-Configurer configurer =
-    DefaultConfigurer.defaultConfiguration()
-                     .configureCommandBus(
-                        c -> SimpleCommandBus.builder()
-                                             .transactionManager(c.getComponent(TransactionManager.class))
-                                             .messageMonitor(c.messageMonitor(SimpleCommandBus.class, "commandBus"))
-                                             .build()
-                     );
+public class AxonConfig {
+    // omitting other configuration methods...
+    public void configureSimpleCommandBus(Configurer configurer) {
+        configurer.configureCommandBus(
+                config -> {
+                    CommandBus commandBus =
+                            SimpleCommandBus.builder()
+                                            .transactionManager(config.getComponent(TransactionManager.class))
+                                            .spanFactory(config.spanFactory())
+                                            .messageMonitor(config.messageMonitor(SimpleCommandBus.class, "commandBus"))
+                                            // ...
+                                            .build();
+                    commandBus.registerHandlerInterceptor(
+                            new CorrelationDataInterceptor<>(config.correlationDataProviders())
+                    );
+                return commandBus;
+              }
+        );
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
-@Bean
-public SimpleCommandBus commandBus(TransactionManager txManager, AxonConfiguration axonConfiguration) {
-    SimpleCommandBus commandBus =
-            SimpleCommandBus.builder()
-                            .transactionManager(txManager)
-                            .messageMonitor(axonConfiguration.messageMonitor(CommandBus.class, "commandBus"))
-                            .build();
-    commandBus.registerHandlerInterceptor(
-            new CorrelationDataInterceptor<>(axonConfiguration.correlationDataProviders())
-    );
-    return commandBus;
+@Configuration
+public class AxonConfig {
+    // omitting other configuration methods...
+    @Bean
+    public CommandBus simpleCommandBus(TransactionManager transactionManager,
+                                       GlobalMetricRegistry metricRegistry,
+                                       SpanFactory spanFactory) {
+        return SimpleCommandBus.builder()
+                               .transactionManager(transactionManager)
+                               .messageMonitor(metricRegistry.registerCommandBus("commandBus"))
+                               .spanFactory(spanFactory)
+                               // ...
+                               .build();
+    }
+
+    @Bean
+    public ConfigurerModule commandBusCorrelationConfigurerModule() {
+        return configurer -> configurer.onInitialize(
+                  config -> config.commandBus().registerHandlerInterceptor(
+                            new CorrelationDataInterceptor<>(config.correlationDataProviders())
+                  )
+        );
+    }
 }
 ```
 {% endtab %}
@@ -208,24 +232,56 @@ Note that the `AsynchronousCommandBus` should be shut down when stopping the app
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-            .configureCommandBus(c -> AsynchronousCommandBus.builder().transactionManager(c.getComponent(TransactionManager.class))
-            .messageMonitor(c.messageMonitor(AsynchronousCommandBus.class, "commandBus"))
-            .build());
+public class AxonConfig {
+    // omitting other configuration methods...
+    public void configureAsynchronousCommandBus(Configurer configurer) {
+      configurer.configureCommandBus(
+              config -> {
+                CommandBus commandBus =
+                        AsynchronousCommandBus.builder()
+                                              .transactionManager(config.getComponent(TransactionManager.class))
+                                              .spanFactory(config.spanFactory())
+                                              .messageMonitor(config.messageMonitor(
+                                                      AsynchronousCommandBus.class, "commandBus"
+                                              ))
+                                              // ...
+                                              .build();
+                commandBus.registerHandlerInterceptor(
+                        new CorrelationDataInterceptor<>(config.correlationDataProviders())
+                );
+                return commandBus;
+              }
+      );
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
-@Bean
-public AsynchronousCommandBus commandBus(TransactionManager txManager, AxonConfiguration axonConfiguration) {
-    AsynchronousCommandBus commandBus =
-            AsynchronousCommandBus.builder()
-                            .transactionManager(txManager)
-                            .messageMonitor(axonConfiguration.messageMonitor(AsynchronousCommandBus.class, "commandBus"))
-                            .build();
-    commandBus.registerHandlerInterceptor(new CorrelationDataInterceptor<>(axonConfiguration.correlationDataProviders()));
-    return commandBus;
+@Configuration
+public class AxonConfig {
+    // omitting other configuration methods...
+    @Bean
+    public CommandBus asynchronousCommandBus(TransactionManager transactionManager,
+                                             GlobalMetricRegistry metricRegistry,
+                                             SpanFactory spanFactory) {
+        return AsynchronousCommandBus.builder()
+                                     .transactionManager(transactionManager)
+                                     .messageMonitor(metricRegistry.registerCommandBus("commandBus"))
+                                     .spanFactory(spanFactory)
+                                     // ...
+                                     .build();
+    }
+    
+    @Bean
+    public ConfigurerModule commandBusCorrelationConfigurerModule() {
+        return configurer -> configurer.onInitialize(
+                  config -> config.commandBus().registerHandlerInterceptor(
+                            new CorrelationDataInterceptor<>(config.correlationDataProviders())
+                  )
+        );
+    }
 }
 ```
 {% endtab %}
@@ -349,28 +405,50 @@ Optionally, you can provide a `DisruptorConfiguration` instance, which allows yo
 {% tabs %}
 {% tab title="Axon Configuration API" %}
 ```java
-Configurer configurer = DefaultConfigurer.defaultConfiguration()
-            .configureCommandBus(c ->
-                DisruptorCommandBus.builder()
-                    .transactionManager(c.getComponent(TransactionManager.class))
-                    .messageMonitor(c.messageMonitor(DisruptorCommandBus.class, "commandBus"))
-                    .bufferSize(4096)
-                    .build() 
-            );
+public class AxonConfig {
+    // omitting other configuration methods...
+    public void configureDisruptorCommandBus(Configurer configurer) {
+        configurer.configureCommandBus(config -> {
+            CommandBus commandBus = DisruptorCommandBus.builder()
+                                                       .transactionManager(config.getComponent(TransactionManager.class))
+                                                       .messageMonitor(config.messageMonitor(
+                                                               DisruptorCommandBus.class, "commandBus"
+                                                       ))
+                                                       .bufferSize(4096)
+                                                       // ...
+                                                       .build();
+            commandBus.registerHandlerInterceptor(new CorrelationDataInterceptor<>(config.correlationDataProviders()));
+            return commandBus;
+        });
+    }
+}
 ```
 {% endtab %}
 
 {% tab title="Spring Boot AutoConfiguration" %}
 ```java
-@Bean
-public DisruptorCommandBus commandBus(TransactionManager txManager, AxonConfiguration axonConfiguration) {
-    DisruptorCommandBus commandBus =
-            DisruptorCommandBus.builder()
-                            .transactionManager(txManager)
-                            .messageMonitor(axonConfiguration.messageMonitor(DisruptorCommandBus.class, "commandBus"))
-                            .build();
-    commandBus.registerHandlerInterceptor(new CorrelationDataInterceptor<>(axonConfiguration.correlationDataProviders()));
-    return commandBus;
+@Configuration
+public class AxonConfig {
+    // omitting other configuration methods...
+    @Bean
+    public CommandBus disruptorCommandBus(TransactionManager transactionManager,
+                                          GlobalMetricRegistry metricRegistry) {
+        return DisruptorCommandBus.builder()
+                                  .transactionManager(transactionManager)
+                                  .messageMonitor(metricRegistry.registerCommandBus("commandBus"))
+                                  .bufferSize(4096)
+                                  // ...
+                                  .build();
+    }
+
+    @Bean
+    public ConfigurerModule commandBusCorrelationConfigurerModule() {
+        return configurer -> configurer.onInitialize(
+                  config -> config.commandBus().registerHandlerInterceptor(
+                            new CorrelationDataInterceptor<>(config.correlationDataProviders())
+                  )
+        );
+    }
 }
 ```
 {% endtab %}
@@ -466,7 +544,7 @@ When we need to deviate from the default `AnnotationRoutingStrategy`, we should 
 {% tab title="Axon Configuration API" %}
 ```java
 public class AxonConfig {
-    // ...  
+    // omitting other configuration methods...  
     public void configureRoutingStrategy(Configurer configurer, YourRoutingStrategy yourRoutingStrategy) {
         configurer.registerComponent(RoutingStrategy.class, config -> yourRoutingStrategy);
     }
@@ -478,7 +556,7 @@ public class AxonConfig {
 ```java
 @Configuration
 public class AxonConfig {
-    // ...
+    // omitting other configuration methods...
     @Bean
     public RoutingStrategy routingStrategy() {
         return /* construct your routing strategy */;

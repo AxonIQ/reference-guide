@@ -67,8 +67,7 @@ The `Configurer` exposes several options towards registering an Event Handling C
 
 ```java
 public class AxonConfig {
-
-    // ...
+    // omitting other configuration methods...
     public void configureEventHandler(Configurer configurer) {
         configurer.registerEventHandler(config -> new MyEventHandlingComponent());
 

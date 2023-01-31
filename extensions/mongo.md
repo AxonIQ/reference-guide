@@ -23,19 +23,32 @@ In pre Axon Framework 3 release we found MongoDb to be a very good fit as an Eve
 ## Configuration in Spring Boot
 
 ```java
-// The Event store `EmbeddedEventStore` delegates actual storage and retrieval of events to an `EventStorageEngine`.
-@Bean
-public EmbeddedEventStore eventStore(EventStorageEngine storageEngine, AxonConfiguration configuration) {
-    return EmbeddedEventStore.builder()
-            .storageEngine(storageEngine)
-            .messageMonitor(configuration.messageMonitor(EventStore.class, "eventStore"))
-            .build();
-}
-
-// The `MongoEventStorageEngine` stores each event in a separate MongoDB document
-@Bean
-public EventStorageEngine storageEngine(MongoClient client) {
-    return MongoEventStorageEngine.builder().mongoTemplate(DefaultMongoTemplate.builder().mongoDatabase(client).build()).build();
+@Configuration
+public class AxonConfig {
+    // omitting other configuration methods...
+  
+    // The EmbeddedEventStore delegates actual storage and retrieval of events to an EventStorageEngine.
+    @Bean
+    public EventStore eventStore(EventStorageEngine storageEngine,
+                                 GlobalMetricRegistry metricRegistry) {
+        return EmbeddedEventStore.builder()
+                                 .storageEngine(storageEngine)
+                                 .messageMonitor(metricRegistry.registerEventBus("eventStore"))
+                                 .spanFactory(spanFactory)
+                                 // ...
+                                 .build();
+    }
+  
+    // The MongoEventStorageEngine stores each event in a separate MongoDB document.
+    @Bean
+    public EventStorageEngine storageEngine(MongoClient client) {
+        return MongoEventStorageEngine.builder()
+                                      .mongoTemplate(DefaultMongoTemplate.builder()
+                                                                         .mongoDatabase(client)
+                                                                         .build())
+                                      // ...
+                                      .build();
+    }
 }
 ```
 
