@@ -38,7 +38,7 @@
     * [Reactor](release-notes/rn-extensions/rn-reactor/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-reactor/rn-reactor-major-releases.md)
       * [Minor Releases](release-notes/rn-extensions/rn-reactor/rn-reactor-minor-releases.md)
-    * [Spring-Native Cloud](release-notes/rn-extensions/rn-spring-native/README.md)
+    * [Spring-Native](release-notes/rn-extensions/rn-spring-native/README.md)
       * [Experimental Releases](release-notes/rn-extensions/rn-spring-native/rn-spring-native-experimental-releases.md)
     * [Spring Cloud](release-notes/rn-extensions/rn-springcloud/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-springcloud/rn-springcloud-major-releases.md)
