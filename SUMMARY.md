@@ -17,6 +17,7 @@
   * [Axon Framework Extensions](release-notes/rn-extensions/README.md)
     * [AMQP](release-notes/rn-extensions/rn-amqp/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-amqp/rn-amqp-major-releases.md)
+      * [Minor Releases](release-notes/rn-extensions/rn-amqp/rn-amqp-minor-releases.md)
     * [CDI](release-notes/rn-extensions/rn-cdi/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-cdi/rn-cdi-major-releases.md)
     * [JGroups](release-notes/rn-extensions/rn-jgroups/README.md)

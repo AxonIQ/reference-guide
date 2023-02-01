@@ -4,7 +4,8 @@ The release notes section for the Axon JGroups Extension for all major/minor rel
 
 | Release Type | Version                                        |
 |:-------------|:-----------------------------------------------|
-| _**Major**_  | [4.6](rn-jgroups-major-releases.md#release-46) |
+| _**Major**_  | [4.7](rn-jgroups-major-releases.md#release-47) |
+|              | [4.6](rn-jgroups-major-releases.md#release-46) |
 |              | [4.5](rn-jgroups-major-releases.md#release-45) |
 |              | [4.4](rn-jgroups-major-releases.md#release-44) |
 |              | [4.3](rn-jgroups-major-releases.md#release-43) |

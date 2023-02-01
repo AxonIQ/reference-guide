@@ -2,7 +2,23 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Kafka Extension.
 
-## Release 4.6
+## Release 4.7.0
+
+### Enhancements
+
+- Add Spring Boot 3 autoconfiguration support. [#378](https://github.com/AxonFramework/extension-kafka/pull/378)
+
+### Bug Fixes
+
+- Fix memory leak [#365](https://github.com/AxonFramework/extension-kafka/pull/365)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+
+## Release 4.6.0
 
 If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-kafka/releases/tag/axon-kafka-4.6.0) page.
 

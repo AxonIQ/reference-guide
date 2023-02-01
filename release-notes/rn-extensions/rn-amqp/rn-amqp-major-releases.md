@@ -2,7 +2,19 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon AMQP Extension.
 
-## Release 4.6
+## Release 4.7.0
+
+### Enhancements
+
+- Add support for Spring boot 3. [#320](https://github.com/AxonFramework/extension-amqp/pull/320)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+
+## Release 4.6.0
 
 If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-amqp/releases/tag/axon-amqp-4.6.0) page.
 
