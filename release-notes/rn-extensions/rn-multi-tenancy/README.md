@@ -4,5 +4,6 @@ The release notes section for the Axon Multi-Tenancy Extension for all major/min
 
 | Release Type | Version                                              |
 |:-------------|:-----------------------------------------------------|
-| _**Major**_  | [4.6](rn-multi-tenancy-major-releases.md#release-46) |
+| _**Major**_  | [4.7](rn-multi-tenancy-major-releases.md#release-47) |
+|              | [4.6](rn-multi-tenancy-major-releases.md#release-46) |
 | _**Minor**_  | [4.6](rn-multi-tenancy-minor-releases.md#release-46) |

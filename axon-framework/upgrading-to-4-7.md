@@ -23,6 +23,10 @@ Depending on what you were using with 4.6.x version, there are three possible mi
 
 ## Steps to upgrade from `javax` to `javax`
 
+> **Zero Axon Configuration**
+> 
+> If you don't have _any_ manual configuration and use the framework's `axon-spring-boot-starter`, that the upgrade to 4.7 is seamless.
+
 ### Step 1
 
 Adjust packages in `import` statements and FQCNs according to the new locations mentioned below:
