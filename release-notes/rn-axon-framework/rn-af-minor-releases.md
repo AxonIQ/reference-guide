@@ -2,6 +2,21 @@
 
 Any patch release made for an Axon project is tailored towards resolving bugs. This page aims to provide a dedicated overview of patch releases per project.
 
+## Release 4.7
+
+### Release 4.7.1
+
+#### Bug Fixes
+
+- Fix not calling shutdown on `EmbeddedEventStore` in combination with `javax` [#2585](https://github.com/AxonFramework/AxonFramework/pull/2585)
+- Axon Spring AutoConfiguration binds wrong EventStore (Jakarta/Javax) [#2584](https://github.com/AxonFramework/AxonFramework/issues/2584)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+
 ## Release 4.6
 
 ### Release 4.6.3
