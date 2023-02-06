@@ -17,7 +17,7 @@ Each replication group needs to have at least one Primary node. This node is cap
 
 ## Backup nodes <a id="backup-nodes"></a>
 
-You can use backup nodes for instance when you want to ensure that you have a copy of your event store in another data center. As clients will never connect to a backup node and the backup node will never become the leader for a replication group it reduces the risk of high latency, compared to having a normal \(Primary\) node in another data center. Just to reiterate, clients will never connect directly to a backup node.
+You can use backup nodes for instance when you want to ensure that you have a copy of your event store in another data center. As the backup node will never become the leader for a replication group it reduces the risk of high latency, compared to having a normal \(Primary\) node in another data center. By default, clients can connect to backup nodes. This can be disabled by setting the `axoniq.axonserver.force-connection-to-primary-or-messaging-node` property to `true`.
 
 Backup nodes come in two flavors
 
