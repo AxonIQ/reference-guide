@@ -108,7 +108,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
     <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left">unregister-node</td>
-      <td style="text-align:left">Unregisters a member node within a cluster</td>
+      <td style="text-align:left">Unregisters a member node within a cluster. This command should be used only if you want to permanently remove the node from the cluster. Use with caution.</td>
     </tr>
     <tr>
       <td style="text-align:left"></td>
