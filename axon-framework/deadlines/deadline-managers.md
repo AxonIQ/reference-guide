@@ -1,6 +1,6 @@
 # Deadline Managers
 
-Deadlines can be scheduled from sagas and aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`when the deadline is met. The `DeadlineManager` can be injected as a resource. It has three flavors: `SimpleDeadlineManager`, `JonRunrDeadlineManager` and `QuartzDeadlineManager`
+Deadlines can be scheduled from sagas and aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`when the deadline is met. The `DeadlineManager` can be injected as a resource. It has three flavors: `SimpleDeadlineManager`, `JobRunrDeadlineManager` and `QuartzDeadlineManager`
 
 ## Scheduling a Deadline
 

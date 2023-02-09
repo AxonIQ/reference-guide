@@ -2,7 +2,28 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Mongo Extension.
 
-## Release 4.6
+## Release 4.7.0
+
+### Features
+
+- Add spring related modules to support autoconfiguration [#287](https://github.com/AxonFramework/extension-mongo/pull/287)
+- [#280] Implement transaction support [#281](https://github.com/AxonFramework/extension-mongo/pull/281)
+- Add transaction support [#280](https://github.com/AxonFramework/extension-mongo/issues/280)
+- [#270] Implement SequencedDeadLetterQueue for Mongo [#277](https://github.com/AxonFramework/extension-mongo/pull/277)
+- Implement Deadletter for Mongo [#270](https://github.com/AxonFramework/extension-mongo/issues/270)
+- No Spring Boot Auto configuration [#230](https://github.com/AxonFramework/extension-mongo/issues/230)
+
+### Enhancements
+
+- Spring boot 3 [#314](https://github.com/AxonFramework/extension-mongo/pull/314)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+
+## Release 4.6.0
 
 If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-mongo/releases/tag/axon-mongo-4.6.0) page.
 
