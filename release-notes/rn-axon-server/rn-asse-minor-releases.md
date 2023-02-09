@@ -4,6 +4,16 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.6
 
+### Release 4.6.9
+
+* Fix: the processing of items must not be interrupted if an exception occurs during sending
+* Fix: improve handling of cancelled queries
+
+### Release 4.6.8
+
+* Updated version of the plugin-api library
+
+
 ### Release 4.6.7
 
 * Fix: invalid sequence number error when submitting events when the latest segment only contains non-domain events

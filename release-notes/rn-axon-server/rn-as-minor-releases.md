@@ -4,6 +4,17 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.6
 
+### Release 4.6.10
+
+* Fix: the processing of items must not be interrupted if an exception occurs during sending
+* Fix: improve handling of cancelled queries
+
+### Release 4.6.9
+
+* Fix: reduce latency in replication with low traffic
+* Fix: filter event processors in the overview page based on the selected context
+* Updated version of the plugin-api library
+
 ### Release 4.6.8
 
 * Fix: using bloom filter index, invalid sequence number error when submitting events when the latest segment only contains non-domain events
