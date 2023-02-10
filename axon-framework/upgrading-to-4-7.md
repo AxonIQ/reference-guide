@@ -41,7 +41,6 @@ Adjust packages in `import` statements and FQCNs according to the new locations 
 | org.axonframework.eventhandling.deadletter.jpa.JpaDeadLetter                      | org.axonframework.eventhandling.deadletter.legacyjpa.JpaDeadLetter                      |
 | org.axonframework.eventhandling.deadletter.jpa.JpaSequencedDeadLetterQueue        | org.axonframework.eventhandling.deadletter.legacyjpa.JpaSequencedDeadLetterQueue        |
 | org.axonframework.eventhandling.tokenstore.jpa.JpaTokenStore                      | org.axonframework.eventhandling.tokenstore.legacyjpa.JpaTokenStore                      |
-| org.axonframework.eventsourcing.eventstore.EmbeddedEventStore                     | org.axonframework.eventsourcing.eventstore.legacyjpa.EmbeddedEventStore                 |
 | org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine              | org.axonframework.eventsourcing.eventstore.legacyjpa.JpaEventStorageEngine              |
 | org.axonframework.eventsourcing.eventstore.jpa.SQLErrorCodesResolver              | org.axonframework.eventsourcing.eventstore.legacyjpa.SQLErrorCodesResolver              |
 | org.axonframework.messaging.interceptors.BeanValidationInterceptor                | org.axonframework.messaging.interceptors.legacyvalidation.BeanValidationInterceptor     |
