@@ -118,7 +118,7 @@ default ones:
 
 | Axon 4.6.x                 | Axon 4.7.x         |
 |----------------------------|--------------------|
-| axon-config-jakarta        | axon-config        |
+| axon-configuration-jakarta | axon-configuration |
 | axon-eventsourcing-jakarta | axon-eventsourcing |
 | axon-messaging-jakarta     | axon-messaging     |
 | axon-modelling-jakarta     | axon-modelling     |
