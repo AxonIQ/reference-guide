@@ -19,6 +19,18 @@ We'd like to thank all the contributors who worked on this release!
 
 ## Release 4.6
 
+### Release 4.6.4
+
+#### Bug Fixes
+
+- Ensure retrieved Saga Identifiers collection is thread-safe [#2595](https://github.com/AxonFramework/AxonFramework/pull/2595)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@smcvb](https://github.com/smcvb)
+
 ### Release 4.6.3
 
 #### Enhancements
