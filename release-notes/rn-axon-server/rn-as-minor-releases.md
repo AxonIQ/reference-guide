@@ -4,6 +4,11 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.6
 
+### Release 4.6.11
+
+* Fix regression on query handling: on query handler disconnected, all registered handlers for that stream must be
+  removed.
+
 ### Release 4.6.10
 
 * Fix: the processing of items must not be interrupted if an exception occurs during sending
