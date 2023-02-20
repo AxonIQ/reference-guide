@@ -25,7 +25,7 @@ Once the JVM is shut down, all schedules are lost.
 This makes this implementation unsuitable for long-term schedules.
 The `SimpleEventScheduler` needs to be configured with an `EventBus` and a `SchedulingExecutorService` \(see the static methods on the `java.util.concurrent.Executors` class for helper methods\).
 
-The `JonRunrEventScheduler` is a more reliable and enterprise-worthy implementation.
+The `JobRunrEventScheduler` is a more reliable and enterprise-worthy implementation.
 It offers several ways to persist the scheduled jobs, and has good integration with Spring Boot.
 Using JobRunr as underlying scheduling mechanism, it provides more powerful features, such as clustering, misfire management as well as an optional dashboard.
 This means event publication is guaranteed. It might be a little late, but it will be published.
