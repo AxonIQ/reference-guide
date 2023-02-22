@@ -19,6 +19,18 @@ We'd like to thank all the contributors who worked on this release!
 
 ## Release 4.6
 
+### Release 4.6.5
+
+#### Bug Fixes
+
+- Fix OpenTelemetry support [#2612](https://github.com/AxonFramework/AxonFramework/pull/2612)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@Morlack](https://github.com/Morlack)
+
 ### Release 4.6.4
 
 #### Bug Fixes
