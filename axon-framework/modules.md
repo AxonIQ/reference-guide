@@ -102,6 +102,8 @@ Besides main modules, there are several extension modules which complement Axon 
 | [Axon CDI](modules.md#axon-cdi)                                                           | axon-cdi                             | org.axonframework.extensions.cdi         | [available](https://search.maven.org/search?q=a:axon-cdi)                             |     [available](https://github.com/AxonFramework/extension-cdi)     |
 | [Axon JGroups](modules.md#axon-jgroups)                                                   | axon-jgroups                         | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups)                         |   [available](https://github.com/AxonFramework/extension-jgroups)   |
 | [Axon JGroups Spring Boot Starter](modules.md#axon-jgroups-spring-boot-starter)           | axon-jgroups-spring-boot-starter     | org.axonframework.extensions.jgroups     | [available](https://search.maven.org/search?q=a:axon-jgroups-spring-boot-starter)     |   [available](https://github.com/AxonFramework/extension-jgroups)   |
+| [Axon JobRunr Pro](modules.md#axon-jobrunrpro)                                            | axon-jobrunrpro                      | org.axonframework.extensions.jobrunrpro  | [available](https://search.maven.org/search?q=a:axon-jobrunrpro)                      | [available](https://github.com/AxonFramework/extension-jobrunrpro)  |
+| [Axon JobRunr Pro Spring Boot Starter](modules.md#axon-jobrunrpro-spring-boot-starter)    | axon-jobrunrpro-spring-boot-starter  | org.axonframework.extensions.jobrunrpro  | [available](https://search.maven.org/search?q=a:axon-jobrunrpro-spring-boot-starter)  | [available](https://github.com/AxonFramework/extension-jobrunrpro)  |
 | [Axon Kafka](modules.md#axon-kafka)                                                       | axon-kafka                           | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka)                           |    [available](https://github.com/AxonFramework/extension-kafka)    |
 | [Axon Kafka Spring Boot Starter](modules.md#axon-kafka-spring-boot-starter)               | axon-kafka-spring-boot-starter       | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka-spring-boot-starter)       |    [available](https://github.com/AxonFramework/extension-kafka)    |
 | [Axon Kotlin](modules.md#axon-kotlin)                                                     | axon-kotlin                          | org.axonframework.extensions.kotlin      | [available](https://search.maven.org/search?q=a:axon-kotlin)                          |   [available](https://github.com/AxonFramework/extension-kotlin)    |
@@ -132,6 +134,14 @@ This module provides integration with JGroups for command distribution. [JGroups
 ### Axon JGroups Spring Boot Starter
 
 This module provides Spring auto-configuration on top of the `axon-jgroups` module
+
+### Axon JobRunr Pro
+
+This module provides integration with [JobRunr Pro](https://www.jobrunr.io/en/documentation/pro/).
+
+### Axon JobRunr Pro Spring Boot Starter
+
+This module provides Spring auto-configuration on top of the `axon-jobrunrpro` module
 
 ### Axon Kafka
 
