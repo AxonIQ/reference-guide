@@ -54,8 +54,8 @@ Note that there are more options to cancel a deadline next to the previously men
 
 > **Caveats for the JobRunr implementation.**
 > 
-> Since JobRunr has no way to search for deadlines, besides by id, all of the `cancelAll` methods are not implemented for the `JobRunrDeadlineManager`.
-> This might change in the future, but only in combination with using the [Pro version](https://github.com/AxonFramework/AxonFramework/issues/2507).
+> Since the non-Pro version of JobRunr has no way to search for deadlines, besides by id, all of the `cancelAll` methods are not implemented for the `JobRunrDeadlineManager`.
+> The [JobRunr Pro extension](../../../extensions/jobrunrpro.md) does support those, but requires the Pro version of JubRunr.
 
 If you need contextual data about the deadline when the deadline is being handled, you can attach a deadline payload when scheduling a deadline:
 
