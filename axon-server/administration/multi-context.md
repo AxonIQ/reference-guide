@@ -88,10 +88,6 @@ For this we have created the Multi-Tenancy extension to Axon Framework, that tak
 >
 > Note that when you delete an existing context with the preserve data option and then recreate it, without specifying the index format, Axon Server will use the JUMP\_SKIP\_INDEX format. This means that it will create a new index for the existing data, if the old format was BLOOM\_FILTER\_INDEX. Depending on the size of the event store this can take a long time.
 
-## Multi-tier storage
-
-Another feature that is available from Axon Server version 4.4 is multi-tier storage. With this option you can choose to keep only the most recent event store on your primary nodes, and keep the full event store on the secondary nodes. The primary nodes can have fast \(more expensive\) disks, and the secondary nodes can have less expensive disks. As most of the reads will typically be done on the most recent data, it could reduce storage cost without too much impact on performance. The time period for which evens will be kept on the primary nodes is set using the retention time properties. Axon Server provides global settings, which can be set in the axonserver.properties file, and it allows you to set the retention time on the context level. To use the multi-tier storage feature, the replication group for the context must have nodes with SECONDARY role. It is recommended to have at least 2 nodes with SECONDARY role, to prevent a single point of failure.
-
 ## Context Maintenance
 
 The operational maintenance of contexts within an Axon Server EE cluster can be done via any one of the following provided utilities
