@@ -9,6 +9,7 @@ A summary of the various sub-sections is given below.
 | [Configuration](admin-configuration/)                                 | Configuration aspects of an Axon Server deployment |
 | [Monitoring](monitoring/)                                             | Monitoring aspects of an Axon Server deployment    |
 | [Multi-Context](multi-context.md)                                     | Multi-Context support within Axon Server           |
+| [Multi-Tier-Storage](multi-tier-storage.md)                           | Multi-tiered storage support within Axon Server    |
 | [Tagging](tagging.md)                                                 | Location awareness capabilities within Axon Server |
 | [Backup and Messaging-only Nodes](backup-and-messaging-only-nodes.md) | Axon Server roles capabilities                     |
 | [Backups](backups.md)                                                 | Backup aspects of an Axon Server deployment        |

@@ -12,11 +12,17 @@ Let's first explain these two different options and compare them to each other.
 
 ## Multi-Tiered Storage (local)
 
-Tier configuration is shared with all nodes. Each node maintains tiered storage independently storing on its own unique storage locations.
+<img src="../../.gitbook/assets/multi-tier-local.png">
+
+_Tier configuration is shared with all nodes. Each node maintains tiered storage independently storing on its own unique storage locations._
 
 Multi-Tiered Storage is a feature that enables each node to maintain a local representation of its own tiered storage over its event store replica. This feature allows you to configure multi-tier storage for different node role types, including primary, secondary, and backup nodes. Nodes of the same role share a multi-tier configuration execute segment-moving operations locally, and independently. For this reason, it is possible for segments to not be transferred at the same time on all nodes due to timing differences, but this is not a problem, and over time, the tiers will become synchronized.
 
 With Multi-Tiered Storage, you can configure as many tiers as you need, and you can set retention intervals for each tier to determine after which interval the data should be moved from one tier to another. There are several supported tier types available, including the default, custom storage, and black hole.
+
+<img src="../../.gitbook/assets/multi-tier-cofiguration.png">
+
+_Multi-tier configuration within Context page - Axon Server Enterprise Edition_
 
 ### Default
 
@@ -52,7 +58,7 @@ The Black Hole tier is tier type in Axon Server that consumes your events, and y
 
 Using the Black Hole tier will mark your context as **ephemeral**, which means that data is permanently removed after a specified retention interval. **Once the data is removed, it cannot be recovered**, so it's essential to use this feature with caution and only if you're certain that you no longer need the data.
 
-(image here)
+<img src="../../.gitbook/assets/multi-tier-blackhole.png">
 
 _Context using a black hole tier will be marked as ephemeral and the flow of data will be visualized (only for primary nodes)_
 
@@ -76,14 +82,14 @@ However, note that this feature is experimental, and it comes with some caveats.
 
 Another safer usage of condition removal and black hole tier, is to enable it only for snapshot storage. With that after some time older non-used snapshots will be removed, but latest snapshot will be always available for each aggregate.
 
-(image here)
+<img src="../../.gitbook/assets/multi-tier-conditional.png">
 
 _Configuring conditional remove in context properties_
 
 ### Retention Intervals
 Axon Server supports both time-based and size-based retention intervals for multi-tiered storage.
 
-(image here)
+<img src="../../.gitbook/assets/multi-tier-retentiontime.png">
 
 _Retention interval options for tiered storage_
 
@@ -107,7 +113,9 @@ You can limit the max number of segments that can be moved per minute by setting
 
 By default, the max number of segments that can be moved per minute is set to 5. This setting can be changed within the context properties in Axon Server UI.
 
-(image here)
+<img src="../../.gitbook/assets/multi-tier-move-rate.png">
+
+_Limiting IO rate in context properties for a given context_
 
 #### Pausing moving operation
 
@@ -118,9 +126,6 @@ To pause the segment moving operation, set the segment move rate to zero: `event
 
 To resume the segment moving operation, simply set the segment move rate to a non-zero value.
 
-(image here)
-
-_Limiting IO rate in context properties for a given context_
 
 ### Metrics
 
@@ -144,6 +149,59 @@ _Example of metrics for tracking the flow of data in tiered storage_
 `file.segment.per.tier` - current number of segments per each tier
 
 
-### Important: Limitations to changing and adding to tier configuration
-While it is possible to change the conditions for moving data from one tier to the next, it is not possible to change the order of tiers. Currently, new tiers can only be added at the end and removal of existing tiers is not possible.
-In the future, it is expected that it will be possible to alter the configuration completely. 
+> **Limitations to changing and adding to tier configuration**
+>
+> While it is possible to change the conditions for moving data from one tier to the next, it is not possible to change the order of tiers. Currently, new tiers can only be added at the end and removal of existing tiers is not possible.
+> In the future, it is expected that it will be possible to alter the configuration completely.
+>
+
+## Secondary Nodes
+
+Secondary Nodes are a feature in Axon Server that allows you to reduce the number of copies of data that is stored, by keeping only the most recent event store on your primary nodes and keeping the full event store on the secondary nodes.
+
+The primary nodes can have faster (more expensive) disks, while the secondary nodes can have slower but more cost-effective disks. This can help reduce storage costs without significantly impacting performance.
+
+When Axon Server processes a transaction to append events, the leader replicates this transaction to all of the nodes in the cluster. This includes the primary nodes, as well as the secondary and backup nodes. While the leader will be satisfied when the majority of the primary nodes have acknowledged the receipt of the transaction, it will also keep track of the progress of the other nodes.
+Each node holds an exact copy of the data initially. So with a cluster of three nodes, each element of data (typically events) will be stored a total of three times. The main reason for this is to ensure that the failure of a single node will not result in the data becoming unavailable or lost. This is particularly relevant for recent information, which is accessed frequently by various event processors, and when using event sourcing.
+
+However, the added value of these extra copies degrades over time, as these entries are accessed less frequently.
+Secondary nodes contain a full copy of all the data that the primary nodes also process. While replicating that data, they inform the primary nodes of their progress. Once the data has aged to the configured retention time, it becomes eligible for _removal from the last tier in primary nodes_, but only if all available secondary nodes have a safe copy of that data.
+
+When primary nodes need to access old data, they will retrieve it from the secondary nodes.
+By using secondary nodes, you can leverage concurrent access performance of faster disks while minimizing cost by moving events to slower disks once access requirements are reduced. Additionally, a secondary node could be used to keep access for incidental operational use of older events. This secondary node could use several storage tiers to be able to cope with the large amount of data to store. If needed, after a certain retention period, data can be removed altogether.
+
+### Tiered storage vs Secondary Nodes
+#### How are Secondary Nodes Different?
+
+The main difference between Secondary Nodes and Tiered Storage is the cardinality of data.
+
+Secondary Nodes allow for a reduction in the number of copies of each data element that is stored; whereas in Tiered Storage, the number of copies always equals to the number of nodes in the cluster.
+Another significant difference is that Secondary Nodes copy all the data, including the most recent events, even though they still exist on the primary node. Once the data has aged to the configured retention time, it becomes eligible for removal from the primary nodes, but only if all available secondary nodes have a safe copy of that data. In contrast, Tiered Storage involves an actual data copy operation at the moment data transitions from one tier to the next.
+
+#### How Can They Complement Each Other?
+The differences between Secondary Nodes and Tiered Storage allow for interesting data management techniques. High-performance systems require the ability to concurrently ingest data and read events for event sourcing. Additionally, events that are "cooling down" may still occasionally be needed for operational purposes, making the availability of this data essential.
+In such scenarios, one could use SSD and HDD on the primary nodes to leverage the concurrent access performance of SSD and minimize costs by moving events to a local HDD once access requirements are reduced. Additionally, a Secondary node could be used to keep access for incidental operational use of older events. This Secondary node could use several storage tiers to cope with large amounts of data to store.
+By combining Secondary Nodes and Tiered Storage, users can effectively manage their data and strike a balance between performance and cost.
+
+<img src="../../.gitbook/assets/multi-tier-secondary.png">
+
+_Example of a tiered setup that keeps most up-to-date events in primary nodes. After a given period of time data is removed from primary nodes and reduced to one replica in one secondary node which deletes data after a long period of time._
+
+### Configuring and Using Secondary Nodes
+To use the multi-tier storage feature with secondary nodes, the replication group for the context must have nodes with `SECONDARY` role. You may consider to have at least two nodes with `SECONDARY` role to prevent a single point of failure.
+To configure a secondary node, you need to add it to the Axon Server cluster as a new node with the `SECONDARY` role. You can do this by installing Axon Server on a new machine, configuring it to use the same Axon Server instance as the primary node, and starting it up with the `SECONDARY` role.
+Once the secondary node is up and running, it will automatically start replicating data from the primary node. By default, the secondary node will store a full copy of all data that the primary nodes also process. While replicating that data, the secondary node informs the primary nodes of its progress.
+To control the retention time of events on the primary nodes, you can set the retention time properties in the context properties.
+
+```
+event.retention-time=10d
+snapshot.retention-time=10d
+```
+
+_Entering number without unit defaults to milliseconds, but you can specify a value with a unit, for instance 1d or 5h._
+
+This allows you to specify how long events will be kept on the primary nodes before they are eligible for removal. If you have primary nodes with multiple tiers, data will be removed only from last tier.
+
+Once events are removed from the primary nodes, they will still be available on the secondary nodes.
+To access old data on the primary nodes, you can retrieve it from the secondary nodes. This ensures that your data remains available even after it has been removed from the primary nodes, as long as it is still available on the secondary nodes.
+Overall, secondary nodes provide a way to reduce the number of copies of each data element that is stored, while still maintaining the availability of that data.
