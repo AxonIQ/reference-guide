@@ -20,7 +20,7 @@ Multi-Tiered Storage is a feature that enables each node to maintain a local rep
 
 With Multi-Tiered Storage, you can configure as many tiers as you need, and you can set retention intervals for each tier to determine after which interval the data should be moved from one tier to another. There are several supported tier types available, including the default, custom storage, and black hole.
 
-<img src="../../.gitbook/assets/multi-tier-cofiguration.png">
+<img src="../../.gitbook/assets/multi-tier-configuration.png">
 
 _Multi-tier configuration within Context page - Axon Server Enterprise Edition_
 
