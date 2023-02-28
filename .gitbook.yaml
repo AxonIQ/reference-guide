@@ -25,6 +25,7 @@ redirects:
   2.1-setup/configuration: ./axon-server/administration/README.md
   2.1-setup/clustering: ./axon-server/administration/clustering.md
   2.1-setup/multi-context: ./axon-server/administration/multi-context.md
+  2.2-setup/multi-tier-storage: ./axon-server/administration/multi-tier-storage.md
   2.2-operations/backups: ./axon-server/administration/backups.md
   2.2-operations/monitoring: ./axon-server/administration/monitoring/README.md
 
