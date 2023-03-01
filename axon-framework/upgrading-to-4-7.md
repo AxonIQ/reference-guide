@@ -16,6 +16,9 @@ Depending on what you were using with 4.6.x version, there are three possible mi
 3. [From `jakarta` to `jakarta`](#steps-to-upgrade-from-jakarta-to-jakarta): 
    This is what you will want if you have already moved to the optional `[module-name]-jakarta` modules in Axon Framework 4.6.x.
 
+Next to the full scenario descriptions, you are also able to use [OpenRewrite](https://github.com/openrewrite) migration recipes provided by the Framework.
+Please go to the [migration automation](#migration-automation) section for more details.
+
 > **From `jakarta` to `javax`**
 >
 > While technically possible, the `jakarta` to `javax` migration is not something you should do.
@@ -121,3 +124,32 @@ default ones:
 | axon-eventsourcing-jakarta | axon-eventsourcing |
 | axon-messaging-jakarta     | axon-messaging     |
 | axon-modelling-jakarta     | axon-modelling     |
+
+## Migration Automation
+
+The steps above explain in detail what you need to do to upgrade to Axon Framework 4.7.
+If you want to automate some of these steps, there are two [OpenRewrite](https://github.com/openrewrite) migration recipes you can use:
+
+1. [**Upgrade to Axon Framework 4.7 Jakarta**](https://github.com/AxonFramework/AxonFramework/blob/master/migration/src/main/resources/META-INF/rewrite/axon-jakarta-47.yml) - A recipe to upgrade from an Axon Framework Javax-specific project to Jakarta.
+2. [**Upgrade to Axon Framework 4.7 Javax**](https://github.com/AxonFramework/AxonFramework/blob/master/migration/src/main/resources/META-INF/rewrite/axon-javax-47.yml) - A recipe to upgrade an Axon Framework Javax-specific project and remain on Javax.
+
+For example, if you want to upgrade to 4.7 and stick with Javax, you can run the following command:
+
+```text
+mvn -U org.openrewrite.maven:rewrite-maven-plugin:4.40.0:run \
+  -Drewrite.recipeArtifactCoordinates=org.axonframework:axon-migration:LATEST \
+  -DactiveRecipes=org.axonframework.migration.UpgradeAxonFramework_4_7_Javax
+```
+
+If you prefer [Gradle](https://gradle.org/) over [Maven](https://maven.apache.org/), refer to the OpenRewrite [documentation](https://docs.openrewrite.org/running-recipes/running-rewrite-on-a-gradle-project-without-modifying-the-build) to resolve this.
+
+> **Can I combine recipes?**
+>
+> The mentioned recipes above only allow you to upgrade Axon Framework-specific code.
+> However, you can combine recipes into a single command to, for example, upgrade to Spring Boot 3 and Axon Framework 4.7 in one go:
+>
+> ```text
+> mvn -U org.openrewrite.maven:rewrite-maven-plugin:4.40.0:run \
+>  -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-spring:4.33.0,org.axonframework:axon-migration:LATEST \  
+>  -DactiveRecipes=org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_0,org.axonframework.migration.UpgradeAxonFramework_4_7_Jakarta
+> ```
