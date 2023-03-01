@@ -4,7 +4,7 @@ The purpose of this extension is to leverage some features only available in the
 Only the Pro version allows to search existing jobs by status and label. This is required for the deadline manager to implement the `cancelAll` methods.
 The [deadline managers](../axon-framework/deadlines/deadline-managers.md) section has more in depth information on deadline managers.
 Although jobs created with the non-pro `DeadlineManager` will be eligible to be canceled, this is only true when they were created with the `4.8` or later versions.
-Jobs created with the `4.7` version are missing the correct labels and will not be found when trying to cancel them.
+Jobs created with the `4.7.x` version are missing the correct labels and will not be found when trying to cancel them.
 
 ## Spring usage
 
