@@ -8,14 +8,30 @@ Jobs created with the `4.7.x` version are missing the correct labels and will no
 
 ## Spring usage
 
-For Spring usage, be sure to include the starters, both of JobRunr Pro and the extension. The deadline manager should be available by auto wiring when using the starter.
-It can by used in aggregates and sagas using something like:
+For Spring usage, be sure to include the starters, both of JobRunr Pro and the extension. The deadline manager should be available by using parameter-based injection.
+It can be used in aggregates and sagas using something like:
+{% tabs %}
+{% tab title="Aggregate" %}
+```java
+@CommandHandler
+public void handle(SomeCommand command, @Autowired DeadlineManager deadlineManager) { ... }
+```
+{% endtab %}
+{% tab title="Saga" %}
+```java
+@StartSaga
+public void handle(SomeEvent event, @Autowired DeadlineManager deadlineManager) { ... }
+```
+
+Alternatively, you could also auto wire the deadline manager to the class like:
 ```java
 @Autowired
 void setDeadlineManager(DeadlineManager deadlineManager) {
     this.deadlineManager = deadlineManager;
 }
 ```
+{% endtab %}
+{% endtabs %}
 
 ## Non Spring Usage
 
@@ -31,7 +47,7 @@ JobRunrProDeadlineManager.proBuilder()
         .build();
 ```
 
-You probably want to use some form of dependency injection instead or creating a new deadline manager each time you need one.
+You probably want to use some form of dependency injection instead of creating a new deadline manager each time you need one.
 
 
 
