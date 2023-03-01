@@ -130,8 +130,8 @@ default ones:
 The steps above explain in detail what you need to do to upgrade to Axon Framework 4.7.
 If you want to automate some of these steps, there are two [OpenRewrite](https://github.com/openrewrite) migration recipes you can use:
 
-1. **Upgrade to Axon Framework 4.7 Jakarta** - A recipe to upgrade from an Axon Framework Javax-specific project to Jakarta.
-2. **Upgrade to Axon Framework 4.7 Javax** - A recipe to upgrade an Axon Framework Javax-specific project and remain on Javax.
+1. [**Upgrade to Axon Framework 4.7 Jakarta**](https://github.com/AxonFramework/AxonFramework/blob/master/migration/src/main/resources/META-INF/rewrite/axon-jakarta-47.yml) - A recipe to upgrade from an Axon Framework Javax-specific project to Jakarta.
+2. [**Upgrade to Axon Framework 4.7 Javax**](https://github.com/AxonFramework/AxonFramework/blob/master/migration/src/main/resources/META-INF/rewrite/axon-javax-47.yml) - A recipe to upgrade an Axon Framework Javax-specific project and remain on Javax.
 
 For example, if you want to upgrade to 4.7 and stick with Javax, you can run the following command:
 
