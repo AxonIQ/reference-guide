@@ -23,6 +23,8 @@
     * [JGroups](release-notes/rn-extensions/rn-jgroups/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-jgroups/rn-jgroups-major-releases.md)
       * [Minor Releases](release-notes/rn-extensions/rn-jgroups/rn-jgroups-minor-releases.md)
+    * [JobRunr Pro](release-notes/rn-extensions/rn-jobrunrpro/README.md)
+      * [Major Releases](release-notes/rn-extensions/rn-jobrunrpro/rn-jobrunrpro-major-releases.md)
     * [Kafka](release-notes/rn-extensions/rn-kafka/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-kafka/rn-kafka-major-releases.md)
       * [Minor Releases](release-notes/rn-extensions/rn-kafka/rn-kafka-minor-releases.md)
@@ -164,6 +166,7 @@
 
 * [Spring AMQP](extensions/spring-amqp.md)
 * [JGroups](extensions/jgroups.md)
+* [JonRunr Pro](extensions/jobrunrpro.md)
 * [Kafka](extensions/kafka.md)
 * [Kotlin](extensions/kotlin.md)
 * [Mongo](extensions/mongo.md)
