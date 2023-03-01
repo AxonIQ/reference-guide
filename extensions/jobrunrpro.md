@@ -8,7 +8,7 @@ Jobs created with the `4.7.x` version are missing the correct labels and will no
 
 ## Spring usage
 
-For spring usage, be sure to include the starters, both of JobRunr Pro and the extension. The deadline manager should be available by autowiring.
+For Spring usage, be sure to include the starters, both of JobRunr Pro and the extension. The deadline manager should be available by auto wiring when using the starter.
 It can by used in aggregates and sagas using something like:
 ```java
 @Autowired
