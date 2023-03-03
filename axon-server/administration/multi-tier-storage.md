@@ -68,7 +68,6 @@ Ephemeral context is particularly useful in scenarios such as event streaming or
 **However:**
 The Black Hole tier should not be used if you have event-sourced aggregates.
 Ephemeral context is not suitable for fine-grain event removal as it removes segments per whole, that contain many different events of different types of aggregates, making it difficult to remove specific events.
-For such a scenario use the **Event Transformation tool.**
 
 #### Conditional Removal
 In the case you need to use event-sourced aggregates and want to delete events after a period of time and ensure that you always have a valid state, Axon Server provides an experimental feature called conditional removal, which allows you to remove segments conditionally.
