@@ -4,6 +4,42 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.7
 
+### Release 4.7.2
+
+#### Features
+
+- Add Migration module with OpenRewrite recipes for AxonFramework 4.7 [#2597](https://github.com/AxonFramework/AxonFramework/pull/2597)
+- Automatic migration recipes to 4.7+ [#2596](https://github.com/AxonFramework/AxonFramework/issues/2596)
+
+#### Enhancements
+
+- [#2611] Clarify active `UnitOfWork` expectation in the `Repository` [#2625](https://github.com/AxonFramework/AxonFramework/pull/2625)
+- `ClassCastException` on `@ExceptionHandler` annotated Aggregate when loading Aggregate manually in an `@EventHandler` annotated method [#2611](https://github.com/AxonFramework/AxonFramework/issues/2611)
+
+#### Bug Fixes
+
+- Add missing copyright notices and remove duplicate notices [#2626](https://github.com/AxonFramework/AxonFramework/pull/2626)
+- [#2620] Test correlation data population for `DeadlineManager` implementations [#2624](https://github.com/AxonFramework/AxonFramework/pull/2624)
+- SimpleDeadlineManager does not use CorrelationDataProviders [#2620](https://github.com/AxonFramework/AxonFramework/issues/2620)
+- Fix OpenTelemetry support - 4.7 Edition [#2617](https://github.com/AxonFramework/AxonFramework/pull/2617)
+- refactor: Add ASLv2 license header [#2613](https://github.com/AxonFramework/AxonFramework/pull/2613)
+- [#2604] Ensure `given(Object...)` can be followed up by `andGivenCurrentTime` [#2607](https://github.com/AxonFramework/AxonFramework/pull/2607)
+- AggregateTestFixture.andGivenCurrentTime() should not clear fixture given state [#2604](https://github.com/AxonFramework/AxonFramework/issues/2604)
+- [#2555] Switch to `ConcurrentHashMap` in Saga related classes [#2592](https://github.com/AxonFramework/AxonFramework/pull/2592)
+- Make the `AssociationResolver` and `SagaMethodMessageHandlerDefinition` thread safe. [#2591](https://github.com/AxonFramework/AxonFramework/issues/2591)
+- Make SnapshotFilter a hard requirement [#2586](https://github.com/AxonFramework/AxonFramework/pull/2586)
+- SagaFixtureTests in parallel concurrent mode [#2555](https://github.com/AxonFramework/AxonFramework/issues/2555)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@Morlack](https://github.com/Morlack)
+- [@stefanmirkovic](https://github.com/stefanmirkovic)
+- [@timtebeek](https://github.com/timtebeek)
+
 ### Release 4.7.1
 
 #### Bug Fixes

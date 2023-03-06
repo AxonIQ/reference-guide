@@ -273,6 +273,8 @@ The "axonserver.properties" properties file referred to in the secrets’ defini
 ```text
 axoniq.axonserver.autocluster.first=axonserver-1
 axoniq.axonserver.autocluster.contexts=_admin,default
+# We highly recommend protecting your installations at all time, hence why access control is enabled here.
+# For quick testing, you can disable this, but be sure to switch it big with high priority.
 axoniq.axonserver.accesscontrol.enabled=true
 axoniq.axonserver.accesscontrol.internal-token=${generated_token}
 axoniq.axonserver.accesscontrol.systemtokenfile=/axonserver/config/axonserver.tok
