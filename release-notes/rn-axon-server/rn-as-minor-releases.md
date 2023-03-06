@@ -4,6 +4,16 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.6
 
+### Release 4.6.12
+
+* Filter overview page and metrics per context. Users can only see the information for the contexts for which they have a role, when they do not have the ADMIN or the VIEW_CONFIGURATION role.
+* Fix for the context dropdown in the UI when the LDAP module is used.
+
+### Release 4.6.11
+
+* Fix regression on query handling: on query handler disconnected, all registered handlers for that stream must be
+  removed.
+
 ### Release 4.6.10
 
 * Fix: the processing of items must not be interrupted if an exception occurs during sending
