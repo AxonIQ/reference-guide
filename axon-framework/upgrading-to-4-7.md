@@ -104,13 +104,13 @@ back this new default of Hibernate:
 
 {% endtab %}
 {% tab title="Spring Boot application properties" %}
-{% endtab %}
 
 ```text
 spring.jpa.properties.hibernate.id.db_structure_naming_strategy=legacy
 #omitting other properties for simplicity...
 ```
 
+{% endtab %}
 {% endtabs %}
 
 ## Steps to upgrade from `jakarta` to `jakarta`
