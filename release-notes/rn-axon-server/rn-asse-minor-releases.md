@@ -4,7 +4,7 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ## Release 4.6
 
-### Release 4.6.10
+### Release 4.6.11
 
 * Filter overview page and metrics per context.
 
