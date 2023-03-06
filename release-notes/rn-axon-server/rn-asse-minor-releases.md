@@ -6,6 +6,10 @@ This page provides a dedicated overview of patch releases for the Axon Server (S
 
 ### Release 4.6.10
 
+* Filter overview page and metrics per context.
+
+### Release 4.6.10
+
 * Fix regression on query handling: on query handler disconnected, all registered handler for that stream must be
   removed.
 
