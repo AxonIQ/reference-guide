@@ -4,6 +4,18 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.6
 
+### Release 4.6.7
+
+#### Bug Fixes
+
+- Fix OpenTelemetry warning [#2635](https://github.com/AxonFramework/AxonFramework/pull/2635)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@Morlack](https://github.com/Morlack)
+
 ### Release 4.6.6
 
 #### Bug Fixes
