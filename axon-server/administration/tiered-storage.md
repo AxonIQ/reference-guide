@@ -1,36 +1,36 @@
-# Multi-Tier Storage
+# Tiered Storage
 
-Multi-tier storage is a useful feature that allows you to store data across different levels of storage media based on access speed and cost. This helps optimize performance and reduce overall storage costs by placing frequently accessed data on faster storage media, such as SSDs, and less frequently accessed data on slower but more cost-effective storage media, such as HDDs.
+## Introduction
 
-In a multi-tier storage system, data is usually classified according to its importance or frequency of use, and then automatically migrated between storage tiers based on these criteria. This approach helps users to optimize their storage resources, reduce costs, and improve performance by ensuring that data is stored on the most appropriate type of storage media.
+Tiered storage is a useful feature that allows you to store data across different levels of storage media based on access speed and cost. This helps optimize performance and reduce overall storage costs by placing frequently accessed data on faster storage media, such as SSDs, and less frequently accessed data on slower but more cost-effective storage media, such as HDDs.
 
-# Axon Server Tiered Storage
+In a tiered storage system, data is usually classified according to its importance or frequency of use, and then automatically migrated between storage tiers based on these criteria. This approach helps users to optimize their storage resources, reduce costs, and improve performance by ensuring that data is stored on the most appropriate type of storage media.
 
-In Axon Server, there are two types of Multi-Tiered Storage - Local Multi-Tier Storage and Secondary Nodes - that work differently but can complement each other.
+## Axon Server Tiered Storage
 
-Let's first explain these two different options and compare them to each other. 
+In Axon Server, there are two features that allow you to manage how data is stored: Tiered Storage and Secondary Nodes. They work differently but can complement each other.
 
-## Multi-Tiered Storage (local)
+Let's first explain these two different options and compare them to each other.
 
-<img src="../../.gitbook/assets/multi-tier-local.png">
+<img src="../../.gitbook/assets/tiered-local.png">
 
 _Tier configuration is shared with all nodes. Each node maintains tiered storage independently storing on its own unique storage locations._
 
-Multi-Tiered Storage is a feature that enables each node to maintain a local representation of its own tiered storage over its event store replica. This feature allows you to configure multi-tier storage for different node role types, including primary, secondary, and backup nodes. Nodes of the same role share a multi-tier configuration execute segment-moving operations locally, and independently. For this reason, it is possible for segments to not be transferred at the same time on all nodes due to timing differences, but this is not a problem, and over time, the tiers will become synchronized.
+Tiered Storage is a feature that enables each node to maintain a local representation of its own tiered storage over its event store replica. This feature allows you to configure multiple storage tiers based on each node’s role, such as primary, secondary, or backup nodes. Nodes of the same role share a tiered configuration execute segment-moving operations locally, and independently. For this reason, it is possible for segments to not be transferred at the same time on all nodes due to timing differences, but this is not a problem, and over time, the tiers will become synchronized.
 
-With Multi-Tiered Storage, you can configure as many tiers as you need, and you can set retention intervals for each tier to determine after which interval the data should be moved from one tier to another. There are several supported tier types available, including the default, custom storage, and black hole.
+With Tiered Storage, you can configure as many tiers as you need, and you can set retention intervals for each tier to determine after which interval the data should be moved from one tier to another. There are several supported tier types available, including the default, custom storage, and black hole.
 
-<img src="../../.gitbook/assets/multi-tier-configuration.png">
+<img src="../../.gitbook/assets/tiered-configuration.png">
 
-_Multi-tier configuration within Context page - Axon Server Enterprise Edition_
+_Tiered configuration within Context page - Axon Server Enterprise Edition_
 
 ### Default
 
-The Default tier is a convenient option that allows you to quickly set up your event store without having to specify a custom location on disk. If you do not have any specific requirements for the physical storage location of your event data or you are migrating from an older version of Axon Server where the event store location was set via environment variables, then using the Default tier is a suitable initial tier to use.
+The Default tier type is a convenient option that allows you to quickly set up your event store without having to specify a custom location on disk. If you do not have any specific requirements for the physical storage location of your event data or you are migrating from an older version of Axon Server where the event store location was set via environment variables, then using the Default tier type is a suitable initial tier to use.
 
 ### Custom storage
 
-The Custom storage tier enables you to set a custom location for a specific tier in Axon Server. You can choose storage via a dropdown menu. To add storage locations to the dropdown menu, you need to configure Axon Server with additional properties. This can be done either through a property file or environment variables, using the following syntax:
+The Custom storage tier type enables you to set a custom location for a specific tier in Axon Server. You can choose storage via a dropdown menu. To add storage locations to the dropdown menu, you need to configure Axon Server with additional properties. This can be done either through a property file or environment variables, using the following syntax:
 
 ```
 axoniq.axonserver.event.storages.{storage name}={path to storage}
@@ -54,11 +54,11 @@ Storage locations are referenced by name (e.g., slow_disk), and the provided pat
 
 ### Black Hole Tier
 
-The Black Hole tier is tier type in Axon Server that consumes your events, and you will never see them again.
+The Black Hole is tier type in Axon Server that consumes your events, and you will never see them again.
 
 Using the Black Hole tier will mark your context as **ephemeral**, which means that data is permanently removed after a specified retention interval. **Once the data is removed, it cannot be recovered**, so it's essential to use this feature with caution and only if you're certain that you no longer need the data.
 
-<img src="../../.gitbook/assets/multi-tier-blackhole.png">
+<img src="../../.gitbook/assets/tiered-blackhole.png">
 
 _Context using a black hole tier will be marked as ephemeral and the flow of data will be visualized (only for primary nodes)_
 
@@ -81,14 +81,14 @@ However, note that this feature is experimental, and it comes with some caveats.
 
 Another safer usage of condition removal and black hole tier, is to enable it only for snapshot storage. With that after some time older non-used snapshots will be removed, but latest snapshot will be always available for each aggregate.
 
-<img src="../../.gitbook/assets/multi-tier-conditional.png">
+<img src="../../.gitbook/assets/tiered-conditional.png">
 
 _Configuring conditional remove in context properties_
 
 ### Retention Intervals
-Axon Server supports both time-based and size-based retention intervals for multi-tiered storage.
+Axon Server supports both time-based and size-based retention intervals for tiered storage.
 
-<img src="../../.gitbook/assets/multi-tier-retentiontime.png">
+<img src="../../.gitbook/assets/tiered-retentiontime.png">
 
 _Retention interval options for tiered storage_
 
@@ -112,14 +112,14 @@ You can limit the max number of segments that can be moved per minute by setting
 
 By default, the max number of segments that can be moved per minute is set to 5. This setting can be changed within the context properties in Axon Server UI.
 
-<img src="../../.gitbook/assets/multi-tier-move-rate.png">
+<img src="../../.gitbook/assets/tiered-move-rate.png">
 
 _Limiting IO rate in context properties for a given context_
 
 #### Pausing moving operation
 
 
-In some cases, you may want to pause the multi-tier segment moving operation. This can be useful in emergency situations or during maintenance/backup operations.
+In some cases, you may want to pause the segment moving operation. This can be useful in emergency situations or during maintenance/backup operations.
 
 To pause the segment moving operation, set the segment move rate to zero: `event.segment-move-rate=0`
 
@@ -182,12 +182,12 @@ The differences between Secondary Nodes and Tiered Storage allow for interesting
 In such scenarios, one could use SSD and HDD on the primary nodes to leverage the concurrent access performance of SSD and minimize costs by moving events to a local HDD once access requirements are reduced. Additionally, a Secondary node could be used to keep access for incidental operational use of older events. This Secondary node could use several storage tiers to cope with large amounts of data to store.
 By combining Secondary Nodes and Tiered Storage, users can effectively manage their data and strike a balance between performance and cost.
 
-<img src="../../.gitbook/assets/multi-tier-secondary.png">
+<img src="../../.gitbook/assets/tiered-secondary.png">
 
 _Example of a tiered setup that keeps most up-to-date events in primary nodes. After a given period of time data is removed from primary nodes and reduced to one replica in one secondary node which deletes data after a long period of time._
 
 ### Configuring and Using Secondary Nodes
-To use the multi-tier storage feature with secondary nodes, the replication group for the context must have nodes with `SECONDARY` role. You may consider to have at least two nodes with `SECONDARY` role to prevent a single point of failure.
+To use secondary nodes, the replication group for the context must have nodes with `SECONDARY` role. You may consider to have at least two nodes with `SECONDARY` role to prevent a single point of failure.
 To configure a secondary node, you need to add it to the Axon Server cluster as a new node with the `SECONDARY` role. You can do this by installing Axon Server on a new machine, configuring it to use the same Axon Server instance as the primary node, and starting it up with the `SECONDARY` role.
 Once the secondary node is up and running, it will automatically start replicating data from the primary node. By default, the secondary node will store a full copy of all data that the primary nodes also process. While replicating that data, the secondary node informs the primary nodes of its progress.
 To control the retention time of events on the primary nodes, you can set the retention time properties in the context properties.
