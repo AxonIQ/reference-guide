@@ -8,7 +8,7 @@ Our new release strategy involves releasing three versions each year, with new r
 We chose this approach to separate versioning from the Axon Framework and maintained flexibility and independence in versioning. This strategy provides predictable release dates, better alignment with customer needs, faster feature updates, and increased responsiveness to user feedback and market demands. Overall, this approach will enable us to deliver better products and services to our customers while ensuring maximum flexibility and independence in versioning.
 
 ### New features
-The 2023.0 release will bring us these new features
+The 2023.0 release brings us these new features:
 - Tiered Storage
 - Ephemeral Contexts
 
