@@ -24,6 +24,12 @@ With Tiered Storage, you can configure as many tiers as you need, and you can se
 
 _Tiered configuration within Context page - Axon Server Enterprise Edition_
 
+> **Lazy tier's**
+>
+> As all available tier types are eagerly initialized they are not suitable for cold storage or archiving.
+> In future we will aim to support lazy initialization of tiers, which will allow for cold storage and archiving.
+>
+
 ### Default
 
 The Default tier type is a convenient option that allows you to quickly set up your event store without having to specify a custom location on disk. If you do not have any specific requirements for the physical storage location of your event data or you are migrating from an older version of Axon Server where the event store location was set via environment variables, then using the Default tier type is a suitable initial tier to use.
