@@ -24,10 +24,11 @@ With Tiered Storage, you can configure as many tiers as you need, and you can se
 
 _Tiered configuration within Context page - Axon Server Enterprise Edition_
 
-> **Lazy tier's**
+> **Lazy tiers**
 >
 > As all available tier types are eagerly initialized they are not suitable for cold storage or archiving.
-> In future we will aim to support lazy initialization of tiers, which will allow for cold storage and archiving.
+> 
+> In the future, we will aim to support lazy initialization of tiers, which will allow support for cold storage and archiving.
 >
 
 ### Default
