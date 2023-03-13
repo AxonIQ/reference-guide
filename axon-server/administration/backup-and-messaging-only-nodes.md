@@ -11,7 +11,7 @@ These are:
 * _Primary nodes -&gt;_ This is the role for nodes prior to 4.3. Primary nodes handle client connections and messages, store events and may act as the leader for a replication group.
 * _Backup nodes -&gt;_ These nodes maintain a copy of the event store, but will never become the leader of a replication group. There are two types of Backup nodes - [Active Backup](backup-and-messaging-only-nodes.md#active-backup-node) and [Passive Backup](backup-and-messaging-only-nodes.md#passive-backup-node)
 * _Messaging-only nodes_ -&gt;  They handle client connections and all types of messages \(Commands/Queries/Events\) but they do not have an event store.
-* _Secondary nodes_ -&gt;  Support for multi-tier storage. If a replication group contains secondary nodes the primary nodes will only retain recent data.
+* _Secondary nodes_ -&gt;  Support for tiered storage. If a replication group contains secondary nodes the primary nodes will only retain recent data.
 
 Each replication group needs to have at least one Primary node. This node is capable of becoming a leader and coordinating transactions across the replication group between the different member nodes. Even if you are not using Axon Server as an event store, you still need a leader as transactions also include making changes to the replication group configuration and access control lists. It is also possible to [change the role](backup-and-messaging-only-nodes.md#changing-node-roles) that a particular node plays within a context.
 
