@@ -75,6 +75,7 @@ You can do so by choosing default tier type or selecting the storage location fr
 After that, you need to add Black Hole tier type and set retention interval for this tier.
 
 <img src="../../.gitbook/assets/tiered-ephemeral.png">
+
 _Example on how to configure ephemeral context _
 
 
