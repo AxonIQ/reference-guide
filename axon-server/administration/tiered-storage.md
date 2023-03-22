@@ -76,7 +76,7 @@ After that, you need to add Black Hole tier type and set retention interval for 
 
 <img src="../../.gitbook/assets/tiered-ephemeral.png">
 
-_Example on how to configure ephemeral context _
+_Example on how to configure ephemeral context_
 
 
 #### Use cases for ephemeral context
