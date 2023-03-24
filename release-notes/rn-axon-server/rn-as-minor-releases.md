@@ -4,6 +4,9 @@ This page provides a dedicated overview of patch releases for the Axon Server (E
 
 ## Release 4.6
 
+### Release 4.6.13
+* Fix a race condition between using and replenishing permits for forwarded query and command.
+
 ### Release 4.6.12
 
 * Filter overview page and metrics per context. Users can only see the information for the contexts for which they have a role, when they do not have the ADMIN or the VIEW_CONFIGURATION role.

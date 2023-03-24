@@ -24,6 +24,13 @@ With Tiered Storage, you can configure as many tiers as you need, and you can se
 
 _Tiered configuration within Context page - Axon Server Enterprise Edition_
 
+> **Lazy tiers**
+>
+> As all available tier types are eagerly initialized they are not suitable for cold storage or archiving.
+> 
+> In the future, we will aim to support lazy initialization of tiers, which will allow support for cold storage and archiving.
+>
+
 ### Default
 
 The Default tier type is a convenient option that allows you to quickly set up your event store without having to specify a custom location on disk. If you do not have any specific requirements for the physical storage location of your event data or you are migrating from an older version of Axon Server where the event store location was set via environment variables, then using the Default tier type is a suitable initial tier to use.
@@ -61,6 +68,16 @@ Using the Black Hole tier will mark your context as **ephemeral**, which means t
 <img src="../../.gitbook/assets/tiered-blackhole.png">
 
 _Context using a black hole tier will be marked as ephemeral and the flow of data will be visualized (only for primary nodes)_
+
+#### Configuring ephemeral context
+To configure context as ephemeral, you first need to choose storage where you want to store events or snapshots initially.
+You can do so by choosing default tier type or selecting the storage location from the dropdown menu.
+After that, you need to add Black Hole tier type and set retention interval for this tier.
+
+<img src="../../.gitbook/assets/tiered-ephemeral.png">
+
+_Example on how to configure ephemeral context_
+
 
 #### Use cases for ephemeral context
 Ephemeral context is particularly useful in scenarios such as event streaming or integration contexts, where events are published to multiple observers in real-time, and after some time, the events are no longer of interest. Another use case is for contexts that produce many events, like notifications, which are no longer useful for the business after a certain period.
