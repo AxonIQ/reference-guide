@@ -63,7 +63,7 @@ A summary of the various roles is depicted below
 | READ \(Deprecated\) | Read events and perform queries |
 | WRITE \(Deprecated\) | Publish events and perform commands |
 
-For a detailed overview of the mapping between operations and roles see [Access Control Matrix](access-control-matrix.md)
+For a detailed overview of the mapping between operations and roles see [Access Control Matrix](access-control-matrix.md).
 
 ### Accounts without a password
 
