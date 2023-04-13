@@ -150,6 +150,7 @@
   * [Access Control - Standard Edition](axon-server/security/access-control-se.md)
   * [Access Control - Enterprise Edition](axon-server/security/access-control-ee.md)
   * [Access Control - Client Applications](axon-server/security/access-control-clients.md)
+  * [Access Control - Matrix](axon-server/security/access-control-matrix.md)
   * [Access Control - CLI](axon-server/security/access-control-cli.md)
   * [Access Control - API](axon-server/security/access-control-api.md)
   * [Access Control - LDAP](axon-server/security/access-control-ldap.md)
