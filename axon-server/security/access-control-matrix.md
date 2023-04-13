@@ -7,644 +7,516 @@ The following table gives an overview of the roles in Axon Server and the operat
         <tr>
             <th>Role</th>
             <th>Operations</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>ADMIN</td>
             <td>DELETE_USER</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>DOWNLOAD_DIAGNOSE</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>DOWNLOAD_TEMPLATE</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_APP_DETAILS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_EVENT_PROCESSOR_STRATEGY</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_EVENT_PROCESSORS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_EVENT_PROCESSORS_STRATEGIES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_PLUGIN_CONFIGURATION</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>INIT_CLUSTER</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_APPS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_BACKUP_FILENAMES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_BACKUP_LOGFILES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_COMMANDS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_CONTEXTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_NODES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_PLUGINS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_QUERIES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_REPLICATION_GROUPS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_TASKS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_USERS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>MERGE_USER</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RAFT_CLEAN_LOG</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RAFT_GET_STATUS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RAFT_LIST_APPLICATIONS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RAFT_LIST_CONTEXT_MEMBERS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RAFT_LIST_CONTEXTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RAFT_START_CONTEXT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RAFT_STEPDOWN</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RAFT_STOP_CONTEXT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>REMOVE_NODE_FROM_CLUSTER</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RENEW_APP_TOKEN</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>UNREGISTER_PLUGIN</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>UPDATE_CONTEXT_PROPERTIES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>UPLOAD_LICENSE</td>
-            <td></td>
         </tr>
         <tr>
             <td>CONTEXT_ADMIN</td>
             <td>AUTO_REBALANCE_PROCESSOR</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_EVENT_PROCESSOR_STRATEGY</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_EVENT_PROCESSORS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_EVENT_PROCESSORS_STRATEGIES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_BACKUP_FILENAMES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_BACKUP_LOGFILES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LOCAL_GET_LAST_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LOCAL_GET_LAST_SNAPSHOT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>MERGE_EVENT_PROCESSOR_SEGMENTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>MOVE_EVENT_PROCESSOR_SEGMENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>PAUSE_EVENT_PROCESSOR</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>REBALANCE_PROCESSOR</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RECONNECT_CLIENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>SET_EVENT_PROCESSOR_STRATEGY</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>SPLIT_EVENT_PROCESSOR_SEGMENTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>START_EVENT_PROCESSOR</td>
-            <td></td>
         </tr>
         <tr>
             <td>DISPATCH_COMMANDS</td>
             <td>DISPATCH_COMMAND</td>
-            <td></td>
         </tr>
         <tr>
             <td>DISPATCH_QUERY</td>
             <td>DISPATCH_QUERY</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>DISPATCH_SUBSCRIPTION_QUERY</td>
-            <td></td>
         </tr>
         <tr>
             <td>MONITOR</td>
             <td>GET_COMMANDS_COUNT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_COMMANDS_QUEUE</td>
-            <td></td>
         </tr>
         <tr>
             <td>PUBLISH_EVENTS</td>
             <td>APPEND_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>APPEND_SNAPSHOT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>CANCEL_SCHEDULED_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RESCHEDULE_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>SCHEDULE_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td>READ</td>
             <td>DISPATCH_QUERY</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>DISPATCH_SUBSCRIPTION_QUERY</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_FIRST_TOKEN</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_LAST_TOKEN</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_TOKEN_AT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>HANDLE_QUERIES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_EVENTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_SNAPSHOTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>SEARCH_EVENTS</td>
-            <td></td>
         </tr>
         <tr>
             <td>READ_EVENTS</td>
             <td>GET_FIRST_TOKEN</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_LAST_TOKEN</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_TOKEN_AT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_EVENTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_SNAPSHOTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>READ_HIGHEST_SEQNR</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>SEARCH_EVENTS</td>
-            <td></td>
         </tr>
         <tr>
             <td>SUBSCRIBE_COMMAND_HANDLER</td>
             <td>HANDLE_COMMANDS</td>
-            <td></td>
         </tr>
         <tr>
             <td>SUBSCRIBE_QUERY_HANDLER</td>
             <td>HANDLE_QUERIES</td>
-            <td></td>
         </tr>
         <tr>
             <td>USE_CONTEXT</td>
             <td>APPEND_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>APPEND_SNAPSHOT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>AUTO_REBALANCE_PROCESSOR</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>CANCEL_SCHEDULED_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>DISPATCH_COMMAND</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>DISPATCH_QUERY</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>DISPATCH_SUBSCRIPTION_QUERY</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_COMMANDS_COUNT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_COMMANDS_QUEUE</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_EVENT_PROCESSOR_STRATEGY</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_EVENT_PROCESSORS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_EVENT_PROCESSORS_STRATEGIES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_FIRST_TOKEN</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_LAST_TOKEN</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>GET_TOKEN_AT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>HANDLE_COMMANDS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>HANDLE_QUERIES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_BACKUP_FILENAMES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_BACKUP_LOGFILES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_EVENTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_QUERIES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_SNAPSHOTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LOCAL_GET_LAST_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LOCAL_GET_LAST_SNAPSHOT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>MERGE_EVENT_PROCESSOR_SEGMENTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>MOVE_EVENT_PROCESSOR_SEGMENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>PAUSE_EVENT_PROCESSOR</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>READ_HIGHEST_SEQNR</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>REBALANCE_PROCESSOR</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RECONNECT_CLIENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RESCHEDULE_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>SCHEDULE_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>SEARCH_EVENTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>SET_EVENT_PROCESSOR_STRATEGY</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>SPLIT_EVENT_PROCESSOR_SEGMENTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>START_EVENT_PROCESSOR</td>
-            <td></td>
         </tr>
         <tr>
             <td>VIEW_CONFIGURATION</td>
             <td>LIST_APPS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_CONTEXTS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_NODES</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_PLUGINS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_REPLICATION_GROUPS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>LIST_USERS</td>
-            <td></td>
         </tr>
         <tr>
             <td>WRITE</td>
             <td>APPEND_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>APPEND_SNAPSHOT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>CANCEL_SCHEDULED_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>DISPATCH_COMMAND</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>HANDLE_COMMANDS</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>RESCHEDULE_EVENT</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
             <td>SCHEDULE_EVENT</td>
-            <td></td>
         </tr>
     </tbody>
 </table>
