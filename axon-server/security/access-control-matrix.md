@@ -2,140 +2,140 @@
 
 The following table gives an overview of the roles in Axon Server and the operations that are granted to that role:
 
-| Role                      | Operations                       |
-|:--------------------------|:---------------------------------|
-| ADMIN                     | DELETE_USER                      | 
-|                           | DOWNLOAD_DIAGNOSE                |
-|                           | DOWNLOAD_TEMPLATE                |
-|                           | GET_APP_DETAILS                  |
-|                           | GET_EVENT_PROCESSOR_STRATEGY     |
-|                           | GET_EVENT_PROCESSORS             |
-|                           | GET_EVENT_PROCESSORS_STRATEGIES  |
-|                           | GET_PLUGIN_CONFIGURATION         |
-|                           | INIT_CLUSTER                     |
-|                           | LIST_APPS                        |
-|                           | LIST_BACKUP_FILENAMES           |
-|                           | LIST_BACKUP_LOGFILES             |
-|                           | LIST_COMMANDS                    |
-|                           | LIST_CONTEXTS                    |
-|                           | LIST_NODES                       |
-|                           | LIST_PLUGINS                     |
-|                           | LIST_QUERIES                     |
-|                           | LIST_REPLICATION_GROUPS          |
-|                           | LIST_TASKS                       |
-|                           | LIST_USERS                       |
-|                           | MERGE_USER                       |
-|                           | RAFT_CLEAN_LOG                   |
-|                           | RAFT_GET_STATUS                  |
-|                           | RAFT_LIST_APPLICATIONS           |
-|                           | RAFT_LIST_CONTEXT_MEMBERS        |
-|                           | RAFT_LIST_CONTEXTS               |
-|                           | RAFT_START_CONTEXT               |
-|                           | RAFT_STEPDOWN                    |
-|                           | RAFT_STOP_CONTEXT                |
-|                           | REMOVE_NODE_FROM_CLUSTER         |
-|                           | RENEW_APP_TOKEN                  |
-|                           | UNREGISTER_PLUGIN                |
-|                           | UPDATE_CONTEXT_PROPERTIES        |
-|                           | UPLOAD_LICENSE                   |
-| CONTEXT_ADMIN             | AUTO_REBALANCE_PROCESSOR         |
-|                           | GET_EVENT_PROCESSOR_STRATEGY    |
-|                           | GET_EVENT_PROCESSORS            |
-|                           | GET_EVENT_PROCESSORS_STRATEGIES |
-|                           | LIST_BACKUP_FILENAMES            |
-|                           | LIST_BACKUP_LOGFILES             |
-|                           | LOCAL_GET_LAST_EVENT             |
-|                           | LOCAL_GET_LAST_SNAPSHOT          | 
-|                           | MERGE_EVENT_PROCESSOR_SEGMENTS   | 
-|                           | MOVE_EVENT_PROCESSOR_SEGMENT     | 
-|                           | PAUSE_EVENT_PROCESSOR            | 
-|                           | REBALANCE_PROCESSOR              |
-|                           | RECONNECT_CLIENT               |
-|                           | SET_EVENT_PROCESSOR_STRATEGY     |
-|                           | SPLIT_EVENT_PROCESSOR_SEGMENTS |
-|                           | START_EVENT_PROCESSOR            |
-| DISPATCH_COMMANDS         | DISPATCH_COMMAND                 |
-| DISPATCH_QUERY            | DISPATCH_QUERY                   | 	
-|                           | DISPATCH_SUBSCRIPTION_QUERY      |
-| MONITOR                   | GET_COMMANDS_COUNT	              | 
-|                           | GET_COMMANDS_QUEUE	              | 
-| PUBLISH_EVENTS            | APPEND_EVENT                     | 	
-|                           | APPEND_SNAPSHOT                  | 	
-|                           | CANCEL_SCHEDULED_EVENT           | 
-|                           | RESCHEDULE_EVENT                 | 
-|                           | SCHEDULE_EVENT	                  | 
-| READ                      | DISPATCH_QUERY                   |	
-|                           | DISPATCH_SUBSCRIPTION_QUERY      |
-|                           | GET_FIRST_TOKEN                  |
-|                           | GET_LAST_TOKEN                   |
-|                           | GET_TOKEN_AT                     |
-|                           | HANDLE_QUERIES                   |
-|                           | LIST_EVENTS                      |
-|                           | LIST_SNAPSHOTS                   |
-|                           | SEARCH_EVENTS                    | 
-| READ_EVENTS               | GET_FIRST_TOKEN                  | 	
-|                           | GET_LAST_TOKEN                   | 
-|                           | GET_TOKEN_AT                     | 
-|                           | LIST_EVENTS	                     | 
-|                           | LIST_SNAPSHOTS	                  | 
-|                           | READ_HIGHEST_SEQNR	              | 
-|                           | SEARCH_EVENTS                    | 
-| SUBSCRIBE_COMMAND_HANDLER | HANDLE_COMMANDS                  | 
-| SUBSCRIBE_QUERY_HANDLER   | HANDLE_QUERIES                   |
-| USE_CONTEXT               | APPEND_EVENT                     |
-|                           | APPEND_SNAPSHOT	                 | 
-|                           | AUTO_REBALANCE_PROCESSOR	        | 
-|                           | CANCEL_SCHEDULED_EVENT	          | 
-|                           | DISPATCH_COMMAND	                | 
-|                           | DISPATCH_QUERY	                  | 
-|                           | DISPATCH_SUBSCRIPTION_QUERY	     | 
-|                           | GET_COMMANDS_COUNT	              | 
-|                           | GET_COMMANDS_QUEUE	              | 
-|                           | GET_EVENT_PROCESSOR_STRATEGY     | 
-|                           | GET_EVENT_PROCESSORS	            |
-|                           | GET_EVENT_PROCESSORS_STRATEGIES  | 
-|                           | GET_FIRST_TOKEN                  |
-|                           | GET_LAST_TOKEN                   |
-|                           | GET_TOKEN_AT	                    |
-|                           | HANDLE_COMMANDS	                 |
-|                           | HANDLE_QUERIES	                  |
-|                           | LIST_BACKUP_FILENAMES	           |
-|                           | LIST_BACKUP_LOGFILES	            |
-|                           | LIST_EVENTS	                     | 
-|                           | LIST_QUERIES	                    | 
-|                           | LIST_SNAPSHOTS	                  |
-|                           | LOCAL_GET_LAST_EVENT	            | 
-|                           | LOCAL_GET_LAST_SNAPSHOT	         | 
-|                           | MERGE_EVENT_PROCESSOR_SEGMENTS   |
-|                           | MOVE_EVENT_PROCESSOR_SEGMENT     |
-|                           | PAUSE_EVENT_PROCESSOR	           |
-|                           | READ_HIGHEST_SEQNR	              |
-|                           | REBALANCE_PROCESSOR              | 
-|                           | RECONNECT_CLIENT	                |
-|                           | RESCHEDULE_EVENT	                |
-|                           | SCHEDULE_EVENT	                  |
-|                           | SEARCH_EVENTS	                   |
-|                           | SET_EVENT_PROCESSOR_STRATEGY	    |
-|                           | SPLIT_EVENT_PROCESSOR_SEGMENTS	  |
-|                           | START_EVENT_PROCESSOR	           |
-| VIEW_CONFIGURATION        | LIST_APPS	                       |
-|                           | LIST_CONTEXTS	                   | 
-|                           | LIST_NODES	                      |
-|                           | LIST_PLUGINS	                    | 
-|                           | LIST_REPLICATION_GROUPS	         |
-|                           | LIST_USERS	                      | 
-| WRITE                     | APPEND_EVENT	                    |
-|                           | APPEND_SNAPSHOT	                 |
-|                           | CANCEL_SCHEDULED_EVENT	          | 
-|                           | DISPATCH_COMMAND	                |
-|                           | HANDLE_COMMANDS	                 |
-|                           | RESCHEDULE_EVENT	                |
-|                           | SCHEDULE_EVENT	                  |
+| Role                       | Operations                        |
+| --- | --- |
+| ADMIN                      | DELETE_USER                        | 
+|                            | DOWNLOAD_DIAGNOSE                  |
+|                            | DOWNLOAD_TEMPLATE                  |
+|                            | GET_APP_DETAILS                    |
+|                            | GET_EVENT_PROCESSOR_STRATEGY       |
+|                            | GET_EVENT_PROCESSORS               |
+|                            | GET_EVENT_PROCESSORS_STRATEGIES    |
+|                            | GET_PLUGIN_CONFIGURATION           |
+|                            | INIT_CLUSTER                       |
+|                            | LIST_APPS                          |
+|                            | LIST_BACKUP_FILENAMES              |
+|                            | LIST_BACKUP_LOGFILES               |
+|                            | LIST_COMMANDS                      |
+|                            | LIST_CONTEXTS                      |
+|                            | LIST_NODES                         |
+|                            | LIST_PLUGINS                       |
+|                            | LIST_QUERIES                       |
+|                            | LIST_REPLICATION_GROUPS            |
+|                            | LIST_TASKS                         |
+|                            | LIST_USERS                         |
+|                            | MERGE_USER                         |
+|                            | RAFT_CLEAN_LOG                     |
+|                            | RAFT_GET_STATUS                    |
+|                            | RAFT_LIST_APPLICATIONS             |
+|                            | RAFT_LIST_CONTEXT_MEMBERS          |
+|                            | RAFT_LIST_CONTEXTS                 |
+|                            | RAFT_START_CONTEXT                 |
+|                            | RAFT_STEPDOWN                      |
+|                            | RAFT_STOP_CONTEXT                  |
+|                            | REMOVE_NODE_FROM_CLUSTER           |
+|                            | RENEW_APP_TOKEN                    |
+|                            | UNREGISTER_PLUGIN                  |
+|                            | UPDATE_CONTEXT_PROPERTIES          |
+|                            | UPLOAD_LICENSE                     |
+| CONTEXT_ADMIN              | AUTO_REBALANCE_PROCESSOR           |
+|                            | GET_EVENT_PROCESSOR_STRATEGY       |
+|                            | GET_EVENT_PROCESSORS               |
+|                            | GET_EVENT_PROCESSORS_STRATEGIES    |
+|                            | LIST_BACKUP_FILENAMES              |
+|                            | LIST_BACKUP_LOGFILES               |
+|                            | LOCAL_GET_LAST_EVENT               |
+|                            | LOCAL_GET_LAST_SNAPSHOT            | 
+|                            | MERGE_EVENT_PROCESSOR_SEGMENTS     | 
+|                            | MOVE_EVENT_PROCESSOR_SEGMENT       | 
+|                            | PAUSE_EVENT_PROCESSOR              | 
+|                            | REBALANCE_PROCESSOR                |
+|                            | RECONNECT_CLIENT                   |
+|                            | SET_EVENT_PROCESSOR_STRATEGY       |
+|                            | SPLIT_EVENT_PROCESSOR_SEGMENTS     |
+|                            | START_EVENT_PROCESSOR              |
+| DISPATCH_COMMANDS          | DISPATCH_COMMAND                   |
+| DISPATCH_QUERY             | DISPATCH_QUERY                     | 	
+|                            | DISPATCH_SUBSCRIPTION_QUERY        |
+| MONITOR                    | GET_COMMANDS_COUNT	                | 
+|                            | GET_COMMANDS_QUEUE	                | 
+| PUBLISH_EVENTS             | APPEND_EVENT                       | 	
+|                            | APPEND_SNAPSHOT                    | 	
+|                            | CANCEL_SCHEDULED_EVENT             | 
+|                            | RESCHEDULE_EVENT                   | 
+|                            | SCHEDULE_EVENT	                    | 
+| READ                       | DISPATCH_QUERY                     |	
+|                            | DISPATCH_SUBSCRIPTION_QUERY        |
+|                            | GET_FIRST_TOKEN                    |
+|                            | GET_LAST_TOKEN                     |
+|                            | GET_TOKEN_AT                       |
+|                            | HANDLE_QUERIES                     |
+|                            | LIST_EVENTS                        |
+|                            | LIST_SNAPSHOTS                     |
+|                            | SEARCH_EVENTS                      | 
+| READ_EVENTS                | GET_FIRST_TOKEN                    | 	
+|                            | GET_LAST_TOKEN                     | 
+|                            | GET_TOKEN_AT                       | 
+|                            | LIST_EVENTS	                       | 
+|                            | LIST_SNAPSHOTS	                    | 
+|                            | READ_HIGHEST_SEQNR	                | 
+|                            | SEARCH_EVENTS                      | 
+| SUBSCRIBE_COMMAND_HANDLER  | HANDLE_COMMANDS                    | 
+| SUBSCRIBE_QUERY_HANDLER    | HANDLE_QUERIES                     |
+| USE_CONTEXT                | APPEND_EVENT                       |
+|                            | APPEND_SNAPSHOT	                   | 
+|                            | AUTO_REBALANCE_PROCESSOR	          | 
+|                            | CANCEL_SCHEDULED_EVENT	            | 
+|                            | DISPATCH_COMMAND	                  | 
+|                            | DISPATCH_QUERY	                    | 
+|                            | DISPATCH_SUBSCRIPTION_QUERY	       | 
+|                            | GET_COMMANDS_COUNT	                | 
+|                            | GET_COMMANDS_QUEUE	                | 
+|                            | GET_EVENT_PROCESSOR_STRATEGY       | 
+|                            | GET_EVENT_PROCESSORS	              |
+|                            | GET_EVENT_PROCESSORS_STRATEGIES    | 
+|                            | GET_FIRST_TOKEN                    |
+|                            | GET_LAST_TOKEN                     |
+|                            | GET_TOKEN_AT	                      |
+|                            | HANDLE_COMMANDS	                   |
+|                            | HANDLE_QUERIES	                    |
+|                            | LIST_BACKUP_FILENAMES	             |
+|                            | LIST_BACKUP_LOGFILES	              |
+|                            | LIST_EVENTS	                       | 
+|                            | LIST_QUERIES	                      | 
+|                            | LIST_SNAPSHOTS	                    |
+|                            | LOCAL_GET_LAST_EVENT	              | 
+|                            | LOCAL_GET_LAST_SNAPSHOT	           | 
+|                            | MERGE_EVENT_PROCESSOR_SEGMENTS     |
+|                            | MOVE_EVENT_PROCESSOR_SEGMENT       |
+|                            | PAUSE_EVENT_PROCESSOR	             |
+|                            | READ_HIGHEST_SEQNR	                |
+|                            | REBALANCE_PROCESSOR                | 
+|                            | RECONNECT_CLIENT	                  |
+|                            | RESCHEDULE_EVENT	                  |
+|                            | SCHEDULE_EVENT	                    |
+|                            | SEARCH_EVENTS	                     |
+|                            | SET_EVENT_PROCESSOR_STRATEGY	      |
+|                            | SPLIT_EVENT_PROCESSOR_SEGMENTS	    |
+|                            | START_EVENT_PROCESSOR	             |
+| VIEW_CONFIGURATION         | LIST_APPS	                         |
+|                            | LIST_CONTEXTS	                     | 
+|                            | LIST_NODES	                        |
+|                            | LIST_PLUGINS	                      | 
+|                            | LIST_REPLICATION_GROUPS	           |
+|                            | LIST_USERS	                        | 
+| WRITE                      | APPEND_EVENT	                      |
+|                            | APPEND_SNAPSHOT	                   |
+|                            | CANCEL_SCHEDULED_EVENT	            | 
+|                            | DISPATCH_COMMAND	                  |
+|                            | HANDLE_COMMANDS	                   |
+|                            | RESCHEDULE_EVENT	                  |
+|                            | SCHEDULE_EVENT	                    |
 
 The following table gives an overview of the operations in Axon Server and the roles that can execute the operation:
 
 | Operation	                          | Role                      |
-|:------------------------------------|:--------------------------|
+| --- | --- |
 | ACTIVATE_PLUGIN	                    | ADMIN                     |
 | ADD_NODE_TO_CLUSTER                 | 	ADMIN                    |
 | ADD_NODE_TO_CONTEXT	                | ADMIN                     |
@@ -174,8 +174,8 @@ The following table gives an overview of the operations in Axon Server and the r
 | DISPATCH_SUBSCRIPTION_QUERY	        | DISPATCH_QUERY            |
 |                                     | 	READ                     |
 |                                     | 	USE_CONTEXT              |
-| DOWNLOAD_DIAGNOSE	                 | ADMIN                     | 
-| DOWNLOAD_TEMPLATE	                 | ADMIN                     | 
+| DOWNLOAD_DIAGNOSE	                  | ADMIN                     | 
+| DOWNLOAD_TEMPLATE	                  | ADMIN                     | 
 | GET_APP_DETAILS	                    | ADMIN                     |
 | GET_COMMANDS_COUNT                  | 	MONITOR                  |
 |                                     | 	USE_CONTEXT              |
