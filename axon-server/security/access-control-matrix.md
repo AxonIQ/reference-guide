@@ -4,7 +4,7 @@ The following table gives an overview of the roles in Axon Server and the operat
 
 | Role                      | Operations                       |
 |:--------------------------|:---------------------------------|
-| Admin                     | DELETE_USER                      | 
+| ADMIN                     | DELETE_USER                      | 
 |                           | DOWNLOAD_DIAGNOSE                |
 |                           | DOWNLOAD_TEMPLATE                |
 |                           | GET_APP_DETAILS                  |
@@ -14,7 +14,7 @@ The following table gives an overview of the roles in Axon Server and the operat
 |                           | GET_PLUGIN_CONFIGURATION         |
 |                           | INIT_CLUSTER                     |
 |                           | LIST_APPS                        |
-|                           | LIST_BACKUP0_FILENAMES           |
+|                           | LIST_BACKUP_FILENAMES           |
 |                           | LIST_BACKUP_LOGFILES             |
 |                           | LIST_COMMANDS                    |
 |                           | LIST_CONTEXTS                    |
@@ -39,9 +39,9 @@ The following table gives an overview of the roles in Axon Server and the operat
 |                           | UPDATE_CONTEXT_PROPERTIES        |
 |                           | UPLOAD_LICENSE                   |
 | CONTEXT_ADMIN             | AUTO_REBALANCE_PROCESSOR         |
-|                           | 0GET_EVENT_PROCESSOR_STRATEGY    |
-|                           | 0GET_EVENT_PROCESSORS            |
-|                           | 0GET_EVENT_PROCESSORS_STRATEGIES |
+|                           | GET_EVENT_PROCESSOR_STRATEGY    |
+|                           | GET_EVENT_PROCESSORS            |
+|                           | GET_EVENT_PROCESSORS_STRATEGIES |
 |                           | LIST_BACKUP_FILENAMES            |
 |                           | LIST_BACKUP_LOGFILES             |
 |                           | LOCAL_GET_LAST_EVENT             |
@@ -50,9 +50,9 @@ The following table gives an overview of the roles in Axon Server and the operat
 |                           | MOVE_EVENT_PROCESSOR_SEGMENT     | 
 |                           | PAUSE_EVENT_PROCESSOR            | 
 |                           | REBALANCE_PROCESSOR              |
-|                           | 0RECONNECT_0CLIENT               |
+|                           | RECONNECT_CLIENT               |
 |                           | SET_EVENT_PROCESSOR_STRATEGY     |
-|                           | 0SPLIT_EVEN0T_PROCESSOR_SEGMENTS |
+|                           | SPLIT_EVENT_PROCESSOR_SEGMENTS |
 |                           | START_EVENT_PROCESSOR            |
 | DISPATCH_COMMANDS         | DISPATCH_COMMAND                 |
 | DISPATCH_QUERY            | DISPATCH_QUERY                   | 	
@@ -174,8 +174,8 @@ The following table gives an overview of the operations in Axon Server and the r
 | DISPATCH_SUBSCRIPTION_QUERY	        | DISPATCH_QUERY            |
 |                                     | 	READ                     |
 |                                     | 	USE_CONTEXT              |
-| 0DOWNLOAD_DIAGNOSE	                 | ADMIN                     | 
-| 0DOWNLOAD_TEMPLATE	                 | ADMIN                     | 
+| DOWNLOAD_DIAGNOSE	                 | ADMIN                     | 
+| DOWNLOAD_TEMPLATE	                 | ADMIN                     | 
 | GET_APP_DETAILS	                    | ADMIN                     |
 | GET_COMMANDS_COUNT                  | 	MONITOR                  |
 |                                     | 	USE_CONTEXT              |
