@@ -2,281 +2,1238 @@
 
 The following table gives an overview of the roles in Axon Server and the operations that are granted to that role:
 
-| Role                       | Operations                        |
-| --- | --- |
-| ADMIN                      | DELETE_USER                        | 
-|                            | DOWNLOAD_DIAGNOSE                  |
-|                            | DOWNLOAD_TEMPLATE                  |
-|                            | GET_APP_DETAILS                    |
-|                            | GET_EVENT_PROCESSOR_STRATEGY       |
-|                            | GET_EVENT_PROCESSORS               |
-|                            | GET_EVENT_PROCESSORS_STRATEGIES    |
-|                            | GET_PLUGIN_CONFIGURATION           |
-|                            | INIT_CLUSTER                       |
-|                            | LIST_APPS                          |
-|                            | LIST_BACKUP_FILENAMES              |
-|                            | LIST_BACKUP_LOGFILES               |
-|                            | LIST_COMMANDS                      |
-|                            | LIST_CONTEXTS                      |
-|                            | LIST_NODES                         |
-|                            | LIST_PLUGINS                       |
-|                            | LIST_QUERIES                       |
-|                            | LIST_REPLICATION_GROUPS            |
-|                            | LIST_TASKS                         |
-|                            | LIST_USERS                         |
-|                            | MERGE_USER                         |
-|                            | RAFT_CLEAN_LOG                     |
-|                            | RAFT_GET_STATUS                    |
-|                            | RAFT_LIST_APPLICATIONS             |
-|                            | RAFT_LIST_CONTEXT_MEMBERS          |
-|                            | RAFT_LIST_CONTEXTS                 |
-|                            | RAFT_START_CONTEXT                 |
-|                            | RAFT_STEPDOWN                      |
-|                            | RAFT_STOP_CONTEXT                  |
-|                            | REMOVE_NODE_FROM_CLUSTER           |
-|                            | RENEW_APP_TOKEN                    |
-|                            | UNREGISTER_PLUGIN                  |
-|                            | UPDATE_CONTEXT_PROPERTIES          |
-|                            | UPLOAD_LICENSE                     |
-| CONTEXT_ADMIN              | AUTO_REBALANCE_PROCESSOR           |
-|                            | GET_EVENT_PROCESSOR_STRATEGY       |
-|                            | GET_EVENT_PROCESSORS               |
-|                            | GET_EVENT_PROCESSORS_STRATEGIES    |
-|                            | LIST_BACKUP_FILENAMES              |
-|                            | LIST_BACKUP_LOGFILES               |
-|                            | LOCAL_GET_LAST_EVENT               |
-|                            | LOCAL_GET_LAST_SNAPSHOT            | 
-|                            | MERGE_EVENT_PROCESSOR_SEGMENTS     | 
-|                            | MOVE_EVENT_PROCESSOR_SEGMENT       | 
-|                            | PAUSE_EVENT_PROCESSOR              | 
-|                            | REBALANCE_PROCESSOR                |
-|                            | RECONNECT_CLIENT                   |
-|                            | SET_EVENT_PROCESSOR_STRATEGY       |
-|                            | SPLIT_EVENT_PROCESSOR_SEGMENTS     |
-|                            | START_EVENT_PROCESSOR              |
-| DISPATCH_COMMANDS          | DISPATCH_COMMAND                   |
-| DISPATCH_QUERY             | DISPATCH_QUERY                     | 	
-|                            | DISPATCH_SUBSCRIPTION_QUERY        |
-| MONITOR                    | GET_COMMANDS_COUNT	                | 
-|                            | GET_COMMANDS_QUEUE	                | 
-| PUBLISH_EVENTS             | APPEND_EVENT                       | 	
-|                            | APPEND_SNAPSHOT                    | 	
-|                            | CANCEL_SCHEDULED_EVENT             | 
-|                            | RESCHEDULE_EVENT                   | 
-|                            | SCHEDULE_EVENT	                    | 
-| READ                       | DISPATCH_QUERY                     |	
-|                            | DISPATCH_SUBSCRIPTION_QUERY        |
-|                            | GET_FIRST_TOKEN                    |
-|                            | GET_LAST_TOKEN                     |
-|                            | GET_TOKEN_AT                       |
-|                            | HANDLE_QUERIES                     |
-|                            | LIST_EVENTS                        |
-|                            | LIST_SNAPSHOTS                     |
-|                            | SEARCH_EVENTS                      | 
-| READ_EVENTS                | GET_FIRST_TOKEN                    | 	
-|                            | GET_LAST_TOKEN                     | 
-|                            | GET_TOKEN_AT                       | 
-|                            | LIST_EVENTS	                       | 
-|                            | LIST_SNAPSHOTS	                    | 
-|                            | READ_HIGHEST_SEQNR	                | 
-|                            | SEARCH_EVENTS                      | 
-| SUBSCRIBE_COMMAND_HANDLER  | HANDLE_COMMANDS                    | 
-| SUBSCRIBE_QUERY_HANDLER    | HANDLE_QUERIES                     |
-| USE_CONTEXT                | APPEND_EVENT                       |
-|                            | APPEND_SNAPSHOT	                   | 
-|                            | AUTO_REBALANCE_PROCESSOR	          | 
-|                            | CANCEL_SCHEDULED_EVENT	            | 
-|                            | DISPATCH_COMMAND	                  | 
-|                            | DISPATCH_QUERY	                    | 
-|                            | DISPATCH_SUBSCRIPTION_QUERY	       | 
-|                            | GET_COMMANDS_COUNT	                | 
-|                            | GET_COMMANDS_QUEUE	                | 
-|                            | GET_EVENT_PROCESSOR_STRATEGY       | 
-|                            | GET_EVENT_PROCESSORS	              |
-|                            | GET_EVENT_PROCESSORS_STRATEGIES    | 
-|                            | GET_FIRST_TOKEN                    |
-|                            | GET_LAST_TOKEN                     |
-|                            | GET_TOKEN_AT	                      |
-|                            | HANDLE_COMMANDS	                   |
-|                            | HANDLE_QUERIES	                    |
-|                            | LIST_BACKUP_FILENAMES	             |
-|                            | LIST_BACKUP_LOGFILES	              |
-|                            | LIST_EVENTS	                       | 
-|                            | LIST_QUERIES	                      | 
-|                            | LIST_SNAPSHOTS	                    |
-|                            | LOCAL_GET_LAST_EVENT	              | 
-|                            | LOCAL_GET_LAST_SNAPSHOT	           | 
-|                            | MERGE_EVENT_PROCESSOR_SEGMENTS     |
-|                            | MOVE_EVENT_PROCESSOR_SEGMENT       |
-|                            | PAUSE_EVENT_PROCESSOR	             |
-|                            | READ_HIGHEST_SEQNR	                |
-|                            | REBALANCE_PROCESSOR                | 
-|                            | RECONNECT_CLIENT	                  |
-|                            | RESCHEDULE_EVENT	                  |
-|                            | SCHEDULE_EVENT	                    |
-|                            | SEARCH_EVENTS	                     |
-|                            | SET_EVENT_PROCESSOR_STRATEGY	      |
-|                            | SPLIT_EVENT_PROCESSOR_SEGMENTS	    |
-|                            | START_EVENT_PROCESSOR	             |
-| VIEW_CONFIGURATION         | LIST_APPS	                         |
-|                            | LIST_CONTEXTS	                     | 
-|                            | LIST_NODES	                        |
-|                            | LIST_PLUGINS	                      | 
-|                            | LIST_REPLICATION_GROUPS	           |
-|                            | LIST_USERS	                        | 
-| WRITE                      | APPEND_EVENT	                      |
-|                            | APPEND_SNAPSHOT	                   |
-|                            | CANCEL_SCHEDULED_EVENT	            | 
-|                            | DISPATCH_COMMAND	                  |
-|                            | HANDLE_COMMANDS	                   |
-|                            | RESCHEDULE_EVENT	                  |
-|                            | SCHEDULE_EVENT	                    |
+<table>
+    <thead>
+        <tr>
+            <th>Role</th>
+            <th>Operations</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ADMIN</td>
+            <td>DELETE_USER</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>DOWNLOAD_DIAGNOSE</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>DOWNLOAD_TEMPLATE</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_APP_DETAILS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_EVENT_PROCESSOR_STRATEGY</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_EVENT_PROCESSORS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_EVENT_PROCESSORS_STRATEGIES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_PLUGIN_CONFIGURATION</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>INIT_CLUSTER</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_APPS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_BACKUP_FILENAMES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_BACKUP_LOGFILES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_COMMANDS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_CONTEXTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_NODES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_PLUGINS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_QUERIES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_REPLICATION_GROUPS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_TASKS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_USERS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>MERGE_USER</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RAFT_CLEAN_LOG</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RAFT_GET_STATUS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RAFT_LIST_APPLICATIONS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RAFT_LIST_CONTEXT_MEMBERS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RAFT_LIST_CONTEXTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RAFT_START_CONTEXT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RAFT_STEPDOWN</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RAFT_STOP_CONTEXT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>REMOVE_NODE_FROM_CLUSTER</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RENEW_APP_TOKEN</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>UNREGISTER_PLUGIN</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>UPDATE_CONTEXT_PROPERTIES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>UPLOAD_LICENSE</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>CONTEXT_ADMIN</td>
+            <td>AUTO_REBALANCE_PROCESSOR</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_EVENT_PROCESSOR_STRATEGY</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_EVENT_PROCESSORS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_EVENT_PROCESSORS_STRATEGIES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_BACKUP_FILENAMES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_BACKUP_LOGFILES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LOCAL_GET_LAST_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LOCAL_GET_LAST_SNAPSHOT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>MERGE_EVENT_PROCESSOR_SEGMENTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>MOVE_EVENT_PROCESSOR_SEGMENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>PAUSE_EVENT_PROCESSOR</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>REBALANCE_PROCESSOR</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RECONNECT_CLIENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>SET_EVENT_PROCESSOR_STRATEGY</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>SPLIT_EVENT_PROCESSOR_SEGMENTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>START_EVENT_PROCESSOR</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>DISPATCH_COMMANDS</td>
+            <td>DISPATCH_COMMAND</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>DISPATCH_QUERY</td>
+            <td>DISPATCH_QUERY</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>DISPATCH_SUBSCRIPTION_QUERY</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>MONITOR</td>
+            <td>GET_COMMANDS_COUNT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_COMMANDS_QUEUE</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>PUBLISH_EVENTS</td>
+            <td>APPEND_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>APPEND_SNAPSHOT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>CANCEL_SCHEDULED_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RESCHEDULE_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>SCHEDULE_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>READ</td>
+            <td>DISPATCH_QUERY</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>DISPATCH_SUBSCRIPTION_QUERY</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_FIRST_TOKEN</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_LAST_TOKEN</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_TOKEN_AT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>HANDLE_QUERIES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_EVENTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_SNAPSHOTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>SEARCH_EVENTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>READ_EVENTS</td>
+            <td>GET_FIRST_TOKEN</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_LAST_TOKEN</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_TOKEN_AT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_EVENTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_SNAPSHOTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>READ_HIGHEST_SEQNR</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>SEARCH_EVENTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>SUBSCRIBE_COMMAND_HANDLER</td>
+            <td>HANDLE_COMMANDS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>SUBSCRIBE_QUERY_HANDLER</td>
+            <td>HANDLE_QUERIES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>USE_CONTEXT</td>
+            <td>APPEND_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>APPEND_SNAPSHOT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>AUTO_REBALANCE_PROCESSOR</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>CANCEL_SCHEDULED_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>DISPATCH_COMMAND</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>DISPATCH_QUERY</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>DISPATCH_SUBSCRIPTION_QUERY</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_COMMANDS_COUNT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_COMMANDS_QUEUE</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_EVENT_PROCESSOR_STRATEGY</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_EVENT_PROCESSORS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_EVENT_PROCESSORS_STRATEGIES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_FIRST_TOKEN</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_LAST_TOKEN</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>GET_TOKEN_AT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>HANDLE_COMMANDS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>HANDLE_QUERIES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_BACKUP_FILENAMES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_BACKUP_LOGFILES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_EVENTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_QUERIES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_SNAPSHOTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LOCAL_GET_LAST_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LOCAL_GET_LAST_SNAPSHOT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>MERGE_EVENT_PROCESSOR_SEGMENTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>MOVE_EVENT_PROCESSOR_SEGMENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>PAUSE_EVENT_PROCESSOR</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>READ_HIGHEST_SEQNR</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>REBALANCE_PROCESSOR</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RECONNECT_CLIENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RESCHEDULE_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>SCHEDULE_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>SEARCH_EVENTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>SET_EVENT_PROCESSOR_STRATEGY</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>SPLIT_EVENT_PROCESSOR_SEGMENTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>START_EVENT_PROCESSOR</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>VIEW_CONFIGURATION</td>
+            <td>LIST_APPS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_CONTEXTS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_NODES</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_PLUGINS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_REPLICATION_GROUPS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>LIST_USERS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>WRITE</td>
+            <td>APPEND_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>APPEND_SNAPSHOT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>CANCEL_SCHEDULED_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>DISPATCH_COMMAND</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>HANDLE_COMMANDS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>RESCHEDULE_EVENT</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>SCHEDULE_EVENT</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 
 The following table gives an overview of the operations in Axon Server and the roles that can execute the operation:
 
-| Operation	                          | Role                      |
-| --- | --- |
-| ACTIVATE_PLUGIN	                    | ADMIN                     |
-| ADD_NODE_TO_CLUSTER                 | 	ADMIN                    |
-| ADD_NODE_TO_CONTEXT	                | ADMIN                     |
-| ADD_NODE_TO_REPLICATION_GROUP	      | ADMIN                     | 
-| ADD_PLUGIN	                         | ADMIN                     |
-| APPEND_EVENT	                       | PUBLISH_EVENTS            |
-|                                     | 	USE_CONTEXT              |
-| 	                                   | WRITE                     |
-| APPEND_SNAPSHOT	                    | PUBLISH_EVENTS            |
-|                                     | 	USE_CONTEXT              |
-|                                     | WRITE                     |
-| AUTO_REBALANCE_PROCESSOR	           | CONTEXT_ADMIN             | 
-|                                     | 	USE_CONTEXT              |
-| CANCEL_SCHEDULED_EVENT	             | PUBLISH_EVENTS            |
-|                                     | 	USE_CONTEXT              |
-|                                     | 	WRITE                    |
-| CONFIGURE_PLUGIN                    | 	ADMIN                    |
-| CREATE_APP                          | 	ADMIN                    |
-| CREATE_CONTEXT	                     | ADMIN                     |
-| CREATE_CONTROLDB_BACKUP             | 	ADMIN                    |
-| CREATE_REPLICATION_GROUP            | 	ADMIN                    |
-| DELETE_APP	                         | ADMIN                     |
-| DELETE_CONTEXT                      | 	ADMIN                    |
-| DELETE_NODE_FROM_CONTEXT            | 	ADMIN                    |
-| DELETE_NODE_FROM_REPLICATION_GROUP	 | ADMIN                     |
-| DELETE_PLUGIN	                      | ADMIN                     |
-| DELETE_REPLICATION_GROUP	           | ADMIN                     | 
-| DELETE_TASK                         | 	ADMIN                    |
-| DELETE_USER                         | 	ADMIN                    |
-| DISPATCH_COMMAND                    | 	DISPATCH_COMMANDS        |
-|                                     | 	USE_CONTEXT              |
-| 	                                   | WRITE                     |
-| DISPATCH_QUERY	                     | DISPATCH_QUERY            |
-| 	                                   | READ                      |
-| 	                                   | USE_CONTEXT               |
-| DISPATCH_SUBSCRIPTION_QUERY	        | DISPATCH_QUERY            |
-|                                     | 	READ                     |
-|                                     | 	USE_CONTEXT              |
-| DOWNLOAD_DIAGNOSE	                  | ADMIN                     | 
-| DOWNLOAD_TEMPLATE	                  | ADMIN                     | 
-| GET_APP_DETAILS	                    | ADMIN                     |
-| GET_COMMANDS_COUNT                  | 	MONITOR                  |
-|                                     | 	USE_CONTEXT              |
-| GET_COMMANDS_QUEUE                  | 	MONITOR                  |
-|                                     | 	USE_CONTEXT              |
-| GET_EVENT_PROCESSOR_STRATEGY        | 	ADMIN                    | 
-|                                     | 	CONTEXT_ADMIN            | 
-|                                     | 	USE_CONTEXT              | 
-| GET_EVENT_PROCESSORS	               | ADMIN                     |
-| 	                                   | CONTEXT_ADMIN             |
-| 	                                   | USE_CONTEXT               |
-| GET_EVENT_PROCESSORS_STRATEGIES	    | ADMIN                     | 
-| 	                                   | CONTEXT_ADMIN             | 
-| 	                                   | USE_CONTEXT               | 
-| GET_FIRST_TOKEN	                    | READ                      |
-| 	                                   | READ_EVENTS               |
-| 	                                   | USE_CONTEXT               |
-| GET_LAST_TOKEN	                     | READ                      |
-| 	                                   | READ_EVENTS               | 
-| 	                                   | USE_CONTEXT               | 
-| GET_PLUGIN_CONFIGURATION	           | ADMIN                     | 
-| GET_TOKEN_AT	                       | READ                      |
-|                                     | 	READ_EVENTS              |
-| 	                                   | USE_CONTEXT               |
-| HANDLE_COMMANDS	                    | SUBSCRIBE_COMMAND_HANDLER | 
-| 	                                   | USE_CONTEXT               | 
-| 	                                   | WRITE                     | 
-| HANDLE_QUERIES	                     | READ                      | 
-| 	                                   | SUBSCRIBE_QUERY_HANDLER   | 
-| 	                                   | USE_CONTEXT               | 
-| INIT_CLUSTER	                       | ADMIN                     | 
-| LIST_APPS	                          | ADMIN                     |
-| 	                                   | VIEW_CONFIGURATION        |
-| LIST_BACKUP_FILENAMES	              | ADMIN                     | 
-| 	                                   | CONTEXT_ADMIN             | 
-| 	                                   | USE_CONTEXT               | 
-| LIST_BACKUP_LOGFILES	               | ADMIN                     | 
-| 	                                   | CONTEXT_ADMIN             | 
-| 	                                   | USE_CONTEXT               | 
-| LIST_COMMANDS	                      | ADMIN                     | 
-| LIST_CONTEXTS	                      | ADMIN                     | 
-| 	                                   | VIEW_CONFIGURATION        | 
-| LIST_EVENTS	                        | READ                      | 
-| 	                                   | READ_EVENTS               | 
-| 	                                   | USE_CONTEXT               | 
-| LIST_NODES	                         | ADMIN                     | 
-| 	                                   | VIEW_CONFIGURATION        | 
-| LIST_PLUGINS	                       | ADMIN                     | 
-| 	                                   | VIEW_CONFIGURATION        | 
-| LIST_QUERIES	                       | ADMIN                     | 
-| 	                                   | USE_CONTEXT               | 
-| LIST_REPLICATION_GROUPS	            | ADMIN                     | 
-| 	                                   | VIEW_CONFIGURATION        | 
-| LIST_SNAPSHOTS	                     | READ                      | 
-| 	                                   | READ_EVENTS               | 
-| 	                                   | USE_CONTEXT               | 
-| LIST_TASKS	                         | ADMIN                     |
-| LIST_USERS	                         | ADMIN                     |
-| 	                                   | VIEW_CONFIGURATION        |
-| LOCAL_GET_LAST_EVENT	               | CONTEXT_ADMIN             | 
-| 	                                   | USE_CONTEXT               | 
-| LOCAL_GET_LAST_SNAPSHOT	            | CONTEXT_ADMIN             | 
-| 	                                   | USE_CONTEXT               | 
-| MERGE_EVENT_PROCESSOR_SEGMENTS	     | CONTEXT_ADMIN             |
-| 	                                   | USE_CONTEXT               | 
-| MERGE_USER	                         | ADMIN                     | 
-| MOVE_EVENT_PROCESSOR_SEGMENT	       | CONTEXT_ADMINv            |
-| 	                                   | USE_CONTEXT               | 
-| PAUSE_EVENT_PROCESSOR	              | CONTEXT_ADMIN             |
-| 	                                   | USE_CONTEXT               |
-| RAFT_CLEAN_LOG	                     | ADMIN                     |
-| RAFT_GET_STATUS	                    | ADMIN                     |
-| RAFT_LIST_APPLICATIONS	             | ADMIN                     | 
-| RAFT_LIST_CONTEXT_MEMBERS	          | ADMIN                     |
-| RAFT_LIST_CONTEXTS	                 | ADMIN                     | 
-| RAFT_START_CONTEXT	                 | ADMIN                     | 
-| RAFT_STEPDOWN	                      | ADMIN                     |
-| RAFT_STOP_CONTEXT	                  | ADMIN                     |
-| READ_HIGHEST_SEQNR	                 | READ_EVENTS               |
-| 	                                   | USE_CONTEXT               |
-| REBALANCE_PROCESSOR	                | CONTEXT_ADMIN             |
-| 	                                   | USE_CONTEXT               |
-| RECONNECT_CLIENT	                   | CONTEXT_ADMIN             |
-| 	                                   | USE_CONTEXT               |
-| REMOVE_NODE_FROM_CLUSTER	           | ADMIN                     |
-| RENEW_APP_TOKEN	                    | ADMIN                     |
-| RESCHEDULE_EVENT	                   | PUBLISH_EVENTS            |
-| 	                                   | USE_CONTEXT               |
-| 	                                   | WRITE                     |
-| SCHEDULE_EVENT	                     | PUBLISH_EVENTS            |
-| 	                                   | USE_CONTEXT               | 
-| 	                                   | WRITE                     | 
-| SEARCH_EVENTS	                      | READ                      |
-| 	                                   | READ_EVENTS               |
-| 	                                   | USE_CONTEXT               |
-| SET_EVENT_PROCESSOR_STRATEGY	       | CONTEXT_ADMIN             |
-| 	                                   | USE_CONTEXT               | 
-| SPLIT_EVENT_PROCESSOR_SEGMENTS      | CONTEXT_ADMIN             | 
-|                                     | USE_CONTEXT               | 
-| START_EVENT_PROCESSOR	              | CONTEXT_ADMIN             | 
-| 	                                   | USE_CONTEXT               | 
-| UNREGISTER_PLUGIN	                  | ADMIN                     | 
-| UPDATE_CONTEXT_PROPERTIES	          | ADMIN                     | 
-| UPLOAD_LICENSE	                     | ADMIN                     | 
+<table>
+    <thead>
+        <tr>
+            <th>Operation</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ACTIVATE_PLUGIN</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>ADD_NODE_TO_CLUSTER</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>ADD_NODE_TO_CONTEXT</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>ADD_NODE_TO_REPLICATION_GROUP</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>ADD_PLUGIN</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>APPEND_EVENT</td>
+            <td>PUBLISH_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>WRITE</td>
+        </tr>
+        <tr>
+            <td>APPEND_SNAPSHOT</td>
+            <td>PUBLISH_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>WRITE</td>
+        </tr>
+        <tr>
+            <td>AUTO_REBALANCE_PROCESSOR</td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>CANCEL_SCHEDULED_EVENT</td>
+            <td>PUBLISH_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>WRITE</td>
+        </tr>
+        <tr>
+            <td>CONFIGURE_PLUGIN</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>CREATE_APP</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>CREATE_CONTEXT</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>CREATE_CONTROLDB_BACKUP</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>CREATE_REPLICATION_GROUP</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>DELETE_APP</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>DELETE_CONTEXT</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>DELETE_NODE_FROM_CONTEXT</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>DELETE_NODE_FROM_REPLICATION_GROUP</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>DELETE_PLUGIN</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>DELETE_REPLICATION_GROUP</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>DELETE_TASK</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>DELETE_USER</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>DISPATCH_COMMAND</td>
+            <td>DISPATCH_COMMANDS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>WRITE</td>
+        </tr>
+        <tr>
+            <td>DISPATCH_QUERY</td>
+            <td>DISPATCH_QUERY</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>READ</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>DISPATCH_SUBSCRIPTION_QUERY</td>
+            <td>DISPATCH_QUERY</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>READ</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>DOWNLOAD_DIAGNOSE</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>DOWNLOAD_TEMPLATE</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>GET_APP_DETAILS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>GET_COMMANDS_COUNT</td>
+            <td>MONITOR</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>GET_COMMANDS_QUEUE</td>
+            <td>MONITOR</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>GET_EVENT_PROCESSOR_STRATEGY</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>GET_EVENT_PROCESSORS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>GET_EVENT_PROCESSORS_STRATEGIES</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>GET_FIRST_TOKEN</td>
+            <td>READ</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>READ_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>GET_LAST_TOKEN</td>
+            <td>READ</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>READ_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>GET_PLUGIN_CONFIGURATION</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>GET_TOKEN_AT</td>
+            <td>READ</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>READ_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>HANDLE_COMMANDS</td>
+            <td>SUBSCRIBE_COMMAND_HANDLER</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>WRITE</td>
+        </tr>
+        <tr>
+            <td>HANDLE_QUERIES</td>
+            <td>READ</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>SUBSCRIBE_QUERY_HANDLER</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>INIT_CLUSTER</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>LIST_APPS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>VIEW_CONFIGURATION</td>
+        </tr>
+        <tr>
+            <td>LIST_BACKUP_FILENAMES</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>LIST_BACKUP_LOGFILES</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>LIST_COMMANDS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>LIST_CONTEXTS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>VIEW_CONFIGURATION</td>
+        </tr>
+        <tr>
+            <td>LIST_EVENTS</td>
+            <td>READ</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>READ_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>LIST_NODES</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>VIEW_CONFIGURATION</td>
+        </tr>
+        <tr>
+            <td>LIST_PLUGINS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>VIEW_CONFIGURATION</td>
+        </tr>
+        <tr>
+            <td>LIST_QUERIES</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>LIST_REPLICATION_GROUPS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>VIEW_CONFIGURATION</td>
+        </tr>
+        <tr>
+            <td>LIST_SNAPSHOTS</td>
+            <td>READ</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>READ_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>LIST_TASKS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>LIST_USERS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>VIEW_CONFIGURATION</td>
+        </tr>
+        <tr>
+            <td>LOCAL_GET_LAST_EVENT</td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>LOCAL_GET_LAST_SNAPSHOT</td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>MERGE_EVENT_PROCESSOR_SEGMENTS</td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>MERGE_USER</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>MOVE_EVENT_PROCESSOR_SEGMENT</td>
+            <td>CONTEXT_ADMINv</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>PAUSE_EVENT_PROCESSOR</td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>RAFT_CLEAN_LOG</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>RAFT_GET_STATUS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>RAFT_LIST_APPLICATIONS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>RAFT_LIST_CONTEXT_MEMBERS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>RAFT_LIST_CONTEXTS</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>RAFT_START_CONTEXT</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>RAFT_STEPDOWN</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>RAFT_STOP_CONTEXT</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>READ_HIGHEST_SEQNR</td>
+            <td>READ_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>REBALANCE_PROCESSOR</td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>RECONNECT_CLIENT</td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>REMOVE_NODE_FROM_CLUSTER</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>RENEW_APP_TOKEN</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>RESCHEDULE_EVENT</td>
+            <td>PUBLISH_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>WRITE</td>
+        </tr>
+        <tr>
+            <td>SCHEDULE_EVENT</td>
+            <td>PUBLISH_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>WRITE</td>
+        </tr>
+        <tr>
+            <td>SEARCH_EVENTS</td>
+            <td>READ</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>READ_EVENTS</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>SET_EVENT_PROCESSOR_STRATEGY</td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>SPLIT_EVENT_PROCESSOR_SEGMENTS</td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>START_EVENT_PROCESSOR</td>
+            <td>CONTEXT_ADMIN</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>USE_CONTEXT</td>
+        </tr>
+        <tr>
+            <td>UNREGISTER_PLUGIN</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>UPDATE_CONTEXT_PROPERTIES</td>
+            <td>ADMIN</td>
+        </tr>
+        <tr>
+            <td>UPLOAD_LICENSE</td>
+            <td>ADMIN</td>
+        </tr>
+    </tbody>
+</table>
