@@ -63,6 +63,8 @@ A summary of the various roles is depicted below
 | READ \(Deprecated\) | Read events and perform queries |
 | WRITE \(Deprecated\) | Publish events and perform commands |
 
+For a detailed overview of the mapping between operations and roles see [Access Control Matrix](access-control-matrix.md).
+
 ### Accounts without a password
 
 Using the CLI it is possible to create an account without a password. This does not mean that the account requires no password to login, but rather that the account is only used to assign roles to, while the password needs to be checked using an external tool. To create such an account, use the "`--no-password`" option:

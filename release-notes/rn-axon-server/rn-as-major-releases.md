@@ -1,5 +1,37 @@
 # Major Releases
 
+## Release 2023.0
+
+### New release schedule
+Our new release strategy involves releasing three versions each year, with new releases being named based on the year, such as 2023.0, 2023.1, and 2023.2. The third release is dedicated to providing long-term support. Customers that wish to upgrade less frequently can choose to stay on these long-term support releases.
+
+We chose this approach to separate versioning from the Axon Framework and maintained flexibility and independence in versioning. This strategy provides predictable release dates, better alignment with customer needs, faster feature updates, and increased responsiveness to user feedback and market demands. Overall, this approach will enable us to deliver better products and services to our customers while ensuring maximum flexibility and independence in versioning.
+
+### New features
+The 2023.0 release brings us these new features:
+- Tiered Storage
+- Ephemeral Contexts
+
+#### Tiered Storage
+
+Tiered Storage is a highly anticipated feature of the Axon Server Enterprise's 2023.0.0 release, allowing each node to store its data across different storage locations. With its ability to optimize performance and reduce storage costs, Tiered Storage is a powerful tool for businesses seeking to improve their storage management strategies. By distributing data across different levels of storage media based on access speed and cost, Tiered Storage enables organizations to minimize the cost of storing infrequently accessed data while ensuring fast access to frequently accessed data.
+
+The Tiered Storage feature is especially powerful in combination with the use of secondary nodes, a feature that has been around since Axon Server Enterprise version 4.4:
+
+Tiered Storage enables the configuration and maintenance of a variable number of storage tiers for each node, depending on its role, such as primary, secondary, or backup nodes.
+
+Secondary nodes enable you to reduce the number of copies of data that are stored by keeping only the most recent events stored on your primary nodes and keeping the full event store on the secondary nodes. The configuration of Tiered Storage on these secondary nodes can focus on lower storage costs and large volumes of data, while Primary nodes focus on speed of access.
+
+With its advanced capabilities, Tiered Storage is poised to become a critical asset for enterprises seeking to streamline their data storage and management processes.
+
+
+#### Ephemeral Contexts
+
+Ephemeral contexts are a new type of context that store events for a limited time before automatically removing them permanently. These contexts are particularly useful in scenarios such as time-limited audit systems or integration contexts, where events are broadcasted to multiple observers in real-time, after which they are no more of use.
+
+As events might become outdated and irrelevant over time, ephemeral contexts can help to manage storage space and maintain system efficiency by automatically deleting these events after a specified time period. By using ephemeral contexts, organizations can efficiently store only necessary data and reduce clutter in their systems.
+
+
 ## Release 4.6.0
 
 Standard Edition and Enterprise Edition

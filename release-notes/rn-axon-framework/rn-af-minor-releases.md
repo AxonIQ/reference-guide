@@ -4,6 +4,26 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.7
 
+### Release 4.7.3
+
+#### Enhancements
+
+- Include dependency upgrades with migration [#2631](https://github.com/AxonFramework/AxonFramework/pull/2631)
+
+#### Bug Fixes
+
+- Replace `SpringPrototypeAggregateFactory` `BeanDefinition` introspection for direct method invocation [#2637](https://github.com/AxonFramework/AxonFramework/pull/2637)
+- Deprecated fallback warning with Spring 6.0.5 [#2630](https://github.com/AxonFramework/AxonFramework/issues/2630)
+- Fix OpenTelemetry warning [#2635](https://github.com/AxonFramework/AxonFramework/pull/2635)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@smcvb](https://github.com/smcvb)
+- [@timtebeek](https://github.com/timtebeek)
+- [@Morlack](https://github.com/Morlack)
+
 ### Release 4.7.2
 
 #### Features
@@ -54,6 +74,18 @@ We'd like to thank all the contributors who worked on this release!
 - [@gklijs](https://github.com/gklijs)
 
 ## Release 4.6
+
+### Release 4.6.7
+
+#### Bug Fixes
+
+- Fix OpenTelemetry warning [#2635](https://github.com/AxonFramework/AxonFramework/pull/2635)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@Morlack](https://github.com/Morlack)
 
 ### Release 4.6.6
 

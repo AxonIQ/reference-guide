@@ -2,7 +2,20 @@
 
 This page provides a dedicated overview of patch releases for the Axon Server (Enterprise Edition) releases
 
+## Release 2023.0
+
+### Release 2023.0.1
+
+* Fix Flyway issue in upgrading from earlier versions introduced in version 2023.0.0.
+* Performance improvement in reading events from multi-tier context
+* Fix the continuous increment of thread pool for event processors balancing
+* Update gRPC version to 1.50.3 to fix a Netty buffer memory leak for cancelled RPCs
+* Update Spring Boot version to 2.7.10 to fix CVEs in snakeyaml, spring-security and jackson-databind
+
 ## Release 4.6
+
+### Release 4.6.13
+* Fix a race condition between using and replenishing permits for forwarded query and command.
 
 ### Release 4.6.12
 
