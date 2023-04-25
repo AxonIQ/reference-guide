@@ -4,6 +4,30 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.7
 
+### Release 4.7.4
+
+#### Enhancements
+
+- Polymorphic Aggregate auto-configuration test enhancements [#2690](https://github.com/AxonFramework/AxonFramework/pull/2690)
+- AbstractRepository logs warning when aggregate is loaded to process deadline message [#2669](https://github.com/AxonFramework/AxonFramework/issues/2669)
+- Don't log warn when the aggregate is handling a deadline message. [#2644](https://github.com/AxonFramework/AxonFramework/pull/2644)
+
+#### Bug Fixes
+
+- Use cause from decision [#2688](https://github.com/AxonFramework/AxonFramework/pull/2688)
+- Also include custom aggregate names to resolve deadline handlers [#2686](https://github.com/AxonFramework/AxonFramework/pull/2686)
+- Deadline Handlers are not executed when created and handled within Aggregates with custom type name [#2678](https://github.com/AxonFramework/AxonFramework/issues/2678)
+- Spring AoT fix [#2675](https://github.com/AxonFramework/AxonFramework/pull/2675)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@abuijze](https://github.com/abuijze)
+- [@hatzlj](https://github.com/hatzlj)
+
 ### Release 4.7.3
 
 #### Enhancements
