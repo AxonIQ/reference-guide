@@ -12,7 +12,8 @@ The following monitor implementations are currently provided:
    by keeping track of the total time spent on message handling compared to total time it is active.
    This returns a number between 0 and n number of threads. 
    Thus, if there are 4 threads working, the maximum capacity is 4 if every thread is active 100% of the time.
-2. `EventProcessorLatencyMonitor` - Measures the difference in message timestamps between the last ingested and the last processed event message.
+2. `EventProcessorLatencyMonitor` - Measures the difference between an event's timestamp and the current time, showing how far behind an [event processor](../events/event-processors/README.md) is. 
+   Note that [triggering a reset](../events/event-processors/streaming.md#replaying-events) will impact this metric!
 3. `MessageCountingMonitor` - Counts the number of ingested, successful, failed, ignored and processed messages.
 4. `MessageTimerMonitor` - Keeps a timer for all successful, failed and ignored messages, as well as an overall timer for all three combined.
 5. `PayloadTypeMessageMonitorWrapper` - A special `MessageMonitor` implementation which allows setting a monitor per message type instead of per message publishing/handling component.
