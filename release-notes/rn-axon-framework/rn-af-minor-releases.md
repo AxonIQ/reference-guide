@@ -4,6 +4,28 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.6
 
+### Release 4.6.8
+
+#### Enhancements
+
+- Move the check for whether the event processor is caught up before do… [#2714](https://github.com/AxonFramework/AxonFramework/pull/2714)
+
+#### Bug Fixes
+
+- Make `registerHandlerInterceptor` lazy [#2716](https://github.com/AxonFramework/AxonFramework/pull/2716)
+- Adjust the JavaDoc of the `EventProcessorLatencyMonitor` [#2704](https://github.com/AxonFramework/AxonFramework/pull/2704)
+- Wait till processing is done until setting the caughtUp flag for the PooledStreamingEventProcessor. [#2698](https://github.com/AxonFramework/AxonFramework/pull/2698)
+- Fix autoconfiguration not picking up SpanFactory for AxonServerQueryBus 4.6 [#2696](https://github.com/AxonFramework/AxonFramework/pull/2696)
+- Pooled Streaming Event Processor incorrectly sets the `caughtUp` flag [#2694](https://github.com/AxonFramework/AxonFramework/issues/2694)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@Morlack](https://github.com/Morlack)
+
 ### Release 4.6.7
 
 #### Bug Fixes
