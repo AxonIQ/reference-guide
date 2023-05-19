@@ -4,6 +4,18 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.7
 
+### Release 4.7.5
+
+#### Bug Fixes
+
+- Fix autoconfiguration not picking up SpanFactory for AxonServerQueryBus 4.7 [#2695](https://github.com/AxonFramework/AxonFramework/pull/2695)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@Morlack](https://github.com/Morlack)
+
 ### Release 4.7.4
 
 #### Enhancements
