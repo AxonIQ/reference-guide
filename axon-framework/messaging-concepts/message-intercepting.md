@@ -340,7 +340,7 @@ To Axon, an exception handler is just like any other message handling method.
 You can thus wire all [default parameters](supported-parameters-annotated-handlers.md) to an exception handler, similar to command, event, and query handlers.
 Hence, you can add the exception, payload, `MetaData`, and other options to the `@ExceptionHandler` annotated function.
 
-You can introduce `@ExceptionHandler` annotated methods in any message handling component.
+You can introduce `@ExceptionHandler` annotated methods in any message handling component, including sagas.
 Furthermore, you can choose to react to all exceptions or define specific exception/message combinations to which the handler should respond.
 Check the following samples for some snippets on how to use this:
 
