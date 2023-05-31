@@ -373,6 +373,74 @@ If either of these thresholds is exceeded, the queue will throw a `DeadLetterQue
 This exception means the processing group will stop processing new events altogether.
 Thus, the processing group moves back to the behavior described at the start of the [Error Handling](#error-handling) section.
 
+#### Configuring a sequenced Dead-Letter Queue Provider
+
+In order to make it easier to use a dead-letter queue on multiple processing groups, it's possible to set a dead-letter queue provider.
+This is a function that takes a processing group, and returns either `null`, meaning it will not be configured using a dead-letter queue, or a function that takes `Configuration` and returns a new dead letter queue.
+
+A `JpaSequencedDeadLetterQueue` configuration example which uses a collection to determine if a dead-letter queue should be created:
+
+{% tabs %}
+{% tab title="Axon Configuration API" %}
+```java
+public class AxonConfig {
+    // omitting other configuration methods...
+    public void configureDeadLetterQueue(EventProcessingConfigurer processingConfigurer) {
+        processingConfigurer.registerDeadLetterQueueProvider(
+                processingGroup -> {
+                    //dlqEnabledGroups is a collection with the groups that should have a dlq
+                    if (dlqEnabledGroups.contains(processingGrouping)) {
+                        return config -> JpaSequencedDeadLetterQueue.builder()
+                                                             .processingGroup(processingGroup)
+                                                             .entityManagerProvider(config.getComponent(
+                                                                     EntityManagerProvider.class))
+                                                             .transactionManager(config.getComponent(
+                                                                     TransactionManager.class))
+                                                             .serializer(config.serializer())
+                                                             .build();
+                    } else {
+                        return null;
+                    }
+                }
+        );
+    }
+}
+```
+{% endtab %}
+{% tab title="Spring Boot AutoConfiguration" %}
+```java
+@Configuration
+public class AxonConfig {
+    // omitting other configuration methods...
+    @Bean
+    public ConfigurerModule deadLetterQueueConfigurerModule () {
+        return configurer -> configurer.eventProcessing().registerDeadLetterQueueProvider(
+                processingGroup -> {
+                    //dlqEnabledGroups is a collection with the groups that should have a dlq
+                    if (dlqEnabledGroups.contains(processingGrouping)) {
+                        return config -> JpaSequencedDeadLetterQueue.builder()
+                                                             .processingGroup(processingGroup)
+                                                             .entityManagerProvider(config.getComponent(
+                                                                     EntityManagerProvider.class))
+                                                             .transactionManager(config.getComponent(
+                                                                     TransactionManager.class))
+                                                             .serializer(config.serializer())
+                                                             .build();
+                    } else {
+                        return null;
+                    }
+                }
+        );
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+If you are using Spring Boot, a default dead-letter queue provider will be set, if using JPA, JDBC or Mongo.
+The default dead-letter queue provider thus set, will use the `axon.eventhandling.processors.my-processor.dlq.enabled` property, to determine to return either null or a dlq creating function.
+Fore example setting `axon.eventhandling.processors.my-processing-group.dlq.enabled` to true would enable the dlq for the `my-processing-group` group.
+
 #### Processing Dead-Letter Sequences
 
 Once you resolve the problem that led to dead lettering events, we can start processing the dead letters.
@@ -506,6 +574,7 @@ Similarly, when [letter processing](#processing-dead-letter-sequences) fails, yo
 To that end, you can configure a so-called `EnqueuePolicy`.
 The enqueue policy ingests a `DeadLetter` and a cause (`Throwable`) and returns an `EnqueueDecision`.
 The `EnqueueDecision`, in turn, describes if the framework should or should not enqueue the dead letter.
+It's also possible to change the exception, for example to be sure that it will fit in the database, as the cause will be stored.
 
 You can customize the dead-letter policy to exclude some events when handling fails.
 As a consequence, these events will be skipped.
