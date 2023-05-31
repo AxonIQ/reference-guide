@@ -18,6 +18,7 @@ Axon provides four `EventScheduler` implementations:
  2. [JobRunr](https://www.jobrunr.io/) based
  3. [Quartz](http://www.quartz-scheduler.org/) based
  4. [Axon Server](../../axon-server/introduction.md) based
+ 5. [db-scheduler](https://github.com/kagkarlsson/db-scheduler) based
 
 The pure-Java implementation of the `EventScheduler` uses a `ScheduledExecutorService` to schedule event publication. 
 Although the timing of this scheduler is very reliable, it is a pure in-memory implementation. 
@@ -29,6 +30,7 @@ The `JobRunrEventScheduler` is a more reliable and enterprise-worthy implementat
 It offers several ways to persist the scheduled jobs, and has good integration with Spring Boot.
 Using JobRunr as underlying scheduling mechanism, it provides more powerful features, such as clustering, misfire management as well as an optional dashboard.
 This means event publication is guaranteed. It might be a little late, but it will be published.
+JobRunr supports [both SQL and some NoSQL databases](https://www.jobrunr.io/en/documentation/installation/storage/).
 It needs to be configured with a JobRunr `JobScheduler`, an `EventBus` and a `Serializer`.
 
 The `QuartzEventScheduler` is an alternative enterprise-worthy implementation, but the project has not seen much recent activity. 
@@ -41,9 +43,19 @@ As such, it is a *hard requirement* to use Axon Server as your Event Store solut
 Just as the `QuartzEventScheduler`, the `AxonServerEventScheduler` is a reliable and enterprise-worthy implementation of the `EventScheduler` interface.
 Creating a `AxonServerEventScheduler` can be done through its builder, whose sole requirement is the `AxonServerConnectionManager`.
 
-It is important to note that the `JubRunrEventScheduler`, `QuartzEventScheduler` and `AxonServerEventScheduler` all should use the [event `Serializer`](../serialization.md#event-serialization) to serialize and deserialize the scheduled event.
+The `DbScheduler` is a reliable and enterprise-worthy implementation.
+It offers several ways to persist the scheduled jobs, and has good integration with Spring Boot.
+It's pretty simple, at it only needs one table. For most sql databases the sql to set the table is [available](https://github.com/kagkarlsson/db-scheduler/tree/master/db-scheduler/src/test/resources/com/github/kagkarlsson/scheduler)
+Compared to JobRunr, it let you set a poll interval for new tasks more freely.
+another advantage compared to JobRunr is that adding a task will become part of the current transaction, if a `TransactionManager` is set.
+The biggest things missing compared to JobRunr are a dashboard, and support for multiple NoSQL databases.
+It needs to be configured with a db-scheduler `Scheduler`, an `EventBus` and a `Serializer`.
+The data for an event can be serialized in either a binary format, or a human-readable format. This is done via the `useBinaryPojo` on the builder.
+Depending on this property, the correct task should be added in the constructor of the `Scheduler`.
+
+It is important to note that the `JubRunrEventScheduler`, `QuartzEventScheduler`, `AxonServerEventScheduler` and `DbSchedulerEventSerializer` all should use the [event `Serializer`](../serialization.md#event-serialization) to serialize and deserialize the scheduled event.
 If the `Serializer` used by the scheduler does not align with the `Seralizer` used by the event store, exceptional scenarios should be expected.
-The Quartz implementation's `Serializer` can be set by defining a different `EventJobDataBinder`, whereas the JobRunr and Axon Server implementations allows defining the used `Serializer` directly through the builder.
+The Quartz implementation's `Serializer` can be set by defining a different `EventJobDataBinder`, whereas the JobRunr, Axon Server and db-scheduler implementations allows defining the used `Serializer` directly through the builder.
 
 One or more components will be listening for scheduled Events. 
 These components might rely on a transaction bound to the thread that invokes them. 
@@ -79,3 +91,4 @@ To manage transactions on these threads, you can configure a `TransactionManager
 > }
 > ```
 
+For both JobRunr and db-scheduler autoconfiguration is included via the [axon-spring-boot-starter](https://github.com/AxonFramework/AxonFramework/tree/master/spring-boot-starter). This means that if you don't have an `EventScheduler` configured in the application, but you do have a `JobScheduler` bean (in the case of JobRunr), or a `Scheduler` bean (in the case of db-scheduler), an `EventScheduler` will be autoconfigured. In these cases you likely have to set the `axon.axonserver.enabled` property to false, to prevent the creation of the Axon Server `EventScheduler`. 
