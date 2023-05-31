@@ -305,6 +305,12 @@ We currently provide the following dead-letter queue implementations:
 * `JpaSequencedDeadLetterQueue` - JPA variant of the dead-letter queue. 
   It constructs a `dead_letter_entry` table where it persists failed-events in.
   The JPA dead-letter queue is a suitable option for production environments by persisting the dead letters.
+* `JdbcSequencedDeadLetterQueue` - JDBC variant of the dead-letter queue.
+  It constructs a `dead_letter_entry` table where it persists failed-events in.
+  The JDBC dead-letter queue is a suitable option for production environments by persisting the dead letters.
+* `MongoSequencedDeadLetterQueue` - Mongo variant of the dead-letter queue, available via the [Mongo Extension](../../../extensions/mongo.md).
+  It constructs a `deadletters` collection where it persists failed-events in.
+  The MongoDB dead-letter queue is a suitable option for production environments by persisting the dead letters.
 
 #### Dead-Letter Queues and Idempotency
 
