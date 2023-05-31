@@ -1,6 +1,6 @@
 # Deadline Managers
 
-Deadlines can be scheduled from sagas and aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`when the deadline is met. The `DeadlineManager` can be injected as a resource. It has three flavors: `SimpleDeadlineManager`, `JobRunrDeadlineManager` and `QuartzDeadlineManager`
+Deadlines can be scheduled from sagas and aggregates. The `DeadlineManager` component is responsible for scheduling deadlines and invoking `@DeadlineHandler`when the deadline is met. The `DeadlineManager` can be injected as a resource. It has four flavors: `SimpleDeadlineManager`, `JobRunrDeadlineManager`, `QuartzDeadlineManager` and `DbSchedulerDeadlineManager`.
 
 ## Scheduling a Deadline
 
@@ -56,6 +56,11 @@ Note that there are more options to cancel a deadline next to the previously men
 > 
 > Since the non-Pro version of JobRunr has no way to search for deadlines, besides by id, all of the `cancelAll` methods are not implemented for the `JobRunrDeadlineManager`.
 > The [JobRunr Pro extension](../../../extensions/jobrunrpro.md) does support those but requires the Pro version of JobRunr.
+
+> **Caveats for the DbScheduler implementation.**
+>
+> Db-scheduler has no way to filter out tasks. This means for the implementation of the `cancelAll` methods it will need to serialize all the task data, looping over it. If you have many active deadlines, this might take noticeable time and resources.
+
 
 If you need contextual data about the deadline when the deadline is being handled, you can attach a deadline payload when scheduling a deadline:
 
@@ -126,8 +131,8 @@ Note that the current timestamp is automatically added to the EventMessage. If h
 
 Spring Boot users will need to define a `DeadlineManager` bean using one of the available implementations. 
 
-Spring Boot users who want to use the JobRunr deadline managers can add [`jobrunr-spring-boot-starter`](https://mvnrepository.com/artifact/org.jobrunr/jobrunr-spring-boot-starter) as a dependency.
-The needed bean configuration should look like this:
+Spring Boot users who want to use the JobRunr deadline manager can add [`jobrunr-spring-boot-starter`](https://mvnrepository.com/artifact/org.jobrunr/jobrunr-spring-boot-starter) as a dependency. Since this will make a `JobScheduler` bean available, which can be used by the auto configuration to create a `JobRunrDeadlineManager`.
+Alternatively the bean can be configured like this:
 
 ```java
 @Bean
@@ -146,3 +151,26 @@ public DeadlineManager deadlineManager(
             .spanFactory(spanfactory)
             .build();
 }
+```
+
+Spring Boot users who want to use the db-scheduler deadline manager can add [`db-scheduler-spring-boot-starter`](https://mvnrepository.com/artifact/com.github.kagkarlsson/db-scheduler-spring-boot-starter) as a dependency. This will make a `Scheduler` bean available, which can be used by the auto configuration to create a `DbSchedulerDeadlineManager`.
+Alternatively the bean can be configured like this:
+```java
+    @Bean
+    public DeadlineManager deadlineManager(
+            Scheduler scheduler,
+            Configuration configuration,
+            @Qualifier("eventSerializer") Serializer serializer,
+            TransactionManager transactionManager,
+            SpanFactory spanFactory) {
+        ScopeAwareProvider scopeAwareProvider = new ConfigurationScopeAwareProvider(configuration);
+        return DbSchedulerDeadlineManager.builder()
+                                         .scheduler(scheduler)
+                                         .scopeAwareProvider(scopeAwareProvider)
+                                         .serializer(serializer)
+                                         .transactionManager(transactionManager)
+                                         .spanFactory(spanFactory)
+                                         .startScheduler(false)
+                                         .build();
+    }
+```
