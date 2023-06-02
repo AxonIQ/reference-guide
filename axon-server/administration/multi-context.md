@@ -37,7 +37,7 @@ As of version 4.4, Axon Server has a new format for the index of events and snap
 
 ## Usage in Axon Framework
 
-After a context has been setup in Axon Server EE, Axon Framework applications can connect to it by setting the `axon.axonserver.context` property when using Spring Boot, or setting the `defaultContext` on the builder of `AxonServerConnectionManager` that is passed to the event store.
+After a context has been setup in Axon Server EE, Axon Framework applications can connect to it by setting the `axon.axonserver.context` property when using Spring Boot, or setting the `defaultContext` on the builder of `AxonServerConnectionManager` that is passed to the event store. If you are not using Spring Boot, you likely also have to register the `AxonConfiguration` as a component on the `Configurer`. Using something like `AxonServerConfiguration.builder().context(otherContext).build()` to use a different context.
 Note that depending on message source configuration, other contexts may be used besides the default.
 
 ### Sending messages to other contexts
