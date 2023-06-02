@@ -49,8 +49,8 @@ It's pretty simple, at it only needs one table. For most sql databases the sql t
 Compared to JobRunr, it lets you set a poll interval for new tasks more freely.
 Another advantage compared to JobRunr is that adding a task will become part of the current transaction if a `TransactionManager` is set.
 The biggest things missing compared to JobRunr are a dashboard, and support for multiple NoSQL databases.
-It needs to be configured with a db-scheduler `Scheduler`, an `EventBus` and a `Serializer`.
-The data for an event can be serialized in either a binary format, or a human-readable format. This is done via the `useBinaryPojo` on the builder.
+The `DbSchedulerEventScheduler` needs to be configured with a db-scheduler `Scheduler`, an `EventBus`, and a `Serializer`.
+The data for an event can be serialized in either a binary format or in a human-readable format. Switching between these formats is done via the `useBinaryPojo` property on the scheduler's builder.
 Depending on this property, the correct task should be added in the constructor of the `Scheduler`.
 
 It is important to note that the `JubRunrEventScheduler`, `QuartzEventScheduler`, `AxonServerEventScheduler` and `DbSchedulerEventSerializer` all should use the [event `Serializer`](../serialization.md#event-serialization) to serialize and deserialize the scheduled event.
