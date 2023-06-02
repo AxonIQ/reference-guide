@@ -91,4 +91,6 @@ To manage transactions on these threads, you can configure a `TransactionManager
 > }
 > ```
 
-For both JobRunr and db-scheduler autoconfiguration is included via the [axon-spring-boot-starter](https://github.com/AxonFramework/AxonFramework/tree/master/spring-boot-starter). This means that if you don't have an `EventScheduler` configured in the application, but you do have a `JobScheduler` bean (in the case of JobRunr), or a `Scheduler` bean (in the case of db-scheduler), an `EventScheduler` will be autoconfigured. In these cases you likely have to set the `axon.axonserver.enabled` property to false, to prevent the creation of the Axon Server `EventScheduler`. 
+For both JobRunr and db-scheduler, auto-configuration is included via the [axon-spring-boot-starter](https://github.com/AxonFramework/AxonFramework/tree/master/spring-boot-starter). 
+This means that if you don't have an `EventScheduler` configured in the application, but you do have a `JobScheduler` bean (in the case of JobRunr) or a `Scheduler` bean (in the case of db-scheduler), an `EventScheduler` will be auto-configured for you. 
+In these cases, it is recommended to set the `axon.axonserver.enabled` property to `false` to prevent the creation of the `AxonServerEventScheduler`. 
