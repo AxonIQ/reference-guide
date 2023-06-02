@@ -59,7 +59,7 @@ Note that there are more options to cancel a deadline next to the previously men
 
 > **Caveats for the DbScheduler implementation.**
 >
-> Db-scheduler has no way to filter out tasks. This means for the implementation of the `cancelAll` methods it will need to serialize all the task data, looping over it. If you have many active deadlines, this might take noticeable time and resources.
+> Db-scheduler has no way to filter out tasks. This means that the `cancelAll` implementation will need to serialize all the task data, looping over it. If you have many active deadlines, this might take noticeable time and resources.
 
 
 If you need contextual data about the deadline when the deadline is being handled, you can attach a deadline payload when scheduling a deadline:
