@@ -46,7 +46,7 @@ Creating a `AxonServerEventScheduler` can be done through its builder, whose sol
 The `DbSchedulerEventScheduler` is similar in convenience compared to the JobRunr- and the Axon Server `EventScheduler` implementations.
 It offers several ways to persist the scheduled jobs, and has good integration with Spring Boot.
 It's pretty simple, at it only needs one table. For most sql databases the sql to set the table is [available](https://github.com/kagkarlsson/db-scheduler/tree/master/db-scheduler/src/test/resources/com/github/kagkarlsson/scheduler)
-Compared to JobRunr, it let you set a poll interval for new tasks more freely.
+Compared to JobRunr, it lets you set a poll interval for new tasks more freely.
 another advantage compared to JobRunr is that adding a task will become part of the current transaction, if a `TransactionManager` is set.
 The biggest things missing compared to JobRunr are a dashboard, and support for multiple NoSQL databases.
 It needs to be configured with a db-scheduler `Scheduler`, an `EventBus` and a `Serializer`.
