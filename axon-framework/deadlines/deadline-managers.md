@@ -131,8 +131,8 @@ Note that the current timestamp is automatically added to the EventMessage. If h
 
 Spring Boot users will need to define a `DeadlineManager` bean using one of the available implementations. 
 
-Spring Boot users who want to use the JobRunr deadline manager can add [`jobrunr-spring-boot-starter`](https://mvnrepository.com/artifact/org.jobrunr/jobrunr-spring-boot-starter) as a dependency. Since this will make a `JobScheduler` bean available, which can be used by the auto configuration to create a `JobRunrDeadlineManager`.
-Alternatively the bean can be configured like this:
+Spring Boot users who want to use the JobRunr deadline manager can add [`jobrunr-spring-boot-starter`](https://mvnrepository.com/artifact/org.jobrunr/jobrunr-spring-boot-starter) as a dependency. Doing so will make a `JobScheduler` bean available, which the auto-configuration can use to create a `JobRunrDeadlineManager`.
+Alternatively. the bean can be configured like this:
 
 ```java
 @Bean
