@@ -384,7 +384,7 @@ Thus, the processing group moves back to the behavior described at the start of 
 In order to make it easier to use a dead-letter queue on multiple processing groups, it's possible to set a dead-letter queue provider.
 The provider is a function that takes a processing group, and returns either `null`, meaning it will not be configured using a dead-letter queue, or a function that takes the `Configuration` and returns a new dead-letter queue.
 
-A `JpaSequencedDeadLetterQueue` configuration example which uses a collection to determine if a dead-letter queue should be created:
+Here is a `JpaSequencedDeadLetterQueue` configuration example that uses a collection to determine if a dead-letter queue should be created for a given processing group:
 
 {% tabs %}
 {% tab title="Axon Configuration API" %}
