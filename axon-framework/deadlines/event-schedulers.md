@@ -43,7 +43,7 @@ As such, it is a *hard requirement* to use Axon Server as your Event Store solut
 Just as the `QuartzEventScheduler`, the `AxonServerEventScheduler` is a reliable and enterprise-worthy implementation of the `EventScheduler` interface.
 Creating a `AxonServerEventScheduler` can be done through its builder, whose sole requirement is the `AxonServerConnectionManager`.
 
-The `DbScheduler` is a reliable and enterprise-worthy implementation.
+The `DbSchedulerEventScheduler` is similar in convenience compared to the JobRunr- and the Axon Server `EventScheduler` implementations.
 It offers several ways to persist the scheduled jobs, and has good integration with Spring Boot.
 It's pretty simple, at it only needs one table. For most sql databases the sql to set the table is [available](https://github.com/kagkarlsson/db-scheduler/tree/master/db-scheduler/src/test/resources/com/github/kagkarlsson/scheduler)
 Compared to JobRunr, it let you set a poll interval for new tasks more freely.
