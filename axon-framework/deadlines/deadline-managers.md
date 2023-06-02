@@ -153,8 +153,8 @@ public DeadlineManager deadlineManager(
 }
 ```
 
-Spring Boot users who want to use the db-scheduler deadline manager can add [`db-scheduler-spring-boot-starter`](https://mvnrepository.com/artifact/com.github.kagkarlsson/db-scheduler-spring-boot-starter) as a dependency. This will make a `Scheduler` bean available, which can be used by the auto configuration to create a `DbSchedulerDeadlineManager`.
-Alternatively the bean can be configured like this:
+Spring Boot users who want to use the db-scheduler deadline manager can add [`db-scheduler-spring-boot-starter`](https://mvnrepository.com/artifact/com.github.kagkarlsson/db-scheduler-spring-boot-starter) as a dependency. This will make a `Scheduler` bean available, which the auto-configuration can use to create a `DbSchedulerDeadlineManager`.
+Alternatively, the bean can be configured like this:
 ```java
     @Bean
     public DeadlineManager deadlineManager(
