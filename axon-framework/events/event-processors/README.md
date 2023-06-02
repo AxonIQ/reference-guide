@@ -444,8 +444,8 @@ public class AxonConfig {
 {% endtabs %}
 
 If you are using Spring Boot, a default dead-letter queue provider will be set if using JPA, JDBC, or Mongo.
-The default dead-letter queue provider thus set, will use the `axon.eventhandling.processors.my-processor.dlq.enabled` property, to determine to return either null or a dlq creating function.
-Fore example setting `axon.eventhandling.processors.my-processing-group.dlq.enabled` to true would enable the dlq for the `my-processing-group` group.
+The default dead-letter queue provider will use the `axon.eventhandling.processors.my-processor.dlq.enabled` property to determine whether to return `null` or a dead-letter queue factory method.
+For example, by setting the `axon.eventhandling.processors.my-processing-group.dlq.enabled` to true you would enable the dead-letter queue for the `my-processing-group` processing group.
 
 #### Processing Dead-Letter Sequences
 
