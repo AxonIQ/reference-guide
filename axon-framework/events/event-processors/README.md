@@ -399,9 +399,11 @@ public class AxonConfig {
                         return config -> JpaSequencedDeadLetterQueue.builder()
                                                              .processingGroup(processingGroup)
                                                              .entityManagerProvider(config.getComponent(
-                                                                     EntityManagerProvider.class))
+                                                                     EntityManagerProvider.class
+                                                             ))
                                                              .transactionManager(config.getComponent(
-                                                                     TransactionManager.class))
+                                                                     TransactionManager.class
+                                                             ))
                                                              .serializer(config.serializer())
                                                              .build();
                     } else {
@@ -427,9 +429,11 @@ public class AxonConfig {
                         return config -> JpaSequencedDeadLetterQueue.builder()
                                                              .processingGroup(processingGroup)
                                                              .entityManagerProvider(config.getComponent(
-                                                                     EntityManagerProvider.class))
+                                                                     EntityManagerProvider.class
+                                                             ))
                                                              .transactionManager(config.getComponent(
-                                                                     TransactionManager.class))
+                                                                     TransactionManager.class
+                                                             ))
                                                              .serializer(config.serializer())
                                                              .build();
                     } else {
