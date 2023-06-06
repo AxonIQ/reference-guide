@@ -61,16 +61,14 @@ It works with the `CommandMessage` and `CommandResultMessage` classes, thus allo
 
 ### Creating a custom Command Gateway - CommandGatewayFactory
 
-# TODO check for execution logic
-
-Axon allows a custom interface to be used as a command gateway. 
+Axon allows a custom interface to be used as a `CommandGateway`. 
 The behavior of each method declared in the interface is based on the parameter types, return type and declared exception. 
 Using this gateway is not only convenient, it makes testing a lot easier by allowing you to mock your interface where needed.
 
 This is how parameters affect the behavior of the command gateway:
 
 * The first parameter is expected to be the actual command object to dispatch.
-* Parameters annotated with `@MetaDataValue` will have their value assigned to the metadata field with the identifier passed as annotation parameter
+* Parameters annotated with `@MetaDataValue` will have their value assigned to the metadata field with the identifier passed as annotation parameter.
 * Parameters of type `MetaData` will be merged with the `MetaData` on the `CommandMessage`.
   Metadata defined by latter parameters will overwrite the metadata of earlier parameters, if their key is equal.
 * Parameters of type `CommandCallback` will have their `onResult(CommandMessage<? extends C>, CommandResultMessage<? extends R>)` invoked after the command has been handled.
@@ -78,7 +76,8 @@ This is how parameters affect the behavior of the command gateway:
   In case both a callback and return type are defined, the invocations of the callback will always match with the return value \(or exception\).
   Lastly, know that you may pass in several `CommandCallback` instances, which all will be invoked in order.
 * The last two parameters indicate a timeout and may be of types `long` \(or `int`\) and `TimeUnit`.
-  The method will block at most as long as these parameters indicate. How the method reacts to a timeout depends on the exceptions declared on the method \(see below\).
+  The method will block at most as long as these parameters indicate. 
+  How the method reacts to a timeout depends on the exceptions declared on the method \(see below\).
   Note that if other properties of the method prevent blocking altogether, a timeout will never occur.
 
 The declared return value of a method will also affect its behavior:
