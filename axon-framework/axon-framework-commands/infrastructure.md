@@ -83,7 +83,7 @@ This is how parameters affect the behavior of the command gateway:
 The declared return value of a method will also affect its behavior:
 
 * A `void` return type will cause the method to return immediately, unless there are other indications on the method that one would want to wait, such as a timeout or declared exceptions.
-* Return types of `Future`, `CompletionStage` and `CompletableFuture` will cause the method to return immediately.
+* Return types of `Future`, `CompletionStage` and `CompletableFuture` will cause the method to return immediately (granted you have configured a `CommandBus` using its own threads!).
   You can access the result of the command handler using the `CompletableFuture` instance returned from the method.
   Exceptions and timeouts declared on the method are ignored.
 * Any other return type will cause the method to block until a result is available.

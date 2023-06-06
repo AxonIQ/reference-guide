@@ -65,10 +65,19 @@ This extension to that end provides the `SpringHttpCommandBusConnector`, which u
 
 There are three hard requirements when creating this service and one optional configuration:
 
-1. Local `CommandBus` - This "local segment" is the command bus which dispatches commands into the local JVM. It is thus invoked when the `SpringHttpCommandBusConnector` receives a command from the outside, or if it receives a command which is meant for itself.
-2. `RestOperations` - The service used to POST a command message to another instance. In most situations the `RestTemplate` is used for this.
+1. Local `CommandBus` - This "local segment" is the command bus which dispatches commands into the local JVM. 
+   It is thus invoked when the `SpringHttpCommandBusConnector` receives a command from the outside, or if it receives a command which is meant for itself.
+2. `RestOperations` - The service used to POST a command message to another instance. 
+   In most situations the `RestTemplate` is used for this.
 3. `Serializer` - The serializer is used to serialize the command messages before they are sent over and deserialize when they are received.
-4. `Executor` (optional) - The `Executor` is used to handle incoming commands and to dispatch commands. Defaults to a `DirectExecutor` instance.
+4. `Executor` (optional) - The `Executor` is used to handle incoming commands and to dispatch commands. 
+   Defaults to a `DirectExecutor` instance for backwards compatibility.
+
+> **Non-blocking command dispatching**
+> 
+> Note that the configurable `Executor` impacts how command dispatching acts when invoking `CommandGateway#send` methods returning a `CompletableFuture`.
+> Although the `CompletableFuture` return type suggests a non-blocking result, if the bus under the hood reuses the dispatching thread we are still faced with a blocking operation.
+> Hence, to make the `SpringHttpCommandBusConnector` fully non-blocking, it is recommended to adjust the `Executor` to use its own thread pool.
 
 ## Configuring this Extension
 
