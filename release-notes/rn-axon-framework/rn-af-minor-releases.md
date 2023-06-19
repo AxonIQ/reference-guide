@@ -4,6 +4,28 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.7
 
+### Release 4.7.6
+
+#### Enhancements
+
+- [#2752] Truncate `Cause` message to fit default column width [#2759](https://github.com/AxonFramework/AxonFramework/pull/2759)
+- DLQ - PSQLException: ERROR: value too long for type character varying(255) [#2752](https://github.com/AxonFramework/AxonFramework/issues/2752)
+
+#### Bug Fixes
+
+- Synchronize during Event Processor initialization [#2756](https://github.com/AxonFramework/AxonFramework/pull/2756)
+- Duplicate initialization of TrackingEventProcessor worker threads [#2751](https://github.com/AxonFramework/AxonFramework/issues/2751)
+- Fix Initialization of PSEP when using Saga [#2736](https://github.com/AxonFramework/AxonFramework/pull/2736)
+- When registering the same Saga multiple times, only the last one is kept. [#2726](https://github.com/AxonFramework/AxonFramework/pull/2726)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@Morlack](https://github.com/Morlack)
+
 ### Release 4.7.5
 
 #### Bug Fixes
