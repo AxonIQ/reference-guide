@@ -1,5 +1,42 @@
 # Major Releases
 
+## Release 2023.1
+
+### New Features and Enhancements
+
+#### Event Transformation
+
+The new Event Transformation feature allows users to perform specific event transformations like updates and deletes in the event store, utilizing the Event Transformation API. This functional change is intended to facilitate more flexible event management in rare instances where modifications are unavoidable.
+
+#### Forced Client Reconnection
+
+In the application view, users are now provided with an option to force the client to reconnect. This addition aims to offer a practical tool for addressing client connectivity issues.
+
+#### Node Removal from Cluster
+
+It is now possible to remove a node from the cluster through the user interface (UI). This functionality, previously accessible only via the command-line interface (CLI) and REST API, has been expanded to the UI for broader accessibility.
+
+#### Temporary Adjustment to Development Mode
+
+In this release, we have temporarily disabled the 'Development Mode/Event Purge' feature. Users should now utilize the 'Delete/Create Context' operation as an alternative. This change will remain in place until a more efficient solution is implemented.
+
+#### Enhanced Memory Management
+  In an effort to optimize performance, we have updated Axon Server's approach to memory management for file resources. Prior to this release, Axon Server primarily depended on the Java garbage collector to reclaim memory used by memory-mapped files. With this update, memory management is now undertaken directly by Axon Server, enhancing efficiency in file resource usage.
+
+### Bug Fixes
+
+This release also contains fixes for the following issues:
+
+- Replication group creation did not work in conjunction with the HTTPS (-s) option
+- Race condition in unregister node leaves node partially in the cluster
+
+### Product Updates
+
+#### Unified Axon Server artifact
+
+The Axon Server artifact has been updated to simplify the deployment process. Instead of separate artifacts for the Axon Server Standard Edition and Enterprise Edition, from now on we are releasing a single artifact. The Axon Server features will adjust automatically based on the presence of a provided license. Note that the Axon Server Standard Edition remains open-source, but separate releases will no longer be made.
+
+
 ## Release 2023.0
 
 ### New release schedule
