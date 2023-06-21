@@ -145,7 +145,7 @@
   * [Recovery](axon-server/administration/recovery.md)
   * [Plugins](axon-server/administration/plugins.md)
   * [Logging](axon-server/administration/logging/README.md)
-    * [Logging Format](axon-server/administration/logging/logging-format.md)
+   * [Logging Format](axon-server/administration/logging/logging-format.md)
   * [Error Codes](axon-server/administration/error-codes.md)
 * [Security](axon-server/security/README.md)
   * [SSL](axon-server/security/ssl.md)
