@@ -2,7 +2,28 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Kotlin Extension.
 
-## Release 4.7.0
+## Release 4.8
+
+### Features
+
+- [#286] Add `spring-boot-devtools` support [#287](https://github.com/AxonFramework/extension-kotlin/pull/287)
+
+### Enhancements
+
+- Fix coverage report. [#268](https://github.com/AxonFramework/extension-kotlin/pull/268)
+
+### Bug Fixes
+
+- Scope is not active or entity cannot be found when using kotlin extension for "applyEvent" [#286](https://github.com/AxonFramework/extension-kotlin/issues/286)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+
+## Release 4.7
 
 ### Enhancements
 
@@ -18,7 +39,7 @@ We'd like to thank all the contributors who worked on this release!
 
 - [@gklijs](https://github.com/gklijs)
 
-## Release 4.6.0
+## Release 4.6
 
 If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-kotlin/releases/tag/axon-kotlin-4.6.0) page.
 
