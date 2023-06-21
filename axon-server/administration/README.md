@@ -16,4 +16,5 @@ A summary of the various sub-sections is given below.
 | [Recovery](recovery.md)                                               | Recovery aspects of an Axon Server deployment      |
 | [Plugins](plugins.md)                                                 | Managing Axon Server plugins                       |
 | [Logging](logging/)                                                   | Axon Server logging customization                  |
+| [Event transformation](event-transformation.md/)                      | Event transformation tool                          |
 

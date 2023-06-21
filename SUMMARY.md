@@ -138,6 +138,7 @@
   * [Replication Groups](axon-server/administration/replication-groups.md)
   * [Multi-Context](axon-server/administration/multi-context.md)
   * [Tiered storage](axon-server/administration/tiered-storage.md)
+  * [Event transformation](axon-server/administration/event-transformation.md)
   * [Tagging](axon-server/administration/tagging.md)
   * [Backup and Messaging-only Nodes](axon-server/administration/backup-and-messaging-only-nodes.md)
   * [Backups](axon-server/administration/backups.md)
