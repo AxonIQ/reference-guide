@@ -2,11 +2,11 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon JobRunr Pro Extension.
 
-## Release 4.8.0
+## Release 4.8
 
 ### Enhancements
 
-- Add JobRunr Pro deadline manager. [#10](https://github.com/AxonFramework/extension-jobrunrpro/pull/10)
+- Add implementation and tests for the JobRunrProDeadlineManager. [#10](https://github.com/AxonFramework/extension-jobrunrpro/pull/10)
 
 ### Contributors
 
