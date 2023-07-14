@@ -1,6 +1,6 @@
 # Axon Server EE - OAuth Extension
 
-This extension will allow you to use OAuth2 integration (currently only with Google) for authentication in Axon Server.
+This extension will allow you to use OAuth2 integration for authentication in Axon Server.
 User accounts and roles from the OAuth provider are not synchronized to the Axon Server cluster, because no roles are
 associated with them. This means an account needs to be made in the cluster with the username from the provider, and
 roles assigned.
@@ -48,6 +48,15 @@ The options used are:
 
   This must be set to "`true`" to enable the OAuth extension.
 
+* `axoniq.axonserver.enterprise.oauth2.mode`
+
+  Set this value to "`google`" for Google Apps authentication, or "`oidc`" to use the generic OpenID Connect
+  integration. The OpenID Connect integration is known to work with [KeyCloak server](https://www.keycloak.org/).
+
+### Configuration Google Apps Authentication
+
+For authentication using Google Apps accounts, you'll can use the following properties:
+
 * `axoniq.axonserver.enterprise.oauth2.authorization-uri`
 
   This optional value can be used to configure the URI that will trigger the authentication using OAuth2. The default
@@ -85,10 +94,53 @@ The options used are:
   This will force Google to always ask which account must be used to continue, even if there is only a single account
   in use, and that account is currently active.
 
+### Configuring OpenID Connect authentication with [KeyCloak](https://www.keycloak.org/)
+
+For authentication using [KeyCloak](https://www.keycloak.org/), you need to configure a realm and, in it,
+configure Axon Server as a client. You can use the following properties:
+
+* `axoniq.axonserver.enterprise.oauth2.forceOidcLogout`
+
+  Setting this property to "`true`" will ensure that, when the user logs out from the Axon Server UI, a logout request
+  will also be sent to KeyCloak. If set to "`false`" (the default), the user will still have a valid session in KeyCloak,
+  and a subsequent login attempt using the same browser window may immediately succeed, without a prompt for a password.
+  Naturally this is dependent on session validity settings within KeyCloak.
+
+* `spring.security.oauth2.client.registration.oidcclient.client-id`
+
+  This should be set to the client ID configured for Axon Server.
+
+* `spring.security.oauth2.client.registration.oidcclient.client-secret`
+
+  This should be set to the client secret configured for Axon Server.
+
+* `spring.security.oauth2.client.registration.oidcclient.client-name`
+
+  This should be set to the client name configured for Axon Server.
+
+* `spring.security.oauth2.client.registration.oidcclient.provider`
+
+  This should be set to the value "`keycloak`".
+* `spring.security.oauth2.client.registration.oidcclient.scope`
+
+  This should be set to a (comma separated) list of the information that needs to be shared,
+  typically "`openid,email,profile`".
+
+* `spring.security.oauth2.client.provider.keycloak.issuer-uri`
+
+  This should be set to the realm's URL on KeyCloak. For example, if the realm is named "`test-realm`" and KeyCloak
+  is exposed at "`http://keycloak-test:8090`", then the value is "`http://keycloak-test:8090/realms/test-realm`".
+
+* `axoniq.axonserver.enterprise.oauth2.username-map.oidcclient`
+
+  This setting tells the _extension_ what value to use as username. The suggested value is "`username`", which refers
+  to that value from the "`profile`" scope. Alternatively, just as with the Google Apps integration mentioned above,
+  you can use "`email`".
+
 ## Configuring the User's Access and Roles
 
 If a username is unknown in the Axon Server cluster, even when authentication succeeds, the user will not be allowed to
 log in. To allow this, a user with "`ADMIN`" level access needs to create a user, optionally without a password, and
 assign the roles for this user. The Axon Server CLI has a special options ("`--no-password`") to allow the creation of
 accounts without a password. Note that if you create an account _with_ a password, this will allow the user to choose
-to use that rather than the OAuth integration.
+to use that as well as the OAuth integration.
