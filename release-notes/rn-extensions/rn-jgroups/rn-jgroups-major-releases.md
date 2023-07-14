@@ -2,7 +2,27 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon JGroups Extension.
 
-## Release 4.7.0
+## Release 4.8
+
+#### Features
+
+- Adding tracing  [#254](https://github.com/AxonFramework/extension-jgroups/pull/254)
+- Enable tracing in JGroupsConnector with SpanFactory [#188](https://github.com/AxonFramework/extension-jgroups/issues/188)
+
+#### Enhancements
+
+- Upgrade to JUnit 5 [#253](https://github.com/AxonFramework/extension-jgroups/pull/253)
+- Fix coverage report. [#218](https://github.com/AxonFramework/extension-jgroups/pull/218)
+- Migrate tests to JUnit 5 [#89](https://github.com/AxonFramework/extension-jgroups/issues/89)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+
+## Release 4.7
 
 ### Enhancements
 
@@ -14,7 +34,7 @@ We'd like to thank all the contributors who worked on this release!
 
 - [@gklijs](https://github.com/gklijs)
 
-## Release 4.6.0
+## Release 4.6
 
 If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-jgroups/releases/tag/axon-jgroups-4.6.0) page.
 

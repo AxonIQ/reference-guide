@@ -2,7 +2,24 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Mongo Extension.
 
-## Release 4.7.0
+## Release 4.8
+
+### Enhancements
+
+- Set default sequenced dead letter queue provider. [#355](https://github.com/AxonFramework/extension-mongo/pull/355)
+- Use the new property to set the claim timeout on the token store via a property. [#354](https://github.com/AxonFramework/extension-mongo/pull/354)
+
+### Bug Fixes
+
+- Don't use transactions over the iterators to get all the dead letter. [#342](https://github.com/AxonFramework/extension-mongo/pull/342)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+
+## Release 4.7
 
 ### Features
 
@@ -23,7 +40,7 @@ We'd like to thank all the contributors who worked on this release!
 
 - [@gklijs](https://github.com/gklijs)
 
-## Release 4.6.0
+## Release 4.6
 
 If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-mongo/releases/tag/axon-mongo-4.6.0) page.
 

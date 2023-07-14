@@ -2,7 +2,19 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Tracing Extension.
 
-## Release 4.7.0
+## Release 4.8
+
+### Enhancements
+
+- Fix coverage report. [#361](https://github.com/AxonFramework/extension-tracing/pull/361)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+
+## Release 4.7
 
 ### Enhancements
 
@@ -14,7 +26,7 @@ We'd like to thank all the contributors who worked on this release!
 
 - [@gklijs](https://github.com/gklijs)
 
-## Release 4.6.0
+## Release 4.6
 
 If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-tracing/releases/tag/axon-tracing-4.6.0) page.
 

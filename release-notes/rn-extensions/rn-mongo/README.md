@@ -4,7 +4,8 @@ The release notes section for the Axon Mongo Extension for all major/minor relea
 
 | Release Type | Version                                      |
 |:-------------|:---------------------------------------------|
-| _**Major**_  | [4.7](rn-mongo-major-releases.md#release-47) |
+| _**Major**_  | [4.8](rn-mongo-major-releases.md#release-48) |
+|              | [4.7](rn-mongo-major-releases.md#release-47) |
 |              | [4.6](rn-mongo-major-releases.md#release-46) |
 |              | [4.5](rn-mongo-major-releases.md#release-45) |
 |              | [4.4](rn-mongo-major-releases.md#release-44) |
