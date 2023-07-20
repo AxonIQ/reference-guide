@@ -1,7 +1,7 @@
 # Minor Releases
 
 This page provides a dedicated overview of patch releases for Axon Server. For information about the
-older releases check either [Axon Server Enterprise Edition](rn-asse-minor-releases.md) or [Axon Server Standard Edition](rn-asse-minor-releases.md).
+older releases check either [Axon Server Enterprise Edition](rn-asee-minor-releases.md) or [Axon Server Standard Edition](rn-asse-minor-releases.md).
 
 ## Release 2023.1
 
