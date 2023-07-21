@@ -1,5 +1,8 @@
 # Access Control for Axon Server SE
 
+> This section is specific for Axon Server Standard Edition (versions before 2023.1). From versions 2023.1 onwards, refer to the 
+> [this](access-control-ee.md) page.
+> 
 When you set the "`axoniq.axonserver.accesscontrol.enabled`" property to "`true`", Axon Server will require a token or user account for access to its APIs.
 
 ## Tokens in Axon Server SE
