@@ -114,13 +114,20 @@ logging.file.max-history=10
 logging.file.max-size=10MB
 ```
 
-Place the Dockerfile, the Axon Server jar file \(axonserver.jar\), the Axon Server client jar file \(axonserver-cli.jar\) and the axonserver.properties in the current directory. Assuming we are building version 2023.1, the image can be constructed using the following command:
+Place the Dockerfile, the Axon Server jar file \(axonserver.jar\), the Axon Server client jar file \(axonserver-cli.jar\) and the axonserver.properties in the current directory. Assuming we are building version 2023.1.1, the image can be constructed using the following command:
 
 ```bash
-$ docker build --tag my-repository/axonserver:2023.1.
+$ docker build --tag my-repository/axonserver:2023.1.1.
 ```
 
 This completes the construction of the Docker image. The image can pushed to your local repository or you could keep it local if you only want to run it on your development machine. The next step is to run it either using [Docker Compose](axon-server.md#docker-compose) or [Kubernetes](readme.md#kubernetes).
+
+If you want to run the docker image for a standalone instance of Axon Server and have it initialized automatically, you can start it with the "axoniq.axonserver.standalone" property set through the environment, for instance:
+
+```bash
+$ docker run -dit -e axoniq.axonserver.standalone=true -p 8024:8024 -p 8124:8124 my-repository/axonserver:2023.1.1
+```
+
 
 ## Docker Compose
 

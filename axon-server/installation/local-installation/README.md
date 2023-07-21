@@ -21,9 +21,9 @@ A single Axon Server node will provide a single connection point for \(Axon Fram
 To run Axon Server in a non-clustered mode with initialized context, you can simply add these properties dd these to the axonserver.properties or add them as environment properties.
 
 ```text
-axoniq.axonserver.autocluster.first=
-axoniq.axonserver.autocluster.contexts=default
+axoniq.axonserver.standalone=true
 ```
+
 Another way to initialize a context is to use the Axon Server UI, CLI or Cluster template.
 
 ### Clustered
