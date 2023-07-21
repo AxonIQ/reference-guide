@@ -34,9 +34,16 @@ This release also contains fixes for the following issues:
 
 #### Unified Axon Server artifact
 
-The Axon Server artifact has been updated to simplify the deployment process. Instead of separate artifacts for the Axon Server Standard Edition and Enterprise Edition, from now on we are releasing a single artifact. The Axon Server features will adjust automatically based on the presence of a provided license. Note that the Axon Server Standard Edition remains open-source, but separate releases will no longer be made.
+The Axon Server artifact has been updated to simplify the deployment process. Instead of separate artifacts for the Axon Server Standard Edition and Enterprise Edition, we are releasing a single artifact from now on. The Axon Server features will adjust automatically based on the presence of a provided license. Note that the Axon Server Standard Edition remains open-source, but separate releases will no longer be made.
 
+The **axoniq/axonserver-enterprise** docker image is no longer updated. To use the latest version, use the **axoniq/axonserver image** with tags ending with -dev. For instance, if you use **axoniq/axonserver-enterprise:2023.0.1-dev**, you can switch to **axoniq/axonserver:2023.1.0-dev**.
 
+If you are used to Axon Server Standard Edition, note that there is a difference in the server's initialization. As the server can now run standalone or as a node in a cluster, you have to tell it how it should initialize itself. The dashboard provides an initial page to do this initialization. To automatically initialize the server as a standalone server, add the following properties:
+
+```
+axoniq.axonserver.autocluster.first=<the hostname of the server>
+axoniq.axonserver.autocluster.contexts=default
+```
 ## Release 2023.0
 
 ### New release schedule

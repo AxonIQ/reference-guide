@@ -1,10 +1,10 @@
-# Access Control for Axon Server EE
+# Access Control for Axon Server
 
 When you set the "`axoniq.axonserver.accesscontrol.enabled`" property to "`true`", Axon Server will require a token or user account for access to its APIs.
 
-## Tokens in Axon Server EE
+## Tokens in Axon Server
 
-In Axon Server EE, there are three types of tokens that can be defined:
+In Axon Server, there are three types of tokens that can be defined:
 
 | Type | Property | Purpose |
 | :--- | :--- | :--- |
@@ -14,7 +14,7 @@ In Axon Server EE, there are three types of tokens that can be defined:
 
 Axon Server will generate the system token for the CLI if none is found, and the CLI (if started in the Axon Server working directory) will know the default location.
 
-Axon Framework based applications should only need the non-admin token. If you whish to use tools to access the REST API directly, you must add an HTTP header named "`AxonIQ-Access-Token`", as in the following example:
+Axon Framework based applications should only need the non-admin token. If you wish to use tools to access the REST API directly, you must add an HTTP header named "`AxonIQ-Access-Token`", as in the following example:
 
 ```bash
 $ curl -H 'AxonIQ-Access-Token: system-token' -s http://localhost:8024/v1/public/context | jq '.[] | select(.context=="default")'
@@ -37,13 +37,13 @@ $ curl -H 'AxonIQ-Access-Token: system-token' -s http://localhost:8024/v1/public
 }
 ```
 
-## User Accounts in Axon Server EE
+## User Accounts in Axon Server
 
 When you create a user account, you assign roles, which will determine the user's access rights. The user accounts are generally only used for the UI, although they are also valid for access to the REST API, using Basic Authentication. In contrast to SE, where you could only choose between "normal" and "admin" accounts, you can now assign several roles from a long list, and each per context using "_role_`@`_context_". You can also assign a role for context "`*`", which means that the user gets that role for any context existing now, or created in the future.
 
 ### Assigning roles
 
-In Axon Server EE we can grant specific roles to applications and users that will allow specific operations. Apart from just assigning the roles, you must also indicate for which context the role is granted, so that an application/user that has rights on only one context is not able to access data from other contexts.‌
+In Axon Server we can grant specific roles to applications and users that will allow specific operations. Apart from just assigning the roles, you must also indicate for which context the role is granted, so that an application/user that has rights on only one context is not able to access data from other contexts.‌
 
 A summary of the various roles is depicted below
 

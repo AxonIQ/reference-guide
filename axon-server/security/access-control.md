@@ -53,7 +53,7 @@ usage: register-user
 
 * `-p` or `--password` specifies the password of the user. If you do not specify a password with the "`-p`" option, the command line interface will prompt you for one. If you instead want a use account _without_ a password‌, for example when using Google OAuth2 authentication, use "`--no-password`".
 * `--no-password` will cause the CLI to create a user acount with _no_ password set, which means you cannot login unless you use an external authentication provider.
-* `-t` or `--access-token` specifies the access token to authenticate at the server to which the command is sent to. For SE this should be the same as [the (admin) token set in the properties](access-control-se.md). For EE this should be the security token discussed above.
+* `-t` or `--access-token` specifies the access token to authenticate at the server to which the command is sent to. This should be the security token discussed above.
 * `-S` or `--server` can be used to specify the URL to the server that the command needs to be sent to. If this is not supplied it connects to "`http://localhost:8024`" by default.
 * `-s` or `--https` will cause the CLI to use TLS, in effect changing the URL to "`https://localhost:8024`". Note that if you also want to change the port, you'll have to use "`-S`", in which case you can leave out "`-s`".
 * `-i` or `--insecure-ssl` will tell the CLI that Axon Server is using a certificate which is not signed by a known CA, for example when using self-signed certificates.
