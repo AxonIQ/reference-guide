@@ -2,7 +2,11 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Reactor Extension.
 
-## Release 4.7.0
+## Release 4.8
+
+Release 4.8.0 only consists out of dependency upgrades to tag along with recent developments.
+
+## Release 4.7
 
 ### Enhancements
 
@@ -15,7 +19,7 @@ We'd like to thank all the contributors who worked on this release!
 
 - [@gklijs](https://github.com/gklijs)
 
-## Release 4.6.0
+## Release 4.6
 
 If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-reactor/releases/tag/axon-reactor-4.6.0) page.
 

@@ -2,7 +2,25 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Spring Cloud Extension.
 
-## Release 4.7.0
+## Release 4.8
+
+#### Features
+
+- Use the `SpanFactory` in the `SpringHttpCommandBusConnector` [#302](https://github.com/AxonFramework/extension-springcloud/pull/302)
+- Enable tracing in the `SpringHttpCommandBusConnector` with the `SpanFactory` [#231](https://github.com/AxonFramework/extension-springcloud/issues/231)
+
+#### Enhancements
+
+- Fix coverage report. [#261](https://github.com/AxonFramework/extension-springcloud/pull/261)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+
+## Release 4.7
 
 ### Enhancements
 
@@ -14,7 +32,7 @@ We'd like to thank all the contributors who worked on this release!
 
 - [@gklijs](https://github.com/gklijs)
 
-## Release 4.6.0
+## Release 4.6
 
 This release only has seen dependency upgrades.
 As such, the main purpose for releasing is to ensure compatibility with Axon Framework 4.6.0.

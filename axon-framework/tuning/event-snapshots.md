@@ -201,7 +201,9 @@ The framework currently provides several implementations to choose from:
 
 * `WeakReferenceCache` - An in-memory cache solution. In most scenarios, this is a good start.
 * `EhCacheAdapter` -
-  An `AbstractCacheAdapter`, wrapping [EhCache](https://www.ehcache.org/) into a usable solution for Axon.
+  An `AbstractCacheAdapter`, wrapping [EhCache](https://www.ehcache.org/) into a usable solution for Axon. This can be used with major version 2, and is therefore deprecated.
+* `EhCache3Adapter` -
+  An `AbstractCacheAdapter`, wrapping [EhCache](https://www.ehcache.org/) into a usable solution for Axon. This can be used only with major version 3. Which has a [different group name](https://mvnrepository.com/artifact/org.ehcache/ehcache) than version 2. 
 * `JCacheAdapter` -
   An `AbstractCacheAdapter`, wrapping [JCache](https://www.javadoc.io/doc/javax.cache/cache-api/1.0.0/index.html) into a usable solution for Axon.
 * `AbstractCacheAdapter` - Abstract implementation towards supporting Axon's `Cache` API.

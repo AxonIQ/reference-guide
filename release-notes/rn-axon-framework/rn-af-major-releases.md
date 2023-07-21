@@ -2,6 +2,79 @@
 
 All the enhancements and features which have been introduced to our major releases of the Axon Framework are noted here.
 
+## Release 4.8
+
+### _Features_
+
+- [#2689] Support Snapshotting for Polymorphic Aggregates [#2753](https://github.com/AxonFramework/AxonFramework/pull/2753)
+- Allow property based configuration of load balancing strategies [#2750](https://github.com/AxonFramework/AxonFramework/pull/2750)
+- Add `test-summary` step [#2745](https://github.com/AxonFramework/AxonFramework/pull/2745)
+- [#1828] Add Anchore Container Scan step [#2744](https://github.com/AxonFramework/AxonFramework/pull/2744)
+- [#2350] JDBC Dead-Letter Queue [#2743](https://github.com/AxonFramework/AxonFramework/pull/2743)
+- Enable tracing in DistributedCommandBus with SpanFactory [#2729](https://github.com/AxonFramework/AxonFramework/pull/2729)
+- Make the token store claim timeout easily configurable. [#2722](https://github.com/AxonFramework/AxonFramework/pull/2722)
+- Allow easy (property) configuration for the `claimTimeout` of the default `TokenStore` [#2708](https://github.com/AxonFramework/AxonFramework/issues/2708)
+- Introduce Polymorphic Aggregate Snapshotting auto-configuration [#2689](https://github.com/AxonFramework/AxonFramework/issues/2689)
+- [#2639] Handler Interceptor support for Dead Letter Processing [#2661](https://github.com/AxonFramework/AxonFramework/pull/2661)
+- [#2640] Support `@ExceptionHandler` and `@MessageHandlerInterceptor` annotated methods in Sagas [#2656](https://github.com/AxonFramework/AxonFramework/pull/2656)
+- Support `@ExceptionHandler` annotated methods in Sagas [#2640](https://github.com/AxonFramework/AxonFramework/issues/2640)
+- Handler Interceptor support for Dead Letter Processing [#2639](https://github.com/AxonFramework/AxonFramework/issues/2639)
+- Add an auto-merge step for Dependabot Pull Request [#2608](https://github.com/AxonFramework/AxonFramework/pull/2608)
+- #2581 Allow to override EventSchema without modifying default JdbcEve… [#2582](https://github.com/AxonFramework/AxonFramework/pull/2582)
+- Allow to override EventSchema without modifying default JdbcEventStorageEngine in Spring context [#2581](https://github.com/AxonFramework/AxonFramework/issues/2581)
+- Allow Development mode on test containers [#2461](https://github.com/AxonFramework/AxonFramework/issues/2461)
+- Autoconfigure automatic load balancing [#2453](https://github.com/AxonFramework/AxonFramework/issues/2453)
+- Enable tracing in DistributedCommandBus with SpanFactory [#2403](https://github.com/AxonFramework/AxonFramework/issues/2403)
+- JDBC Dead-Letter Queue [#2350](https://github.com/AxonFramework/AxonFramework/issues/2350)
+- Validate `test-summary` GitHub Action [#2228](https://github.com/AxonFramework/AxonFramework/issues/2228)
+- Investigate usage of the Anchore Container Scan in GitHub Actions [#1828](https://github.com/AxonFramework/AxonFramework/issues/1828)
+
+### _Enhancements_
+
+- Introduce `AxonServerContainer` as test-container [#2763](https://github.com/AxonFramework/AxonFramework/pull/2763)
+- [#2755] Align assertion messages [#2757](https://github.com/AxonFramework/AxonFramework/pull/2757)
+- Put test assertion errors on multiple lines [#2755](https://github.com/AxonFramework/AxonFramework/issues/2755)
+- Add db-scheduler implementation of the Event Scheduler and Deadline Manager [#2727](https://github.com/AxonFramework/AxonFramework/pull/2727)
+- Add db-scheduler implementation of the Event Scheduler and Deadline Manager [#2724](https://github.com/AxonFramework/AxonFramework/issues/2724)
+- Add JCacheAdapter test scenarios [#2721](https://github.com/AxonFramework/AxonFramework/pull/2721)
+- Make Configuration accessible [#2700](https://github.com/AxonFramework/AxonFramework/pull/2700)
+- refactor: Spring Boot 2.x best practices [#2663](https://github.com/AxonFramework/AxonFramework/pull/2663)
+- Improve error message in case a streaming query gives an error. [#2662](https://github.com/AxonFramework/AxonFramework/pull/2662)
+- Error handling of Streaming queries is less than ideal [#2660](https://github.com/AxonFramework/AxonFramework/issues/2660)
+- Add a warning to the creation of the in memory token store. [#2650](https://github.com/AxonFramework/AxonFramework/pull/2650)
+- Add a `registerDeadLetterQueueProvider` method in the `EventProcessingConfigurer`. [#2633](https://github.com/AxonFramework/AxonFramework/pull/2633)
+- [#2628] Extended support for Spring application context hierarchy [#2629](https://github.com/AxonFramework/AxonFramework/pull/2629)
+- ObjectMapper cannot be resolved from Spring Parent Context [#2628](https://github.com/AxonFramework/AxonFramework/issues/2628)
+- Move AbstractDeadlineManagerTestSuite to spring module so it's deployed. [#2622](https://github.com/AxonFramework/AxonFramework/pull/2622)
+- Clean the test logs [#2606](https://github.com/AxonFramework/AxonFramework/pull/2606)
+- Create a SequencedDeadLetterQueueFactory [#2598](https://github.com/AxonFramework/AxonFramework/issues/2598)
+- #2581 Do not duplicate bean definition of TokenStore [#2587](https://github.com/AxonFramework/AxonFramework/pull/2587)
+- [#2074] Allow to customize saga schema table and columns [#2575](https://github.com/AxonFramework/AxonFramework/pull/2575)
+- Auto-merge successful Dependabot Pull requests [#2569](https://github.com/AxonFramework/AxonFramework/issues/2569)
+- Move to use job builder to have more control how the jobs are stored. Add auto configuration. [#2564](https://github.com/AxonFramework/AxonFramework/pull/2564)
+- Enable `cancelAll` and `cancelAllwithinScope` in the `JobRunrDeadlineManager`. [#2507](https://github.com/AxonFramework/AxonFramework/issues/2507)
+- Add JCacheAdapter test scenarios [#2421](https://github.com/AxonFramework/AxonFramework/issues/2421)
+- Change jdbc column names to snake case as default. [#2074](https://github.com/AxonFramework/AxonFramework/issues/2074)
+- Add cache using EhCache 3 [#2709](https://github.com/AxonFramework/AxonFramework/pull/2709)
+- Add cache using Ehcache 3 [#2420](https://github.com/AxonFramework/AxonFramework/issues/2420)
+
+### _Bug Fixes_
+
+- Remove payloadType tag from EventProcessorLatencyMetric [#2683](https://github.com/AxonFramework/AxonFramework/pull/2683)
+
+### _Contributors_
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@OLibutzki](https://github.com/OLibutzki)
+- [@azzazzel](https://github.com/azzazzel)
+- [@Morlack](https://github.com/Morlack)
+- [@timtebeek](https://github.com/timtebeek)
+- [@Blackdread](https://github.com/Blackdread)
+- [@schananas](https://github.com/schananas)
+
 ## Release 4.7
 
 This release introduces compatibility with [Spring Boot 3](https://github.com/AxonFramework/AxonFramework/actions/runs/3881295371).

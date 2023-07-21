@@ -2,7 +2,31 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Kafka Extension.
 
-## Release 4.7.0
+## Release 4.8
+
+### Features
+
+- Allow for `pattern` and `topicList` to be used in `SubscribableKafkaMessageSource` [#423](https://github.com/AxonFramework/extension-kafka/pull/423)
+- Expose Kafka subscribe(Pattern) via the SubscribableKafkaMessageSource.Builder interface [#422](https://github.com/AxonFramework/extension-kafka/issues/422)
+- Add create token implementations for `StreamableKafkaMessageSource`. [#403](https://github.com/AxonFramework/extension-kafka/pull/403)
+- StreamableKafkaMessageSource create token implementations  [#30](https://github.com/AxonFramework/extension-kafka/issues/30)
+
+### Enhancements
+
+- Use the new property to set the claim timeout on the token store via a property. [#414](https://github.com/AxonFramework/extension-kafka/pull/414)
+
+### Bug Fixes
+
+- Use unique topics to avoid "marked for deletion error" [#426](https://github.com/AxonFramework/extension-kafka/pull/426)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@bkornmeierpax8](https://github.com/bkornmeierpax8)
+- [@gklijs](https://github.com/gklijs)
+
+## Release 4.7
 
 ### Enhancements
 
@@ -18,7 +42,7 @@ We'd like to thank all the contributors who worked on this release!
 
 - [@gklijs](https://github.com/gklijs)
 
-## Release 4.6.0
+## Release 4.6
 
 If you're curious about the dependency upgrades made in this release we refer to [this](https://github.com/AxonFramework/extension-kafka/releases/tag/axon-kafka-4.6.0) page.
 
