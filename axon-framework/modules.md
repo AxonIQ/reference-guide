@@ -108,8 +108,9 @@ Besides main modules, there are several extension modules which complement Axon 
 | [Axon Kafka Spring Boot Starter](modules.md#axon-kafka-spring-boot-starter)               | axon-kafka-spring-boot-starter       | org.axonframework.extensions.kafka       | [available](https://search.maven.org/search?q=a:axon-kafka-spring-boot-starter)       |    [available](https://github.com/AxonFramework/extension-kafka)    |
 | [Axon Kotlin](modules.md#axon-kotlin)                                                     | axon-kotlin                          | org.axonframework.extensions.kotlin      | [available](https://search.maven.org/search?q=a:axon-kotlin)                          |   [available](https://github.com/AxonFramework/extension-kotlin)    |
 | [Axon Mongo](modules.md#axon-mongo)                                                       | axon-mongo                           | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo)                           |    [available](https://github.com/AxonFramework/extension-mongo)    |
-| [Axon Mongo Spring Boot Starter](modules.md#axon-mongo)                                   | axon-mongo-spring-boot-starter       | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo-spring-boor-starter)       |    [available](https://github.com/AxonFramework/extension-mongo)    |
+| [Axon Mongo Spring Boot Starter](modules.md#axon-mongo)                                   | axon-mongo-spring-boot-starter       | org.axonframework.extensions.mongo       | [available](https://search.maven.org/search?q=a:axon-mongo-spring-boot-starter)       |    [available](https://github.com/AxonFramework/extension-mongo)    |
 | [Axon Reactor](modules.md#axon-reactor)                                                   | axon-reactor                         | org.axonframework.extensions.reactor     | [available](https://search.maven.org/search?q=a:axon-reactor)                         |   [available](https://github.com/AxonFramework/extension-reactor)   |
+| [Axon Spring Ahead of Time](modules.md#axon-aot)                                          | axon-spring-aot                      | org.axonframework.extensions.spring-aot  | [available](https://search.maven.org/search?q=a:axon-spring-aot)                      | [available](https://github.com/AxonFramework/extension-spring-aot)  |
 | [Axon Spring Cloud](modules.md#axon-spring-cloud)                                         | axon-springcloud                     | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud)                     | [available](https://github.com/AxonFramework/extension-springcloud) |
 | [Axon Spring Cloud Spring Boot Starter](modules.md#axon-spring-cloud-spring-boot-starter) | axon-springcloud-spring-boot-starter | org.axonframework.extensions.springcloud | [available](https://search.maven.org/search?q=a:axon-springcloud-spring-boot-starter) | [available](https://github.com/AxonFramework/extension-springcloud) |
 | [Axon Tracing](modules.md#axon-tracing)                                                   | axon-tracing                         | org.axonframework.extensions.tracing     | [available](https://search.maven.org/search?q=a:axon-tracing)                         |   [available](https://github.com/AxonFramework/extension-tracing)   |
@@ -155,10 +156,6 @@ This module provides Spring auto-configuration on top of the `axon-kafka` module
 
 This module provides a set of reified operations, among others, to allow a cleaner [Kotlin](https://kotlinlang.org/) coding experience when using Axon.
 
-### Axon Reactor
-
-This module provides integration with [Project Reactor](https://projectreactor.io/).
-
 ### Axon Mongo
 
 This module provides event and saga store implementations that store event streams and sagas in a MongoDB database. [MongoDB](https://www.mongodb.com/) is a document based NoSQL database.
@@ -166,6 +163,14 @@ This module provides event and saga store implementations that store event strea
 ### Axon Mongo Spring Boot Starter
 
 This module provides Spring auto-configuration on top of the `axon-mongo` module.
+
+### Axon Reactor
+
+This module provides integration with [Project Reactor](https://projectreactor.io/).
+
+### Axon Spring Ahead of Time
+
+This module provides integration with Spring Ahead of Time. [Spring AOT processing](https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.introducing-graalvm-native-images.understanding-aot-processing) is part of creating a native image from a Spring (Boot) application.
 
 ### Axon Spring Cloud
 
