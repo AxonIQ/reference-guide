@@ -5,3 +5,5 @@ The release notes section for the Axon Spring-Native Extension for all major/min
 | Release Type       | Version                                                     |
 |:-------------------|:------------------------------------------------------------|
 | _**Experimental**_ | [0.1](rn-spring-native-experimental-releases.md#release-01) |
+
+This extension has been renamed to the [Axon Spring Ahead of Time extension](../rn-spring-aot/).

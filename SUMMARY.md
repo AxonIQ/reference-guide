@@ -41,6 +41,8 @@
     * [Reactor](release-notes/rn-extensions/rn-reactor/README.md)
       * [Major Releases](release-notes/rn-extensions/rn-reactor/rn-reactor-major-releases.md)
       * [Minor Releases](release-notes/rn-extensions/rn-reactor/rn-reactor-minor-releases.md)
+    * [Spring Ahead of Time](release-notes/rn-extensions/rn-spring-aot/README.md)
+      * [Major Releases](release-notes/rn-extensions/rn-spring-aot/rn-spring-aot-major-releases.md)
     * [Spring-Native](release-notes/rn-extensions/rn-spring-native/README.md)
       * [Experimental Releases](release-notes/rn-extensions/rn-spring-native/rn-spring-native-experimental-releases.md)
     * [Spring Cloud](release-notes/rn-extensions/rn-springcloud/README.md)
@@ -172,6 +174,7 @@
 * [Mongo](extensions/mongo.md)
 * [Reactor](extensions/reactor/reactor.md)
   * [Reactor Gateways](extensions/reactor/reactive-gateways/reactive-gateways.md)
+* [Spring Ahead of Time](extensions/spring-aot.md)
 * [Spring Cloud](extensions/spring-cloud.md)
 * [Tracing](extensions/tracing.md)
 
