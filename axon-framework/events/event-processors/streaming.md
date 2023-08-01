@@ -1248,26 +1248,35 @@ For streaming processors, it doesn't matter whether the threads handling the eve
 When two (or more) instances of a streaming processor with the same name are active on different machines, they are considered two instances of the same logical processor.
 Hence, it is not just a processor's own threads that compete for segments but also the processors on different application instances.
 
-Thus in a multi-node setup, each processor instance will try to [claim segments](#parallel-processing), preventing events assigned to that segment from being processed on other nodes.
+Thus, in a multi-node setup, each processor instance will try to [claim segments](#parallel-processing), preventing events assigned to that segment from being processed on other nodes.
 In this process, the processor updates the token by adding a node identifier when it claims a segment to enforce the claim. The node identifier is configurable on the `TokenStore`.
 By default, it will use the JVM's name \(usually a combination of the hostname and process ID\) as the `nodeId`.
 
-When in a multi-node scenario, often a fair distribution of the segments is desired.
+In a multi-node scenario, a fair distribution of the segments is often desired.
 Otherwise, the event processing load could be distributed unequally over the active instances.
-There are roughly two approaches towards balancing the number of segments claimed per node:
+There are roughly three approaches to balancing the number of segments claimed per node:
 
-1. Through the [Axon Server](../../../axon-server/introduction.md) Dashboard with the load balancing feature
-2. Directly on a `StreamingEventProcessor`, with the `releaseSegment(int segmentId)` or `releaseSegment(int segmentId, long releaseDuration, TimeUnit unit)` method
+1. Through the [Axon Server](../../../axon-server/introduction.md) Dashboard's load balancing feature.
+2. For Axon Server and Spring Boot users, you can use the `axon.axonserver.eventhandling.processors.[processor-name].load-balancing-strategy` application property.
+3. Directly on a `StreamingEventProcessor`, with the `releaseSegment(int segmentId)` or `releaseSegment(int segmentId, long releaseDuration, TimeUnit unit)` method.
 
-When Axon Server is in place, we recommend using option one, as it is easiest to use.
+When Axon Server is in place, we recommend using either option one or two.
+Where option one requires access to the dashboard before load balancing is activated, option two works from within your framework application's properties file.
+
+For those looking to configure load balancing through option 2, please consider the following `application.properties` file example:
+
+```properties
+# Enables automatic balancing for event processor "my-processor."
+# Setting automatic balancing to true causes Axon Server to periodically check whether the segments are balanced.
+# Note that automatic balancing is an Enterprise feature of Axon Server. 
+axon.axonserver.eventhandling.processors.my-processor.automatic-balancing=true
+# Set the load balancing strategy to, for example, "perThread."
+# Note that this task is executed only once, on the start up of the Axon Framework application.
+axon.axonserver.eventhandling.processors.my-processor.load-balancing-strategy=perThread
+```
+
 Whenever Axon Server is not used, we can achieve load balancing by having a streaming processor release its segments.
 Releasing segments is done by calling the `releaseSegment` method. When invoking `releaseSegment`, the `StreamingEventProcessor` will "let go of" the segment for some time.
-
-As a consequence of releasing, another node will be able to claim the segment.
-Due to this, releasing allows you to balance the load.
-By default, the segment will be released for twice the [`tokenClaimInterval`](#token-configuration).
-
-For those required to take the second approach, consider the following snippet as a form of guidance on how to release segments:
 
 ```java
 class StreamingProcessorService {
