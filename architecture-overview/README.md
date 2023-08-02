@@ -14,7 +14,8 @@ While Axon is opinionated on how the interaction with a domain model should take
 
 ### DDD & CQRS
 
-Domain-Driven Design \(DDD\) describes an approach to building software that puts a lot of emphasis on the design of a model, leveraging the use of ubiquitous language . The domain model is the heart of software, and should correctly capture and deal with the essential complexity of the domain.
+Domain-Driven Design \(DDD\) describes an approach to building software that puts a lot of emphasis on the design of a model, leveraging the use of ubiquitous language. 
+The domain model is the heart of software, and should correctly capture and deal with the essential complexity of the domain.
 
 Command Query Responsibility Segregation \(CQRS\) is an architectural pattern that describes the distinction between the parts of an application that deals with Commands \(requests to change an application's state\) and those that answer Queries \(requests for information about the application's state\).
 
@@ -22,13 +23,23 @@ When combining DDD and CQRS, one divides an application into components, where e
 
 The image below shows a typical architecture of an Axon based application.
 
-![Architecture overview of a CQRS based Axon application](../.gitbook/assets/architecture-overview.png)
+![Architecture overview of a CQRS based Axon application](../.gitbook/assets/cqrs-ddd-eda.png)
 
-In such an architecture, a UI \(or API\) can send commands to request to change an application's state. These Commands are handled by a Command Handling component, which uses a model to validate the command and make decisions on which side-effects to trigger \(if any\).
+In such an architecture, a UI \(or API\) can send commands to request to change an application's state. 
+These Commands are handled by a Command Handling Component, which uses a model to validate the command and make decisions on which side-effects to trigger \(if any\).
 
-The side-effects caused by Commands are published using Events. These Events are picked up by one or more Event Handling components that take the appropriate action. A typical action is updating the view models, which allow the UI to render the application's state. Other actions could be sending messages to external components, or even triggering other side-effects through new commands.
+The side-effects caused by commands are published using events. 
+These events are persisted into the Event Store, after which they become available to the Event Handling Components.
+These will, in turn, take their appropriate action.
+ 
+A typical action is updating the view models, which for example allow the UI to render the application's state.
+Other actions could be sending messages to external components, or even triggering other side-effects through new commands.
 
-The separation of the Command Model and the Query Models \(also called View Models or Projections\) allows these models to only focus on that specific aspect of the application. This makes each individual model easier to comprehend, and therefore more maintainable in the long term.
+To retrieve the required information from the query model, the UI (or API) can send queries to their respective Query Handling Components.
+The Query Handling Components in turn respond by returning sections of the query model as dedicated query responses.
+
+The separation of the Command Model and the Query Models \(also called View Models or Projections\) allows these models to only focus on that specific aspect of the application. 
+This makes each individual model easier to comprehend, and therefore more maintainable in the long term.
 
 ### Separation of business logic and infrastructure
 
@@ -56,11 +67,17 @@ Axon separates Messages in roughly three categories:
 
 ### Location transparency
 
-The biggest benefit of using explicit Messages, is that components that interact with each other don't need to know the location of their counterpart. In fact, in most cases, the sending component isn't even interested in the actual destination of a message. We call this "Location Transparency".
+The biggest benefit of using explicit Messages, is that components that interact with each other don't need to know the location of their counterpart. 
+In fact, in most cases, the sending component isn't even interested in the actual destination of a message. 
+We call this "Location Transparency."
 
-Axon takes location transparency further than placing services behind a logical URL. In Axon, a component that sends a message does not need to specify a destination for that message. Messages are routed based on their stereotype \(Command, Query or Event\) and the type of payload that they carry. Axon uses an application's capabilities to find a suitable destination for a message automatically.
+Axon takes location transparency further than placing services behind a logical URL. 
+In Axon, a component that sends a message does not need to specify a destination for that message. 
+Messages are routed based on their stereotype \(Command, Query or Event\) and the type of payload that they carry. 
+Axon uses an application's capabilities to find a suitable destination for a message automatically.
 
-A system built up of Location Transparent components makes that system highly adaptable. For example, a monolithic system built out of well-separated components that communicate solely using Commands, Events and Queries, can be easily split into separately deployed units, without any impact on functionality.
+A system built up of Location Transparent components makes that system highly adaptable. 
+For example, a monolithic system built out of well-separated components that communicate solely using Commands, Events and Queries, can be easily split into separately deployed units, without any impact on functionality.
 
 ![Microservices Evolution through Location Transparency](../.gitbook/assets/location-transparency.png)
 

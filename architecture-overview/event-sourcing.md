@@ -20,11 +20,14 @@ Alternatively, the Axon Framework provides support for an RDBMS or a NoSQL datab
 
 ## Event Sourcing and CQRS
 
-Event Sourcing is a natural fit with [CQRS](https://axoniq.io/resources/cqrs). Typically, the command model in a CQRS based architecture is not stored, other than by its sequence of events. The query model is continuously updated to contain a certain representation of the current state, based on these same events.
+Event Sourcing is a natural fit with [CQRS](https://axoniq.io/resources/cqrs). 
+Typically, the command model in a CQRS based architecture is not stored, other than by its sequence of events. 
+The query model is continuously updated to contain a certain representation of the current state, based on these same events.
 
-Instead of reconstructing the entire command model state, which would be a lengthy process, we separate the model in aggregates; parts of the model that need to be strongly consistent. This separation in aggregates makes models easier to reason about, more adaptable to change, and more importantly, it makes applications more scalable.
+Instead of reconstructing the entire command model state, which would be a lengthy process, we separate the model in aggregates; parts of the model that need to be strongly consistent. 
+This separation in aggregates makes models easier to reason about, more adaptable to change, and more importantly, it makes applications more scalable.
 
-![CQRS Concept](../.gitbook/assets/cqrs.jpg)
+![CQRS Concept](../.gitbook/assets/cqrs.png)
 
 ## Benefits
 
