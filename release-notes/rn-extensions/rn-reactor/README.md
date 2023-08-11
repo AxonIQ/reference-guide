@@ -9,5 +9,6 @@ The release notes section for the Axon Reactor Extension for all major/minor rel
 |              | [4.6](rn-reactor-major-releases.md#release-46) |
 |              | [4.5](rn-reactor-major-releases.md#release-45) |
 |              | [4.4](rn-reactor-major-releases.md#release-44) |
-| _**Minor**_  | [4.5](rn-reactor-minor-releases.md#release-45) |
+| _**Minor**_  | [4.8](rn-reactor-minor-releases.md#release-48) |
+|              | [4.5](rn-reactor-minor-releases.md#release-45) |
 |              | [4.4](rn-reactor-minor-releases.md#release-44) |
