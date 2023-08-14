@@ -2,6 +2,28 @@
 
 Any patch release made for an Axon project is tailored towards resolving bugs. This page aims to provide a dedicated overview of patch releases per project.
 
+## Release 4.8
+
+### Release 4.8.1
+
+#### Enhancements
+
+- Log when `HandlerExecutionException#details` are missing and on `AbstractRepository` failures [#2796](https://github.com/AxonFramework/AxonFramework/pull/2796)
+- Allow `Coordinator` to extend Token claims as an optimization [#2785](https://github.com/AxonFramework/AxonFramework/pull/2785)
+- Introduce Maven profile to update versions for non-parent POM related module [#2638](https://github.com/AxonFramework/AxonFramework/issues/2638)
+
+#### Bug Fixes
+
+- Enable provisioning a `Message` with custom `MetaData` for `QueryGateway#streamingQuery` [#2795](https://github.com/AxonFramework/AxonFramework/pull/2795)
+- Ensure Aggregate Member Command Handlers are retrievable in complex Aggregate Hierarchy [#2794](https://github.com/AxonFramework/AxonFramework/pull/2794)
+- Aggregate fixture hierarchy behaviour [#2792](https://github.com/AxonFramework/AxonFramework/issues/2792)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@smcvb](https://github.com/smcvb)
+
 ## Release 4.7
 
 ### Release 4.7.6
