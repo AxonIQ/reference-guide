@@ -3,9 +3,23 @@
 Any patch release made for an Axon project aims to resolve bugs.
 This page provides an overview of patch releases for the Axon Reactor Extension.
 
+## Release 4.8
+
+### Release 4.8.1
+
+#### Bug Fixes
+
+- Enable provisioning a `Message` with custom `MetaData` for `ReactorQueryGateway#subscriptionQuery` [#224](https://github.com/AxonFramework/extension-reactor/pull/224)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@smcvb](https://github.com/smcvb)
+
 ## Release 4.5
 
-## Release 4.5.1
+### Release 4.5.1
 
 The 4.5.1 release contains a single fix, namely pull request [#93](https://github.com/AxonFramework/extension-reactor/pull/93).
 This fix adjusts bugs within the `ReactorCommandGateway` and `ReactorQueryGateway` builders. 
