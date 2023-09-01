@@ -5,6 +5,13 @@ older releases check either [Axon Server Enterprise Edition](rn-asee-minor-relea
 
 ## Release 2023.1
 
+### Release 2023.1.2
+
+#### Bug Fixes
+
+This release contains fixes for the following issues:
+- Metrics no longer collected when an application reconnects to Axon Server
+
 ### Release 2023.1.1
 
 #### New Features and Enhancements:
