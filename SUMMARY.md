@@ -169,6 +169,7 @@
   * [Reactor Gateways](extensions/reactor/reactive-gateways/reactive-gateways.md)
 * [Spring Cloud](extensions/spring-cloud.md)
 * [Tracing](extensions/tracing.md)
+* [Multitenancy](extensions/multitenancy.md)
 
 ## Appendices
 

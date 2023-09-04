@@ -10,7 +10,7 @@ A quick summary of the various commands is depicted below. Each command has a sp
   <thead>
     <tr>
       <th style="text-align:left">Area (Server Edition)</th>
-      <th style="text-align:left">Command-Line Options</th>
+      <th style="text-align:left">Command name</th>
       <th style="text-align:left">Description</th>
     </tr>
   </thead>
@@ -253,6 +253,43 @@ axonserver-cli.jar <Command>  <command options> -S <server-to-send-command-to> -
 ```
 
 The option -S with the url to the Axon Server is optional, if it is omitted it defaults to [http://localhost:8024](http://localhost:8024/).‌ While for Axon Server SE, the URL for the Axon Server SE will be the single running node, for Axon Server EE, the URL should be pointing to any node serving the _\_admin_ context within an Axon Server EE cluster.
+
+The `<command options>` valid for all commands, are: `-S`, `-s`, `-i`, `-o`.
+Their effect is described in the table below.
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Option - Short</th>
+      <th style="text-align:left">Option - Long</th>
+      <th style="text-align:left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">`-S`</td>
+      <td style="text-align:left">`server`</td>
+      <td style="text-align:left">Server to send command to (default http://localhost:8024)</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">`-s`</td>
+      <td style="text-align:left">`https`</td>
+      <td style="text-align:left">Use HTTPS (SSL,TLS) to connect to the server, rather than HTTP.</td>
+    </tr>
+        <tr>
+      <td style="text-align:left">`-i`</td>
+      <td style="text-align:left">`insecure-ssl`</td>
+      <td style="text-align:left">Do not check the certificate when connecting using HTTPS.</td>
+    </tr>
+        <tr>
+      <td style="text-align:left">`-o`</td>
+      <td style="text-align:left">`output`</td>
+      <td style="text-align:left">Output format (txt,json)</td>
+    </tr>
+  </tbody>
+</table>
+
+For options specific to individual commands, see the descriptions of the commands below.
 
 ### Access control
 
