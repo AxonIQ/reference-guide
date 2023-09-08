@@ -4,6 +4,28 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.8
 
+### Release 4.8.2
+
+#### Enhancements
+
+- Removed spring-devtools.properties [#2820](https://github.com/AxonFramework/AxonFramework/pull/2820)
+- Add default constructor for the `AxonServerContainer`  [#2809](https://github.com/AxonFramework/AxonFramework/pull/2809)
+
+#### Bug Fixes
+
+- axon-tracing-opentelemetry with Spring Devtools crashes on start [#2828](https://github.com/AxonFramework/AxonFramework/issues/2828)
+- Ensure insert order is maintained for `SequencedDeadLetterQueue#deadLetterSequence(String)` invocations [#2827](https://github.com/AxonFramework/AxonFramework/pull/2827)
+- Fix inconsistencies around the `AxonServerConfiguration`  [#2814](https://github.com/AxonFramework/AxonFramework/pull/2814)
+- Enable Annotated Message Interceptor support for Command Handling Components [#2804](https://github.com/AxonFramework/AxonFramework/pull/2804)
+- Fix property-based Load Balancing Strategy configuration bug [#2802](https://github.com/AxonFramework/AxonFramework/pull/2802)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@smcvb](https://github.com/smcvb)
+- [@abuijze](https://github.com/abuijze)
+
 ### Release 4.8.1
 
 #### Enhancements
