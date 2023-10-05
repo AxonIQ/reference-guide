@@ -2,7 +2,7 @@
 
 [Spring AOT processing](https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.introducing-graalvm-native-images.understanding-aot-processing)
 is part of the process to create a native binary from a Spring (Boot) application. This extension will help in adding a
-lot of hints which are needed. Please note this extension can only be used with Spring Boot 3, as
+lot of hints which are needed for Axon Framework. Please note this extension can only be used with Spring Boot 3, as
 such it requires at least Java 17.
 
 Besides the extension it might be needed to make more changes to successfully compile and run an application as native
