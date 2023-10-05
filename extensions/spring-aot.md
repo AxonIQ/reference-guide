@@ -18,10 +18,10 @@ or [Discuss](https://discuss.axoniq.io/c/axonframework/).
 
 ## Compiling to native
 
-It's important to read through
+Before you set up this extension, it's important to read through
 the [documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html) from Spring
-itself. There are some known limitations which might require additional changes to the application.
-In addition, this extension needs to be added by adding the dependency like:
+itself. There are some known limitations that might require additional changes to the application.
+In addition, this extension needs to be added by adding the following dependency:
 
 ```xml
 
