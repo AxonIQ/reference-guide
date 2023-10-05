@@ -12,9 +12,9 @@ messages need to be added to
 the [ImportRuntimeHints](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/ImportRuntimeHints.html)
 annotation. Otherwise, these messages can't be deserialized, leading to errors at runtime.
 
-If something is not working, or only works with additional hints, and it's Axon Specific, please let us know either
+If something is not working or only works with additional hints, and it's Axon-specific, please let us know either
 at [GitHub](https://github.com/AxonFramework/extension-spring-aot/issues)
-or [Discuss](https://discuss.axoniq.io/c/axonframework/7).
+or [Discuss](https://discuss.axoniq.io/c/axonframework/).
 
 ## Compiling to native
 
