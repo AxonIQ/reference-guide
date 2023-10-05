@@ -5,8 +5,8 @@ is part of the process to create a native binary from a Spring (Boot) applicatio
 lot of hints which are needed for Axon Framework. Please note this extension can only be used with Spring Boot 3, as
 such it requires at least Java 17.
 
-Besides the extension it might be needed to make more changes to successfully compile and run an application as native
-image. For example, when a message isn't use in a handler. This is quite common when the application is split, and the
+Besides the extension, it might be necessary to make more changes to successfully compile and run an application as a native
+image. For example, when a message isn't used in a handler. This is quite common when the application is split, and the
 application sending certain messages is not the same as the application handling the messages. In those cases these
 messages need to be added to
 the [ImportRuntimeHints](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/ImportRuntimeHints.html)
