@@ -1270,9 +1270,9 @@ For those looking to configure load balancing through option 2, please consider 
 # Setting automatic balancing to true causes Axon Server to periodically check whether the segments are balanced.
 # Note that automatic balancing is an Enterprise feature of Axon Server. 
 axon.axonserver.eventhandling.processors.my-processor.automatic-balancing=true
-# Set the load balancing strategy to, for example, "perThread."
+# Set the load balancing strategy to, for example, "threadNumber."
 # Note that this task is executed only once, on the start up of the Axon Framework application.
-axon.axonserver.eventhandling.processors.my-processor.load-balancing-strategy=perThread
+axon.axonserver.eventhandling.processors.my-processor.load-balancing-strategy=threadNumber
 ```
 
 Whenever Axon Server is not used, we can achieve load balancing by having a streaming processor release its segments.
