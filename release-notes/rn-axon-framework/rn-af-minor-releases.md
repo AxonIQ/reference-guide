@@ -4,6 +4,30 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.8
 
+### Release 4.8.3
+
+#### Enhancements
+
+- [#2855] Support Hierarchical Spring Contexts within `SpringConfigurer.ComponentLocator` [#2870](https://github.com/AxonFramework/AxonFramework/pull/2870)
+- Enhance segment logging for `PooledStreamingEventProcessor` [#2869](https://github.com/AxonFramework/AxonFramework/pull/2869)
+- ComponentLocator does not resolve beans from Spring Parent Context  [#2855](https://github.com/AxonFramework/AxonFramework/issues/2855)
+- [#2844] Improve shutdown behavior for `DbSchedulerDeadlineManager` [#2852](https://github.com/AxonFramework/AxonFramework/pull/2852)
+- Shutdown-Mechanism of DbSchedulerDeadlineManager [#2844](https://github.com/AxonFramework/AxonFramework/issues/2844)
+
+#### Bug Fixes
+
+- Disable JPA and JDBC `EventStorageEngine` creation when Axon Server is enabled [#2871](https://github.com/AxonFramework/AxonFramework/pull/2871)
+- [#2845] Ensure ConfigurerModule order is respected in Spring Autoconfiguration [#2846](https://github.com/AxonFramework/AxonFramework/pull/2846)
+- InfraConfiguration.springAxonConfigurer ignores ConfigurerModule.order() [#2845](https://github.com/AxonFramework/AxonFramework/issues/2845)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@abuijze](https://github.com/abuijze)
+
 ### Release 4.8.2
 
 #### Enhancements
