@@ -2,6 +2,58 @@
 
 All the enhancements and features which have been introduced to our major releases of the Axon Framework are noted here.
 
+## Release 4.9
+
+### _Features_
+
+- Add suppressible log message when console client is not on the classpath. [#2868](https://github.com/AxonFramework/AxonFramework/pull/2868)
+- Instruct compiler to include parameter names metadata [#2835](https://github.com/AxonFramework/AxonFramework/pull/2835)
+- Log notification about AxonIQ console, if console-framework-client is not there [#2819](https://github.com/AxonFramework/AxonFramework/issues/2819)
+- Add additional Axon Server connector configuration to the `AxonServerConfiguration` [#2815](https://github.com/AxonFramework/AxonFramework/pull/2815)
+- Introduce the `AxonServerEventStoreFactory` [#2807](https://github.com/AxonFramework/AxonFramework/pull/2807)
+- Claim segments operation for Streaming Event Processors [#2803](https://github.com/AxonFramework/AxonFramework/issues/2803)
+- Add property to easily disable using Axon Server as event store. [#2801](https://github.com/AxonFramework/AxonFramework/pull/2801)
+- Add support for Spring Docker Compose [#2790](https://github.com/AxonFramework/AxonFramework/pull/2790)
+- Add CBOR format and Spring Boot properties for support [#2777](https://github.com/AxonFramework/AxonFramework/pull/2777)
+- Allow easy configuration of CBOR [#2776](https://github.com/AxonFramework/AxonFramework/issues/2776)
+- Support Java modules [#2427](https://github.com/AxonFramework/AxonFramework/issues/2427)
+
+### _Enhancements_
+
+- Add JDK21 to GitHub Actions [#2866](https://github.com/AxonFramework/AxonFramework/pull/2866)
+- [#2843] Make it possible to have multiple instances of the DbScheduler components. [#2853](https://github.com/AxonFramework/AxonFramework/pull/2853)
+- AxonDbSchedulerAutoConfiguration can not be used multiple times in hierarchical Spring context due to static fields [#2843](https://github.com/AxonFramework/AxonFramework/issues/2843)
+- Add intermediate span factories for Event Processors [#2834](https://github.com/AxonFramework/AxonFramework/pull/2834)
+- Add intermediate span factories for Sagas and Repositories [#2830](https://github.com/AxonFramework/AxonFramework/pull/2830)
+- Add intermediate span factories for DeadlineManager [#2829](https://github.com/AxonFramework/AxonFramework/pull/2829)
+- Intermediate Span Factory pattern for buses [#2826](https://github.com/AxonFramework/AxonFramework/pull/2826)
+- Intermediate Span Factory pattern for snapshotters [#2824](https://github.com/AxonFramework/AxonFramework/pull/2824)
+- Dead-Letter Sequence Identifier Caching [#2818](https://github.com/AxonFramework/AxonFramework/pull/2818)
+- Detect empty snapshots due to Serializer misconfiguration [#2817](https://github.com/AxonFramework/AxonFramework/pull/2817)
+- Improve Event Scheduler context configuration [#2810](https://github.com/AxonFramework/AxonFramework/pull/2810)
+- Implement StreamingEventProcessor.claimSegment [#2805](https://github.com/AxonFramework/AxonFramework/pull/2805)
+- Improve Spanfactory configurability [#2780](https://github.com/AxonFramework/AxonFramework/issues/2780)
+- Default to ReplayToken upon creation of new event processor [#2778](https://github.com/AxonFramework/AxonFramework/pull/2778)
+- Prevent processors from resetting when no handlers support replay [#2769](https://github.com/AxonFramework/AxonFramework/pull/2769)
+- Improve JavaDoc of the `CommandTargetResolver` [#2742](https://github.com/AxonFramework/AxonFramework/issues/2742)
+
+### _Bug Fixes_
+
+- Execute the axon-spring-boot-3-integrationtests actually with spring 3 [#2862](https://github.com/AxonFramework/AxonFramework/pull/2862)
+- Resolve classloading issue with ConnectionDetails [#2833](https://github.com/AxonFramework/AxonFramework/pull/2833)
+- Fix some typos [#2783](https://github.com/AxonFramework/AxonFramework/pull/2783)
+
+### _Contributors_
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@lachja](https://github.com/lachja)
+- [@abuijze](https://github.com/abuijze)
+- [@CodeDrivenMitch](https://github.com/CodeDrivenMitch)
+- [@schananas](https://github.com/schananas)
+
 ## Release 4.8
 
 ### _Features_
