@@ -14,10 +14,10 @@ This section is split into 3 sub-sections.
 
 ## Docker Image
 
-AxonIQ provides a ready to use [Axon Server image](https://hub.docker.com/r/axoniq/axonserver) **for development and trial purposes**. There are two images available: one with Axon Server running as the user "`root`" and one with Axon Server running as user "`axonserver`". Both images are based on "debug" images from [Google's Distroless series](https://github.com/GoogleContainerTools/distroless), which means they include a (limited) shell that allows you to connect "into" the running image and perform some commands. Naturally you should not use these for production because of this, but they are perfect for development and test environments.
+AxonIQ provides ready to use [Axon Server images](https://hub.docker.com/r/axoniq/axonserver). There are two types of images available: one with Axon Server running as the user "`root`" and one with Axon Server running as user "`axonserver`". Both images are based on [Eclipse Temurin](https://hub.docker.com/_/eclipse-temurin), which means they include a (limited) shell that allows you to connect "into" the running image and perform some commands. 
 
-* The "`root`" image of version 2023.1 is available as "`axoniq/axonserver:2023.1-dev`" and is based on "`gcr.io/distroless/java:11-debug`". This image is particularly useful for running in Docker Desktop, as it will not have any trouble creating files and directories as user "`root`".
-* The "`axonserver`" image of version 2023.1 is available as "`axoniq/axonserver:2023.1-dev-nonroot`" and is based on "`gcr.io/distroless/java:11-debug-nonroot`". This image is more secure and useful in Kubernetes and OpenShift clusters. You should take care to declare the user- and group-id, both of which are `1001` and are named "`axonserver`". Doing this will ensure that any mounted volumes will be writable by the user running Axon Server.
+* The "`root`" image of version 2023.1 is available as "`axoniq/axonserver:2023.1`" and is based on "`eclipse-temurin:11-focal`". This image is particularly useful for running in Docker Desktop, as it will not have any trouble creating files and directories as user "`root`".
+* The "`axonserver`" image of version 2023.1 is available as "`axoniq/axonserver:2023.1-nonroot`" and is based on  the same Eclipse Temurin image. This image is more secure and useful in Kubernetes and OpenShift clusters. You should take care to declare the user- and group-id, both of which are `1001` and are named "`axonserver`". Doing this will ensure that any mounted volumes will be writable by the user running Axon Server.
 
 The images export the following volumes:
 
@@ -38,7 +38,25 @@ The images export the following volumes:
   In this volume you can place Extension JAR-files, such as the LDAP and OAuth2 extensions.
 * "`/axonserver/plugins`"
 
-  In this volume Axon Server will place all uploaded plugins.
+In this volume Axon Server will place all uploaded plugins.
+
+> _Using the axoniq/axonserver:latest image_ <a name="docker-latest"></a>
+> 
+> Up to release 2023.2.0 the default Axon Server image (axoniq/axonserver:latest) was using Axon Server Standard Edition version 4.6.11. There is a difference in the directory structure between version 4.6.11 and the current version. One change is that the working directory has changed from `/` to `/axonserver`. All files and directories created by Axon Server are stored in this directory (or subdirectories). 
+> 
+> The following locations have new default values:
+> 
+> | Property                                   | Axon Server SE 4.6.11 | Axon Server 2023.2              | 
+> |--------------------------------------------|-----------------------|---------------------------------|
+> | axoniq.axonserver.event.storage	           | /eventdata            | /axonserver/events              |
+> | axoniq.axonserver.snapshot.storage         | /eventdata            | /axonserver/events              |
+> | axoniq.axonserver.controldb-path	          | /data                 | /axonserver/data                |
+> | axoniq.axonserver.plugin-package-directory | /data/plugins/bundles | /axonserver/plugins/bundles     |
+> | axoniq.axonserver.plugin-cache-directory   | /data/plugins/cache   | /axonserver/plugins/cache       |
+> | logging.file                               | /data/axonserver.log  | /axonserver/data/axonserver.log |
+> 
+> As these locations have changed you need to update the volume mappings that you use in the container. The mapping for /eventdata must be changed to /axonserver/events,
+and the mapping for /data must be changed to /axonserver/data.
 
 ## Building you own Image
 
