@@ -4,7 +4,8 @@ The release notes section for the Axon Tracing Extension for all major/minor rel
 
 | Release Type | Version                                                    |
 |:-------------|:-----------------------------------------------------------|
-| _**Major**_  | [4.8](rn-tracing-major-releases.md#release-48)             |
+| _**Major**_  | [4.9](rn-tracing-major-releases.md#release-49)             |
+|              | [4.8](rn-tracing-major-releases.md#release-48)             |
 |              | [4.7](rn-tracing-major-releases.md#release-47)             |
 |              | [4.6](rn-tracing-major-releases.md#release-46)             |
 |              | [4.5](rn-tracing-major-releases.md#release-45)             |
