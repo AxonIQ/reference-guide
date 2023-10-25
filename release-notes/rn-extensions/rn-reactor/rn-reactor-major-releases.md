@@ -2,6 +2,10 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Reactor Extension.
 
+## Release 4.9
+
+Release 4.9.0 only consists out of dependency upgrades to tag along with recent developments.
+
 ## Release 4.8
 
 Release 4.8.0 only consists out of dependency upgrades to tag along with recent developments.
