@@ -2,6 +2,26 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Kafka Extension.
 
+## Release 4.9
+
+### Enhancements
+
+- Add ability to customize Kafka Event Publisher Processing Group name via properties [#444](https://github.com/AxonFramework/extension-kafka/pull/444)
+- Autoconfigured TopicResolver bean with ability to replace it by user configuration [#443](https://github.com/AxonFramework/extension-kafka/pull/443)
+
+### Bug Fixes
+
+- By doing the validation whether the kafka message was successfully se… [#455](https://github.com/AxonFramework/extension-kafka/pull/455)
+- Tracking Token Updated if Creating a Publisher Fails [#454](https://github.com/AxonFramework/extension-kafka/issues/454)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@aupodogov](https://github.com/aupodogov)
+
 ## Release 4.8
 
 ### Features
