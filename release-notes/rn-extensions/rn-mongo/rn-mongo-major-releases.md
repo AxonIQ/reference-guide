@@ -2,6 +2,19 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Mongo Extension.
 
+## Release 4.9
+
+### Enhancements
+
+- Update the readme to the current state of things. [#383](https://github.com/AxonFramework/extension-mongo/pull/383)
+
+### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+
 ## Release 4.8
 
 ### Enhancements
