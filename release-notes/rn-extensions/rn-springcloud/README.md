@@ -14,4 +14,5 @@ The release notes section for the Axon Spring Cloud Extension for all major/mino
 |              | [4.2](rn-springcloud-major-releases.md#release-42) |
 |              | [4.1](rn-springcloud-major-releases.md#release-41) |
 |              | [4.0](rn-springcloud-major-releases.md#release-40) |
-| _**Minor**_  | [4.3](rn-springcloud-minor-releases.md#release-43) |
+| _**Minor**_  | [4.9](rn-springcloud-minor-releases.md#release-49) |
+|              | [4.3](rn-springcloud-minor-releases.md#release-43) |
