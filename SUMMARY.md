@@ -131,6 +131,7 @@
     * [GRPC API](axon-server/administration/admin-configuration/grpc-api.md)
   * [Monitoring](axon-server/administration/monitoring/README.md)
     * [Actuator Endpoints](axon-server/administration/monitoring/actuator-endpoints.md)
+    * [Axon Server metrics](axon-server/administration/monitoring/axon-server-metrics.md)
     * [gRPC Metrics](axon-server/administration/monitoring/grpc-metrics.md)
     * [Heartbeat Monitoring](axon-server/administration/monitoring/heartbeat-monitoring.md)
   * [Clusters](axon-server/administration/clustering.md)
