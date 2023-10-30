@@ -111,6 +111,17 @@ If the certificates used for internal traffic are self-signed certificates, you 
 In this case you add the certificates (or the root certificate) in the (PEM) keystore specified by 
 the “...ssl.internal-trust-manager-file” property.
 
+As of Axon Server version 2023.2.0, you can update the certificates without restarting Axon Server. 
+
+When a certificate is about to expire you can replace it with a new certificate, using the same file name. 
+To load the new certificate for the gRPC communication you must ensure that the modified timestamp for both the key file and the certificate file are updated. 
+
+The optional trust manager file used for the internal communication in an Axon Server cluster is also monitored. If this file is updated, Axon Server will use the new version.
+
+When you update the certificate in the keystore used for the Tomcat HTTP server, it is also reloaded automatically.
+
+Axon Server checks the TLS artifacts for updates once a minute.
+
 ## Client configuration
 
 The following properties are available for Axon client applications to use TLS/SSL for the traffic to Axon Server:
