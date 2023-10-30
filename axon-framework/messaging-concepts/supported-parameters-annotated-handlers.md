@@ -10,110 +10,56 @@ For more specifics on configuring custom `ParameterResolver`s we suggest reading
 
 ## Supported Parameters for Command Handlers
 
-By default, `@CommandHandler` annotated methods allow the following parameter types:
+By default, `@CommandHandler` annotated methods allow the following parameter types.
 
-* The first parameter is always the payload of the command message.
-  It may also be of type `Message` or `CommandMessage`, if the `@CommandHandler` annotation explicitly defined the name of the command the handler can process.
-  By default, a command name is the fully qualified class name of the command its payload.
+| Parameter designation                             | Purpose                                                                                                                                                                                                                                                                                                                        |
+|---------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| The first parameter                               | The first parameter is always the payload of the command message.<br>It may also be of type: `Message` or `CommandMessage`, if the `@CommandHandler` annotation explicitly defined the name of the command the handler can process.<br>By default, a command name is the fully qualified class name of the command its payload. |
+| type: `MetaData`                                  | Will contain the entire metadata of a `CommandMessage`.                                                                                                                                                                                                                                                                        |
+| annotated with `@MetaDataValue`                   | Will resolve the metadata value with the key as indicated on the annotation.<br>If `required` is `false` \(default\), `null` is passed when the metadata value is not present.<br>If `required` is `true`, the resolver will not match and prevent the method from being invoked when the metadata value is not present.       |
+| type: `Message`, or<br>type: `CommandMessage`       | Will get the complete message, with both the payload and the metadata.<br>Resolving the entire `Message` is helpful if a method needs several metadata fields or other properties of the message.                                                                                                                              |
+| type: `UnitOfWork`                                 | Will get the current [unit of work](unit-of-work.md) injected.<br>The `UnitOfWork` allows command handlers to register actions to be performed at specific stages of the unit of work or gain access to the resources registered with it.                                                                                      |
+| type: `String` annotated with `@MessageIdentifier` | Will resolve the identifier of the handled `CommandMessage`.                                                                                                                                                                                                                                                                   |
+| type: `ConflictResolver`                           | Will resolve the configured `ConflictResolver` instance.<br>See the [Conflict Resolution](../axon-framework-commands/modeling/conflict-resolution.md) section for specifics on this topic.                                                                                                                                     |
+| type: `InterceptorChain`                           | Will resolve the chain of `MessageHandlerInterceptor`s for a `CommandMessage`.<br>You should use this feature in conjunction with a `@CommandHandlerInterceptor` annotated method.<br>For more specifics on this it is recommended to read [this](message-intercepting.md#commandhandlerinterceptor-annotation) section.       |
+| subtype of `ScopeDescriptor`                      | The scope descriptor is helpful when [scheduling a deadline](../deadlines/README.md) through the `DeadlineManager`.<br>Note that the `ScopeDescriptor` only makes sense from within the scope of an Aggregate or Saga.                                                                                                         |
+| Spring Bean                                       | If the application runs in a Spring environment, any Spring Bean can be resolved. The parameter can be the annotation with `@Qualifier` if a specific version of the bean should be wired.                                                                                                                                      |
 
-* Parameters of type `MetaData` will have the entire metadata of a `CommandMessage` injected.
 
-* Parameters annotated with `@MetaDataValue` will resolve the metadata value with the key as indicated on the annotation.
-  If `required` is `false` \(default\), `null` is passed when the metadata value is not present.
-  If `required` is `true`, the resolver will not match and prevent the method from being invoked when the metadata value is not present.
-
-* Parameters of type `Message`, or `CommandMessage` will get the complete message, with both the payload and the metadata.
-  Resolving the entire `Message` is helpful if a method needs several metadata fields or other properties of the message.
-
-* Parameters of type `UnitOfWork` get the current [unit of work](unit-of-work.md) injected.
-  The `UnitOfWork` allows command handlers to register actions to be performed at specific stages of the unit of work or gain access to the resources registered with it.
-
-* A parameter of type `String` annotated with `@MessageIdentifier` will resolve the identifier of the handled `CommandMessage`.
-
-* Parameters of type `ConflictResolver` will resolve the configured `ConflictResolver` instance.
-  See the [Conflict Resolution](../axon-framework-commands/modeling/conflict-resolution.md) section for specifics on this topic.
-
-* Parameters of type `InterceptorChain` will resolve the chain of `MessageHandlerInterceptor`s for a `CommandMessage`.
-  You should use this feature in conjunction with a `@CommandHandlerInterceptor` annotated method.
-  For more specifics on this it is recommended to read [this](message-intercepting.md#commandhandlerinterceptor-annotation) section.
-
-* The parameter resolvers can resolve a `ScopeDescriptor` too.
-  The scope descriptor is helpful when [scheduling a deadline](../deadlines/README.md) through the `DeadlineManager`.
-  Note that the `ScopeDescriptor` only makes sense from within the scope of an Aggregate or Saga.
-
-* If the application runs in a Spring environment, any Spring Bean can be resolved.
-  To that end, we should annotate the desired Spring bean with `@Autowired`.
-  We can extend the annotation with `@Qualifier` if a specific version of the bean should be wired.
 
 ## Supported Parameters for Event Handlers
 
-By default, `@EventHandler` annotated methods allow the following parameter types:
+By default, `@EventHandler` annotated methods allow the following parameter types.
 
-* The first parameter is the payload of the event message.
-  If the event handler does not need access to the payload of the message, you can specify the expected payload type on the `@EventHandler` annotation.
-  Do not configure the payload type on the annotation if you want the payload passed as a parameter.
+| Parameter designation                                                                                                      | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|----------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| The first parameter                                                                                                        | The first parameter is the payload of the event message.<br>If the event handler does not need access to the payload of the message, you can specify the expected payload type on the `@EventHandler` annotation.<br>Do not configure the payload type on the annotation if you want the payload passed as a parameter.                                                                                                                                                            |
+| type: `EventMessage`                                                                                                       | Will resolve the `EventMessage` in its entirety as well.<br>If the first parameter is of type message, it effectively matches an event of any type, even if generic parameters suggest otherwise.<br>Due to type erasure, Axon cannot detect what parameter the implementation expects.<br>It is best to declare a parameter of the payload type as first parameter in such a case, followed by a parameter of type message.                                                       |
+| type: `MetaData`                                                                                                           | Will contain the entire metadata of a `EventMessage`.                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| annotated with `@MetaDataValue`                                                                                            | Will resolve the metadata value with the key as indicated on the annotation.<br>If `required` is `false` \(default\), `null` is passed when the metadata value is not present.<br>If `required` is `true`, the resolver will not match and prevent the method from being invoked when the metadata value is not present.                                                                                                                                                           |
+| type: `UnitOfWork`                                                                                                          | Will get the current [unit of work](unit-of-work.md) injected.<br>The `UnitOfWork` allows event handlers to register actions to be performed at specific stages of the unit of work or gain access to the resources registered with it.                                                                                                                                                                                                                                            |
+| type: `String` annotated with `@MessageIdentifier`                                                                          | Will resolve the identifier of the handled `CommandMessage`.                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| type: `java.time.Instant` annotated with `@Timestamp`, or<br>type: `java.time.temporal.Temporal` annotated with `@Timestamp` | Will resolve to the timestamp of the `EventMessage`.<br>The resolved timestamp is the time at which the event was generated.                                                                                                                                                                                                                                                                                                                                                       |
+| type: `java.lang.Long` annotated with `@SequenceNumber`, or<br>type: `long` annotated with `@SequenceNumber`                 | Will resolve to the `sequenceNumber` of a `DomainEventMessage`.<br>This parameter provides the order in which the event was generated (within the aggregate scope it originated from).<br>It is important to note that `DomainEventMessage` **can only** originate from an Aggregate.<br>Hence, events that have been published directly on the `EventBus`/`EventGateway` are _not_ implementations of the `DomainEventMessage`. As such, they will not resolve a sequence number. |
+| type: `TrackingToken`                                                                                                       | Will have the current [token](../events/event-processors/streaming.md#tracking-tokens) related to the processed event injected.<br>Note that this will only work for `StreamingEventProcessor` instances, as otherwise, there is no token attached to the events.                                                                                                                                                                                                                  |
+| type: `java.lang.String` annotated with <br>`@SourceId`                                                                     | Will resolve to the `aggregateIdentifier` of a `DomainEventMessage`.<br>This parameter provides the identifier of the aggregate from which the event originates.<br>It is important to note that `DomainEventMessage` **can only** originate from an Aggregate.<br>Hence, events that have been published directly on the `EventBus`/`EventGateway` are _not_ implementations of the `DomainEventMessage`. As such, they will not resolve a source id.                             |
+| type: `DeadLetter<EventMessage<?>>`                                                                                         | Will have the current [dead letter](../events/event-processors/README.md#dead-letter-queue) related to the processed event injected.<br>Note that the inserted field is *nullable* since there is no guarantee the event of the handler is a dead letter, yes or no.                                                                                                                                                                                                               |
+| type: `ReplayStatus`                                                                                                        | Will resolve to the ReplayStatus indicating whether the event is delivered as a 'REGULAR' event or a 'REPLAY' event.                                                                                                                                                                                                                                                                                                                                                               |
+| Spring Bean                                                                                                                | If the application runs in a Spring environment, any Spring Bean can be resolved. The parameter can be the annotation with `@Qualifier` if a specific version of the bean should be wired.                                                                                                                                                                                                                                                                                          |
 
-* Parameters of type `MetaData` will have the entire metadata of an `EventMessage` injected.
 
-* Parameters annotated with `@MetaDataValue` will resolve the metadata value with the key as indicated on the annotation.
-  If `required` is `false` \(default\), `null` is passed when the metadata value is not present.
-  If `required` is `true`, the resolver will not match and prevent the method from being invoked when the metadata value is not present.
-
-* We can resolve the `EventMessage` in its entirety as well.
-  If the first parameter is of type message, it effectively matches an event of any type, even if generic parameters suggest otherwise.
-  Due to type erasure, Axon cannot detect what parameter the implementation expects.
-  It is best to declare a parameter of the payload type in such a case, followed by a parameter of type message.
-
-* Parameters of type `UnitOfWork` get the current [unit of work](unit-of-work.md) injected.
-  The `UnitOfWork` allows event handlers to register actions to be performed at specific stages of the unit of work or gain access to the resources registered with it.
-
-* A parameter of type `String` annotated with `@MessageIdentifier` will resolve the identifier of the handled `EventMessage`.
-
-* Parameters annotated with `@Timestamp` and of type `java.time.Instant` \(or `java.time.temporal.Temporal`\) will resolve to the timestamp of the `EventMessage`.
-  The resolved timestamp is the time at which the event was generated.
-
-* Parameters annotated with `@SequenceNumber` and of type `java.lang.Long` or `long` will resolve to the `sequenceNumber` of a `DomainEventMessage`.
-  This parameter provides the order in which the event was generated (within the aggregate scope it originated from).
-  It is important to note that `DomainEventMessage` **can only** originate from an Aggregate.
-  Hence, events that have been published directly on the `EventBus`/`EventGateway` are _not_ implementations of the `DomainEventMessage`. As such, they will not resolve a sequence number.
-
-* Parameters of type `TrackingToken` will have the current [token](../events/event-processors/streaming.md#tracking-tokens) related to the processed event injected.
-  Note that this will only work for `StreamingEventProcessor` instances, as otherwise, there is no token attached to the events.
-
-* Parameters annotated with `@SourceId` and of type `java.lang.String` will resolve to the `aggregateIdentifier` of a `DomainEventMessage`.
-  This parameter provides the identifier of the aggregate from which the event originates.
-  It is important to note that `DomainEventMessage` **can only** originate from an Aggregate.
-  Hence, events that have been published directly on the `EventBus`/`EventGateway` are _not_ implementations of the `DomainEventMessage`. As such, they will not resolve a source id.
-
-* Parameters of type `DeadLetter<EventMessage<?>>` will have the current [dead letter](../events/event-processors/README.md#dead-letter-queue) related to the processed event injected.
-  Note that the inserted field is *nullable* since there is no guarantee the event of the handler is a dead letter, yes or no.
-
-* If the application runs in a Spring environment, any Spring Bean can be resolved.
-  To that end, we should annotate the desired Spring bean with `@Autowired`.
-  We can extend the annotation with `@Qualifier` if a specific version of the bean should be wired.
 
 ## Supported Parameters for Query Handlers
 
-By default, `@QueryHandler` annotated methods allow the following parameter types:
+By default, `@QueryHandler` annotated methods allow the following parameter types.
 
-* The first parameter is always the payload of the query message.
-  It may also be of type `Message` or `QueryMessage`, if the `@QueryHandler` annotation explicitly defined the name of the query the handler can process.
-  By default, a query name is the fully qualified class name of the query its payload.
+| Parameter designation                             | Purpose                                                                                                                                                                                                                                                                                                                  |
+|---------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| The first parameter                               | The first parameter is always the payload of the query message.<br>It may also be of type: `Message` or `QueryMessage`, if the `@QueryHandler` annotation explicitly defined the name of the query the handler can process.<br>By default, a query name is the fully qualified class name of the query its payload.       |
+| type: `MetaData`                                  | Will contain the entire metadata of a `QueryMessage`.                                                                                                                                                                                                                                                                    |
+| annotated with `@MetaDataValue`                   | Will resolve the metadata value with the key as indicated on the annotation.<br>If `required` is `false` \(default\), `null` is passed when the metadata value is not present.<br>If `required` is `true`, the resolver will not match and prevent the method from being invoked when the metadata value is not present. |
+| type: `Message`, or <br>type: `QueryMessage`        | Will get the complete message, with both the payload and the metadata.<br>Resolving the entire `Message` is helpful if a method needs several metadata fields or other properties of the message.                                                                                                                        |
+| type: `UnitOfWork`                                 | Will get the current [unit of work](unit-of-work.md) injected.<br>The `UnitOfWork` allows query handlers to register actions to be performed at specific stages of the unit of work or gain access to the resources registered with it.                                                                                  |
+| type: `String` annotated with `@MessageIdentifier` | Will resolve the identifier of the handled `QueryMessage`.                                                                                                                                                                                                                                                               |
+| Spring Bean                                       | If the application runs in a Spring environment, any Spring Bean can be resolved. The parameter can be the annotation with `@Qualifier` if a specific version of the bean should be wired.                                                                                                                               |
 
-* Parameters of type `MetaData` will have the entire metadata of a `QueryMessage` injected.
-
-* Parameters annotated with `@MetaDataValue` will resolve the metadata value with the key as indicated on the annotation.
-  If `required` is `false` \(default\), `null` is passed when the metadata value is not present.
-  If `required` is `true`, the resolver will not match and prevent the method from being invoked when the metadata value is not present.
-
-* Parameters of type `Message`, or `QueryMessage` will get the complete message, with both the payload and the metadata.
-  Resolving the entire `Message` is helpful if a method needs several metadata fields or other properties of the message.
-
-* Parameters of type `UnitOfWork` get the current [unit of work](unit-of-work.md) injected.
-  The `UnitOfWork` allows query handlers to register actions to be performed at specific stages of the unit of work or gain access to the resources registered with it.
-
-* A parameter of type `String` annotated with `@MessageIdentifier` will resolve the identifier of the handled `CommandMessage`.
-
-* If the application runs in a Spring environment, any Spring Bean can be resolved.
-  To that end, we should annotate the desired Spring bean with `@Autowired`.
-  We can extend the annotation with `@Qualifier` if a specific version of the bean should be wired.
