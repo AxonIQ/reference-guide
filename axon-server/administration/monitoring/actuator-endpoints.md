@@ -6,7 +6,7 @@ The `/actuator`URL path returns a list of all available actuators. A list of the
 
 * `/actuator/health` endpoint is used to check the health of Axon Server itself, and \(in the case of Axon Server EE\) the health of the cluster. The HTTP status return code _**is not 200**_ when cluster health is anything other than "UP".
 * `/actuator/info` endpoint informs you about some basic attributes of an AxonServer \(name, description, version\). This is more useful for liveness/readiness probes.
-* `/actuator/metrics` endpoint publishes information about OS, JVM as well as [application level metrics​](./#application-level-metrics)
+* `/actuator/metrics` endpoint publishes information about OS, JVM as well as [application level metrics​](axon-server-metrics.md)
 * `/actuator/loggers` endpoint exposes detailed view of the loggers configuration
 * `/actuator/prometheus` endpoint exposes metrics data in a format that can be scraped by a [Prometheus server \(Monitoring system & time series database\)](https://prometheus.io/)​
 * `/actuator/env` endpoint exposes the current environment properties
@@ -38,16 +38,4 @@ to the axonserver.properties file:
 ```bash
 management.endpoint.health.show-details=when-authorized
 ```
-
-## Application level metrics‌ <a id="application-level-metrics"></a>
-
-Specific AxonServer metrics are available under `/actuator/metrics` endpoint:‌
-
-* `/actuator/metrics/axon.event.count` current number of events stored in a node
-* `/actuator/metrics/axon.command.count` current number of commands stored in a node
-* `/actuator/metrics/axon.query.count` current number of queries stored in a node
-* `/actuator/metrics/axon.snapshot.count` current number of snapshots stored in a node
-* `/actuator/metrics/axon.commands.active` current number of active commands in a node
-
-
 
