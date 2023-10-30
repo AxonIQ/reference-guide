@@ -1,5 +1,31 @@
 # Major Releases
 
+## Release 2023.2
+
+### TLS Certificate and Key Replacement at Runtime
+
+Axon Server now supports the hot (runtime) replacement of certificates and keys used for TLS, eliminating the need for server restarts.
+
+### Enhanced Metrics Exposure
+
+We have revamped the metrics exposed by Axon Server for better clarity and comprehensibility. Adhering to the 4 golden signals terminology, metrics are now systematically organized.
+Users can access both old and new style metrics in this version. However, there’s an option to disable the old style metrics.
+
+### Upgraded Diagnostics Package
+
+To aid in issue resolution, Axon Server now provides a more comprehensive diagnostics package.
+The package now contains more detailed information about raft status.
+It offers a snapshot of metrics and health information.
+There’s a listing of files in the replication group.
+Information about multi-tier storage is included.
+Logs are included as well.
+
+### Other Improvements
+
+- We’ve addressed various security concerns through dependency updates. Additionally, several bugs have been identified and rectified.
+  The role ‘MONITOR’ is now granted permission to access the ‘internal/raft/status’ endpoint.
+- We’ve transitioned to new versions for some of the external libraries used in Axon Server.
+
 ## Release 2023.1
 
 ### New Features and Enhancements
