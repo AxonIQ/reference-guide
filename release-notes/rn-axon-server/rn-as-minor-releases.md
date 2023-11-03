@@ -3,6 +3,18 @@
 This page provides a dedicated overview of patch releases for Axon Server. For information about the
 older releases check either [Axon Server Enterprise Edition](rn-asee-minor-releases.md) or [Axon Server Standard Edition](rn-asse-minor-releases.md).
 
+## Release 2023.2
+
+### Release 2023.2.1
+
+#### Bug Fixes
+
+This release contains fixes for the following issues:
+
+- TLS communication between Axon Server nodes cannot validate trusted certificates when there is no trust manager file configured
+- Deleting a context does not delete all its metrics
+
+
 ## Release 2023.1
 
 ### Release 2023.1.2
