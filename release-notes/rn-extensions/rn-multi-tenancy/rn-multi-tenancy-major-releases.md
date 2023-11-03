@@ -2,6 +2,30 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Multi-Tenancy Extension.
 
+## Release 4.9
+
+#### Features
+
+- [#122] Enable load balancing strategy property configuration [#156](https://github.com/AxonFramework/extension-multitenancy/pull/156)
+- Event scheduler [#139](https://github.com/AxonFramework/extension-multitenancy/pull/139)
+- Enable load balancing strategy property configuration [#122](https://github.com/AxonFramework/extension-multitenancy/issues/122)
+- Introduce a `MultiTenantEventScheduler` [#102](https://github.com/AxonFramework/extension-multitenancy/issues/102)
+
+#### Enhancements
+
+- Check Javadoc [#6](https://github.com/AxonFramework/extension-multitenancy/issues/6)
+
+#### Bug Fixes
+
+- Broken Link to "Reference Guide" [#150](https://github.com/AxonFramework/extension-multitenancy/issues/150)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@smcvb](https://github.com/smcvb)
+- [@schananas](https://github.com/schananas)
+
 ## Release 4.8
 
 ### Features

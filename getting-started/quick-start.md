@@ -1,6 +1,6 @@
 # Quick Start
 
-Axon provides a _**Quick Start Toolkit**_ to familarize yourself with the setup required for Axon Framework and Axon Server SE \(Standard Edition\).
+Axon provides a _**Quick Start Toolkit**_ to familiarize yourself with the setup required for Axon Framework and Axon Server SE \(Standard Edition\).
 
 The only pre-requisite to run the Quick Start is to have a Java 8+ JRE in your system.
 
@@ -29,7 +29,7 @@ This package contains,
 The Quick Start Demo app can also run on Java 8 with a small change in the `pom.xml` file:
 
 1. From the extracted folder, open `giftcard-demo\pom.xml` with your favourite editor
-2. Replace `<java.version>11</java.version>` occurrency with `<java.version>1.8</java.version>`
+2. Replace `<java.version>11</java.version>` with `<java.version>1.8</java.version>`
 3. Find the `maven-compiler-plugin` plugin block
 4. Replace `<release>${java.version}</release>` with `<source>${java.version}</source> <target>${java.version}</target>`
 5. Run the demo application: `$ cd giftcard-demo && ./mvnw spring-boot:run`
@@ -40,13 +40,13 @@ The Quick Start Demo app can also run on Java 8 with a small change in the `pom.
 
 The following 5-part video tutorial offers a quick start guided path to understand Axon Framework.
 
-| Tutorial Name | Purpose |
-| :--- | :--- |
+| Tutorial Name                                           | Purpose                                    |
+|:--------------------------------------------------------|:-------------------------------------------|
 | [Part - 1](https://www.youtube.com/watch?v=tqn9p8Duy54) | Structure of an Axon Framework Application |
-| [Part - 2](https://www.youtube.com/watch?v=vnCxjWZrrk0) | Core API development |
-| [Part - 3](https://www.youtube.com/watch?v=7oy4w5THFEU) | Command Model of the Application |
-| [Part - 4](https://www.youtube.com/watch?v=jS1vfc5EohM) | Query Model of the Application |
-| [Part - 5](https://www.youtube.com/watch?v=lxonQnu1txQ) | Connecting the UI |
+| [Part - 2](https://www.youtube.com/watch?v=vnCxjWZrrk0) | Core API development                       |
+| [Part - 3](https://www.youtube.com/watch?v=7oy4w5THFEU) | Command Model of the Application           |
+| [Part - 4](https://www.youtube.com/watch?v=jS1vfc5EohM) | Query Model of the Application             |
+| [Part - 5](https://www.youtube.com/watch?v=lxonQnu1txQ) | Connecting the UI                          |
 
 ### Axon Server
 
