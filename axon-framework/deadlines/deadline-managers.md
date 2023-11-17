@@ -169,7 +169,9 @@ Alternatively, the bean can be configured like this:
                                          .scopeAwareProvider(scopeAwareProvider)
                                          .serializer(serializer)
                                          .transactionManager(transactionManager)
-                                         .spanFactory(spanFactory)
+                                         .spanFactory(DefaultDeadlineManagerSpanFactory.builder()
+                                           .spanFactory(spanFactory)
+                                           .build())
                                          .startScheduler(false)
                                          .build();
     }
