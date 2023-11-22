@@ -70,7 +70,7 @@ The following properties need to be setup in `axonserver.properties` for both SE
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">ssl.internal-cert-chain-file</td>
+      <td style="text-align:left">axoniq.axonserver.ssl.internal-cert-chain-file</td>
       <td style="text-align:left">
         <p>File containing the full certificate chain to be used in internal communication
           between Axon Server nodes. If not specified, Axon Server will use the primary key file from <em>ssl.cert-chain-file</em>.</p>
@@ -80,7 +80,7 @@ The following properties need to be setup in `axonserver.properties` for both SE
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">ssl.internal-trust-manager-file</td>
+      <td style="text-align:left">axoniq.axonserver.ssl.internal-trust-manager-file</td>
       <td style="text-align:left">
         <p>Trusted certificates for verifying the other AxonServer&apos;s certificate.</p>
         <p><em>(Axon EE only)</em>
@@ -89,7 +89,7 @@ The following properties need to be setup in `axonserver.properties` for both SE
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">ssl.internal-private-key-file</td>
+      <td style="text-align:left">axoniq.axonserver.ssl.internal-private-key-file</td>
       <td style="text-align:left">
         <p>File containing the private key to be used in internal communication
           between Axon Server nodes. If not specified, Axon Server will use the primary key file from <em>ssl.private-key-file</em>.</p>
