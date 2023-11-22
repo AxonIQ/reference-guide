@@ -2,6 +2,20 @@
 
 This page notes all enhancements and features that we have introduced to our major releases of the Axon Multi-Tenancy Extension.
 
+## Release 4.9
+
+### Release 4.9.1
+
+#### Bug Fixes
+
+- Drop `properties` validation in `TenantDescriptor#equals` [#158](https://github.com/AxonFramework/extension-multitenancy/pull/158)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@smcvb](https://github.com/smcvb)
+
 ## Release 4.6
 
 ### Release 4.6.2
