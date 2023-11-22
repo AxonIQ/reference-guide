@@ -2,7 +2,7 @@
 
 > Note: This feature is only available on the Enterprise Edition of AxonServer
 
-To recap the definition as we have seen in the [clustering](multi-context.md) section, contexts allow for strong separation of data without requiring deploying and managing full instances.
+To recap the definition as we have seen in the [clustering](clustering.md) section, contexts allow for strong separation of data without requiring deploying and managing full instances.
 
 An Axon Server EE cluster can be setup to store events for multiple contexts. Each context has it own set of files \(containing Event/Snapshot data\) stored in a separate directory. Axon Server will replicate the context data to a number of nodes depending on the replication group the context is assigned to. When you are creating a context you can either add it to an already existing replication group, or create a new replication group for this context. More on replication groups can be found in the [replication groups](replication-groups.md) section.
 
@@ -12,7 +12,7 @@ A depiction of multiple registered contexts within an Axon Server EE cluster is 
 
 ![Multiple contexts within an Axon Server EE cluster](../../.gitbook/assets/multi-context.jpg)
 
-The [clustering](multi-context.md) section details the creation of the \__admin and default contexts_ when a new Axon Server cluster is created. The _\_admin_ context **is used to process all configuration changes in Axon Server, so it contains the master configuration from which all contexts get their information. The** \__admin_ context does not have an event store and the configuration information is stored in a control database. The _default_ context is the context used by clients when they have not specified any context information. In case you would like to create a cluster without creating a default context, it is recommended to use the [Automatic-Initialization](multi-context.md) feature where you can control explicitly which contexts can be created or not.
+The [clustering](clustering.md) section details the creation of the \__admin and default contexts_ when a new Axon Server cluster is created. The _\_admin_ context **is used to process all configuration changes in Axon Server, so it contains the master configuration from which all contexts get their information. The** \__admin_ context does not have an event store and the configuration information is stored in a control database. The _default_ context is the context used by clients when they have not specified any context information. In case you would like to create a cluster without creating a default context, it is recommended to use the [Automatic-Initialization](clustering.md#automatic-initialization) feature where you can control explicitly which contexts can be created or not.
 
 When you create a context, there are a number of default properties that you can override, specifically for the context. These are:
 
