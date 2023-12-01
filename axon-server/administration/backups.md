@@ -45,7 +45,16 @@ In addition, you may choose to back up the current segment file that is being wr
 
 ## _Log Entry Segments \(only for Axon Server EE\)_
 
-Unlike the event stream segments, the log entry segments backup should not be done incrementally. All the files are replaced by the next backup. The log entry segments backup is supported by the GET endpoint `http:[server]/v1/backup/log/filenames`. It takes the context name and returns a list of file names that completely replace the previous backup for that context.‌ The _\[server\]_ could be any node that is a PRIMARY member node for the context that needs to be backed up.
+Unlike the event stream segments, the log entry segments backup should not be done incrementally. All the files are replaced by the next backup. The log entry segments backup is supported by the GET endpoint `http://[server]/v1/backup/log/filenames?context=[replication_group]`. 
+It takes the name of the `replication group` to back up in the `context` parameter (for compatibility reasons) and returns a list of file names that completely replace the previous log entry backup for that context.‌ The _\[server\]_ could be any node that is a `PRIMARY` member node for the context that needs to be backed up. 
+
+If you have three replication groups, `default`, `finacne` and `logistics`, you would call the endpoint like this:
+```
+    http://[server]/v1/backup/log/filenames?context=_admin
+    http://[server]/v1/backup/log/filenames?context=default
+    http://[server]/v1/backup/log/filenames?context=finance
+    http://[server]/v1/backup/log/filenames?context=logistics
+```
 
 Even if the recent file has incomplete data, a node will be able to recover a consistent state from such a file and will initialize itself at the position immediately after the last complete write. The replication process \(if present\) will ensure subsequent entries are automatically synchronized.‌
 
