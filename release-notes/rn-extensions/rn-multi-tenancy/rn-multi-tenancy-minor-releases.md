@@ -4,6 +4,18 @@ This page notes all enhancements and features that we have introduced to our maj
 
 ## Release 4.9
 
+### Release 4.9.2
+
+#### Bug Fixes
+
+- Auto start Axon Server tenant components [#160](https://github.com/AxonFramework/extension-multitenancy/pull/160)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@schananas](https://github.com/schananas)
+
 ### Release 4.9.1
 
 #### Bug Fixes
