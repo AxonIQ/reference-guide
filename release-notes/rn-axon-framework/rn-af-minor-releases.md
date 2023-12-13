@@ -2,6 +2,36 @@
 
 Any patch release made for an Axon project is tailored towards resolving bugs. This page aims to provide a dedicated overview of patch releases per project.
 
+## Release 4.9
+
+## Release 4.9.1
+
+#### Enhancements
+
+- Added support for TrackingToken parameter in SagaTestFixture [#2917](https://github.com/AxonFramework/AxonFramework/pull/2917)
+- [#2900] Removed requirement for property to disable AxonServer EventStore and enable another one [#2909](https://github.com/AxonFramework/AxonFramework/pull/2909)
+- Align the `TrackingToken` assert for JPA, JDBC, and AxonServer [#2903](https://github.com/AxonFramework/AxonFramework/pull/2903)
+
+#### Bug Fixes
+
+- Resolved apparent memory leak in GapAwareTrackingToken [#2936](https://github.com/AxonFramework/AxonFramework/pull/2936)
+- Axon Spring Boot Starter fails to connect to Axon Server on Spring Boot version 3.1.6+ [#2914](https://github.com/AxonFramework/AxonFramework/issues/2914)
+- Integration test should use current Axon version [#2908](https://github.com/AxonFramework/AxonFramework/pull/2908)
+- Behavioral change in 4.9 JpaEventStoreAutoConfiguration [#2900](https://github.com/AxonFramework/AxonFramework/issues/2900)
+- Make the viable name match with the override, the current name can be… [#2888](https://github.com/AxonFramework/AxonFramework/pull/2888)
+
+#### Dependency Upgrade
+
+- Upgrade Axon Server Connector Java to 2023.2.0 [#2913](https://github.com/AxonFramework/AxonFramework/pull/2913)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@abuijze](https://github.com/abuijze)
+
 ## Release 4.8
 
 ### Release 4.8.3
