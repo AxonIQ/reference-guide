@@ -100,7 +100,7 @@ By default, the `JpaEventStorageEngine` requires an `EntityManagerProvider` impl
 
 There are a few implementations of the `EntityManagerProvider` available, each for different needs. The `SimpleEntityManagerProvider` simply returns the `EntityManager` instance which is given to it at construction time. This makes the implementation a simple option for container managed contexts. Alternatively, there is the `ContainerManagedEntityManagerProvider`, which returns the default persistence context, and is used by default by the JPA event store.
 
-> **Move from javax.persistance to jakarta.persistance**
+> **Move from javax.persistence to jakarta.persistence**
 > 
 > Since 4.6.0 we moved to using jakarta by default. This means some classes like the `JpaTokenStore` are duplicated to accommodate for the `javax` to `jakarta` namespace change.
 
