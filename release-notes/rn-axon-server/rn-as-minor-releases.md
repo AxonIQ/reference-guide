@@ -5,6 +5,14 @@ older releases check either [Axon Server Enterprise Edition](rn-asee-minor-relea
 
 ## Release 2023.2
 
+### Release 2023.2.2
+
+Bug fixes:
+
+- Fix for an error handling subscription query responses during the upgrade from a version before 2023.2.0 to 2023.2.0 or 2023.2.1.
+- Improved readiness probe to return 200 (OK) once the communication services are ready and the replication groups are completely initialized.
+  The endpoint for the new readiness probe is /actuator/health/readiness.
+
 ### Release 2023.2.1
 
 #### Bug Fixes
