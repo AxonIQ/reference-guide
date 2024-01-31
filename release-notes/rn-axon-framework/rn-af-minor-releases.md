@@ -4,6 +4,26 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.9
 
+## Release 4.9.2
+
+#### Bug Fixes
+
+- Added explicit AutoConfigureBefore and AutoConfigureAfter in JpaAutoConfiguration [#2964](https://github.com/AxonFramework/AxonFramework/pull/2964)
+- Resolved MySQL startup problems in integration tests [#2963](https://github.com/AxonFramework/AxonFramework/pull/2963)
+- Fix Exception on using OpenTelemetry and ScatterGather queries [#2960](https://github.com/AxonFramework/AxonFramework/pull/2960)
+- [#2955] Fix ability to replay when at least one Event Handling Component supports a reset [#2957](https://github.com/AxonFramework/AxonFramework/pull/2957)
+- `@DisallowReplay` on a single Event Handling Components blocks replay of the entire `StreamingEventProcessor` [#2955](https://github.com/AxonFramework/AxonFramework/issues/2955)
+- fix: reverse eventBlockListingEnabled value for EventBuffer#disableIg… [#2947](https://github.com/AxonFramework/AxonFramework/pull/2947)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@vitko](https://github.com/vitko)
+- [@abuijze](https://github.com/abuijze)
+- [@CptCheesebeard](https://github.com/CptCheesebeard)
+- [@CodeDrivenMitch](https://github.com/CodeDrivenMitch)
+
 ## Release 4.9.1
 
 #### Enhancements
