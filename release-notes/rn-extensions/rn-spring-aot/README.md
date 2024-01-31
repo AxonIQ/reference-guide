@@ -6,3 +6,4 @@ The release notes section for the Axon Ahead of Time Extension for all major/min
 |:-------------|:--------------------------------------------------|
 | _**Major**_  | [4.9](rn-spring-aot-major-releases.md#release-49) |
 |              | [4.8](rn-spring-aot-major-releases.md#release-48) |
+| _**Minor**_  | [4.9](rn-spring-aot-minor-releases.md#release-49) |
