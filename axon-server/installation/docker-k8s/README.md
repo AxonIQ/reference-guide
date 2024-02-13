@@ -2,9 +2,9 @@
 
 This section is split into 3 sub-sections.
 
-* [Construction of the Axon Server Docker Image](readme.md#docker-image)
-* [Deployment using Docker Compose ](readme.md#docker-compose)and
-* [Deployment using Kubernetes](readme.md#kubernetes)
+* [Construction of the Axon Server Docker Image](README.md#docker-image)
+* [Deployment using Docker Compose ](README.md#docker-compose)and
+* [Deployment using Kubernetes](README.md#kubernetes)
 
 > Unified Axon Server Artifact
 >
