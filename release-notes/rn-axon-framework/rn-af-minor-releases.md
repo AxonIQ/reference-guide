@@ -4,6 +4,29 @@ Any patch release made for an Axon project is tailored towards resolving bugs. T
 
 ## Release 4.9
 
+## Release 4.9.3
+
+#### Enhancements
+
+- Skip jacoco if `sonar-enabled` is false. [#2976](https://github.com/AxonFramework/AxonFramework/pull/2976)
+
+#### Bug Fixes
+
+- Add additional check for NoToken so we never try to open a stream with it. [#2986](https://github.com/AxonFramework/AxonFramework/pull/2986)
+- Use `TransactionManager` in the `EventProcessorControlService` to invoke `TokenStore#retrieveStorageIdentifier` [#2985](https://github.com/AxonFramework/AxonFramework/pull/2985)
+- Resolve issue with eager gap cleanup [#2977](https://github.com/AxonFramework/AxonFramework/pull/2977)
+- Fix SagaTestFixture use DomainEventMessage [#2974](https://github.com/AxonFramework/AxonFramework/pull/2974)
+- Weird state causing tracking processors to never advance [#2958](https://github.com/AxonFramework/AxonFramework/issues/2958)
+
+#### Contributors
+
+We'd like to thank all the contributors who worked on this release!
+
+- [@gklijs](https://github.com/gklijs)
+- [@smcvb](https://github.com/smcvb)
+- [@TimoFrye](https://github.com/TimoFrye)
+- [@abuijze](https://github.com/abuijze)
+
 ## Release 4.9.2
 
 #### Bug Fixes
