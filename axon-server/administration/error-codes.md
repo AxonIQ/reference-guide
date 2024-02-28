@@ -119,6 +119,16 @@ This page depicts the various Error codes that Axon Server will return in the ca
     </tr>
     <tr>
       <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-1305</td>
+      <td style="text-align:left">
+        <p><b>REPLICATION_GROUP_EXISTS </b>
+        </p>
+        <p>This error is returned when there is an instruction to create a specific
+          replication group within Axon Server and it already exists.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
       <td style="text-align:left">AXONIQ-1400</td>
       <td style="text-align:left">
         <p><b>NO_AXONSERVER_FOR_CONTEXT</b>
@@ -135,6 +145,24 @@ This page depicts the various Error codes that Axon Server will return in the ca
         </p>
         <p>This error is returned when there is an instruction to create a
           specific context within Axon Server and it already exists.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-1700</td>
+      <td style="text-align:left">
+        <p><b>LICENSE_ERROR</b>
+        </p>
+        <p>This error is returned when the request cannot be executed due to license restrictions.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-1900</td>
+      <td style="text-align:left">
+        <p><b>TOO_MANY_REQUESTS</b>
+        </p>
+        <p>This error is returned when clients send too many commands or queries to Axon Server and its internal queue is full.</p>
       </td>
     </tr>
     <tr>
@@ -199,12 +227,21 @@ This page depicts the various Error codes that Axon Server will return in the ca
     </tr>
     <tr>
       <td style="text-align:left"></td>
-      <td style="text-align:left">AXONIQ-2102</td>
+      <td style="text-align:left">AXONIQ-2107</td>
       <td style="text-align:left">
-        <p><b>CONTEXT_UPDATE_IN_PROGRESS</b>
+        <p><b>REPLICATION_GROUP_UPDATE_IN_PROGRESS</b>
         </p>
-        <p>This error is returned when an instruction on a specific context is rejected
+        <p>This error is returned when an instruction on a specific replication group is rejected
           as it might be undergoing an update.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-2108</td>
+      <td style="text-align:left">
+        <p><b>REPLICATION_GROUP_NOT_FOUND</b>
+        </p>
+        <p>This error is returned when an instruction is requested for a non-existing replication group.</p>
       </td>
     </tr>
     <tr>
@@ -367,6 +404,51 @@ This page depicts the various Error codes that Axon Server will return in the ca
       </td>
     </tr>
     <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-2700</td>
+      <td style="text-align:left">
+        <p><b>PLUGIN_NOT_FOUND</b>
+        </p>
+        <p>This error is returned when the user sends a request for a plugin that cannot be found.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-2701</td>
+      <td style="text-align:left">
+        <p><b>INVALID_PLUGIN_CONFIGURATION</b>
+        </p>
+        <p>This error is returned when the user tries to update the configuration of a plugin with invalid values.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-2800</td>
+      <td style="text-align:left">
+        <p><b>EVENT_PROCESSOR_NOT_FOUND</b>
+        </p>
+        <p>This error is returned when the user tries to update the configuration of a non-existing event processor.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-2801</td>
+      <td style="text-align:left">
+        <p><b>EVENT_PROCESSOR_MOVE_UNKNOWN_TARGET</b>
+        </p>
+        <p>This error is returned when the user tries to move an event processor segment to a client that is no longer connected.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-2801</td>
+      <td style="text-align:left">
+        <p><b>EVENT_PROCESSOR_MOVE_NO_AVAILBLE_THREADS</b>
+        </p>
+        <p>This error is returned when the user tries to move an event processor segment to a client that does not have any available threads.</p>
+      </td>
+    </tr>
+    <tr>
       <td style="text-align:left"><em>Rate Limiting Errors</em>
       </td>
       <td style="text-align:left"></td>
@@ -429,6 +511,16 @@ This page depicts the various Error codes that Axon Server will return in the ca
       </td>
     </tr>
     <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-4005</td>
+      <td style="text-align:left">
+        <p><b>COMMAND_DUPLICATED </b>
+        </p>
+        <p>This error is returned when a command with the same message identifier is 
+sent multiple times.</p>
+      </td>
+    </tr>
+    <tr>
       <td style="text-align:left"><em>Query Handling Errors</em>
       </td>
       <td style="text-align:left"></td>
@@ -455,7 +547,26 @@ This page depicts the various Error codes that Axon Server will return in the ca
       </td>
     </tr>
     <tr>
-      <td style="text-align:left"><em>Extension Errors</em>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-5006</td>
+      <td style="text-align:left">
+        <p><b>QUERY_TIMEOUT</b>
+        </p>
+        <p>This error is returned when a query takes too long.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-5007</td>
+      <td style="text-align:left">
+        <p><b>QUERY_DUPLICATED</b>
+        </p>
+        <p>This error is returned when a query with the same message identifier is 
+sent multiple times.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"><em>Plugin Errors</em>
       </td>
       <td style="text-align:left"></td>
       <td style="text-align:left"></td>
@@ -466,7 +577,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>EVENT_REJECTED_BY_INTERCEPTOR</b>
         </p>
-        <p>This error is returned when an interceptor in an extension rejects an event.</p>
+        <p>This error is returned when an interceptor in a plugin rejects an event.</p>
       </td>
     </tr>
     <tr>
@@ -475,7 +586,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>SNAPSHOT_REJECTED_BY_INTERCEPTOR</b>
         </p>
-        <p>This error is returned when an interceptor in an extension rejects a snapshot.</p>
+        <p>This error is returned when an interceptor in a plugin rejects a snapshot.</p>
       </td>
     </tr>
     <tr>
@@ -484,7 +595,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>COMMAND_REJECTED_BY_INTERCEPTOR</b>
         </p>
-        <p>This error is returned when an interceptor in an extension rejects a command.</p>
+        <p>This error is returned when an interceptor in a plugin rejects a command.</p>
       </td>
     </tr>
     <tr>
@@ -493,7 +604,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>QUERY_REJECTED_BY_INTERCEPTOR</b>
         </p>
-        <p>This error is returned when an interceptor in an extension rejects a query.</p>
+        <p>This error is returned when an interceptor in a plugin rejects a query.</p>
       </td>
     </tr>
     <tr>
@@ -502,7 +613,7 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>SUBSCRIPTION_QUERY_REJECTED_BY_INTERCEPTOR</b>
         </p>
-        <p>This error is returned when an interceptor in an extension rejects a subscription query request.</p>
+        <p>This error is returned when an interceptor in a plugin rejects a subscription query request.</p>
       </td>
     </tr>
     <tr>
@@ -511,7 +622,16 @@ This page depicts the various Error codes that Axon Server will return in the ca
       <td style="text-align:left">
         <p><b>EXCEPTION_IN_INTERCEPTOR</b>
         </p>
-        <p>This error is returned when an interceptor in an extension throws an exception.</p>
+        <p>This error is returned when an interceptor in a plugin throws an exception.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-6101</td>
+      <td style="text-align:left">
+        <p><b>POST_COMMIT_HOOK_EXCEPTION</b>
+        </p>
+        <p>This error is returned when an post commit hook in a plugin throws an exception.</p>
       </td>
     </tr>
     <tr>
@@ -637,6 +757,15 @@ This page depicts the various Error codes that Axon Server will return in the ca
       </td>
     </tr>
     <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-6002</td>
+      <td style="text-align:left">
+        <p><b>LIST_AGGREGATE_EVENTS_TIMEOUT</b>
+        </p>
+        <p>This error is returned when a request to return the events for a specific aggregate takes too long.</p>
+      </td>
+    </tr>
+    <tr>
       <td style="text-align:left"><em>Cluster Errors</em>
       </td>
       <td style="text-align:left"></td>
@@ -705,6 +834,24 @@ This page depicts the various Error codes that Axon Server will return in the ca
         <p><b>SCHEDULED_EVENT_NOT_FOUND</b>
         </p>
         <p>This error is returned when a scheduled event is not found.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-11000</td>
+      <td style="text-align:left">
+        <p><b>INSTRUCTION_TIMEOUT</b>
+        </p>
+        <p>This error is returned when an instruction sent to a client takes too long to complete.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">AXONIQ-11001</td>
+      <td style="text-align:left">
+        <p><b>INSTRUCTION_ACK_ONLY</b>
+        </p>
+        <p>This error is returned when an instruction is sent to a client which only acknowledges the request, but does not confirm the result of the instruction.</p>
       </td>
     </tr>
   </tbody>
