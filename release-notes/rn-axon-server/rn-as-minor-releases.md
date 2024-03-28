@@ -5,6 +5,12 @@ older releases check either [Axon Server Enterprise Edition](rn-asee-minor-relea
 
 ## Release 2023.2
 
+### Release 2023.2.3
+
+Bug fix:
+
+- Increasing number of threads on the running Axon Server nodes when one node in the cluster is down.
+
 ### Release 2023.2.2
 
 Bug fixes:

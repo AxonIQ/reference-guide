@@ -4,6 +4,16 @@ All the enhancements and features which have been introduced to our major releas
 
 ## Release 4.9
 
+### _Behavioral Breaking Change_
+
+In [issue #2778](https://github.com/AxonFramework/AxonFramework/pull/2778) we adapted the default `TrackingToken` of each `StreamingEventProcessor` to become a `ReplayToken` instead of a `null`.
+These changes result in the certainty that tasks that should not be performed on a replay of old events, like virtually any Saga event handlers, are ignored upon introduction of the Event Handling Component.
+
+However, if you expect **all** events to be handled as "new" events when introducing a new Event Handling Component, this may come as an unexpected change in behavior.
+More specifically, if you use the `@DisallowReplay` annotation or `ReplayStatus#REPLAY` enumeration on your newly introduced Event Handling Component, you will notice that the annotated method or block of code is no longer invoked.
+
+As such, the default `ReplayToken` should be regarded as a behavioral breaking change **if** you expect all methods of a new Event Handling Component to be invoked, regardless of any [Replay API](https://docs.axoniq.io/reference-guide/axon-framework/events/event-processors/streaming) usage.
+
 ### _Features_
 
 - Add suppressible log message when console client is not on the classpath. [#2868](https://github.com/AxonFramework/AxonFramework/pull/2868)
