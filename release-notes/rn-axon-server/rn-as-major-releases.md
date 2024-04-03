@@ -1,5 +1,32 @@
 # Major Releases
 
+## Release 2024.0
+
+### Database Update
+
+Updated H2 database to store the Control DB, addressing some issues from previous H2 version (see the upgrade instructions in https://library.axoniq.io/axon_server_upgrade/upgrading_as_2024.html).
+
+### New Features and Improvements
+
+Redesigned User Interface: The UI has been completely revamped with a modern look and feel for a better user experience. The changes include:
+
+- Simplified Overview Page: Access node information easily with filtering and scaling options.
+- Dedicated License Page: Track license expiry dates and view available features for non-enterprise users.
+- Monitoring Page: View important health information, display logs, and download diagnostic packages.
+- System Tasks: List and cancel running system tasks.
+- Search Event Store Page: Improved usability with removable columns, formatted code styles, and auto-composable queries.
+- Command and Queries Pages: Revamped for a better overview of messages in the system.
+- Long-Running Commands Component: View and cancel commands running longer than 1 second.
+- Scheduled Events Page: View and cancel scheduled events.
+- Streams Page (Experimental): Accessible for persistent streams if dev mode is enabled.
+- API Tokens (formerly Applications): Renamed for clarity, with improved token management.
+- Support for Wide Screens and Dark/Light Themes: Enhanced viewing experience.
+- Connection, Health, and Early Event Processor Issue Detection: Improved issue detection and resolution.
+- Embedded Documentation Snippets: Access documentation directly within the UI.
+
+Preview of new persistent streams feature, event streams where Axon Server manages the publication of events to clients and keeps track of the progress. This feature is enabled when development mode is enabled or when axoniq.axonserver.preview.persistent-streams property is set to true.
+
+
 ## Release 2023.2
 
 ### TLS Certificate and Key Replacement at Runtime
