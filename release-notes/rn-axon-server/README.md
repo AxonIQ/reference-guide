@@ -4,7 +4,8 @@ The release notes section for the Axon Server for all major/minor releases.
 
 | Release Type                   | Version                                          |
 |:-------------------------------|:-------------------------------------------------|
-| _**Major**_                    | [2023.2](rn-as-major-releases.md#release-2023.2) |
+| _**Major**_                    | [2024.0](rn-as-major-releases.md#release-2024.0) |
+|                                | [2023.2](rn-as-major-releases.md#release-2023.2) |
 |                                | [2023.1](rn-as-major-releases.md#release-2023.1) |
 |                                | [2023.0](rn-as-major-releases.md#release-2023.0) |
 |                                | [4.6](rn-as-major-releases.md#release-4.6.0)     |
@@ -13,7 +14,8 @@ The release notes section for the Axon Server for all major/minor releases.
 |                                | [4.3](rn-as-major-releases.md#release-4.3)       |
 |                                | [4.2](rn-as-major-releases.md#release-4.2)       |
 |                                | [4.1](rn-as-major-releases.md#release-4.1)       |
-| _**Minor **_                   | [2023.2](rn-as-minor-releases.md#release-2023.2) |
+| _**Minor **_                   | [2024.0](rn-as-minor-releases.md#release-2024.0) |
+|                                | [2023.2](rn-as-minor-releases.md#release-2023.2) |
 |                                | [2023.1](rn-as-minor-releases.md#release-2023.1) |
 |                                | [2023.0](rn-as-minor-releases.md#release-2023.0) |
 |                                | [4.6](rn-as-minor-releases.md#release-4.6)       |

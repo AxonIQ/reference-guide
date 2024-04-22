@@ -3,7 +3,32 @@
 This page provides a dedicated overview of patch releases for Axon Server. For information about the
 older releases check either [Axon Server Enterprise Edition](rn-asee-minor-releases.md) or [Axon Server Standard Edition](rn-asse-minor-releases.md).
 
+## Release 2024.0
+
+### Release 2024.0.1
+
+- Fix the increasing number of threads on the running Axon Server nodes when one node in the cluster is down.
+- Small fixes in the replication process:
+  * remove delay in starting to synchronize with a node that is far behind
+  * improve the performance for a follower catching up with the leader
+  * prevent situations where a follower attempts to apply replication log entries that were already included in a snapshot
+- Fix for authentication issue when multiple applications have the same token
+- UI, copy token to clipboard fails when not running on a trusted URL
+- UI, improved validations for applications, replication groups and contexts operations
+- Improved handling for missing connection to Axon Console
+- Support for Google Marketplace licenses
+- Axon Server now performs a clean shutdown when it was started with an incorrect node name or internal hostname/port
+
 ## Release 2023.2
+
+### Release 2023.2.4
+
+- Fix the increasing number of threads on the running Axon Server nodes when one node in the cluster is down.
+- Small fixes in the replication process:
+  * remove delay in starting to synchronize with a node that is far behind
+  * improve the performance for a follower catching up with the leader
+  * prevent situations where a follower attempts to apply replication log entries that were already included in a snapshot
+- Fix for authentication issue when multiple applications have the same token
 
 ### Release 2023.2.3
 
