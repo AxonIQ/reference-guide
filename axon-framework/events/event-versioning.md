@@ -102,9 +102,9 @@ public class ComplaintEvent1_to_2Upcaster extends SingleEventUpcaster {
    private static final SimpleSerializedType TARGET_TYPE =
            new SimpleSerializedType(ComplaintEvent.class.getTypeName(), "1.0");
 
-   @Override
    protected boolean canUpcast(IntermediateEventRepresentation intermediateRepresentation) {
-      return intermediateRepresentation.getType().equals(TARGET_TYPE);
+      return intermediateRepresentation.getType().getName().equals(TARGET_TYPE.getName())
+            && intermediateRepresentation.getType().getRevision().equals(TARGET_TYPE.getRevision());
    }
 
    @Override
@@ -134,9 +134,9 @@ public class ComplaintEvent1_to_2Upcaster extends SingleEventUpcaster {
    private static final SimpleSerializedType TARGET_TYPE =
            new SimpleSerializedType(ComplaintEvent.class.getTypeName(), "1.0");
 
-   @Override
    protected boolean canUpcast(IntermediateEventRepresentation intermediateRepresentation) {
-      return intermediateRepresentation.getType().equals(TARGET_TYPE);
+      return intermediateRepresentation.getType().getName().equals(TARGET_TYPE.getName())
+            && intermediateRepresentation.getType().getRevision().equals(TARGET_TYPE.getRevision());
    }
 
    @Override
