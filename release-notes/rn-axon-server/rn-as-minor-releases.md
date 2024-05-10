@@ -5,6 +5,24 @@ older releases check either [Axon Server Enterprise Edition](rn-asee-minor-relea
 
 ## Release 2024.0
 
+### Release 2024.0.2
+
+Fixes and improvements:
+- Updating a license through Axon Console now takes effect immediately
+- Reduced memory usage for internal communication
+- Reduced the number of threads used with a large number of contexts
+- UI improvements
+  * The dialogs for adding replication groups, API tokens, and users were not always cleared when opened
+  * show the number of events in each context
+  * improved notification when the current version is not the latest one
+  * add an option to set X-Frame-Options to SAMEORIGIN in the response messages
+
+New configuration parameters:
+- axoniq.axonserver.accesscontrol.same-origin=false (`true` sets the X-Frame-Options header to SAMEORIGIN)
+- axoniq.axonserver.event-store-background-thread-count=8
+- axoniq.axonserver.event-store-processors-thread-count=8
+
+
 ### Release 2024.0.1
 
 - Fix the increasing number of threads on the running Axon Server nodes when one node in the cluster is down.
@@ -20,6 +38,10 @@ older releases check either [Axon Server Enterprise Edition](rn-asee-minor-relea
 - Axon Server now performs a clean shutdown when it was started with an incorrect node name or internal hostname/port
 
 ## Release 2023.2
+
+### Release 2023.2.5
+
+- Reduced memory usage for internal communication
 
 ### Release 2023.2.4
 
