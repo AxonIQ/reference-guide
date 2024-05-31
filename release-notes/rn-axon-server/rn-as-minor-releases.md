@@ -5,6 +5,18 @@ older releases check either [Axon Server Enterprise Edition](rn-asee-minor-relea
 
 ## Release 2024.0
 
+### Release 2024.0.3
+
+Fixes and improvements:
+- Add an option to reduce the number of global index segments Axon Server checks when the first event for a new
+  aggregate is stored. This can be configured globally with the property
+  "axoniq.axonserver.event.global-index-segments-check" or on a context level with the property
+  "event.global-index-segments-check". The value is the number of global index segments to check, with a
+  minimal value of 2.
+- Fix for Control DB migration in case of plugin configuration properties with long values
+- Updating a license through Axon Console now takes effect immediately
+- Improved distribution of queries to different instances of the query handlers
+
 ### Release 2024.0.2
 
 Fixes and improvements:
@@ -38,6 +50,15 @@ New configuration parameters:
 - Axon Server now performs a clean shutdown when it was started with an incorrect node name or internal hostname/port
 
 ## Release 2023.2
+
+### Release 2023.2.6
+
+Fixes and improvements:
+- Add an option to reduce the number of global index segments Axon Server checks when the first event for a new
+  aggregate is stored. This can be configured globally with the property
+  "axoniq.axonserver.event.global-index-segments-check" or on a context level with the property
+  "event.global-index-segments-check". The value is the number of global index segments to check, with a
+  minimal value of 2.
 
 ### Release 2023.2.5
 
