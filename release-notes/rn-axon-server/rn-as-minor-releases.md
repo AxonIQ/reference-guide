@@ -5,6 +5,13 @@ older releases check either [Axon Server Enterprise Edition](rn-asee-minor-relea
 
 ## Release 2024.0
 
+## Release 2024.0.4
+
+Fixes and improvements:
+- Fix for a problem starting up Axon Server with plugins configured
+- Removed race condition causing a possible delay in receiving the first event on a newly registered event handler
+- Improve the diagnostics package to contain full log information when "logging.config" property is set
+- 
 ### Release 2024.0.3
 
 Fixes and improvements:
