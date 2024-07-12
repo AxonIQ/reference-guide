@@ -58,6 +58,17 @@ New configuration parameters:
 
 ## Release 2023.2
 
+### Release 2023.2.7
+
+Bug fixes:
+- Improved distribution of queries to different instances of the query handlers
+- Prevent stale threads when an Axon Server node closes the connection to another node
+- Clean up metrics from disconnected clients
+- prevent WARN log messages when a query completed message was received from an unexpected client
+
+Dependency updates:
+- GRPC version updated to 1.65.1
+
 ### Release 2023.2.6
 
 Fixes and improvements:
