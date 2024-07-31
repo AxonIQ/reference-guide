@@ -457,9 +457,9 @@ Once you resolve the problem that led to dead lettering events, we can start pro
 We recommend using the `SequencedDeadLetterProcessor` interface for this, as it processes an entire dead-letter _sequence_ instead of single dead-letter entries.
 It will thus ensure the event order is maintained during the retry.
 
-> **AxonIQ Console**
+> **Processing Dead-Letters with AxonIQ Console**
 > 
-> With AxonIQ console you can see and manage the items in your Dead-Letter Queue, as well as receive notifications when the queues contain items.
+> With AxonIQ Console you can see and manage the items in your Dead-Letter Queue, as well as receive notifications when the queues contain items.
 > You can find more information on our [product page](https://www.axoniq.io/products/axoniq-console) or [log in directly](https://console.axoniq.io/).
 
 The `SequencedDeadLetterProcessor` provides two operations to process dead letters:

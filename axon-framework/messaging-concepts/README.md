@@ -10,7 +10,7 @@ Although all these messages implement the `Message` interface, there is a clear 
 
 All messages contain a payload, meta data and unique identifier. The payload of the message is the functional description of what the message means. The combination of the class name of this object and the data it carries, describe the application's meaning of the message. The metadata allows you to describe the context in which a message is being sent. You can, for example, store tracing information, to allow the origin or cause of messages to be tracked. You can also store information to describe the security context under which a command is being executed.
 
-AxonIQ console can visualize this flow of messages for you without any additional configuration. 
+AxonIQ Console can visualize this flow of messages for you without any additional configuration. 
  ![../../.gitbook/assets/console/graphs.png](../../.gitbook/assets/console/flow.png)
  You can find more information on our [product page](https://www.axoniq.io/products/axoniq-console) or [log in directly](https://console.axoniq.io/).
 
