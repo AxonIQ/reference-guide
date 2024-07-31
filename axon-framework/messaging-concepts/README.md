@@ -2,16 +2,21 @@
 
 One of the core concepts in Axon is messaging. All communication between components is done using message objects. This gives these components the location transparency needed to be able to scale and distribute these components when necessary.‌
 
-Although all these messages implement the `Message` interface, there is a clear distinction between the different types of messages and how they are treated.‌
-
-All messages contain a payload, meta data and unique identifier. The payload of the message is the functional description of what the message means. The combination of the class name of this object and the data it carries, describe the application's meaning of the message. The metadata allows you to describe the context in which a message is being sent. You can, for example, store tracing information, to allow the origin or cause of messages to be tracked. You can also store information to describe the security context under which a command is being executed.‌
-
-​[Axon Coding Tutorial \#2: - The Core API](https://youtu.be/vnCxjWZrrk0)​
+Although all these messages implement the `Message` interface, there is a clear distinction between the different types of messages and how they are treated.
 
 > **Note**
 >
-> Note that all messages are immutable. Storing data in a message actually means creating a new message based on the previous one, with extra information added to it. This guarantees that messages are safe to use in a multi-threaded and distributed environment.
+> Note that all messages are immutable. Storing data in a message actually means creating a new message based on the previous one, with extra information added to it. This guarantees that messages are safe to use in a multi-threaded and distributed environment.‌
 
+All messages contain a payload, meta data and unique identifier. The payload of the message is the functional description of what the message means. The combination of the class name of this object and the data it carries, describe the application's meaning of the message. The metadata allows you to describe the context in which a message is being sent. You can, for example, store tracing information, to allow the origin or cause of messages to be tracked. You can also store information to describe the security context under which a command is being executed.
+
+AxonIQ Console can visualize this flow of messages for you without any additional configuration. 
+ ![../../.gitbook/assets/console/graphs.png](../../.gitbook/assets/console/flow.png)
+ You can find more information on our [product page](https://www.axoniq.io/products/axoniq-console) or [log in directly](https://console.axoniq.io/).
+
+
+## Tutorial <a id="tutorial"></a>
+We have recorded a tutorial video on Core API. You can find this  at [Axon Coding Tutorial \#2: - The Core API](https://youtu.be/vnCxjWZrrk0)​
 ‌
 
 ## Commands <a id="commands"></a>
