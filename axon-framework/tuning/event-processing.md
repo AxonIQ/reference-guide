@@ -4,9 +4,9 @@ Typically, application components contain one or more[ Event Processors](../even
 
 ## Increasing and decreasing segment counts <a id="increasing-and-decreasing-segment-counts"></a>
 
-Tracking Event Processors that handle events in multiple threads use segments to separate the events in the stream across these threads in a reliable way. However, especially when these threads are spread across multiple instances of a component, and the number of instances changes, it may be useful to scale the number of segments accordingly.
+Streaming Event Processors that handle events in multiple threads use segments to separate the events in the stream across these threads in a reliable way. However, especially when these threads are spread across multiple instances of a component, and the number of instances changes, it may be useful to scale the number of segments accordingly.
 
-To this end, Axon Framework provides a [split and merge API](../events/event-processors/streaming.md#splitting-and-merging-segments). This API can be utilized directly via a client configuration or through Axon Server, where the latter takes required coordination into account.
+To this end, Axon Framework provides a [split and merge API](../events/event-processors/streaming.md#splitting-and-merging-segments). This API can be utilized directly via a client configuration, through Axon Server, or [AxonIQ Console](https://www.axoniq.io/products/axoniq-console), where the latter two takes required coordination into account.
 
 ### Segment tuning through Axon Framework <a id="segment-tuning-through-axon-framework"></a>
 

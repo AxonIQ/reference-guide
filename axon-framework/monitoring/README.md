@@ -3,6 +3,12 @@
 The ability to monitor and measure what is going on is very important. 
 This section contains all information regarding metrics, tracing and monitoring of your Axon Framework application.
 
+> **AxonIQ Console**
+> 
+> We have built a platform that makes it very easy to monitor your Axon Framework applications.  It measures everything in your applications, aggregates, metrics and processors.
+> ![../../.gitbook/assets/console/graphs.png](../../.gitbook/assets/console/graphs.png)
+> You can find more information on our [product page](https://www.axoniq.io/products/axoniq-console) or [log in directly](https://console.axoniq.io/).
+
 A summary of the various subsections is given below.
 
 | Subsection                              | Purpose                                                           |

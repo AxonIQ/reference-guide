@@ -457,6 +457,11 @@ Once you resolve the problem that led to dead lettering events, we can start pro
 We recommend using the `SequencedDeadLetterProcessor` interface for this, as it processes an entire dead-letter _sequence_ instead of single dead-letter entries.
 It will thus ensure the event order is maintained during the retry.
 
+> **AxonIQ Console**
+> 
+> With AxonIQ console you can see and manage the items in your Dead-Letter Queue, as well as receive notifications when the queues contain items.
+> You can find more information on our [product page](https://www.axoniq.io/products/axoniq-console) or [log in directly](https://console.axoniq.io/).
+
 The `SequencedDeadLetterProcessor` provides two operations to process dead letters:
 
 1. `boolean processAny()` - Process the oldest dead-letter sequence.
@@ -739,4 +744,8 @@ Secondly, you can adjust the desired `RollbackConfiguration` per Event Processor
 It is the `RollbackConfiguration` that decide when a [Unit of Work](../../messaging-concepts/unit-of-work.md) should rollback the transaction.
 The default `RollbackConfiguration` is to rollback on any type of `Throwable`; the [Unit of Work](../../messaging-concepts/unit-of-work.md) page describes the other options you can choose.
 To adjust the default behaviour, the `registerRollbackConfiguration(String, Function<Configuration, RollbackConfiguration>)` function should be invoked on the `EventProcessingConfigurer`.
+
+### Configuration Overview
+Sometimes it can be hard to understand the current active configuration. For that, you can easily see an overview of the configuration of each Event Processor in [AxonIQ Console](https://www.axoniq.io/products/axoniq-console), once your application is connected to it. In addition the AxonIQ Console provides many more features for processors, such as being able to scale your event processor, and monitor the message handlers of your applications.
+
 

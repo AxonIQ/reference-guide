@@ -1304,10 +1304,11 @@ In turn, we can reduce the number of segments again if the load on the streaming
 To change the number of segments at runtime, the _split and merge_ operations should be used.
 Splitting and merging allow you to control the number of segments dynamically.
 
-There are roughly two approaches to adjust the number of segments for a streaming processor:
+There are roughly three approaches to adjust the number of segments for a streaming processor:
 
 1. Through the [Axon Server](../../../axon-server/introduction.md) Dashboard with the split and merge buttons
-2. Directly on a `StreamingEventProcessor`, with the `splitSegment(int segmentId)` and `mergeSegment(int segmentId)` methods
+2. Through the [AxonIQ Console](https://www.axoniq.io/products/axoniq-console) processor detail page, where you can also configure your segments to scale automatically.
+3. Directly on a `StreamingEventProcessor`, with the `splitSegment(int segmentId)` and `mergeSegment(int segmentId)` methods
 
 When Axon Server is in place, we recommend using option one since it is easiest to use.
 Whenever Axon Server is not used, and you want to adjust the number of segments, the split and merge methods should be accessible from within your application.
@@ -1465,10 +1466,10 @@ class StreamingProcessorController {
 > If you are in a [multi-node](#multi-node-processing) scenario, that means *all* nodes should shut down the `StreamingEventProcessor`.
 > Otherwise, another node will pick up the segments released by the inactive processor instance.
 > 
-> Being able to shut down or start up all streaming processor instances is most easily achieved through the [Axon Server](../../../axon-server/introduction.md) Dashboard.
+> Being able to shut down or start up all streaming processor instances is most easily achieved through the [Axon Server](../../../axon-server/introduction.md) Dashboard or through connecting your application to [AxonIQ Console](https://www.axoniq.io/products/axoniq-console).
 > The application's dashboard provides a "start" and "stop" button, which will start/stop the processor on every node.
 > 
-> When Axon Server is not used, you should construct a custom endpoint in your application.
+> When not using Axon Server or AxonIQ Console, you should construct a custom endpoint in your application.
 > The `StreamingProcessorService` sample shared above would be ideal for adding a start and stop method. 
 
 ### Replay API
@@ -1543,7 +1544,6 @@ The `CardSummaryProjection` shows a couple of interesting things to take note of
    you can use the `@ReplayContext` annotation to get access to this information. This information is stored in the `ReplayToken` and will be available until the end of the replay.
    The type of the `resetContext` is up to the user and is the same context as is used for the `@ResetHandler` (see 4.). 
    The type of the `resetContext` has to match the parameter's, or it will be null.
-
 
 ## Multiple Event Sources
 
