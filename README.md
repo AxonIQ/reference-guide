@@ -13,7 +13,9 @@ There, you will find information about Axon training, support options, upcoming 
 > **Monitoring with AxonIQ Console**
 >
 > We have built a platform that makes it very easy to monitor your Axon Framework applications.  It measures everything in your applications, aggregates, metrics and processors.
+>
 > ![../../.gitbook/assets/console/graphs.png](../../.gitbook/assets/console/graphs.png)
+>
 > You can find more information on our [product page](https://www.axoniq.io/products/axoniq-console) or [log in directly](https://console.axoniq.io/).
 
 ## How to use this guide
