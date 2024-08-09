@@ -10,13 +10,13 @@ Axon provides an innovative and powerful way of sensibly evolving to event-drive
 Please visit [the AxonIQ website](https://axoniq.io/) to learn more about AxonIQ and the Axon community. 
 There, you will find information about Axon training, support options, upcoming and past events.
 
-> Breaking Changes in Axon Framework 4.7!
-> 
-> Against our normal approach towards minor releases, we sadly had to introduce breaking changes between Axon Framework 4.6 and 4.7.
-> Our apologies for this.
-> 
-> To help you with your upgrade we have constructed a dedicated page [here](axon-framework/upgrading-to-4-7.md) that helps you on your path to upgrade to 4.7.
-> If you find any irregularities concerning your upgrade, be sure to reach out to us!
+> **Monitoring with AxonIQ Console**
+>
+> We have built a platform that makes it very easy to monitor your Axon Framework applications.  It measures everything in your applications, aggregates, metrics and processors.
+>
+> ![../../.gitbook/assets/console/graphs.png](../../.gitbook/assets/console/graphs.png)
+>
+> You can find more information on our [product page](https://www.axoniq.io/products/axoniq-console) or [log in directly](https://console.axoniq.io/).
 
 ## How to use this guide
 
