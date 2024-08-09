@@ -3,6 +3,20 @@
 This page provides a dedicated overview of patch releases for Axon Server. For information about the
 older releases check either [Axon Server Enterprise Edition](rn-asee-minor-releases.md) or [Axon Server Standard Edition](rn-asse-minor-releases.md).
 
+## Release 2024.1
+
+## Release 2024.1.1
+
+Bug fixes and improvements:
+- Revert optimization in replication from version 2023.2.4, as it could lead to a node entering fatal state
+- Stop Axon Server from redirecting a client to a node that is in fatal state
+- Reduce communication between the leader and follower and logging when a node is starting up
+- Search page improvements
+- Set correct permissions for persistent stream API calls
+- Add validation of newly created index files
+- Allow non-pristine clusters to connect to Console
+- Fix the event store size in the context page
+
 ## Release 2024.0
 
 ## Release 2024.0.4
@@ -57,6 +71,13 @@ New configuration parameters:
 - Axon Server now performs a clean shutdown when it was started with an incorrect node name or internal hostname/port
 
 ## Release 2023.2
+
+## Release 2024.2.8
+
+Bug fixes and improvements:
+- Revert optimization in replication from version 2023.2.4, as it could lead to a node entering fatal state
+- Stop Axon Server from redirecting a client to a node that is in fatal state
+- Reduce communication between the leader and follower and logging when a node is starting up
 
 ### Release 2023.2.7
 
